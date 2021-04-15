@@ -1,0 +1,12 @@
+{
+  "name": "root",
+  "private": true,
+  "devDependencies": {
+    "lerna": "^4.0.0"
+  },
+  "scripts": {
+    "release": "lerna version --conventional-commits --no-push -m \"chore(release): publish\"",
+    "beta": "lerna version --conventional-commits --conventional-prerelease --no-push -m \"chore(release): publish\" --preid beta",
+    "rc": "lerna version --conventional-commits --conventional-prerelease --no-push -m \"chore(release): publish\" --preid rc"
+  }
+}

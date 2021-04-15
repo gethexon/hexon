@@ -1,0 +1,180 @@
+// app global css in SCSS form
+.q-date,.q-time{
+  border-radius: 0 !important;
+}
+.q-menu{
+  transition: opacity .2s !important;
+  border-radius: 3px !important;
+  color: $grey-9 !important;
+  border: 1px solid $grey-4 !important;
+  background-color: $light-3 !important;
+  }
+.q-menu.pop{
+  border-radius: 6px !important;
+  .q-markdown > *:last-child{
+    margin-bottom: 0;
+  }
+}
+.q-menu--dark {
+  color: $grey-9 !important;
+  border: 1px solid $grey-9 !important;
+  background-color: $dark-3 !important;
+}
+.q-chip--clickable:focus{
+  box-shadow: 0 0 0 black !important;
+}
+// markdown样式覆盖
+.q-markdown {
+  color: $grey-9 !important;
+}
+
+.body--dark .q-markdown {
+  color: $grey-3 !important;
+}
+
+.q-markdown--note,
+blockquote.q-markdown--note,
+.q-markdown--line-numbers-wrapper,
+.body--dark .q-markdown .q-markdown--note,
+.body--dark .q-markdown blockquote.q-markdown--note,
+.body--dark .q-markdown .q-markdown--line-numbers-wrapper {
+  border: none !important;
+  border-radius: 6px !important;
+  padding: 8px !important;
+}
+
+.q-markdown--link {
+  color: $primary !important;
+  border-bottom: none !important;
+}
+
+.q-markdown .q-markdown--token {
+  border-color: $grey-5 !important;
+}
+
+.body--dark .q-markdown .q-markdown--token {
+  border-color: $grey-7 !important;
+}
+
+.q-markdown--table,
+.q-markdown--table thead tr th,
+.q-markdown--table tbody td,
+.q-markdown--table tbody th {
+  border-style: none !important;
+}
+
+.footnote-backref,
+.footnote-backref a,
+.footnote-ref,
+.footnote-ref a {
+  color: $primary !important;
+}
+// 变量
+.text-dark-1 {
+  color: $dark-1 !important;
+}
+
+.bg-dark-1 {
+  background-color: $dark-1 !important;
+}
+
+.text-dark-2 {
+  color: $dark-2 !important;
+}
+
+.bg-dark-2 {
+  background-color: $dark-2 !important;
+}
+
+.text-dark-3 {
+  color: $dark-3 !important;
+}
+
+.bg-dark-3 {
+  background-color: $dark-3 !important;
+}
+.text-dark-1 {
+  color: $dark-1 !important;
+}
+.bg-dark-1 {
+  background-color: $dark-1 !important;
+}
+.text-dark-2 {
+  color: $dark-2 !important;
+}
+.bg-dark-2 {
+  background-color: $dark-2 !important;
+}
+.text-dark-3 {
+  color: $dark-3 !important;
+}
+.bg-dark-3 {
+  background-color: $dark-3 !important;
+}
+
+.text-light-1 {
+  color: $light-1 !important;
+}
+
+.bg-light-1 {
+  background-color: $light-1 !important;
+}
+
+.text-light-2 {
+  color: $light-2 !important;
+}
+
+.bg-light-2 {
+  background-color: $light-2 !important;
+}
+
+.text-light-3 {
+  color: $light-3 !important;
+}
+
+.bg-light-3 {
+  background-color: $light-3 !important;
+}
+// 其他
+body{
+  font-family:"PingFang SC",
+  "Lantinghei SC",
+  "Microsoft YaHei",
+  "HanHei SC",
+  "Helvetica Neue",
+  "Open Sans",
+  Arial,
+  "Hiragino Sans GB",
+  "微软雅黑",
+  STHeiti,
+  "WenQuanYi Micro Hei",
+  SimSun,
+  sans-serif !important;
+  user-select: none;
+}
+
+.m-form{
+  padding:0 8px;
+  .q-item{
+    border-radius: 6px;
+    padding: 8px 16px;
+    margin: 4px 0;
+  }
+  .q-chip{
+    background-color: $light-3;
+  }
+}
+.body--dark .m-form {
+  .q-chip {
+    background-color: $dark-3;
+  }
+}
+.m-codearea{
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.loading-text{
+  margin: 40px 20px 0;
+  max-width: 450px;
+  text-align: center;
+}
