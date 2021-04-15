@@ -1,5 +1,5 @@
 export default {
-  base: "vs",
+  base: "vs-dark",
   inherit: true,
   rules: [
     {
@@ -12,7 +12,7 @@ export default {
     },
     {
       // 链接
-      foreground: "bbbbbb",
+      foreground: "666666",
       token: "string.link.md"
     },
     {
@@ -27,10 +27,10 @@ export default {
     }
   ],
   colors: {
-    "editor.foreground": "#333333",
-    "editor.background": "#ffffff",
+    "editor.foreground": "#bdbdbd",
+    "editor.background": "#323232",
     "editorCursor.foreground": "#0e83cd",
     "editor.lineHighlightBackground": "#00000005",
-    "editor.selectionBackground": "#00000020"
+    "editor.selectionBackground": "#00000040"
   }
 };

@@ -52,6 +52,12 @@ import "monaco-editor/esm/vs/basic-languages/monaco.contribution";
 //#endregion
 import * as MonacoMarkdown from "monaco-markdown";
 import myTheme from "./theme";
+import myThemeDark from "./theme-dark";
+
+function getThemeName(isDarkActive) {
+  return isDarkActive ? "myTheme" : "myThemeDark";
+}
+
 export default {
   name: "MonacoEditor",
   props: {
@@ -70,6 +76,9 @@ export default {
       if (this.editor.getValue() !== v) {
         this.editor.setValue(v);
       }
+    },
+    dark(v) {
+      monaco.editor.setTheme(getThemeName(v));
     }
   },
   methods: {
@@ -78,6 +87,9 @@ export default {
     }
   },
   computed: {
+    dark() {
+      return this.$q.dark.isActive;
+    },
     style() {
       return `width:${this.rect.width}px;height:${this.rect.height}px`;
     }
@@ -89,13 +101,13 @@ export default {
     // TODO: 优化主题
     // TODO: 添加暗色主题，支持实时切换
     // TODO 监控父容器大小变化，实时调整大小
-    monaco.editor.defineTheme("myTheme", myTheme);
-    monaco.editor.setTheme("myTheme");
+    monaco.editor.defineTheme(getThemeName(false), myTheme);
+    monaco.editor.defineTheme(getThemeName(true), myThemeDark);
 
     const editorOptions = {
       value: this.value,
       language: "markdown",
-      theme: "myTheme",
+      theme: getThemeName(this.$q.dark.isActive),
       folding: false,
       readOnly: false,
       roundedSelection: true,
