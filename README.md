@@ -8,7 +8,24 @@ winwin-hexo-editor has been renamed to Hexon. It means hexo online. Wish you lov
 
 ## 📖 Guide
 
-We are working on docs. Comming soon.
+We are working on docs. Comming soon. Here's a simple version:
+
+### Install
+
+```bash
+git clone https://github.com/gethexon/hexon
+cd hexon/packages/server
+yarn
+node install.js
+yarn start
+```
+
+### Uninstall
+
+```bash
+rm -rf hexo
+# just remove the folder you just cloned
+```
 
 ## 🌍 Want to know more?
 
