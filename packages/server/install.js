@@ -2,12 +2,15 @@ require('./src/init')
 require('./src/base')
 require('./src/install/config')
 const fs = require('fs')
+const path = require('path')
 const chalk = require('chalk')
 const { spawn } = require('hexo-util')
 const inquirer = require('inquirer')
 const DI = require('./src/util/di')
 const { IConfigService } = require('./src/base/configService')
 const { InstallConfig } = require('./src/install/config')
+const { checkIsBlog } = require('./src/hexo/core/util')
+const HexoConfig = require('./src/hexo/core/config')
 const configStorage = DI.inject(IConfigService)
 class Printer {
   constructor (prefix) {
@@ -58,9 +61,15 @@ async function run (command, args) {
     await spawn(command, args, { stdio: 'inherit' })
     return false
   } catch (err) {
-    printer.error('Failed:', [command].concat(args).map(i => {
-      return i.includes(' ') ? `"${i}"` : i
-    }).join(' '))
+    printer.error(
+      'Failed:',
+      [command]
+        .concat(args)
+        .map((i) => {
+          return i.includes(' ') ? `"${i}"` : i
+        })
+        .join(' ')
+    )
     printer.error(err)
     return true
   }
@@ -82,25 +91,41 @@ async function install () {
   await run('git', ['submodule', 'update', '--init', '--recursive'])
 
   printer.printSection('Configuation')
-  const answer1 = await inquirer
-    .prompt([{
-      name: 'port',
-      message: 'Which port do you like Hexon running at?',
-      default: 5777,
-      validate (v) {
-        return !isNaN(v) || `number is required ${typeof v} given`
-      },
-      prefix: chalk.blue('?')
-    }])
+  const portPrompt = {
+    name: 'port',
+    message: 'Which port do you like Hexon running at?',
+    default: 5777,
+    validate (v) {
+      return !isNaN(v) || `number is required ${typeof v} given`
+    },
+    prefix: chalk.blue('?')
+  }
+  const hexoRootPrompt = {
+    name: 'hexoRoot',
+    message: 'Your hexo blog path?',
+    validate (v) {
+      const truePath = path.resolve(process.cwd(), v)
+      try {
+        return checkIsBlog(truePath) || chalk.red.bold(truePath) + chalk.red(' is not a valid hexo blog. Please try another.')
+      } catch (e) {
+        console.error(e)
+        return chalk.red('Fail to check path ' + chalk.bold(truePath))
+      }
+    }
+  }
+  const answer1 = await inquirer.prompt([portPrompt, hexoRootPrompt])
   configStorage.set(InstallConfig.PORT, answer1.port)
+  configStorage.set(HexoConfig.HEXO_ROOT, answer1.hexoRoot)
 
   printer.printSection('Ready to go!')
-  const answer2 = await inquirer.prompt([{
-    name: 'start',
-    message: 'Do you want to run `npm run prd` to start Hexon with pm2?',
-    default: false,
-    type: 'confirm'
-  }])
+  const answer2 = await inquirer.prompt([
+    {
+      name: 'start',
+      message: 'Do you want to run `npm run prd` to start Hexon with pm2?',
+      default: false,
+      type: 'confirm'
+    }
+  ])
   let error
   if (answer2.start) error = await run('npm', ['run', 'prd'])
 
@@ -108,7 +133,11 @@ async function install () {
   printer.log(chalk.green.bold('Finished!'))
   printer.log()
   if (error) {
-    printer.log(chalk.yellow('It seems that we have trouble starting Hexon. You need to start mannuly'))
+    printer.log(
+      chalk.yellow(
+        'It seems that we have trouble starting Hexon. You need to start mannuly'
+      )
+    )
     printer.log()
   }
   printer.log('Run ' + chalk.blue.bold('`npm start`') + ' to start with node')

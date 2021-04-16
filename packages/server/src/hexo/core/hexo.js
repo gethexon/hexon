@@ -2,7 +2,7 @@ require('./config')
 const fs = require('hexo-fs')
 const path = require('path')
 const chalk = require('chalk')
-const { restrictedKeys } = require('./util')
+const { restrictedKeys, checkIsBlog } = require('./util')
 const DI = require('../../util/di')
 const { IHexoAPI } = require('./hexo_api')
 const { IHexoCLI } = require('./hexo_cli')
@@ -26,20 +26,7 @@ class Hexo {
    * @private
    */
   checkIsBlog (cwd) {
-    let file
-    try {
-      // 检查是否有对应文件
-      file = fs.readFileSync(path.join(cwd, 'package.json'))
-      fs.readFileSync(path.join(cwd, '_config.yml'))
-    } catch (err) {
-      if (err.code === 'ENOENT') {
-        throw new Error('Not blog')
-      }
-      throw err
-    }
-    // 检查是否有hexo依赖
-    const packageJSON = JSON.parse(file)
-    if (!packageJSON.dependencies.hexo) throw new Error('Not blog')
+    if (!checkIsBlog(cwd)) throw new Error('Not blog')
   }
 
   async init () {

@@ -2,24 +2,21 @@
   <q-page :style-fn="styleFn" class="column">
     <q-carousel
       v-model="slide"
-      transition-prev="jump-down"
-      transition-next="jump-up"
+      transition-prev="jump-right"
+      transition-next="jump-left"
       swipeable
       animated
       control-color="white"
-      prev-icon="arrow_left"
-      next-icon="arrow_right"
       padding
-      arrows
       class="installer text-white col"
     >
-      <q-carousel-slide :name="0" class="column no-wrap flex-center">
+      <q-carousel-slide name="welcome" class="column no-wrap flex-center">
         <img
           src="~/assets/logo-inverse.svg"
           style="max-width:100px;margin:0 auto;display:block"
         />
         <h2>欢迎使用Hexon</h2>
-        <q-btn :ripple="false" class="btn" @click="next1" rounded>
+        <q-btn :ripple="false" class="btn" @click="next" rounded>
           <q-icon name="campaign" class="q-mr-sm" />
           Let's hexo online!
         </q-btn>
@@ -27,46 +24,50 @@
           一个在线hexo博客编辑器
         </div>
       </q-carousel-slide>
-      <q-carousel-slide :name="1" class="column no-wrap flex-center">
-        <q-form @submit="checkroot" class="column no-wrap flex-center">
-          <h3 class="title">请输入你的hexo博客路径</h3>
-          <m-input v-model="root.data" class="min-width"></m-input>
-          <div class="q-mt-md text-center">
-            你的hexo博客所在路径，与hexo配置文件config.yml相同<br />
-            例如<code>~/myhexoblog</code>或者<code>../../myhexoblog</code>
+      <q-carousel-slide name="user" class="column no-wrap flex-center">
+        <q-form @submit="next" class="column no-wrap flex-center">
+          <h3 class="title">请设置账户</h3>
+          <table class="min-width">
+            <tbody>
+              <tr class="item">
+                <td>用户名</td>
+                <td>
+                  <m-input v-model="username" class="q-my-sm"></m-input>
+                </td>
+              </tr>
+              <tr class="item">
+                <td>密码</td>
+                <td>
+                  <m-input
+                    v-model="password"
+                    class="q-my-sm"
+                    type="password"
+                  ></m-input>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="q-mt-xl">
+            <q-btn
+              :ripple="false"
+              class="btn"
+              label="上一步"
+              rounded
+              @click="prev"
+            />
+            <q-btn
+              :ripple="false"
+              class="q-ml-md btn"
+              label="下一步"
+              rounded
+              type="submit"
+              :disable="!userValid"
+            />
           </div>
-          <div
-            class="q-mt-md q-pa-sm text-center text-bold error"
-            v-if="root.error"
-          >
-            <q-icon name="warning" class="q-mr-sm" size="xx-large" />
-            {{ root.error }}
-          </div>
-          <q-btn
-            :ripple="false"
-            class="q-ml-sm q-mt-xl btn"
-            icon="check"
-            label="检查"
-            rounded
-            :loading="root.status === 'loading'"
-            @click="checkroot"
-            :disable="!root.data"
-            v-if="root.status !== 'pass'"
-          />
         </q-form>
-        <q-btn
-          :ripple="false"
-          class="q-ml-sm q-mt-xl btn"
-          icon="campaign"
-          label="下一步"
-          rounded
-          @click="next2"
-          :disable="!root.data"
-          v-if="root.status === 'pass'"
-        />
       </q-carousel-slide>
-      <q-carousel-slide :name="2" class="column no-wrap flex-center">
-        <q-form @submit="next3" class="column no-wrap flex-center">
+      <q-carousel-slide name="security" class="column no-wrap flex-center">
+        <q-form @submit="next" class="column no-wrap flex-center">
           <h3 class="title">请配置网站安全项</h3>
           <table class="min-width">
             <tbody>
@@ -106,47 +107,14 @@
             :ripple="false"
             class="q-ml-sm q-mt-xl btn"
             icon="campaign"
-            label="下一步"
-            rounded
-            @click="next3"
-            :disable="!canSecureNext"
-          />
-        </q-form>
-      </q-carousel-slide>
-      <q-carousel-slide :name="3" class="column no-wrap flex-center">
-        <q-form @submit="next4" class="column no-wrap flex-center">
-          <h3 class="title">请设置账户</h3>
-          <table class="min-width">
-            <tbody>
-              <tr class="item">
-                <td>用户名</td>
-                <td>
-                  <m-input v-model="username" class="q-my-sm"></m-input>
-                </td>
-              </tr>
-              <tr class="item">
-                <td>密码</td>
-                <td>
-                  <m-input v-model="password" class="q-my-sm"></m-input>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <q-btn
-            :ripple="false"
-            class="q-ml-sm q-mt-xl btn"
-            icon="campaign"
             label="安装"
             rounded
-            @click="next4"
             :disable="!canInstall"
+            type="submit"
           />
         </q-form>
       </q-carousel-slide>
-      <q-carousel-slide :name="4" class="column no-wrap flex-center">
-        <h3 class="title" v-if="install.status === 'init'">
-          前面搞完再来看吼～
-        </h3>
+      <q-carousel-slide name="install" class="column no-wrap flex-center">
         <template v-if="install.status === 'installing'">
           <q-spinner-gears size="3rem" :thickness="5" />
           <h3 class="title">正在安装</h3>
@@ -185,12 +153,7 @@ export default {
   name: "Install",
   data() {
     return {
-      slide: 0,
-      root: {
-        data: "",
-        error: "",
-        status: "init"
-      },
+      slide: "welcome",
       secret: srand(16),
       expire: "1h",
       refresh: "7d",
@@ -205,63 +168,63 @@ export default {
   components: {
     MInput
   },
-  watch: {
-    ["root.data"]() {
-      this.root.status = "init";
-    }
-  },
   methods: {
     styleFn(offset, height) {
       return {
         height: height + "px"
       };
     },
-    async checkroot() {
-      if (this.root.status === "pass") {
-        this.next2();
+    prev() {
+      const { slide } = this;
+      if (slide === "user") {
+        this.slide = "welcome";
         return;
       }
-      try {
-        this.root.status = "loading";
-        await api.install.checkroot(this.root.data);
-        this.root.status = "pass";
-        this.root.error = "";
-      } catch (err) {
-        this.root.status = "error";
-        this.root.error =
-          err instanceof NetworkError ? err.message : "unknown error";
-        if (!err instanceof NetworkError) throw err;
+      if (slide === "security") {
+        this.slide = "user";
+        return;
       }
+      return false;
     },
-    next1() {
-      this.slide = 1;
+    next() {
+      const { slide } = this;
+      if (slide === "welcome") {
+        this.slide = "user";
+        return;
+      }
+      if (slide === "user") {
+        if (!this.userValid) return;
+        this.slide = "security";
+        return;
+      }
+      if (slide === "security") {
+        if (!this.securityValid) return;
+        this.doinstall();
+        return;
+      }
+      return false;
     },
-    next2() {
-      if (this.root.error) return;
-      this.slide = 2;
-    },
-    next3() {
-      if (!this.canSecureNext) return;
-      this.slide = 3;
-    },
-    next4() {
-      if (!this.canInstall) return;
-      this.slide = 4;
-      this.doinstall();
-    },
+    nextInstall() {},
     async doinstall() {
+      if (!this.canInstall) return;
+      this.slide = "install";
+      let token;
       try {
-        this.install.status = "installing";
+        token = setTimeout(() => {
+          this.install.status = "installing";
+        }, 200);
         await api.install.install({
-          root: this.root.data,
           secret: this.secret,
           expire: this.expire,
           refresh: this.refresh,
           username: this.username,
           password: sha1(this.password).toString()
         });
+        clearTimeout(token);
+        token = undefined;
         this.install.status = "done";
       } catch (err) {
+        if (process.env.DEV) console.error(err);
         this.install.status = "error";
         this.install.error =
           err instanceof NetworkError ? err.message : "unknown error";
@@ -273,11 +236,14 @@ export default {
     year() {
       return new Date().getFullYear();
     },
-    canSecureNext() {
-      return !this.root.error && this.secret && this.expire && this.refresh;
+    securityValid() {
+      return !!(this.secret && this.expire && this.refresh);
+    },
+    userValid() {
+      return this.username && this.password;
     },
     canInstall() {
-      return this.canSecureNext && this.username && this.password;
+      return this.securityValid && this.userValid;
     }
   }
 };
