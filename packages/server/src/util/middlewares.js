@@ -3,6 +3,7 @@ exports.validateRequestBody = v => {
     try {
       await v.validateAsync(ctx.request.body)
     } catch (err) {
+      console.log(err)
       ctx.status = 400
       ctx.body = {
         message: 'Validation failed',

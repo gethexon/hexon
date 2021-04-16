@@ -86,27 +86,28 @@
             transition-prev="jump-up"
             transition-next="jump-up"
             style="background:none"
+            class="full-height"
           >
-            <q-tab-panel name="user">
-              <div class="text-h4 q-mb-md">用户</div>
+            <q-tab-panel class="full-height" name="user">
+              <UserSettings />
             </q-tab-panel>
 
-            <q-tab-panel name="security">
+            <q-tab-panel class="full-height" name="security">
               <div class="text-h4 q-mb-md">安全</div>
             </q-tab-panel>
 
-            <q-tab-panel name="editor">
+            <q-tab-panel class="full-height" name="editor">
               <div class="text-h4 q-mb-md">
                 样式
                 <q-btn color="primary" label="切换" @click="onToggleDark" />
               </div>
             </q-tab-panel>
 
-            <q-tab-panel name="about">
+            <q-tab-panel class="full-height" name="about">
               <div class="text-h4 q-mb-md">关于</div>
             </q-tab-panel>
 
-            <q-tab-panel name="help">
+            <q-tab-panel class="full-height" name="help">
               <div class="text-h4 q-mb-md">帮助</div>
             </q-tab-panel>
           </q-tab-panels>
@@ -117,7 +118,10 @@
 </template>
 
 <script>
-import NavItem from "src/components/UI/NavItem";
+const components = {
+  NavItem: () => import("src/components/UI/NavItem"),
+  UserSettings: () => import("src/components/UserSettings")
+};
 export default {
   data() {
     return {
@@ -130,11 +134,8 @@ export default {
       type: String,
       default: "user"
     }
-    // ...your custom props
   },
-  components: {
-    NavItem
-  },
+  components,
   computed: {
     dark() {
       return this.$q.dark.isActive;

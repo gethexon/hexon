@@ -22,12 +22,13 @@ app.use(async (ctx, next) => {
     await next()
   } catch (err) {
     ctx.status = err.status || 500
-    ctx.body = {
-      message: err.message
-    }
-    if (ctx.status === 500) {
+    if (ctx.status === 500 && process.env.NODE_ENV !== 'development') {
       ctx.body.message = 'server internal error. Fix problem and try again later. This can be caused by unexpected input or server error.'
       serverLogger.error(500, err)
+      return
+    }
+    ctx.body = {
+      message: err.message
     }
   }
 })

@@ -7,7 +7,13 @@ const DI = require('../util/di')
 const { IStorageService } = require('../base/storageService')
 const { IAuthService } = require('./authService')
 const { ILogService } = require('../base/logService')
+const Joi = require('joi')
 const logger = DI.inject(ILogService).get('auth')
+
+exports.v = {
+  password: Joi.object({ password: Joi.string().required() })
+}
+
 exports.basicAuth = async function (ctx, next) {
   const authService = DI.inject(IAuthService)
   // get name and pass from reqest header
@@ -139,4 +145,9 @@ exports.logout = async (ctx, next) => {
 exports.info = async (ctx, next) => {
   const authService = DI.inject(IAuthService)
   ctx.body = authService.getUserInfo()
+}
+exports.password = async (ctx, next) => {
+  const { password } = ctx.request.body
+  const authService = DI.inject(IAuthService)
+  ctx.body = authService.setSecurity({ password })
 }

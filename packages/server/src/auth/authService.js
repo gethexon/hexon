@@ -21,6 +21,7 @@ const { ILogService } = require('../base/logService')
 class AuthService {
   constructor () {
     this._configService = DI.inject(IConfigService)
+    this._storageService = DI.inject(IStorageService)
     this._logger = DI.inject(ILogService).get('auth')
   }
 
@@ -32,16 +33,15 @@ class AuthService {
   }
 
   getToken () {
-    const storage = DI.inject(IStorageService)
     const uuid = uuidv4()
     const secret = this._configService.get(AuthConfig.AUTH_SECRET)
     const expire = this._configService.get(AuthConfig.AUTH_EXPIRE)
     const refresh = this._configService.get(AuthConfig.AUTH_REFRESH)
     const accessToken = jwt.sign({ type: 'access', uuid }, secret, { expiresIn: expire })
     const refreshToken = jwt.sign({ type: 'refresh', uuid }, secret, { expiresIn: refresh })
-    const refreshTokens = storage.get('refresh') || {}
+    const refreshTokens = this._storageService.get('refresh') || {}
     refreshTokens[uuid] = refreshToken
-    storage.set('refresh', refreshTokens)
+    this._storageService.set('refresh', refreshTokens)
     return { accessToken, refreshToken }
   }
 
@@ -55,6 +55,14 @@ class AuthService {
     return {
       name: this._configService.get(AuthConfig.AUTH_USERNAME)
     }
+  }
+
+  setSecurity ({ secret, expire, refresh, username, password } = {}) {
+    secret && this._configService.set(AuthConfig.AUTH_SECRET, secret)
+    expire && this._configService.set(AuthConfig.AUTH_EXPIRE, expire)
+    refresh && this._configService.set(AuthConfig.AUTH_REFRESH, refresh)
+    username && this._configService.set(AuthConfig.AUTH_USERNAME, username)
+    password && this._configService.set(AuthConfig.AUTH_PASSWORD, SHA1(password).toString())
   }
 }
 const IAuthService = 'IAuthService'
