@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.8.0-beta.2](https://github.com/gethexon/hexon/compare/v0.8.0-beta.1...v0.8.0-beta.2) (2021-04-23)
+
+
+### Features
+
+* 正则搜索文章 ([b180b88](https://github.com/gethexon/hexon/commit/b180b88e7c705623e6c0a89652bce91a7e6f87a2))
+
+
+
+
+
 # [0.8.0-beta.1](https://github.com/gethexon/hexon/compare/v0.8.0-beta.0...v0.8.0-beta.1) (2021-04-16)
 
 
