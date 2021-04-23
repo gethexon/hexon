@@ -37,7 +37,8 @@ exports.v = {
 }
 exports.qv = {
   search: Joi.object({
-    query: Joi.string().required()
+    query: Joi.string(),
+    mode: Joi.string()
   })
 }
 // #endregion
@@ -145,6 +146,6 @@ exports.notGitRepo = async (ctx, next) => {
 // #endregion
 // #region search
 exports.search = async (ctx, next) => {
-  ctx.body = await search(ctx.query.query)
+  ctx.body = await search(decodeURIComponent(ctx.query.query), ctx.query.mode)
 }
 // #endregion

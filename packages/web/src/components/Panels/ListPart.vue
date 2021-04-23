@@ -3,13 +3,17 @@
     <q-toolbar class="toolbar" style="padding: 0 24px">
       <m-input
         class="col"
-        placeholder="搜索"
-        clearable
+        :placeholder="`${showSearchResult ? '支持正则表达式' : '搜索'}`"
         @focus="showSearchResult = true"
         @blur="showSearchResult = false"
+        v-model="query"
+        @keydown.native.enter="onSearch"
       >
         <template v-slot:prepend>
           <q-icon name="search" class="q-mr-sm" />
+        </template>
+        <template v-slot:append v-if="showSearchResult">
+          <q-icon name="subdirectory_arrow_left" class="q-mr-sm" />
         </template>
       </m-input>
       <q-btn
@@ -23,7 +27,18 @@
         v-if="!showSearchResult"
       />
     </q-toolbar>
-    <template v-if="showSearchResult"> </template>
+    <template v-if="showSearchResult">
+      <q-icon
+        name="search"
+        class="search-icon absolute"
+        style="bottom:30px;right:30px"
+        size="200px"
+      />
+      <articles-list
+        class="col"
+        :articles="searchResultArticles"
+      ></articles-list>
+    </template>
     <template v-else>
       <articles-control></articles-control>
       <articles-list class="col" :articles="articles"></articles-list>
@@ -38,6 +53,7 @@ import ArticlesList from "src/components/ArticlesList";
 import NewArticle from "src/components/Panels/NewArticle";
 import { mapState } from "vuex";
 import { array2dToArray1d, sortString } from "src/utils/common";
+import services from "src/services";
 function obj2list(obj) {
   return Object.keys(obj).map(key => obj[key].data);
 }
@@ -50,7 +66,9 @@ export default {
   },
   data() {
     return {
-      showSearchResult: false
+      showSearchResult: false,
+      searchResult: [],
+      query: ""
     };
   },
   computed: {
@@ -62,6 +80,12 @@ export default {
       filter: state => state.filter,
       sort: state => state.sort
     }),
+    searchResultArticles() {
+      const articles = this.posts.concat(this.pages);
+      return articles.filter(article =>
+        this.searchResult.includes(article._id)
+      );
+    },
     articles() {
       const articles = this.posts.concat(this.pages);
       let result = [];
@@ -107,6 +131,9 @@ export default {
         component: NewArticle,
         parent: this
       });
+    },
+    async onSearch() {
+      this.searchResult = await services.hexo.search(this.query);
     }
   }
 };
@@ -119,6 +146,9 @@ export default {
   .options {
     color: $l-text-2;
   }
+  .search-icon {
+    color: $light-1;
+  }
 }
 .body--dark .list-part {
   .toolbar {
@@ -126,6 +156,9 @@ export default {
   }
   .options {
     color: $d-text-2;
+  }
+  .search-icon {
+    color: $dark-1;
   }
 }
 </style>
