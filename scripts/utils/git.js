@@ -59,7 +59,8 @@ async function setUpstream(branch, remote) {
 
 async function addThenCommit(message) {
   await execaInherit("git", ["add", "."]);
-  await execaInherit("git", ["commit", "-m", message]);
+  const { stdout: res } = await execaPipe("git", ["status", "-s"]);
+  if (res) await execaInherit("git", ["commit", "-m", message]);
 }
 
 module.exports = {

@@ -36,10 +36,10 @@ async function wrap() {
   const branch = await getCurrentBranch();
   await rebase(NEXT_BRANCH);
   await notifyRebaseToOneCommit();
-  await checkout(NEXT_BRANCH);
-  await merge(branch);
   await build();
   await addThenCommit('chore: build')
+  await checkout(NEXT_BRANCH);
+  await merge(branch);
 }
 
 wrap();
