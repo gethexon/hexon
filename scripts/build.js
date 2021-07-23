@@ -1,9 +1,9 @@
-const { execaInherit } = require("./utils/execa");
 const build = require("./utils/build");
+const { addAll } = require("./utils/git");
 
 async function wrap() {
-  await build();
-  await execaInherit("git", ["add", "."]);
+  await build()
+  await addAll()
 }
 
 wrap();

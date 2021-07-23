@@ -1,5 +1,9 @@
 const { execaInherit, execaPipe } = require("./execa");
 
+async function addAll() {
+  await execaInherit("git", ["add", "."]);
+}
+
 async function listBranches() {
   const { stdout: branches } = await execaPipe("git", ["branch", "--list"]);
   return branches ? branches.split("\n").map((i) => i.slice(2)) : [];
@@ -11,6 +15,10 @@ async function getCurrentBranch() {
     "--show-current",
   ]);
   return branch;
+}
+
+async function rebase(branch) {
+  await execaInherit("git", ["rebase", branch]);
 }
 
 async function removeBranch(branch) {
@@ -30,7 +38,7 @@ async function branchThenCheckout(branch) {
 }
 
 async function merge(branch) {
-  await execaInherit("git", ["merge", branch, "--no-ff"]);
+  await execaInherit("git", ["merge", branch, "--no-ff", "--no-edit"]);
 }
 
 const format =
@@ -55,12 +63,14 @@ async function addThenCommit(message) {
 }
 
 module.exports = {
+  addAll,
   listBranches,
   getCurrentBranch,
   removeBranch,
   forceRemoveBranch,
   branchThenCheckout,
   checkout,
+  rebase,
   merge,
   listLog,
   setUpstream,

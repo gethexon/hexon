@@ -6,9 +6,10 @@
     "setup": "node install.js",
     "stop": "pm2 stop hexon",
     "restart": "pm2 restart hexon",
-    "start": "node src/server.js",
+    "build": "webpack",
+    "start": "node dist/main.bundle.js",
     "dev": "export DEBUG='hexo*' && export NODE_ENV='development' && npx nodemon -i ./data src/server.js",
-    "prd": "pm2 start src/server.js --name hexon -o log/pm2-log.log -e log/pm2-err.log",
+    "prd": "pm2 start dist/server.js --name hexon -o log/pm2-log.log -e log/pm2-err.log",
     "test": "echo \"Error: no test specified\" && exit 1",
     "sub:fe": "cd frontend && git pull origin master"
   },
@@ -54,6 +55,9 @@
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "clean-webpack-plugin": "^4.0.0-alpha.0",
+    "nodemon": "^2.0.4",
+    "webpack": "^5.39.1",
+    "webpack-cli": "^4.7.2"
   }
 }

@@ -1,9 +1,5 @@
-const execa = require("execa");
-const path = require("path");
+const { execaInherit } = require("./execa");
 
 module.exports = async () =>{
-  await execa("quasar", ["build", "-m", "pwa"], {
-    cwd: path.resolve(process.cwd(), "./packages/web/"),
-    stdio: "inherit",
-  });
+  await execaInherit("yarn", ["build"]);
 }

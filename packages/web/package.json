@@ -6,6 +6,7 @@
   "author": "winwin_2011 <yjh2011@live.com>",
   "private": true,
   "scripts": {
+    "build": "quasar build -m pwa",
     "lint": "eslint --ext .js,.vue ./",
     "test": "echo \"No test specified\" && exit 0"
   },

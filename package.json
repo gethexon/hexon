@@ -8,9 +8,9 @@
     "lerna": "^4.0.0"
   },
   "scripts": {
-    "release": "lerna version --conventional-commits --no-push -m \"chore(release): publish\"",
     "beta": "node ./scripts/prerelease.js",
-    "rc": "lerna version --conventional-commits --conventional-prerelease --no-push -m \"chore(release): publish\" --preid rc",
-    "version": "node ./scripts/build.js"
+    "build":"lerna run build",
+    "ci:mergetonext":"export OPTERATOR=CI && node ./scripts/merge2next.js",
+    "ci:mtn":"yarn ci:mergetonext"
   }
 }

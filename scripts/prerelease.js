@@ -6,14 +6,10 @@ const {
   checkout,
   forceRemoveBranch,
   branchThenCheckout,
-  listLog,
   setUpstream,
 } = require("./utils/git");
 
 const { execaInherit } = require("./utils/execa");
-const { textConfirm } = require("./utils/confirm");
-
-const build = require("./utils/build");
 
 async function version() {
   await execaInherit("lerna", [
@@ -44,22 +40,6 @@ async function wrap() {
     console.log(chalk.green(`There no ${NEXT_BRANCH} branch. exiting...`));
     return;
   }
-
-  const logs = await listLog(5);
-  logs.forEach((log) => {
-    if (log.ref) console.log(chalk.green(log.ref));
-    console.log(chalk.yellow(log.commit) + " " + log.message);
-    console.log(chalk.grey(log.date));
-  });
-  console.log();
-  await textConfirm(
-    "rebase",
-    `Remember to ${chalk.yellow.bold(
-      "REBASE"
-    )} ${NEXT_BRANCH} branch before prerelease. Type ${chalk.yellow(
-      "rebase"
-    )} to continue.`
-  );
 
   const currentBranch = await getCurrentBranch();
   if (currentBranch !== PRERELEASE_BRANCH) await checkout(PRERELEASE_BRANCH);
