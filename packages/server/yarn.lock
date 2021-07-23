@@ -1290,7 +1290,7 @@
     "@types/connect" "*"
     "@types/node" "*"
 
-"@types/bunyan@*", "@types/bunyan@^1.8.7":
+"@types/bunyan@*":
   version "1.8.7"
   resolved "https://registry.nlark.com/@types/bunyan/download/@types/bunyan-1.8.7.tgz#63cc65b5ecff6217d1509409a575e7b991f80831"
   integrity sha1-Y8xltez/YhfRUJQJpXXnuZH4CDE=
@@ -1362,7 +1362,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/hexo-util@*", "@types/hexo-util@^0.6.3":
+"@types/hexo-util@*":
   version "0.6.3"
   resolved "https://registry.nlark.com/@types/hexo-util/download/@types/hexo-util-0.6.3.tgz#5686a0f4a9c75abe468e63a367c691937cceee2c"
   integrity sha1-Voag9KnHWr5GjmOjZ8aRk3zO7iw=
@@ -1530,7 +1530,7 @@
   resolved "https://registry.nlark.com/@types/stack-utils/download/@types/stack-utils-2.0.1.tgz#20f18294f797f2209b5f65c8e3b5c8e8261d127c"
   integrity sha1-IPGClPeX8iCbX2XI47XI6CYdEnw=
 
-"@types/underscore@*", "@types/underscore@^1.11.3":
+"@types/underscore@*":
   version "1.11.3"
   resolved "https://registry.nlark.com/@types/underscore/download/@types/underscore-1.11.3.tgz#d6734f3741ce41b2630018c6b61c6745f6188c07"
   integrity sha1-1nNPN0HOQbJjABjGthxnRfYYjAc=

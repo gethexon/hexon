@@ -73,10 +73,21 @@ interface ICreateOptions {
 }
 
 interface IHexoCommand {
-  deploy(): Promise<void>;
+  deploy(options?: IDeployOptions): Promise<void>;
   generate(): Promise<void>;
   clean(): Promise<void>;
-  publish(): Promise<void>;
+  // publish(): Promise<void>;
+}
+interface IDeployOptions {
+  generate?: boolean;
+}
+
+interface IGenerateOptions {
+  deploy?: boolean;
+  watch?: boolean;
+  bail?: boolean;
+  force?: boolean;
+  concurrency?: boolean;
 }
 
 interface IHexoCli {
@@ -88,7 +99,8 @@ interface IHexoCli {
 
 @injectable()
 @singleton()
-class Hexo implements IHexoAPI {
+class Hexo implements IHexoAPI, IHexoCommand {
+  //#region init
   private _hexo: HexoCore = null;
   private _base_dir: string = null;
   private _options: HexoCore.InstanceOptions = null;
@@ -139,6 +151,9 @@ class Hexo implements IHexoAPI {
       throw err;
     }
   }
+  //#endregion
+
+  //#region IHexoAPI
   async listPost(): Promise<Post[]> {
     const docs = this._hexo.locals.get("posts").toArray().map(toPost);
     return docs.map((postDoc) => ({
@@ -181,6 +196,37 @@ class Hexo implements IHexoAPI {
       posts: tagDoc.posts.map((p) => p._id),
     }));
   }
+  //#endregion
+
+  //#region IHexoCommand
+  async deploy(options: IDeployOptions = {}) {
+    const { generate = false } = options;
+    const args: string[] = [];
+    if (generate) args.push("--generate");
+    await this._hexo.call("deploy", { _: args });
+  }
+
+  async generate(options: IGenerateOptions = {}) {
+    const {
+      deploy = false,
+      watch = false,
+      bail = false,
+      force = false,
+      concurrency = false,
+    } = options;
+    const args: string[] = [];
+    if (deploy) args.push("--deploy");
+    if (watch) args.push("--watch");
+    if (bail) args.push("--bail");
+    if (force) args.push("--force");
+    if (concurrency) args.push("--concurrency");
+    await this._hexo.call("generate", { _: args });
+  }
+
+  async clean() {
+    await this._hexo.call("clean");
+  }
+  //#endregion
 }
 
 export default Hexo;

@@ -1,8 +1,8 @@
 import Koa from "koa";
 import path from "path";
-import UserService from "./routes/signflow";
 import mount from "koa-mount";
-import statics from "winwin-statics";
+import UserService from "./routes/signflow";
+import statics from "../../middlewares/statics";
 
 const app = new Koa();
 app.use(
