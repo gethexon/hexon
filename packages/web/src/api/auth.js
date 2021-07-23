@@ -3,7 +3,7 @@ import { origin, request } from "./request";
 import { encryptPassword } from "./utils";
 export default {
   login: async (name, pass) => {
-    const res = await origin.post("/login", undefined, {
+    const res = await origin.post("/signin", undefined, {
       auth: {
         username: name,
         password: encryptPassword(pass)
@@ -17,7 +17,7 @@ export default {
     return request.get("/info");
   },
   logout: async () => {
-    return request.post("/logout");
+    return request.post("/signoff");
   },
   refresh: async () => {
     const res = await origin.post("/refresh", undefined, {
