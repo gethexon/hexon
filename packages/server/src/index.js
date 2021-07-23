@@ -2,8 +2,6 @@ import "./bootstrap.ts";
 import http from "http";
 import app from "./app";
 
-// api.yujianghao.cn
-
 const server = http.createServer(app.callback());
 server.on("listening", () => {
   const addr = server.address();
@@ -11,4 +9,4 @@ server.on("listening", () => {
     typeof addr === "string" ? "pipe " + addr : "http://localhost:" + addr.port;
   console.log("Server running on " + bind);
 });
-server.listen(10100);
+server.listen(5777);
