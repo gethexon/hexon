@@ -1,10 +1,8 @@
-const Joi = require("joi");
-const DI = require("../util/di");
-const { IHexo } = require("./core/hexo");
-const { search } = require("./search");
-
-// #region validate
-exports.v = {
+import Joi from "joi";
+import DI from "../util/di.js";
+import { IHexo } from "./core/hexo.js";
+import { search } from "./search.js";
+export const v = {
   generate: Joi.object({
     deploy: Joi.boolean(),
     watch: Joi.boolean(),
@@ -35,107 +33,81 @@ exports.v = {
     id: Joi.string().required(),
   }),
 };
-exports.qv = {
+export const qv = {
   search: Joi.object({
     query: Joi.string(),
     mode: Joi.string(),
   }),
 };
-// #endregion
-
-// #region actions
-exports.generate = async (ctx, next) => {
+export const generate = async (ctx, next) => {
   const hexo = DI.inject(IHexo);
   await hexo.generate(ctx.request.body);
   ctx.status = 200;
 };
-exports.deploy = async (ctx, next) => {
+export const deploy = async (ctx, next) => {
   const hexo = DI.inject(IHexo);
   await hexo.deploy(ctx.request.body);
   ctx.status = 200;
 };
-exports.clean = async (ctx, next) => {
+export const clean = async (ctx, next) => {
   const hexo = DI.inject(IHexo);
   await hexo.clean();
   ctx.status = 200;
 };
-// #endregion
-
-// #region list
-exports.listPost = async (ctx, next) => {
+export const listPost = async (ctx, next) => {
   const hexo = DI.inject(IHexo);
   ctx.body = await hexo.listPost();
 };
-exports.listPage = async (ctx, next) => {
+export const listPage = async (ctx, next) => {
   const hexo = DI.inject(IHexo);
   ctx.body = await hexo.listPage();
 };
-exports.listTag = async (ctx, next) => {
+export const listTag = async (ctx, next) => {
   const hexo = DI.inject(IHexo);
   ctx.body = await hexo.listTag();
 };
-exports.listCategory = async (ctx, next) => {
+export const listCategory = async (ctx, next) => {
   const hexo = DI.inject(IHexo);
   ctx.body = await hexo.listCategory();
 };
-// #endregion
-
-// #region new
-exports.new = async (ctx, next) => {
+const new$0 = async (ctx, next) => {
   const hexo = DI.inject(IHexo);
   const { title, layout, path, slug, replace } = ctx.request.body;
-  const res = await hexo.new(title, {
-    layout,
-    path: path?.split("\\").join("/"),
-    slug,
-    replace,
-  });
+  const res = await hexo.new(title, { layout, path, slug, replace });
   ctx.status = 200;
   ctx.body = res;
 };
-// #endregion
-
-// #region update
-exports.update = async (ctx, next) => {
+export const update = async (ctx, next) => {
   const hexo = DI.inject(IHexo);
   const { id, page, obj } = ctx.request.body;
   const res = await hexo.write(id, obj, page);
   ctx.status = 200;
   ctx.body = res;
 };
-// #endregion
-
-// #region delete
-exports.delete = async (ctx, next) => {
+const delete$0 = async (ctx, next) => {
   const hexo = DI.inject(IHexo);
   const { id, page } = ctx.request.body;
   await hexo.delete(id, page);
   ctx.status = 200;
 };
-// #endregion
-
-// #region publish
-exports.publish = async (ctx, next) => {
+export const publish = async (ctx, next) => {
   const hexo = DI.inject(IHexo);
   const { id } = ctx.request.body;
   const res = await hexo.publish(id);
   ctx.body = res;
   ctx.status = 200;
 };
-// #endregion
-
-// #region git
-exports.gitSync = async (ctx, next) => {
+export const gitSync = async (ctx, next) => {
   const hexo = DI.inject(IHexo);
   await hexo.gitSync();
   ctx.status = 200;
 };
-exports.gitSave = async (ctx, next) => {
+export const gitSave = async (ctx, next) => {
   const hexo = DI.inject(IHexo);
   await hexo.gitSave();
   ctx.status = 200;
 };
-exports.notGitRepo = async (ctx, next) => {
+export const notGitRepo = async (ctx, next) => {
   try {
     await next();
   } catch (e) {
@@ -148,9 +120,9 @@ exports.notGitRepo = async (ctx, next) => {
     } else throw e;
   }
 };
-// #endregion
-// #region search
-exports.search = async (ctx, next) => {
+const search$0 = async (ctx, next) => {
   ctx.body = await search(decodeURIComponent(ctx.query.query), ctx.query.mode);
 };
-// #endregion
+export { new$0 as new };
+export { delete$0 as delete };
+export { search$0 as search };

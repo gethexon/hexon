@@ -1,3 +1,3 @@
-require('./hexo')
-require('./hexo_cli')
-require('./hexo_api')
+import "./hexo.js";
+import "./hexo_cli.js";
+import "./hexo_api.js";

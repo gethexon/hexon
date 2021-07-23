@@ -1,2 +1,2 @@
-require('./storageService')
-require('./configService')
+import "./storageService.js";
+import "./configService.js";
