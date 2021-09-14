@@ -109,7 +109,7 @@
         </q-item-section>
         <q-item-section>
           <q-item-label class="title text-bold">{{
-            $store.state.user.info.data.name
+            $store.state.user.info.data.username
           }}</q-item-label>
           <q-item-label class="caption" caption>已登录</q-item-label>
         </q-item-section>

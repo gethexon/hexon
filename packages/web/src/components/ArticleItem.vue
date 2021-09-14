@@ -23,7 +23,7 @@
       <q-item-label v-if="article.tags && article.tags.length > 0">
         <q-badge
           class="tag q-mr-xs"
-          :label="tags[tag].data.name"
+          :label="tag.name"
           v-for="tag in article.tags"
           :key="tag"
         />

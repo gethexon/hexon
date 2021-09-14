@@ -3,7 +3,7 @@ import { origin, request } from "./request";
 import { encryptPassword } from "./utils";
 export default {
   login: async (name, pass) => {
-    const res = await origin.post("/signin", undefined, {
+    const res = await origin.post("/auth/signin", undefined, {
       auth: {
         username: name,
         password: encryptPassword(pass)
@@ -14,13 +14,19 @@ export default {
     return res.data;
   },
   info: async () => {
-    return request.get("/info");
+    return request.get("/auth/info");
   },
   logout: async () => {
-    return request.post("/signoff");
+    return origin.post(
+      "/auth/signout",
+      { accessToken: services.auth.getAccessToken() },
+      {
+        Authorization: `Bearer ${services.auth.getRefreshToken()}`
+      }
+    );
   },
   refresh: async () => {
-    const res = await origin.post("/refresh", undefined, {
+    const res = await origin.post("/auth/refresh", undefined, {
       headers: {
         Authorization: "Bearer " + services.auth.getRefreshToken()
       }

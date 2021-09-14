@@ -1430,6 +1430,13 @@
   resolved "https://registry.nlark.com/@types/keygrip/download/@types/keygrip-1.0.2.tgz#513abfd256d7ad0bf1ee1873606317b33b1b2a72"
   integrity sha1-UTq/0lbXrQvx7hhzYGMXszsbKnI=
 
+"@types/koa-bodyparser@^4.3.3":
+  version "4.3.3"
+  resolved "https://registry.nlark.com/@types/koa-bodyparser/download/@types/koa-bodyparser-4.3.3.tgz?cache=0&sync_timestamp=1629710698595&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Fkoa-bodyparser%2Fdownload%2F%40types%2Fkoa-bodyparser-4.3.3.tgz#9c7d4295576bc863d550002f732f1c57dd88cc58"
+  integrity sha1-nH1ClVdryGPVUAAvcy8cV92IzFg=
+  dependencies:
+    "@types/koa" "*"
+
 "@types/koa-compose@*":
   version "3.2.5"
   resolved "https://registry.nlark.com/@types/koa-compose/download/@types/koa-compose-3.2.5.tgz#85eb2e80ac50be95f37ccf8c407c09bbe3468e9d"
@@ -1441,6 +1448,13 @@
   version "4.0.0"
   resolved "https://registry.nlark.com/@types/koa-mount/download/@types/koa-mount-4.0.0.tgz#aa0505763c0d20bf4a16cdec0d9ccd2f4f2d2a86"
   integrity sha1-qgUFdjwNIL9KFs3sDZzNL08tKoY=
+  dependencies:
+    "@types/koa" "*"
+
+"@types/koa-router@^7.4.4":
+  version "7.4.4"
+  resolved "https://registry.nlark.com/@types/koa-router/download/@types/koa-router-7.4.4.tgz?cache=0&sync_timestamp=1629708164304&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Fkoa-router%2Fdownload%2F%40types%2Fkoa-router-7.4.4.tgz#db72bde3616365d74f00178d5f243c4fce7da572"
+  integrity sha1-23K942FjZddPABeNXyQ8T859pXI=
   dependencies:
     "@types/koa" "*"
 
@@ -2088,6 +2102,16 @@ co-body@^5.1.1:
     raw-body "^2.2.0"
     type-is "^1.6.14"
 
+co-body@^6.0.0:
+  version "6.1.0"
+  resolved "https://registry.npm.taobao.org/co-body/download/co-body-6.1.0.tgz#d87a8efc3564f9bfe3aced8ef5cd04c7a8766547"
+  integrity sha1-2HqO/DVk+b/jrO2O9c0Ex6h2ZUc=
+  dependencies:
+    inflation "^2.0.0"
+    qs "^6.5.2"
+    raw-body "^2.3.3"
+    type-is "^1.6.16"
+
 co@^4.6.0:
   version "4.6.0"
   resolved "https://registry.nlark.com/co/download/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
@@ -2226,6 +2250,11 @@ cookies@~0.8.0:
   dependencies:
     depd "~2.0.0"
     keygrip "~1.1.0"
+
+copy-to@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.nlark.com/copy-to/download/copy-to-2.0.1.tgz#2680fbb8068a48d08656b6098092bdafc906f4a5"
+  integrity sha1-JoD7uAaKSNCGVrYJgJK9r8kG9KU=
 
 core-js-compat@^3.14.0, core-js-compat@^3.15.0:
   version "3.15.2"
@@ -4163,6 +4192,14 @@ koa-body@^4.2.0:
     co-body "^5.1.1"
     formidable "^1.1.1"
 
+koa-bodyparser@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.npm.taobao.org/koa-bodyparser/download/koa-bodyparser-4.3.0.tgz#274c778555ff48fa221ee7f36a9fbdbace22759a"
+  integrity sha1-J0x3hVX/SPoiHufzap+9us4idZo=
+  dependencies:
+    co-body "^6.0.0"
+    copy-to "^2.0.1"
+
 koa-compose@^3.0.0:
   version "3.2.1"
   resolved "https://registry.nlark.com/koa-compose/download/koa-compose-3.2.1.tgz#a85ccb40b7d986d8e5a345b3a1ace8eabcf54de7"
@@ -4208,6 +4245,17 @@ koa-onerror@^4.1.0:
   dependencies:
     escape-html "^1.0.3"
     stream-wormhole "^1.1.0"
+
+koa-router@^10.1.1:
+  version "10.1.1"
+  resolved "https://registry.nlark.com/koa-router/download/koa-router-10.1.1.tgz?cache=0&sync_timestamp=1629649079221&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fkoa-router%2Fdownload%2Fkoa-router-10.1.1.tgz#20809f82648518b84726cd445037813cd99f17ff"
+  integrity sha1-IICfgmSFGLhHJs1EUDeBPNmfF/8=
+  dependencies:
+    debug "^4.1.1"
+    http-errors "^1.7.3"
+    koa-compose "^4.1.0"
+    methods "^1.1.2"
+    path-to-regexp "^6.1.0"
 
 koa-send@^5.0.0:
   version "5.0.1"
@@ -4952,14 +5000,14 @@ pupa@^2.0.1:
   dependencies:
     escape-goat "^2.0.0"
 
-qs@^6.4.0:
+qs@^6.4.0, qs@^6.5.2:
   version "6.10.1"
   resolved "https://registry.nlark.com/qs/download/qs-6.10.1.tgz#4931482fa8d647a5aab799c5271d2133b981fb6a"
   integrity sha1-STFIL6jWR6Wqt5nFJx0hM7mB+2o=
   dependencies:
     side-channel "^1.0.4"
 
-raw-body@^2.2.0:
+raw-body@^2.2.0, raw-body@^2.3.3:
   version "2.4.1"
   resolved "https://registry.nlark.com/raw-body/download/raw-body-2.4.1.tgz#30ac82f98bb5ae8c152e67149dac8d55153b168c"
   integrity sha1-MKyC+Yu1rowVLmcUnayNVRU7Fow=

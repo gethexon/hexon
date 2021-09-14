@@ -5,11 +5,13 @@
  * - di ready
  */
 
+import path from "path";
 import Koa from "koa";
 import logger from "koa-logger";
-import koaBody from "koa-body";
+import bodyParser from "koa-bodyparser";
 import onerror from "koa-onerror";
 import cors from "@koa/cors";
+import account, { auth } from "./koa-account";
 import entry from "./entry.ts";
 import { DEV } from "./utils.ts";
 
@@ -32,10 +34,22 @@ app.use(async (ctx, next) => {
 app.use(logger());
 
 app.use(
-  koaBody({
+  bodyParser({
     enableTypes: ["json", "form", "text"],
   })
 );
+
+app.use(
+  account({
+    base: "/auth",
+    path: path.resolve(__dirname, "../data/account.db"),
+    secret: "secret",
+    expiresIn: "10min",
+    refreshableIn: "7d",
+  })
+);
+
+app.use(auth());
 
 app.use(entry);
 
