@@ -11,8 +11,8 @@ import logger from "koa-logger";
 import bodyParser from "koa-bodyparser";
 import onerror from "koa-onerror";
 import cors from "@koa/cors";
-import account, { auth } from "./koa-account";
-import entry from "./entry.ts";
+import account, { auth } from "./lib/koa-account";
+import apps from "./apps";
 import { DEV } from "./utils.ts";
 
 const app = new Koa();
@@ -48,8 +48,6 @@ app.use(
   })
 );
 
-app.use(auth());
-
-app.use(entry);
+app.use(apps);
 
 export default app;

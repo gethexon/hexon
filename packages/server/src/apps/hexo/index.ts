@@ -1,9 +1,10 @@
 import Koa from "koa";
-import Hexo from "./services/hexo";
+import Hexo from "./service";
 import { container } from "tsyringe";
 import chalk from "chalk";
+import { auth } from "../../lib/koa-account";
 import { StorageService } from "../../services/storage";
-import { HEXO_BASE_DIR_KEY } from "../constants";
+import { HEXO_BASE_DIR_KEY } from "./constants";
 import router from "./router";
 
 const storage = container.resolve(StorageService);
@@ -22,6 +23,7 @@ if (storage.get(HEXO_BASE_DIR_KEY))
 
 const app = new Koa();
 
+app.use(auth());
 app.use(router.routes());
 app.use(router.allowedMethods());
 

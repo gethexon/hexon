@@ -1,10 +1,9 @@
-import Koa from "koa";
+import Koa, { Context } from "koa";
 import Router from "@koa/router";
-import { CustomContext } from "../types";
 
 const router = new Router();
 
-router.get("/", (ctx: CustomContext) => {
+router.get("/", (ctx: Context) => {
   ctx.status = 200;
 });
 

@@ -1,12 +1,10 @@
 import Router from "@koa/router";
 import { container } from "tsyringe";
 import { Context } from "koa";
-import Hexo from "./services/hexo";
-import { CustomRequest } from "../../types";
-import { auth } from "../../koa-account";
+import Hexo from "./service";
+
 const router = new Router();
 
-router.use(auth());
 router.get("/posts", async (ctx: Context) => {
   const hexo = container.resolve(Hexo);
   ctx.body = await hexo.listPost();
@@ -25,12 +23,12 @@ router.get("/categories", async (ctx: Context) => {
 });
 router.post("/deploy", async (ctx: Context) => {
   const hexo = container.resolve(Hexo);
-  await hexo.deploy((ctx.request as CustomRequest).body);
+  await hexo.deploy(ctx.request.body);
   ctx.status = 200;
 });
 router.post("/generate", async (ctx: Context) => {
   const hexo = container.resolve(Hexo);
-  await hexo.generate((ctx.request as CustomRequest).body);
+  await hexo.generate(ctx.request.body);
   ctx.status = 200;
 });
 router.post("/clean", async (ctx: Context) => {

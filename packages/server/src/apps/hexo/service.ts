@@ -1,13 +1,13 @@
 import path from "path";
 import { default as HexoCore } from "hexo";
-import { createDebug, DEV } from "../../../utils";
+import { createDebug, DEV } from "../../utils";
 import { inject, injectable, singleton, container } from "tsyringe";
 import {
   IStorageService,
   StorageServiceIdentifier,
-} from "../../../services/storage";
-import { HEXO_BASE_DIR_KEY, HEXO_OPTIONS_KEY } from "../../constants";
-import { toCategory, toPage, toPost, toTag } from "./transformTypes";
+} from "../../services/storage";
+import { HEXO_BASE_DIR_KEY, HEXO_OPTIONS_KEY } from "./constants";
+import { toCategory, toPage, toPost, toTag } from "./utils";
 import fs from "fs";
 
 const debug = createDebug("hexo");
