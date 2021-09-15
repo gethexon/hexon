@@ -5,7 +5,6 @@
 import "reflect-metadata";
 import { container } from "tsyringe";
 import { StorageService, StorageServiceIdentifier } from "./services/storage";
-import { TokenService, TokenServiceIdentifier } from "./services/token";
 
 /**
  * setup di
@@ -14,8 +13,4 @@ import { TokenService, TokenServiceIdentifier } from "./services/token";
 
 container.register(StorageServiceIdentifier, {
   useClass: StorageService,
-});
-
-container.register(TokenServiceIdentifier, {
-  useClass: TokenService,
 });

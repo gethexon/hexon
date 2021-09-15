@@ -1,12 +1,12 @@
 import Router from "@koa/router";
 import { container } from "tsyringe";
 import { Context } from "koa";
-import { requireAccessToken } from "../../middlewares/auth";
 import Hexo from "./services/hexo";
 import { CustomRequest } from "../../types";
+import { auth } from "../../koa-account";
 const router = new Router();
 
-router.use(requireAccessToken);
+router.use(auth());
 router.get("/posts", async (ctx: Context) => {
   const hexo = container.resolve(Hexo);
   ctx.body = await hexo.listPost();

@@ -41,7 +41,6 @@ app.use(
 
 app.use(
   account({
-    base: "/auth",
     path: path.resolve(__dirname, "../data/account.db"),
     secret: "secret",
     expiresIn: "10min",

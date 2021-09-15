@@ -34,7 +34,7 @@ export const auth: (type?: tokenType) => Middleware =
     try {
       jwt.verify(token, getAuthInfo().secret);
     } catch (err) {
-      if (err.name === "JsonWebTokenError") {
+      if (["JsonWebTokenError", "TokenExpiredError"].includes(err.name)) {
         debug(`fail to verify token`);
         end(401, "Authentication Error");
       } else throw err;
