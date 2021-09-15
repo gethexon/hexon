@@ -1,10 +1,11 @@
 import { create } from "./lib/account";
+import { forceReloadWindow } from "./utils";
 
 const account = create({
   baseURL: "http://localhost:5777",
   onTokenExpire: () => {
-    window.location.href = "/";
     console.log("token expired");
+    forceReloadWindow();
   },
 });
 
