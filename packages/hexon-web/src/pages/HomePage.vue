@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { computed } from "@vue/reactivity";
-import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { useAccountService } from "../lib/account";
 import { GET_BLOG_DATA_ACTION } from "../store/action-types";
+import { forceReloadWindow } from "../utils";
 const service = useAccountService();
-const router = useRouter();
 const onSignOut = async () => {
   await service?.signout();
-  router.push("/signin");
+  forceReloadWindow();
 };
 const store = useStore();
 const state = computed(() => store.state);
