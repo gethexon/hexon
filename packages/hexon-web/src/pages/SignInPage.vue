@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
-import { useAccountService } from "../account";
+import { useAccountService } from "../lib/account";
 const router = useRouter();
 const service = useAccountService();
 

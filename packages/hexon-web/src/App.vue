@@ -1,15 +1,8 @@
 <script setup lang="ts">
-import { useRouter } from "vue-router";
-import { useAccountProvider } from "./account/vue";
+import account from "./account";
+import { useAccountProvider } from "./lib/account";
 
-const router = useRouter();
-useAccountProvider({
-  baseURL: "http://localhost:5777",
-  onTokenExpire: () => {
-    router.push("/signin");
-    console.log("token expired");
-  },
-});
+useAccountProvider(account);
 </script>
 
 <template>

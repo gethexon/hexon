@@ -1,23 +1,24 @@
 <script setup lang="ts">
-import { ref } from "@vue/reactivity";
+import { computed } from "@vue/reactivity";
 import { useRouter } from "vue-router";
-import { useAccountAccess, useAccountService } from "../account";
+import { useStore } from "vuex";
+import { useAccountService } from "../lib/account";
+import { GET_BLOG_DATA_ACTION } from "../store/action-types";
 const service = useAccountService();
-const access = useAccountAccess();
 const router = useRouter();
 const onSignOut = async () => {
   await service?.signout();
   router.push("/signin");
 };
-const onInfo = async () => {
-  const res = await access?.get("/posts");
-  text.value = res?.data;
+const store = useStore();
+const state = computed(() => store.state);
+const loadBlogData = async () => {
+  await store.dispatch(GET_BLOG_DATA_ACTION);
 };
-const text = ref("");
 </script>
 <template>
   <h1>HomePage</h1>
   <button @click="onSignOut">signout</button>
-  <button @click="onInfo">posts</button>
-  <pre>{{ text }}</pre>
+  <button @click="loadBlogData">get blog data</button>
+  <pre>{{ state }}</pre>
 </template>

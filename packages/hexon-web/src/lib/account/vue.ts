@@ -1,15 +1,13 @@
 import { inject, InjectionKey, provide } from "@vue/runtime-core";
 import { reactive } from "@vue/reactivity";
-import { IAccount, IConfig } from "./lib";
-import { create, isSignedIn } from ".";
+import { isSignedIn, IAccount } from "./lib";
 import { RouteLocationNormalized } from "vue-router";
 
 const accountProviderInjectionKey: InjectionKey<IAccount> = Symbol(
   "accountProviderInjection"
 );
 
-export const useAccountProvider = (config: IConfig) => {
-  const account = create(config);
+export const useAccountProvider = (account: IAccount) => {
   provide(accountProviderInjectionKey, reactive(account));
 };
 
