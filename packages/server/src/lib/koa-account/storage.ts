@@ -11,6 +11,10 @@ export interface IAuthInfo {
   expiresIn: string;
   refreshableIn: string;
 }
+export interface IInstall {
+  installed: boolean;
+  time: number;
+}
 
 interface IInternals {
   db: JsonDB | null;
@@ -22,13 +26,30 @@ export const setDB = (db: JsonDB) => {
   internals.db = db;
 };
 export const installed = () => {
-  return Boolean(internals.db.get(KEYS.installFlag));
+  const install = internals.db.get(KEYS.install) as IInstall;
+  return install?.installed;
 };
 export const getAuthInfo = (): IAuthInfo => {
   return internals.db.get(KEYS.auth) as IAuthInfo;
 };
 export const setAuthInfo = (authInfo: IAuthInfo) => {
   internals.db.set(KEYS.auth, authInfo);
+};
+export const setInstalled = () => {
+  internals.db.set(KEYS.install, {
+    installed: true,
+    time: new Date().valueOf(),
+  });
+};
+export const changeUsername = (username: string) => {
+  const info = getUserInfo();
+  info.username = username;
+  setUserInfo(info);
+};
+export const changePassword = (password: string) => {
+  const info = getUserInfo();
+  info.password = password;
+  setUserInfo(info);
 };
 export const getUserInfo = (): IInternalUserInfo => {
   return internals.db.get(KEYS.user) as IInternalUserInfo;

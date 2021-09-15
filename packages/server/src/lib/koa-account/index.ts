@@ -10,6 +10,7 @@ import {
   setDB,
   setAuthInfo,
   IAuthInfo,
+  setInstalled,
 } from "./storage";
 import router from "./router";
 import { errorHandler } from "./error";
@@ -36,6 +37,7 @@ const initialize = async (config: IConfig) => {
   setDB(new JsonDB(config.path));
   if (!installed()) {
     setUserInfo(defaultUserInfo);
+    setInstalled();
     debug(`first install: set defualt userinfo`);
   }
   const authInfo: IAuthInfo = {

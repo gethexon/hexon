@@ -1,7 +1,7 @@
 import Router from "koa-router";
 import basicAuth from "basic-auth";
 import { debug, end } from "./utils";
-import { block, getUserInfo } from "./storage";
+import { block, changePassword, changeUsername, getUserInfo } from "./storage";
 import { auth, resolveAuthorizationHeader, sign } from "./auth";
 import { Context } from "koa";
 const router = new Router();
@@ -32,6 +32,14 @@ router.post("/signout", auth("refresh"), (ctx: Context) => {
   block(refreshToken);
   const accessToken = ctx.request.body.access as string;
   if (accessToken) block(accessToken);
+  ctx.status = 200;
+});
+
+router.put("/info", auth("access"), (ctx: Context) => {
+  const { username, password }: { username?: string; password?: string } =
+    ctx.request.body;
+  if (username) changeUsername(username);
+  if (password) changePassword(password);
   ctx.status = 200;
 });
 

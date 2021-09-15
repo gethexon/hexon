@@ -103,6 +103,9 @@ export const create = (config: IConfig): IAccount => {
         .get(withAuthBase("/refresh"))
         .then((res) => res.data as IUserInfo);
     },
+    changeInfo: async (info: { username?: string; password?: string } = {}) => {
+      await access.put("/info", info);
+    },
   };
 
   return { http: { origin, access, refresh }, service };

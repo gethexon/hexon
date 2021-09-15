@@ -1,7 +1,7 @@
 import { IInternalUserInfo } from "./storage";
 
 export const KEYS = {
-  installFlag: "installed",
+  install: "install",
   user: "user",
   auth: "auth",
   blocklist: "blocklist",
