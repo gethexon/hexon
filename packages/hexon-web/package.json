@@ -6,10 +6,13 @@
     "build": "vue-tsc --noEmit && vite build",
     "serve": "vite preview",
     "sb": "start-storybook -p 6006",
-    "bsb": "build-storybook"
+    "bsb": "build-storybook",
+    "nc": "hygen component new"
   },
   "dependencies": {
     "axios": "^0.21.4",
+    "color": "^4.0.1",
+    "color-convert": "^2.0.1",
     "vue": "^3.2.6",
     "vue-router": "4",
     "vuex": "^4.0.2"
@@ -20,9 +23,15 @@
     "@storybook/addon-essentials": "^6.3.8",
     "@storybook/addon-links": "^6.3.8",
     "@storybook/vue3": "^6.3.8",
+    "@types/color": "^3.0.2",
+    "@types/color-convert": "^2.0.0",
+    "@vicons/fluent": "^0.11.0",
+    "@vicons/utils": "^0.1.4",
     "@vitejs/plugin-vue": "^1.6.1",
     "@vue/compiler-sfc": "^3.2.6",
     "babel-loader": "^8.2.2",
+    "less": "^4.1.1",
+    "less-loader": "^7",
     "typescript": "^4.3.2",
     "vite": "^2.5.4",
     "vue-loader": "^16.5.0",

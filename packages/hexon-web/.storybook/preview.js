@@ -1,5 +1,6 @@
 import { ThemeProvider } from "../src/lib/theme";
-import { defaultTheme } from "../src/constants";
+import { blueTheme } from "../src/constants";
+import "../src/reset.less";
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
   controls: {
@@ -10,7 +11,7 @@ export const parameters = {
   },
 };
 
-const theme = defaultTheme;
+const theme = blueTheme;
 
 export const decorators = [
   (story) => ({
