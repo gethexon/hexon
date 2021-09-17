@@ -1,0 +1,111 @@
+import { Meta, Story, Canvas } from "@storybook/addon-docs";
+import { Search16Filled, Add16Filled, Edit16Filled } from "@vicons/fluent";
+
+import HIcon from "./HIcon.vue";
+
+<Meta
+  title="HIcon"
+  component={HIcon}
+  name="HIcon"
+  argTypes={{
+    size: {
+      name: "icon size",
+      control: {
+        type: "text",
+      },
+    },
+  }}
+/>
+
+# HIcon
+
+## 基础
+
+<Canvas>
+  <Story name="基础">
+    {() => ({
+      components: { HIcon, Search16Filled, Add16Filled, Edit16Filled },
+      template: `
+<HIcon>
+  <Search16Filled />
+</HIcon>&nbsp;
+<HIcon>
+  <Add16Filled />
+</HIcon>&nbsp;
+<HIcon>
+  <Edit16Filled />
+</HIcon>
+    `,
+    })}
+  </Story>
+</Canvas>
+
+## 不同尺寸
+
+`size?: string = 18`
+
+<Canvas>
+  <Story name="不同尺寸">
+    {() => ({
+      components: { HIcon, Search16Filled, Add16Filled, Edit16Filled },
+      template: `
+<HIcon>
+  <Search16Filled />
+</HIcon>&nbsp;
+<HIcon size="1.5em">
+  <Add16Filled />
+</HIcon>&nbsp;
+<HIcon size="2em">
+  <Edit16Filled />
+</HIcon>
+    `,
+    })}
+  </Story>
+</Canvas>
+
+## 不同颜色
+
+请通过文字颜色设定，不要更改 icon 颜色
+
+<Canvas>
+  <Story name="不同颜色">
+    {() => ({
+      components: { HIcon, Search16Filled, Add16Filled, Edit16Filled },
+      template: `
+<span style="color:red">
+  <HIcon>
+    <Search16Filled />
+  </HIcon>&nbsp;
+</span>
+<span style="color:green">
+  <HIcon>
+    <Add16Filled />
+  </HIcon>&nbsp;
+</span>
+<span style="color:blue">
+  <HIcon>
+    <Edit16Filled />
+  </HIcon>
+</span>
+    `,
+    })}
+  </Story>
+</Canvas>
+
+```tsx
+<span style="color:red">
+  <HIcon>
+    <Search16Filled />
+  </HIcon>
+</span>
+<span style="color:green">
+  <HIcon>
+    <Add16Filled />
+  </HIcon>
+</span>
+<span style="color:blue">
+  <HIcon>
+    <Edit16Filled />
+  </HIcon>
+</span>
+```

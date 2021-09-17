@@ -1,8 +1,9 @@
-import { Meta, Story, Canvas, ArgsTable } from "@storybook/addon-docs";
+import { Meta, Story, Canvas } from "@storybook/addon-docs";
 import { Search16Filled, Add16Filled, Edit16Filled } from "@vicons/fluent";
 import { Icon } from "@vicons/utils";
 
 import HButton from "./HButton.vue";
+import HIcon from "./HIcon.vue";
 
 <Meta
   title="HButton"
@@ -21,34 +22,45 @@ import HButton from "./HButton.vue";
 
 # HButton
 
-export const Template = (args) => ({
-  components: { HButton },
-  setup() {
-    return { args };
-  },
-  template: `
-  <HButton v-bind="args" type="primary">primary</HButton>&nbsp;
-  <HButton v-bind="args" type="success">success</HButton>&nbsp;
-  <HButton v-bind="args" type="warning">warning</HButton>&nbsp;
-  <HButton v-bind="args" type="error">error</HButton>
-  `,
-});
-
 ## 类型
 
+`type?: "primary" | "success" | "warning" | "error" = "primary"`
+
 <Canvas>
-  <Story name="类型">{Template.bind({})}</Story>
+  <Story name="类型">
+    {() => ({
+      components: { HButton },
+      template: `
+  <HButton type="primary">primary</HButton>&nbsp;
+  <HButton type="success">success</HButton>&nbsp;
+  <HButton type="warning">warning</HButton>&nbsp;
+  <HButton type="error">error</HButton>
+  `,
+    })}
+  </Story>
 </Canvas>
 
 ## 颜色反转
 
+`inverted?: boolean = false`
+
 <Canvas>
   <Story name="颜色反转" args={{ inverted: true }}>
-    {Template.bind({})}
+    {() => ({
+      components: { HButton },
+      template: `
+  <HButton type="primary" inverted>primary</HButton>&nbsp;
+  <HButton type="success" inverted>success</HButton>&nbsp;
+  <HButton type="warning" inverted>warning</HButton>&nbsp;
+  <HButton type="error" inverted>error</HButton>
+  `,
+    })}
   </Story>
 </Canvas>
 
 ## 圆的
+
+`round?: boolean = false`
 
 <Canvas>
   <Story name="圆的">
@@ -61,33 +73,65 @@ export const Template = (args) => ({
 
 ## 图标
 
+使用 HIcon 或者 xicons 的 Icon
+
 <Canvas>
-  <Story name="图标">
+  <Story name="圆图标">
     {() => ({
       components: {
         HButton,
+        HIcon,
         Icon,
         Search16Filled,
         Add16Filled,
         Edit16Filled,
       },
       template: `
-<HButton round icon>
-  <Search16Filled />
+<HButton round>
+  <HIcon>
+    <Search16Filled />
+  </HIcon>
 </HButton>&nbsp;
-<HButton round icon>
-  <Add16Filled />
+<HButton round>
+  <HIcon>
+    <Add16Filled />
+  </HIcon>
 </HButton>&nbsp;
-<HButton round icon>
-  <Edit16Filled />
+<HButton round>
+  <HIcon>
+    <Edit16Filled />
+  </HIcon>
+</HButton>
+`,
+    })}
+  </Story>
+  <Story name="长图标">
+    {() => ({
+      components: {
+        HButton,
+        HIcon,
+        Icon,
+        Search16Filled,
+        Add16Filled,
+        Edit16Filled,
+      },
+      template: `
+<HButton>
+  <HIcon>
+    <Search16Filled />
+  </HIcon>
 </HButton>&nbsp;
+<HButton>
+  <HIcon>
+    <Add16Filled />
+  </HIcon>
+</HButton>&nbsp;
+<HButton>
+  <HIcon>
+    <Edit16Filled />
+  </HIcon>
+</HButton>
 `,
     })}
   </Story>
 </Canvas>
-
-```tsx
-<HButton round>
-  <Search16Filled />
-</HButton>
-```

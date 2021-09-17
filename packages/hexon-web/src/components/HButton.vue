@@ -7,16 +7,14 @@ const props = withDefaults(
     type?: "primary" | "secondary";
     inverted?: boolean;
     round?: boolean;
-    icon?: boolean;
   }>(),
   {
     type: "primary",
     inverted: false,
     round: false,
-    icon: false,
   }
 );
-const { type, inverted, round, icon } = toRefs(props);
+const { type, inverted, round } = toRefs(props);
 const classes = computed(() => {
   return {
     [`${type.value}`]: true,
@@ -34,8 +32,7 @@ const classes = computed(() => {
         alignItems: 'center',
       }"
     >
-      {{ "\u200b" }}<Icon v-if="icon" size="18"><slot></slot></Icon>
-      <slot v-else></slot>
+      {{ "\u200b" }}<slot></slot>
     </span>
   </button>
 </template>

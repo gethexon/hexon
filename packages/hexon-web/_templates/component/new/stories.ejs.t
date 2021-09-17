@@ -1,24 +1,26 @@
 ---
-to: src/components/<%= name %>.stories.ts
+to: src/components/<%= name %>.stories.mdx
 ---
-import { Meta, Story } from "@storybook/vue3/types-6-0";
+import { Meta, Story, Canvas } from "@storybook/addon-docs";
+
 import <%= name %> from "./<%= name %>.vue";
 
-export default {
-  title: "<%= name %>",
-  component: <%= name %>,
-} as Meta;
+<Meta
+  title="<%= name %>"
+  component={<%= name %>}
+  name="<%= name %>"
+  argTypes={{}}
+/>
 
-const Template: Story = (args) => ({
-  components: { <%= name %> },
-  setup() {
-    return { args };
-  },
-  template: `<<%= name %> v-bind="args"></<%= name %>>`,
-});
+# <%= name %>
 
-export const Normal<%= name %> = Template.bind({});
+## 基础
 
-Normal<%= name %>.args = {
-  name: "<%= name %>",
-};
+<Canvas>
+  <Story name="基础">{
+  () => ({
+    components: { <%= name %> },
+    template: `<<%= name %> name="<%= name %>"></<%= name %>>`,
+  })  
+  }</Story>
+</Canvas>
