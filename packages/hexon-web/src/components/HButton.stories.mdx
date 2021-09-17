@@ -45,14 +45,16 @@ import HIcon from "./HIcon.vue";
 `inverted?: boolean = false`
 
 <Canvas>
-  <Story name="颜色反转" args={{ inverted: true }}>
+  <Story name="颜色反转" parameters={{ layout: "fullscreen" }}>
     {() => ({
       components: { HButton },
       template: `
+<div style="padding:20px; background-color: gray;">
   <HButton type="primary" inverted>primary</HButton>&nbsp;
   <HButton type="success" inverted>success</HButton>&nbsp;
   <HButton type="warning" inverted>warning</HButton>&nbsp;
   <HButton type="error" inverted>error</HButton>
+</div>
   `,
     })}
   </Story>
@@ -66,17 +68,37 @@ import HIcon from "./HIcon.vue";
   <Story name="圆的">
     {() => ({
       components: { HButton },
-      template: `<HButton round>圆</HButton>&nbsp;`,
+      template: `
+<HButton round style="margin-right:10px">圆</HButton>
+<HButton round style="margin-right:10px">的</HButton>
+<HButton round style="margin-right:10px">就</HButton>
+<HButton round style="margin-right:10px">很</HButton>
+<HButton round style="margin-right:10px">好</HButton>
+<HButton round style="margin-right:10px">玩</HButton>
+`,
+    })}
+  </Story>
+</Canvas>
+
+## 扩展的
+
+`block?: boolean = false`
+
+<Canvas>
+  <Story name="扩展的">
+    {() => ({
+      components: { HButton },
+      template: `<HButton block style="margin-bottom:10px">确定</HButton><HButton block type="error">取消</HButton>`,
     })}
   </Story>
 </Canvas>
 
 ## 图标
 
-使用 HIcon 或者 xicons 的 Icon
+使用 [HIcon](?path=/docs/hicon--基础) 或者 [xicons](https://www.xicons.org/#/) 的 [Icon](https://github.com/07akioni/xicons#usage)
 
 <Canvas>
-  <Story name="圆图标">
+  <Story name="图标">
     {() => ({
       components: {
         HButton,
@@ -101,21 +123,7 @@ import HIcon from "./HIcon.vue";
   <HIcon>
     <Edit16Filled />
   </HIcon>
-</HButton>
-`,
-    })}
-  </Story>
-  <Story name="长图标">
-    {() => ({
-      components: {
-        HButton,
-        HIcon,
-        Icon,
-        Search16Filled,
-        Add16Filled,
-        Edit16Filled,
-      },
-      template: `
+</HButton>&nbsp;
 <HButton>
   <HIcon>
     <Search16Filled />

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Icon } from "@vicons/utils";
 import { computed, toRefs } from "@vue/reactivity";
 
 const props = withDefaults(
@@ -7,19 +6,22 @@ const props = withDefaults(
     type?: "primary" | "secondary";
     inverted?: boolean;
     round?: boolean;
+    block?: boolean;
   }>(),
   {
     type: "primary",
     inverted: false,
     round: false,
+    block: false,
   }
 );
-const { type, inverted, round } = toRefs(props);
+const { type, inverted, round, block } = toRefs(props);
 const classes = computed(() => {
   return {
     [`${type.value}`]: true,
     inverted: inverted.value,
     round: round.value,
+    block: block.value,
   };
 });
 </script>
@@ -56,6 +58,10 @@ button {
   user-select: none;
   text-decoration: none;
   overflow: hidden;
+  &.block {
+    display: flex;
+    width: 100%;
+  }
   &.round {
     width: 32px;
   }
