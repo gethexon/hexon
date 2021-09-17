@@ -50,3 +50,22 @@ import HIcon from "./HIcon.vue";
     })}
   </Story>
 </Canvas>
+
+## 可清空
+
+<Canvas>
+  <Story name="可清空" parameters={{ layout: "fullscreen" }}>
+    {() => ({
+      components: { HInput },
+      data() {
+        return { value: "水电费交了么？" };
+      },
+      template: `
+<div style="padding:20px; background-color: gray;">
+  <HInput v-model="value" placeholder="type something" clearable>
+  </HInput>
+</div>
+`,
+    })}
+  </Story>
+</Canvas>
