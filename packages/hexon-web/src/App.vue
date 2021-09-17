@@ -15,6 +15,6 @@ useAccountProvider(account);
   </ThemeProvider>
 </template>
 
-<style scoped lang="less">
+<style lang="less">
 @import "./reset.less";
 </style>
