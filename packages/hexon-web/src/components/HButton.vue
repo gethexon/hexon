@@ -72,7 +72,7 @@ button {
     }
     &.inverted {
       color: var(--color-primary-0);
-      background-color: var(--color-white);
+      background-color: var(--color-background-1);
       &:hover {
         background-color: var(--color-primary-l9);
       }
@@ -92,7 +92,7 @@ button {
     }
     &.inverted {
       color: var(--color-success-0);
-      background-color: var(--color-white);
+      background-color: var(--color-background-1);
       &:hover {
         background-color: var(--color-success-l9);
       }
@@ -112,7 +112,7 @@ button {
     }
     &.inverted {
       color: var(--color-warning-0);
-      background-color: var(--color-white);
+      background-color: var(--color-background-1);
       &:hover {
         background-color: var(--color-warning-l9);
       }
@@ -132,7 +132,7 @@ button {
     }
     &.inverted {
       color: var(--color-error-0);
-      background-color: var(--color-white);
+      background-color: var(--color-background-1);
       &:hover {
         background-color: var(--color-error-l9);
       }

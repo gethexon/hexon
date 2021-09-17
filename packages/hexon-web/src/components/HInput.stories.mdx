@@ -18,7 +18,7 @@ import HIcon from "./HIcon.vue";
         return { value: "" };
       },
       template: `
-<div style="padding:20px; background-color: gray;">
+<div style="padding:20px; background-color: var(--color-background-3);">
   <HInput v-model="value" placeholder="type something">
   </HInput>
 </div>
@@ -37,7 +37,7 @@ import HIcon from "./HIcon.vue";
         return { value: "" };
       },
       template: `
-<div style="padding:20px; background-color: gray;">
+<div style="padding:20px; background-color: var(--color-background-3);">
   <HInput v-model="value" placeholder="type something">
     <template v-slot:prefix>
       <HIcon>
@@ -61,8 +61,35 @@ import HIcon from "./HIcon.vue";
         return { value: "水电费交了么？" };
       },
       template: `
-<div style="padding:20px; background-color: gray;">
+<div style="padding:20px; background-color: var(--color-background-3);">
   <HInput v-model="value" placeholder="type something" clearable>
+  </HInput>
+</div>
+`,
+    })}
+  </Story>
+</Canvas>
+
+## 类型
+
+<Canvas>
+  <Story name="类型" parameters={{ layout: "fullscreen" }}>
+    {() => ({
+      components: { HInput },
+      data() {
+        return { value1: "primary", value2: "secondary" };
+      },
+      template: `
+<div style="padding:20px; background-color: var(--color-background-9);">
+  <HInput v-model="value1" placeholder="type something" type="primary" clearable>
+  </HInput>
+</div>
+<div style="padding:20px; background-color: var(--color-background-3);">
+  <HInput v-model="value1" placeholder="type something" type="primary" clearable>
+  </HInput>
+</div>
+<div style="padding:20px; background-color: var(--color-background-2);">
+  <HInput v-model="value2" placeholder="type something" type="secondary" clearable>
   </HInput>
 </div>
 `,

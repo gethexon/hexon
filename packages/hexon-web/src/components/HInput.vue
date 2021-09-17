@@ -9,21 +9,26 @@ const props = withDefaults(
     modelValue: string;
     placeholder?: string;
     clearable?: boolean;
+    type?: "primary" | "secondary";
   }>(),
-  { placeholder: "", clearable: false }
+  { placeholder: "", clearable: false, type: "primary" }
 );
 const emit = defineEmits<{ (e: "update:modelValue", value: string): void }>();
 
-const { modelValue, placeholder, clearable } = toRefs(props);
+const { modelValue, placeholder, clearable, type } = toRefs(props);
 const showSuffix = computed(() => clearable.value && modelValue.value);
 
 const requestChange = (value: string) => emit("update:modelValue", value);
 const onInput = (e: InputEvent) =>
   requestChange((e.target as HTMLInputElement)?.value);
 const onClear = () => requestChange("");
+
+const classes = computed(() => {
+  return { [type.value]: true };
+});
 </script>
 <template>
-  <label class="container">
+  <label class="container" :class="classes">
     <div class="prefix">
       <HVerticalCenter style="line-height: 100%">
         <slot name="prefix"></slot>
@@ -39,7 +44,6 @@ const onClear = () => requestChange("");
 </template>
 <style scoped lang="less">
 .container {
-  background-color: var(--color-white);
   height: 32px;
   border-radius: 16px;
   display: flex;
@@ -47,6 +51,14 @@ const onClear = () => requestChange("");
   padding: 0 12px;
   cursor: text;
   overflow: hidden;
+  color: var(--color-foreground-2);
+
+  &.primary {
+    background-color: var(--color-background-1);
+  }
+  &.secondary {
+    background-color: var(--color-background-3);
+  }
   .prefix,
   .suffix {
     display: flex;

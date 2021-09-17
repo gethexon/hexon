@@ -27,7 +27,17 @@ export interface HTheme extends ITheme {
     success: IColorPack;
     warning: IColorPack;
     error: IColorPack;
-    lightgrey: string;
+    background: {
+      1: string;
+      2: string;
+      3: string;
+      9: string;
+    };
+    foreground: {
+      1: string;
+      2: string;
+      3: string;
+    };
     white: string;
   };
 } // https://flatuicolors.com/palette/defo
@@ -37,7 +47,17 @@ export const blueTheme: HTheme = {
     success: createColor("#27ae60"),
     warning: createColor("#f39c12"),
     error: createColor("#e74c3c"),
-    lightgrey: "#ecf0f1",
+    background: {
+      1: "#ffffff",
+      2: "#f8f8f8",
+      3: "#eeeeee",
+      9: "#282828",
+    },
+    foreground: {
+      1: "#000000",
+      2: "#484848",
+      3: "#000000",
+    },
     white: "#ffffff",
   },
 };
