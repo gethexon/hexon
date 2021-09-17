@@ -3,7 +3,7 @@ import { toRefs } from "@vue/reactivity";
 import { Icon } from "@vicons/utils";
 
 const props = withDefaults(defineProps<{ size?: string | number }>(), {
-  size: 18,
+  size: "1em",
 });
 const { size } = toRefs(props);
 </script>

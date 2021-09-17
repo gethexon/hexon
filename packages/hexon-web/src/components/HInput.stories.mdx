@@ -1,0 +1,52 @@
+import { Meta, Story, Canvas } from "@storybook/addon-docs";
+import { Search16Filled } from "@vicons/fluent";
+
+import HInput from "./HInput.vue";
+import HIcon from "./HIcon.vue";
+
+<Meta title="HInput" component={HInput} name="HInput" argTypes={{}} />
+
+# HInput
+
+## 基础
+
+<Canvas>
+  <Story name="基础" parameters={{ layout: "fullscreen" }}>
+    {() => ({
+      components: { HInput },
+      data() {
+        return { value: "" };
+      },
+      template: `
+<div style="padding:20px; background-color: gray;">
+  <HInput v-model="value" placeholder="type something">
+  </HInput>
+</div>
+`,
+    })}
+  </Story>
+</Canvas>
+
+## 带前缀
+
+<Canvas>
+  <Story name="带前缀" parameters={{ layout: "fullscreen" }}>
+    {() => ({
+      components: { HInput, HIcon, Search16Filled },
+      data() {
+        return { value: "" };
+      },
+      template: `
+<div style="padding:20px; background-color: gray;">
+  <HInput v-model="value" placeholder="type something">
+    <template v-slot:prefix>
+      <HIcon>
+        <Search16Filled />
+      </HIcon>
+    </template>
+  </HInput>
+</div>
+`,
+    })}
+  </Story>
+</Canvas>

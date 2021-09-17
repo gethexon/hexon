@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, toRefs } from "@vue/reactivity";
+import HVerticalCenter from "./HVerticalCenter.vue";
 
 const props = withDefaults(
   defineProps<{
@@ -28,14 +29,9 @@ const classes = computed(() => {
 
 <template>
   <button :class="classes">
-    <span
-      :style="{
-        display: 'inline-flex',
-        alignItems: 'center',
-      }"
-    >
-      {{ "\u200b" }}<slot></slot>
-    </span>
+    <HVerticalCenter>
+      <slot></slot>
+    </HVerticalCenter>
   </button>
 </template>
 
