@@ -1,6 +1,6 @@
 import { ThemeProvider } from "../src/lib/theme";
-import { blueTheme } from "../src/constants";
-import "../src/reset.less";
+import { blueTheme } from "../src/themes";
+import "../src/styles/reset.less";
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
   controls: {

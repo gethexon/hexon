@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import account from "./account";
 import { useAccountProvider } from "./lib/account";
-import { blueTheme } from "./constants";
+import { blueTheme } from "./themes";
 import { ThemeProvider, useThemeSwitcherProvider } from "./lib/theme";
 
 const switcher = useThemeSwitcherProvider("blue", blueTheme);
@@ -16,5 +16,5 @@ useAccountProvider(account);
 </template>
 
 <style lang="less">
-@import "./reset.less";
+@import "./styles/reset.less";
 </style>

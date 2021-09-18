@@ -63,7 +63,7 @@ button {
   }
   &.primary {
     background-color: var(--color-primary-0);
-    color: var(--color-white);
+    color: var(--color-foreground-9);
     &:hover {
       background-color: var(--color-primary-l2);
     }
@@ -83,7 +83,7 @@ button {
   }
   &.success {
     background-color: var(--color-success-0);
-    color: var(--color-white);
+    color: var(--color-foreground-9);
     &:hover {
       background-color: var(--color-success-l2);
     }
@@ -103,7 +103,7 @@ button {
   }
   &.warning {
     background-color: var(--color-warning-0);
-    color: var(--color-white);
+    color: var(--color-foreground-9);
     &:hover {
       background-color: var(--color-warning-l2);
     }
@@ -123,7 +123,7 @@ button {
   }
   &.error {
     background-color: var(--color-error-0);
-    color: var(--color-white);
+    color: var(--color-foreground-9);
     &:hover {
       background-color: var(--color-error-l2);
     }

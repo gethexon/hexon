@@ -3,7 +3,7 @@ import { computed, toRefs } from "@vue/reactivity";
 import { Icon } from "@vicons/utils";
 
 const props = withDefaults(
-  defineProps<{ size?: string | number; clickable: boolean }>(),
+  defineProps<{ size?: string | number; clickable?: boolean }>(),
   {
     size: "1em",
     clickable: false,
