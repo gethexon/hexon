@@ -1,5 +1,5 @@
 import { hex, rgb } from "color-convert";
-import { ITheme } from "./lib/theme";
+import { ITheme, createTheme } from "./lib/theme";
 
 type modifier = "l" | "a" | "d";
 type amount = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
@@ -31,7 +31,7 @@ const modifiers: modifierFnMap = {
   },
 };
 
-const createColor = (name: string) => {
+function createColor(name: string): ColorPack {
   const indexs = new Array(9).fill(0).map((v, i) => (i + 1) / 10);
   function createModifiedColor(type: modifier) {
     return indexs
@@ -42,16 +42,16 @@ const createColor = (name: string) => {
       }, {} as ModifiedColor);
   }
   return {
-    0: name,
+    n: name,
     ...createModifiedColor("a"),
     ...createModifiedColor("d"),
     ...createModifiedColor("l"),
   };
-};
+}
 
 type ColorPack = ITheme &
   ModifiedColor & {
-    0: string;
+    n: string;
   };
 
 export type HTheme = {
@@ -76,7 +76,6 @@ export type HTheme = {
   };
 };
 
-// https://flatuicolors.com/palette/defo
 export const blueTheme: HTheme = {
   color: {
     primary: createColor("#3498db"),
@@ -98,3 +97,27 @@ export const blueTheme: HTheme = {
     },
   },
 };
+
+export const purpleTheme: HTheme = {
+  color: {
+    primary: createColor("#8e44ad"),
+    success: createColor("#27ae60"),
+    warning: createColor("#f39c12"),
+    error: createColor("#e74c3c"),
+    background: {
+      1: "#ffffff",
+      2: "#f8f8f8",
+      3: "#eeeeee",
+      9: "#282828",
+    },
+    foreground: {
+      1: "#000000",
+      2: "#484848",
+      3: "#000000",
+      6: "#9e9e9e",
+      9: "#ffffff",
+    },
+  },
+};
+
+export default createTheme({ default: blueTheme, purple: purpleTheme });

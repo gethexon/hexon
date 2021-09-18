@@ -1,18 +1,16 @@
 <script setup lang="ts">
 import account from "./account";
 import { useAccountProvider } from "./lib/account";
-import { blueTheme } from "./themes";
-import { ThemeProvider, useThemeSwitcherProvider } from "./lib/theme";
-
-const switcher = useThemeSwitcherProvider("blue", blueTheme);
-const theme = switcher.theme;
+import { useThemeController } from "./lib/theme";
 useAccountProvider(account);
+const theme = useThemeController();
+const styles = theme?.styles;
 </script>
 
 <template>
-  <ThemeProvider :theme="theme">
+  <div :style="styles">
     <router-view></router-view>
-  </ThemeProvider>
+  </div>
 </template>
 
 <style lang="less">

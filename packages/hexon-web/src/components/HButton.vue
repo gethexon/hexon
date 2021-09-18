@@ -62,7 +62,7 @@ button {
     width: 32px;
   }
   &.primary {
-    background-color: var(--color-primary-0);
+    background-color: var(--color-primary-n);
     color: var(--color-foreground-9);
     &:hover {
       background-color: var(--color-primary-l2);
@@ -71,7 +71,7 @@ button {
       background-color: var(--color-primary-l4);
     }
     &.inverted {
-      color: var(--color-primary-0);
+      color: var(--color-primary-n);
       background-color: var(--color-background-1);
       &:hover {
         background-color: var(--color-primary-l9);
@@ -82,7 +82,7 @@ button {
     }
   }
   &.success {
-    background-color: var(--color-success-0);
+    background-color: var(--color-success-n);
     color: var(--color-foreground-9);
     &:hover {
       background-color: var(--color-success-l2);
@@ -91,7 +91,7 @@ button {
       background-color: var(--color-success-l4);
     }
     &.inverted {
-      color: var(--color-success-0);
+      color: var(--color-success-n);
       background-color: var(--color-background-1);
       &:hover {
         background-color: var(--color-success-l9);
@@ -102,7 +102,7 @@ button {
     }
   }
   &.warning {
-    background-color: var(--color-warning-0);
+    background-color: var(--color-warning-n);
     color: var(--color-foreground-9);
     &:hover {
       background-color: var(--color-warning-l2);
@@ -111,7 +111,7 @@ button {
       background-color: var(--color-warning-l4);
     }
     &.inverted {
-      color: var(--color-warning-0);
+      color: var(--color-warning-n);
       background-color: var(--color-background-1);
       &:hover {
         background-color: var(--color-warning-l9);
@@ -122,7 +122,7 @@ button {
     }
   }
   &.error {
-    background-color: var(--color-error-0);
+    background-color: var(--color-error-n);
     color: var(--color-foreground-9);
     &:hover {
       background-color: var(--color-error-l2);
@@ -131,7 +131,7 @@ button {
       background-color: var(--color-error-l4);
     }
     &.inverted {
-      color: var(--color-error-0);
+      color: var(--color-error-n);
       background-color: var(--color-background-1);
       &:hover {
         background-color: var(--color-error-l9);
