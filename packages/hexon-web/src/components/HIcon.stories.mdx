@@ -109,3 +109,24 @@ import HIcon from "./HIcon.vue";
   </HIcon>
 </span>
 ```
+
+## 可点击
+
+<Canvas>
+  <Story name="可点击">
+    {() => ({
+      components: { HIcon, Search16Filled, Add16Filled, Edit16Filled },
+      template: `
+<HIcon clickable>
+  <Search16Filled />
+</HIcon>
+<HIcon clickable>
+  <Add16Filled />
+</HIcon>
+<HIcon clickable>
+  <Edit16Filled />
+</HIcon>
+    `,
+    })}
+  </Story>
+</Canvas>
