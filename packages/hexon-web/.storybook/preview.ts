@@ -1,9 +1,11 @@
 import { Parameters, Decorators, app } from "@storybook/vue3";
 import themes from "../src/themes";
-import "../src/styles/reset.less";
+import account from "../src/account";
 import { useThemeController } from "../src/lib/theme";
+import "../src/styles/reset.less";
 
 app.use(themes);
+app.use(account);
 
 export const parameters: Parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },

@@ -1,0 +1,57 @@
+import { Meta, Story, Canvas } from "@storybook/addon-docs";
+import HLoginForm from "./HLoginForm.vue";
+
+<Meta
+  title="HLoginForm"
+  component={HLoginForm}
+  name="HLoginForm"
+  argTypes={{}}
+/>
+
+# HLoginForm
+
+## 基础
+
+<!-- decorators={[
+  () => ({
+    template: '<div style="margin: 3em;"><story /></div>',
+  }),
+]}> -->
+
+<!-- decorators={[
+    ()=>({
+      template: `
+<div style="background-color:var(--color-background-2);padding:50px;display:inline-block">
+  <story />
+</div>
+        `
+    })
+  ]} -->
+
+<Canvas>
+  <Story
+    name="基础"
+    decorators={[
+      () => ({
+        template: `
+<div style="background-color:var(--color-background-3);padding:20px;display:inline-block">
+  <story />
+</div>
+        `,
+      }),
+    ]}
+  >
+    >
+    {() => ({
+      components: { HLoginForm },
+      methods: {
+        onSignin(payload) {
+          console.log(payload);
+        },
+      },
+      template: `
+<HLoginForm name="HLoginForm" @on-submit="onSignin"></HLoginForm>
+      `,
+    })}
+  </Story>
+</Canvas>

@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { computed, toRefs } from "@vue/reactivity";
+import { ButtonHTMLAttributes } from "@vue/runtime-dom";
 import HVerticalCenter from "./HVerticalCenter.vue";
 
 const props = withDefaults(
   defineProps<{
-    type?: "primary" | "secondary";
+    type?: "primary" | "secondary" | "warning" | "error" | "common";
     inverted?: boolean;
     round?: boolean;
     block?: boolean;
+    attrType?: ButtonHTMLAttributes["type"];
   }>(),
   {
     type: "primary",
@@ -16,7 +18,7 @@ const props = withDefaults(
     block: false,
   }
 );
-const { type, inverted, round, block } = toRefs(props);
+const { type, inverted, round, block, attrType } = toRefs(props);
 const classes = computed(() => {
   return {
     [`${type.value}`]: true,
@@ -28,7 +30,7 @@ const classes = computed(() => {
 </script>
 
 <template>
-  <button :class="classes">
+  <button :class="classes" :type="attrType">
     <HVerticalCenter>
       <slot></slot>
     </HVerticalCenter>
@@ -72,12 +74,12 @@ button {
     }
     &.inverted {
       color: var(--color-primary-n);
-      background-color: var(--color-background-1);
+      background-color: transparent;
       &:hover {
-        background-color: var(--color-primary-l9);
+        background-color: var(--color-primary-a9);
       }
       &:active {
-        background-color: var(--color-primary-l8);
+        background-color: var(--color-primary-a8);
       }
     }
   }
@@ -92,12 +94,12 @@ button {
     }
     &.inverted {
       color: var(--color-success-n);
-      background-color: var(--color-background-1);
+      background-color: transparent;
       &:hover {
-        background-color: var(--color-success-l9);
+        background-color: var(--color-success-a9);
       }
       &:active {
-        background-color: var(--color-success-l8);
+        background-color: var(--color-success-a8);
       }
     }
   }
@@ -112,12 +114,12 @@ button {
     }
     &.inverted {
       color: var(--color-warning-n);
-      background-color: var(--color-background-1);
+      background-color: transparent;
       &:hover {
-        background-color: var(--color-warning-l9);
+        background-color: var(--color-warning-a9);
       }
       &:active {
-        background-color: var(--color-warning-l8);
+        background-color: var(--color-warning-a8);
       }
     }
   }
@@ -132,12 +134,32 @@ button {
     }
     &.inverted {
       color: var(--color-error-n);
-      background-color: var(--color-background-1);
+      background-color: transparent;
       &:hover {
-        background-color: var(--color-error-l9);
+        background-color: var(--color-error-a9);
       }
       &:active {
-        background-color: var(--color-error-l8);
+        background-color: var(--color-error-a8);
+      }
+    }
+  }
+  &.common {
+    background-color: var(--color-common-n);
+    color: var(--color-foreground-9);
+    &:hover {
+      background-color: var(--color-common-l2);
+    }
+    &:active {
+      background-color: var(--color-common-l4);
+    }
+    &.inverted {
+      color: var(--color-common-n);
+      background-color: transparent;
+      &:hover {
+        background-color: var(--color-common-a9);
+      }
+      &:active {
+        background-color: var(--color-common-a8);
       }
     }
   }

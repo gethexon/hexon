@@ -2,7 +2,7 @@
 to: src/components/<%= name %>.vue
 ---
 <script setup lang="ts">
-import { toRefs } from "@vue/reactivity";
+import { toRefs } from "vue";
 
 const props = defineProps<{ name: string }>();
 const { name } = toRefs(props);

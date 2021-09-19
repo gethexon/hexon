@@ -3,6 +3,7 @@ import { computed, toRefs } from "@vue/reactivity";
 import { Dismiss16Filled } from "@vicons/fluent";
 import HVerticalCenter from "./HVerticalCenter.vue";
 import HIcon from "./HIcon.vue";
+import { InputHTMLAttributes } from "@vue/runtime-dom";
 
 const props = withDefaults(
   defineProps<{
@@ -10,12 +11,13 @@ const props = withDefaults(
     placeholder?: string;
     clearable?: boolean;
     type?: "primary" | "secondary";
+    attrType?: InputHTMLAttributes["type"];
   }>(),
   { placeholder: "", clearable: false, type: "primary" }
 );
 const emit = defineEmits<{ (e: "update:modelValue", value: string): void }>();
 
-const { modelValue, placeholder, clearable, type } = toRefs(props);
+const { modelValue, placeholder, clearable, type, attrType } = toRefs(props);
 const showSuffix = computed(() => clearable.value && modelValue.value);
 
 const requestChange = (value: string) => emit("update:modelValue", value);
@@ -34,7 +36,12 @@ const classes = computed(() => {
         <slot name="prefix"></slot>
       </HVerticalCenter>
     </div>
-    <input :value="modelValue" @input="onInput" :placeholder="placeholder" />
+    <input
+      :value="modelValue"
+      @input="onInput"
+      :placeholder="placeholder"
+      :type="attrType"
+    />
     <div class="suffix" v-if="showSuffix" @click="onClear">
       <HIcon>
         <Dismiss16Filled />

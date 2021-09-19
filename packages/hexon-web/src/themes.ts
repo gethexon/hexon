@@ -60,6 +60,7 @@ export type HTheme = {
     success: ColorPack;
     warning: ColorPack;
     error: ColorPack;
+    common: ColorPack;
     background: {
       1: string;
       2: string;
@@ -82,6 +83,7 @@ export const blueTheme: HTheme = {
     success: createColor("#27ae60"),
     warning: createColor("#f39c12"),
     error: createColor("#e74c3c"),
+    common: createColor("#888888"),
     background: {
       1: "#ffffff",
       2: "#f8f8f8",
@@ -104,6 +106,7 @@ export const purpleTheme: HTheme = {
     success: createColor("#27ae60"),
     warning: createColor("#f39c12"),
     error: createColor("#e74c3c"),
+    common: createColor("#888888"),
     background: {
       1: "#ffffff",
       2: "#f8f8f8",

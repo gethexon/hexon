@@ -2,7 +2,6 @@
 to: src/components/<%= name %>.stories.mdx
 ---
 import { Meta, Story, Canvas } from "@storybook/addon-docs";
-
 import <%= name %> from "./<%= name %>.vue";
 
 <Meta
