@@ -32,11 +32,11 @@ const style = computed(() => ({
   <h1>HomePage</h1>
   <button @click="changeToDefault">change default</button>
   <button @click="changeToPurple">change purple</button>
+  <button @click="onSignOut">signout</button>
+  <button @click="loadBlogData">get blog data</button>
   <pre :style="style">
     {{ theme }}
   </pre>
-  <button @click="onSignOut">signout</button>
-  <button @click="loadBlogData">get blog data</button>
   <pre>{{ state }}</pre>
 </template>
 <style scoped>

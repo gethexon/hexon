@@ -42,8 +42,8 @@ const onHelp = () => {
     <div
       style="
         color: var(--color-foreground-2);
-        font-size: larger;
-        margin-top: 16px;
+        font-size: 1.5rem;
+        margin-top: 32px;
       "
     >
       登录到 Hexon
