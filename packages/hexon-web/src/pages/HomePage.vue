@@ -1,29 +1,29 @@
 <script setup lang="ts">
 import { computed } from "@vue/reactivity";
 import { useStore } from "vuex";
-import { useAccountService } from "../lib/account";
+import { useAccount } from "../lib/account";
 import { useThemeController, useTheme } from "../lib/theme";
 import { GET_BLOG_DATA_ACTION } from "../store/action-types";
 import { HTheme } from "../themes";
 import { forceReloadWindow } from "../utils";
-const service = useAccountService();
+const store = useStore();
+const account = useAccount();
+const themeController = useThemeController();
+const theme = useTheme<HTheme>();
 const onSignOut = async () => {
-  await service?.signout();
+  await account?.signout();
   forceReloadWindow();
 };
-const store = useStore();
 const state = computed(() => store.state);
 const loadBlogData = async () => {
   await store.dispatch(GET_BLOG_DATA_ACTION);
 };
-const themeController = useThemeController();
 const changeToPurple = () => {
   themeController?.changeTheme("purple");
 };
 const changeToDefault = () => {
   themeController?.changeTheme("default");
 };
-const theme = useTheme<HTheme>();
 const style = computed(() => ({
   backgroundColor: theme?.value.color.primary.n,
 }));

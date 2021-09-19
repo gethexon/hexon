@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
-import { beforeEachGuard } from "./lib/account";
+import account from "./account";
 
 const routes: RouteRecordRaw[] = [
   { path: "/", redirect: "/home" },
@@ -20,7 +20,7 @@ const routes: RouteRecordRaw[] = [
 const router = createRouter({ history: createWebHashHistory(), routes });
 
 router.beforeEach(
-  beforeEachGuard({
+  account.beforeEachGuard({
     home: "/home",
     signin: "/signin",
   })

@@ -1,12 +1,10 @@
-import { create } from "./lib/account";
+import { createAccount } from "./lib/account";
 import { forceReloadWindow } from "./utils";
 
-const account = create({
+export default createAccount({
   baseURL: "http://localhost:5777",
   onTokenExpire: () => {
     console.log("token expired");
     forceReloadWindow();
   },
 });
-
-export default account;

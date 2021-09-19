@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
-import { useAccountService } from "../lib/account";
+import { useAccount } from "../lib/account";
 const router = useRouter();
-const service = useAccountService();
-
+const account = useAccount();
 const onSignIn = async () => {
-  await service?.signin("admin", "admin");
+  await account?.signin("admin", "admin");
   router.push("/home");
 };
 </script>
