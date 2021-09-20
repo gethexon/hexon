@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, toRefs } from "@vue/reactivity";
-import { Dismiss16Filled } from "@vicons/fluent";
-import HVerticalCenter from "./HVerticalCenter.vue";
+import { Dismiss24Filled } from "@vicons/fluent";
 import HIcon from "./HIcon.vue";
 import { InputHTMLAttributes } from "@vue/runtime-dom";
 
@@ -32,9 +31,7 @@ const classes = computed(() => {
 <template>
   <label class="container" :class="classes">
     <div class="prefix">
-      <HVerticalCenter style="line-height: 100%">
-        <slot name="prefix"></slot>
-      </HVerticalCenter>
+      <slot name="prefix"></slot>
     </div>
     <input
       :value="modelValue"
@@ -44,7 +41,7 @@ const classes = computed(() => {
     />
     <div class="suffix" v-if="showSuffix" @click="onClear">
       <HIcon>
-        <Dismiss16Filled />
+        <Dismiss24Filled />
       </HIcon>
     </div>
   </label>
@@ -59,6 +56,7 @@ const classes = computed(() => {
   cursor: text;
   overflow: hidden;
   color: var(--color-foreground-2);
+  font-size: smaller;
 
   &.primary {
     background-color: var(--color-background-1);
@@ -71,6 +69,7 @@ const classes = computed(() => {
     display: flex;
     align-items: center;
     height: 100%;
+    font-size: larger;
   }
   .prefix {
     margin-right: 4px;

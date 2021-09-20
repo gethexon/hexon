@@ -61,10 +61,16 @@ export type HTheme = {
     warning: ColorPack;
     error: ColorPack;
     common: ColorPack;
+    folder: string;
+    all: string;
+    post: string;
+    page: string;
+    draft: string;
     background: {
       1: string;
       2: string;
       3: string;
+      4: string;
       9: string;
     };
     foreground: {
@@ -84,10 +90,16 @@ export const blueTheme: HTheme = {
     warning: createColor("#f39c12"),
     error: createColor("#e74c3c"),
     common: createColor("#888888"),
+    folder: "#f3c04f",
+    all: "#27ae60",
+    post: "#3883c7",
+    page: "#52bad1",
+    draft: "#f1c40f",
     background: {
       1: "#ffffff",
       2: "#f8f8f8",
       3: "#eeeeee",
+      4: "#dfdfdf",
       9: "#282828",
     },
     foreground: {
@@ -100,27 +112,4 @@ export const blueTheme: HTheme = {
   },
 };
 
-export const purpleTheme: HTheme = {
-  color: {
-    primary: createColor("#8e44ad"),
-    success: createColor("#27ae60"),
-    warning: createColor("#f39c12"),
-    error: createColor("#e74c3c"),
-    common: createColor("#888888"),
-    background: {
-      1: "#ffffff",
-      2: "#f8f8f8",
-      3: "#eeeeee",
-      9: "#282828",
-    },
-    foreground: {
-      1: "#000000",
-      2: "#484848",
-      3: "#000000",
-      6: "#9e9e9e",
-      9: "#ffffff",
-    },
-  },
-};
-
-export default createTheme({ default: blueTheme, purple: purpleTheme });
+export default createTheme({ default: blueTheme });

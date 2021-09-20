@@ -1,0 +1,28 @@
+import { Meta, Story, Canvas } from "@storybook/addon-docs";
+import HNavTitle from "./HNavTitle.vue";
+
+<Meta title="HNavTitle" component={HNavTitle} name="HNavTitle" argTypes={{}} />
+
+# HNavTitle
+
+## 基础
+
+<Canvas>
+  <Story
+    name="基础"
+    decorators={[
+      () => ({
+        template: `
+<div style="background-color:var(--color-background-3);padding:20px;display:inline-block;width:200px">
+  <story />
+</div>
+        `,
+      }),
+    ]}
+  >
+    {() => ({
+      components: { HNavTitle },
+      template: `<HNavTitle>操作</HNavTitle>`,
+    })}
+  </Story>
+</Canvas>

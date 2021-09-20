@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, toRefs } from "@vue/reactivity";
 import { ButtonHTMLAttributes } from "@vue/runtime-dom";
-import HVerticalCenter from "./HVerticalCenter.vue";
 
 const props = withDefaults(
   defineProps<{
@@ -31,14 +30,13 @@ const classes = computed(() => {
 
 <template>
   <button :class="classes" :type="attrType">
-    <HVerticalCenter>
-      <slot></slot>
-    </HVerticalCenter>
+    <slot></slot>
   </button>
 </template>
 
 <style scoped lang="less">
 button {
+  font-size: smaller;
   height: 32px;
   border: none;
   outline: none;

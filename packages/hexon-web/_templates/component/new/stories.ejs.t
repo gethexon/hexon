@@ -4,12 +4,7 @@ to: src/components/<%= name %>.stories.mdx
 import { Meta, Story, Canvas } from "@storybook/addon-docs";
 import <%= name %> from "./<%= name %>.vue";
 
-<Meta
-  title="<%= name %>"
-  component={<%= name %>}
-  name="<%= name %>"
-  argTypes={{}}
-/>
+<Meta title="<%= name %>" component={<%= name %>} name="<%= name %>" argTypes={{}} />
 
 # <%= name %>
 

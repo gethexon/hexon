@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import { computed, toRefs } from "@vue/reactivity";
 import { Icon } from "@vicons/utils";
+import HVerticalCenter from "./HVerticalCenter.vue";
 
 const props = withDefaults(
-  defineProps<{ size?: string | number; clickable?: boolean }>(),
+  defineProps<{
+    size?: string | number;
+    clickable?: boolean;
+  }>(),
   {
     size: "1em",
     clickable: false,
@@ -15,7 +19,9 @@ const classes = computed(() => {
 });
 </script>
 <template>
-  <Icon class="h-icon" :size="size" :class="classes"><slot></slot></Icon>
+  <HVerticalCenter>
+    <Icon class="h-icon" :size="size" :class="classes"><slot></slot></Icon>
+  </HVerticalCenter>
 </template>
 <style scoped lang="less">
 .h-icon.clickable {

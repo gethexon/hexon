@@ -38,6 +38,14 @@ const onSignIn = async ({
     "
   >
     <HLoginForm @on-submit="onSignIn" style="flex: 1" />
-    <div style="line-height: 32px">{{ footer }}</div>
+    <div
+      style="
+        line-height: 32px;
+        color: var(--color-foreground-2);
+        font-size: small;
+      "
+    >
+      {{ footer }}
+    </div>
   </div>
 </template>

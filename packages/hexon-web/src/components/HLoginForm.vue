@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { Person16Filled, Key16Filled } from "@vicons/fluent";
+import { Person24Filled, Key24Filled } from "@vicons/fluent";
 import HImage from "./HImage.vue";
 import logo from "../assets/logo.svg";
 import HInput from "./HInput.vue";
@@ -42,8 +42,9 @@ const onHelp = () => {
     <div
       style="
         color: var(--color-foreground-2);
-        font-size: 1.5rem;
-        margin-top: 32px;
+        font-size: 1.2rem;
+        margin-top: 16px;
+        user-select: none;
       "
     >
       登录到 Hexon
@@ -56,7 +57,7 @@ const onHelp = () => {
     >
       <template v-slot:prefix>
         <HIcon>
-          <Person16Filled />
+          <Person24Filled />
         </HIcon>
       </template>
     </HInput>
@@ -69,7 +70,7 @@ const onHelp = () => {
     >
       <template v-slot:prefix>
         <HIcon>
-          <Key16Filled />
+          <Key24Filled />
         </HIcon>
       </template>
     </HInput>
