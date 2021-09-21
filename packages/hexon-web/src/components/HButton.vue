@@ -42,7 +42,7 @@ button {
   outline: none;
   border-radius: 16px;
   padding: 0 16px;
-  transition: color 0.2s, background-color 0.2s;
+  transition: color 0.2s ease, background-color 0.2s ease;
   white-space: nowrap;
 
   display: inline-flex;

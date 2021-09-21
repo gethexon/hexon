@@ -70,6 +70,7 @@ export type HTheme = {
       2: string;
       3: string;
       4: string;
+      5: string;
       9: string;
     };
     foreground: {
@@ -99,6 +100,7 @@ export const blueTheme: HTheme = {
       2: "#f8f8f8",
       3: "#eeeeee",
       4: "#dfdfdf",
+      5: "#cdcdcd",
       9: "#282828",
     },
     foreground: {

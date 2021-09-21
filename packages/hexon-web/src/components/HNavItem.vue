@@ -54,10 +54,14 @@ const classes = computed(() => ({ selected: selected.value }));
   cursor: pointer;
   display: flex;
   align-items: center;
+  transition: all 0.2s ease;
 
   .selected,
   &:hover {
     background-color: var(--color-background-4);
+  }
+  &:active {
+    background-color: var(--color-background-5);
   }
 }
 </style>
