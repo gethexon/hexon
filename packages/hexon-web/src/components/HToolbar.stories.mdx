@@ -1,0 +1,29 @@
+import { Meta, Story, Canvas } from "@storybook/addon-docs";
+import HNavList from "./HNavList.vue";
+import HToolbar from "./HToolbar.vue";
+
+<Meta title="HToolbar" component={HToolbar} name="HToolbar" argTypes={{}} />
+
+# HToolbar
+
+## 基础
+
+<Canvas>
+  <Story
+    name="基础"
+    decorators={[
+      () => ({
+        template: `
+<div style="background-color:var(--color-background-3);padding:20px;display:inline-block;width:200px">
+  <story />
+</div>
+        `,
+      }),
+    ]}
+  >
+    {() => ({
+      components: { HToolbar, HNavList },
+      template: `<HToolbar name="HToolbar">Content</HToolbar>`,
+    })}
+  </Story>
+</Canvas>

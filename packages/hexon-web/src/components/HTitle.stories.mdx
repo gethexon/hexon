@@ -1,0 +1,28 @@
+import { Meta, Story, Canvas } from "@storybook/addon-docs";
+import HTitle from "./HTitle.vue";
+
+<Meta title="HTitle" component={HTitle} name="HTitle" argTypes={{}} />
+
+# HTitle
+
+## 基础
+
+<Canvas>
+  <Story
+    name="基础"
+    decorators={[
+      () => ({
+        template: `
+<div style="background-color:var(--color-background-3);padding:20px;display:inline-block;width:200px">
+  <story />
+</div>
+        `,
+      }),
+    ]}
+  >
+    {() => ({
+      components: { HTitle },
+      template: `<HTitle></HTitle>`,
+    })}
+  </Story>
+</Canvas>
