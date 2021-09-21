@@ -1,5 +1,5 @@
 import { hex, rgb } from "color-convert";
-import { ITheme, createTheme } from "./lib/theme";
+import { createTheme } from "@winwin/vue-global-theming";
 
 type modifier = "l" | "a" | "d";
 type amount = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
@@ -49,10 +49,9 @@ function createColor(name: string): ColorPack {
   };
 }
 
-type ColorPack = ITheme &
-  ModifiedColor & {
-    n: string;
-  };
+type ColorPack = ModifiedColor & {
+  n: string;
+};
 
 export type HTheme = {
   color: {

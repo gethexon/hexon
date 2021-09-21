@@ -10,6 +10,7 @@
     "nc": "hygen component new"
   },
   "dependencies": {
+    "@winwin/vue-global-theming": "0.1.3",
     "axios": "^0.21.4",
     "color": "^4.0.1",
     "color-convert": "^2.0.1",

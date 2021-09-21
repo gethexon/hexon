@@ -13,7 +13,7 @@ import {
   Document24Filled,
   MailInbox24Filled,
 } from "@vicons/fluent";
-import { useTheme } from "../lib/theme";
+import { useTheme } from "@winwin/vue-global-theming";
 import { HTheme } from "../themes";
 import HNavTitle from "./HNavTitle.vue";
 import HNavItem from "./HNavItem.vue";

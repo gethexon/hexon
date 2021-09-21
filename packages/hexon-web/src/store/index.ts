@@ -37,7 +37,7 @@ const mutations: MutationTree<IState> = {
 
 const actions: ActionTree<IState, IState> = {
   [GET_BLOG_DATA_ACTION]: async ({ commit }) => {
-    const access = account.http.access;
+    const access = account.access;
     const [posts, pages, tags, categories] = (
       await Promise.all([
         access.get("/posts"),

@@ -1,7 +1,7 @@
 import { Parameters, Decorators, app } from "@storybook/vue3";
+import { useThemeController } from "@winwin/vue-global-theming";
 import themes from "../src/themes";
 import account from "../src/account";
-import { useThemeController } from "../src/lib/theme";
 import "../src/styles/reset.less";
 
 app.use(themes);

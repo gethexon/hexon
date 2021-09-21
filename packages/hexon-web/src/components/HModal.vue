@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { toRefs } from "vue";
-import { useThemeController } from "../lib/theme";
+import { useThemeController } from "@winwin/vue-global-theming";
 
 const props = withDefaults(defineProps<{ show?: boolean }>(), { show: false });
 const { show } = toRefs(props);
