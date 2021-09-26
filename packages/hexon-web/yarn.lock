@@ -2687,6 +2687,15 @@
     standard-version "^9.3.1"
     vue "^3.2.6"
 
+"@winwin/vue-simple-account@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.npmmirror.com/@winwin/vue-simple-account/download/@winwin/vue-simple-account-0.0.1.tgz?cache=0&sync_timestamp=1632695642820&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40winwin%2Fvue-simple-account%2Fdownload%2F%40winwin%2Fvue-simple-account-0.0.1.tgz#9c32fbec8258a08e9026a1fdb34658b78a78fa40"
+  integrity sha1-nDL77IJYoI6QJqH9s0ZYt4p4+kA=
+  dependencies:
+    axios "^0.21.4"
+    vue "^3.2.6"
+    vue-router "^4.0.0"
+
 "@xicons/utils@^0.1.4":
   version "0.1.4"
   resolved "https://registry.nlark.com/@xicons/utils/download/@xicons/utils-0.1.4.tgz#cece50613b34d4b4c71e73bb0be92981067e11e1"
@@ -10712,7 +10721,7 @@ vue-loader@^16.0.0, vue-loader@^16.5.0:
     hash-sum "^2.0.0"
     loader-utils "^2.0.0"
 
-vue-router@4:
+vue-router@4, vue-router@^4.0.0:
   version "4.0.11"
   resolved "https://registry.nlark.com/vue-router/download/vue-router-4.0.11.tgz?cache=0&sync_timestamp=1628495505697&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fvue-router%2Fdownload%2Fvue-router-4.0.11.tgz#cd649a0941c635281763a20965b599643ddc68ed"
   integrity sha1-zWSaCUHGNSgXY6IJZbWZZD3caO0=

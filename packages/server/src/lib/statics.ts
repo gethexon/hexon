@@ -1,5 +1,5 @@
-import { Context, Next } from "koa";
 import path from "path";
+import { Context, Next } from "koa";
 import serve from "koa-static";
 
 export function statics(root: string) {

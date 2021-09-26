@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
-import { useAccount } from "../lib/account";
+import { useAccount } from "@winwin/vue-simple-account";
 import HLoginForm from "../components/HLoginForm.vue";
 import { computed } from "@vue/reactivity";
 const router = useRouter();

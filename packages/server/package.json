@@ -55,6 +55,7 @@
   "dependencies": {
     "@koa/cors": "^3.1.0",
     "@koa/router": "^10.0.0",
+    "@winwin/koa-simple-account": "^0.0.2",
     "basic-auth": "^2.0.1",
     "chalk": "^4.1.1",
     "crypto-js": "^4.0.0",

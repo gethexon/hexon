@@ -2,7 +2,7 @@
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import { useThemeController, useTheme } from "@winwin/vue-global-theming";
-import { useAccount } from "../lib/account";
+import { useAccount } from "@winwin/vue-simple-account";
 import { GET_BLOG_DATA_ACTION } from "../store/action-types";
 import { HTheme } from "../themes";
 import { forceReloadWindow } from "../utils";

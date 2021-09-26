@@ -1,4 +1,4 @@
-import { createAccount } from "./lib/account";
+import { createAccount } from "@winwin/vue-simple-account";
 import { forceReloadWindow } from "./utils";
 
 export default createAccount({

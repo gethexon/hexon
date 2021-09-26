@@ -11,8 +11,9 @@ import logger from "koa-logger";
 import bodyParser from "koa-bodyparser";
 import onerror from "koa-onerror";
 import cors from "@koa/cors";
-import account, { auth } from "./lib/koa-account";
+
 import apps from "./apps";
+import account from "./account";
 import { DEV } from "./utils.ts";
 
 const app = new Koa();
@@ -39,14 +40,7 @@ app.use(
   })
 );
 
-app.use(
-  account({
-    path: path.resolve(__dirname, "../data/account.db"),
-    secret: "secret",
-    expiresIn: "10min",
-    refreshableIn: "7d",
-  })
-);
+app.use(account.middleware);
 
 app.use(apps);
 
