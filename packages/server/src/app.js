@@ -12,8 +12,8 @@ import bodyParser from "koa-bodyparser";
 import onerror from "koa-onerror";
 import cors from "@koa/cors";
 
-import apps from "./apps";
-import account from "./account";
+import apps from "./apps/index.ts";
+import account from "./account.ts";
 import { DEV } from "./utils.ts";
 
 const app = new Koa();
