@@ -8,10 +8,13 @@
     "serve": "vite preview",
     "sb": "start-storybook -p 6006",
     "bsb": "build-storybook",
-    "nc": "hygen component new"
+    "nc": "hygen component new",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:serve": "vitepress serve docs"
   },
   "dependencies": {
-    "@winwin/vue-global-theming": "0.1.3",
+    "@winwin/vue-global-theming": "^0.1.4",
     "@winwin/vue-simple-account": "^0.0.1",
     "axios": "^0.21.4",
     "color": "^4.0.1",
@@ -21,11 +24,6 @@
     "vuex": "^4.0.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.15.5",
-    "@storybook/addon-actions": "^6.3.8",
-    "@storybook/addon-essentials": "^6.3.8",
-    "@storybook/addon-links": "^6.3.8",
-    "@storybook/vue3": "^6.3.8",
     "@types/color": "^3.0.2",
     "@types/color-convert": "^2.0.0",
     "@vicons/fluent": "^0.11.0",
@@ -35,9 +33,10 @@
     "babel-loader": "^8.2.2",
     "less": "^4.1.1",
     "less-loader": "^7",
+    "naive-ui": "^2.19.3",
     "typescript": "^4.3.2",
     "vite": "^2.5.4",
-    "vue-loader": "^16.5.0",
+    "vitepress": "^0.19.2",
     "vue-tsc": "^0.2.2"
   }
 }

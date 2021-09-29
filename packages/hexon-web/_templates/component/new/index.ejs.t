@@ -1,12 +1,15 @@
 ---
-to: src/components/<%= name %>.vue
+to: docs/<%= name %>.md
 ---
-<script setup lang="ts">
-import { toRefs } from "vue";
+---
+sidebarDepth: 1
+---
 
-const props = defineProps<{ name: string }>();
-const { name } = toRefs(props);
+# <%= name %>
+
+<<%= name %>></<%= name %>>
+
+<script setup>
+import <%= name %> from '../src/components/<%= name %>.vue'
 </script>
-<template>
-  <p>{{ name }}</p>
-</template>
+
