@@ -1579,10 +1579,10 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@winwin/koa-simple-account@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.npmmirror.com/@winwin/koa-simple-account/download/@winwin/koa-simple-account-0.0.2.tgz#6e0e3b504da7b170a2102faa04f74416a852b972"
-  integrity sha1-bg47UE2nsXCiEC+qBPdEFqhSuXI=
+"@winwin/koa-simple-account@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.npmmirror.com/@winwin/koa-simple-account/download/@winwin/koa-simple-account-0.0.5.tgz?cache=0&sync_timestamp=1632873010368&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40winwin%2Fkoa-simple-account%2Fdownload%2F%40winwin%2Fkoa-simple-account-0.0.5.tgz#5b84e34b2bd324de7a0ba6a0df0a69ecc15ed0d5"
+  integrity sha1-W4TjSyvTJN56C6ag3wpp7MFe0NU=
   dependencies:
     "@koa/router" "^10.1.1"
     "@types/koa-bodyparser" "^4.3.3"
@@ -1590,7 +1590,6 @@
     basic-auth "^2.0.1"
     jsonwebtoken "^8.5.1"
     koa "^2.13.3"
-    koa-router "^10.1.1"
     simple-json-db "^1.2.3"
 
 JSONStream@^1.0.7:
