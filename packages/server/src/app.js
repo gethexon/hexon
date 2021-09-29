@@ -1,10 +1,3 @@
-/**
- * main app
- *
- * - polyfill ready
- * - di ready
- */
-
 import path from "path";
 import Koa from "koa";
 import logger from "koa-logger";
@@ -14,7 +7,9 @@ import cors from "@koa/cors";
 
 import apps from "./apps/index.ts";
 import account from "./account.ts";
+import statics from "./lib/statics";
 import { DEV } from "./utils.ts";
+import mount from "koa-mount";
 
 const app = new Koa();
 
@@ -39,7 +34,8 @@ app.use(
     enableTypes: ["json", "form", "text"],
   })
 );
-
+console.log(path.resolve(__dirname, "../../hexon-web/dist"));
+app.use(mount("/", statics(path.resolve(__dirname, "../../hexon-web/dist"))));
 app.use(account.middleware);
 
 app.use(apps);

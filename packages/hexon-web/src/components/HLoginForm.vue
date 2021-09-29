@@ -8,18 +8,14 @@ import HIcon from "./HIcon.vue";
 import HButton from "./HButton.vue";
 
 const emits = defineEmits<{
-  (
-    e: "on-submit",
-    payload: { username: string; password: string; e: Event }
-  ): void;
+  (e: "on-submit", payload: { username: string; password: string }): void;
   (e: "on-forget"): void;
   (e: "on-help"): void;
 }>();
 const username = ref("");
 const password = ref("");
-const onSubmit = (e: Event) => {
-  emits("on-submit", { username: username.value, password: password.value, e });
-  e.preventDefault();
+const onSubmit = () => {
+  emits("on-submit", { username: username.value, password: password.value });
 };
 const onForget = () => {
   emits("on-forget");
@@ -30,7 +26,7 @@ const onHelp = () => {
 </script>
 <template>
   <form
-    @submit="onSubmit"
+    @submit.prevent="onSubmit"
     style="
       display: flex;
       flex-direction: column;

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, toRefs } from "@vue/reactivity";
+import { computed, toRefs } from "vue";
 import { Dismiss24Filled } from "@vicons/fluent";
 import HIcon from "./HIcon.vue";
 import { InputHTMLAttributes } from "@vue/runtime-dom";
@@ -20,7 +20,7 @@ const { modelValue, placeholder, clearable, type, attrType } = toRefs(props);
 const showSuffix = computed(() => clearable.value && modelValue.value);
 
 const requestChange = (value: string) => emit("update:modelValue", value);
-const onInput = (e: InputEvent) =>
+const onInput: any = (e: InputEvent) =>
   requestChange((e.target as HTMLInputElement)?.value);
 const onClear = () => requestChange("");
 
