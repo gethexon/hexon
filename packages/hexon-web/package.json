@@ -6,8 +6,6 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "serve": "vite preview",
-    "sb": "start-storybook -p 6006",
-    "bsb": "build-storybook",
     "nc": "hygen component new",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",

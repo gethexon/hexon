@@ -15,4 +15,3 @@ function getSidebar() {
     .filter((name) => name !== "index")
     .map((name) => ({ text: name, link: `/${name.toLocaleLowerCase()}.html` }));
 }
-console.log(getSidebar());
