@@ -4,7 +4,7 @@ import { resolve } from "path";
 import JSONdb from "simple-json-db";
 
 export const defaultRoot = resolve(process.cwd(), "data");
-export const defaultFilename = "database.json";
+export const defaultFilename = "common.db";
 
 export interface IStorageService {
   get<T>(key: string): T;

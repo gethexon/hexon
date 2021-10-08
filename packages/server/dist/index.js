@@ -70,7 +70,7 @@ function __metadata(metadataKey, metadataValue) {
 }
 
 const defaultRoot = path.resolve(process.cwd(), "data");
-const defaultFilename = "database.json";
+const defaultFilename = "common.db";
 let StorageService = class StorageService {
     _db;
     _root = defaultRoot;
