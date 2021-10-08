@@ -29,6 +29,7 @@
     "@vitejs/plugin-vue": "^1.6.1",
     "@vue/compiler-sfc": "^3.2.6",
     "babel-loader": "^8.2.2",
+    "jsdom": "^18.0.0",
     "less": "^4.1.1",
     "less-loader": "^7",
     "naive-ui": "^2.19.3",

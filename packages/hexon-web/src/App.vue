@@ -18,5 +18,5 @@ const styles = computed(() => {
 </template>
 
 <style lang="less">
-@import "./styles/reset.less";
+@import "./styles/index.less";
 </style>
