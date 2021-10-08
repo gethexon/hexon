@@ -150,7 +150,6 @@ let Hexo = class Hexo {
     async init() {
         const bak = { base_dir: this._base_dir, options: this._options };
         this._base_dir = path__default['default'].resolve(__dirname, DEV ? "../../" : "", "../../../", this._storage.get(HEXO_BASE_DIR_KEY));
-        console.log(this._base_dir);
         if (!this._base_dir)
             throw new Error("must have hexo base dir");
         try {
