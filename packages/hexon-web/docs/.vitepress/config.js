@@ -13,5 +13,5 @@ function getSidebar() {
     .filter((filename) => path.extname(filename) === ".md")
     .map((filename) => path.basename(filename, path.extname(filename)))
     .filter((name) => name !== "index")
-    .map((name) => ({ text: name, link: `/${name.toLocaleLowerCase()}.html` }));
+    .map((name) => ({ text: name, link: `/${name}.html` }));
 }
