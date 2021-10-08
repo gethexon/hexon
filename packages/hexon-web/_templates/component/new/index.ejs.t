@@ -1,10 +1,6 @@
 ---
 to: docs/<%= name %>.md
 ---
----
-sidebarDepth: 1
----
-
 # <%= name %>
 
 <<%= name %>></<%= name %>>

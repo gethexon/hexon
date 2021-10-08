@@ -1,7 +1,3 @@
----
-sidebarDepth: 1
----
-
 # HImage
 
 ## 不同大小

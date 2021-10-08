@@ -1,8 +1,6 @@
----
-sidebarDepth: 1
----
-
 # HNavList
+
+## 基础
 
 <div style="background-color:var(--color-background-3);display:inline-block;width:200px">
 <HNavList :categories="categories" :page="0" :post="0" :draft="0"></HNavList>

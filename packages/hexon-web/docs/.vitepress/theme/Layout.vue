@@ -15,3 +15,6 @@ const styles = computed(() => {
     <Layout />
   </div>
 </template>
+<style scope lang="less">
+@import "../../../src/styles/index.less";
+</style>

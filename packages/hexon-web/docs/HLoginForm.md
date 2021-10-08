@@ -1,8 +1,6 @@
----
-sidebarDepth: 1
----
-
 # HLoginForm
+
+## 基础
 
 <div style="background-color:var(--color-background-3);padding:20px;display:inline-block">
 <HLoginForm name="HLoginForm" @on-submit="onSignin"></HLoginForm>
