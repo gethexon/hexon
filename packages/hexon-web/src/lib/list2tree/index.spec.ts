@@ -2,8 +2,8 @@ import { list2Tree } from ".";
 
 it("should transform list to tree", () => {
   const list = [
-    { id: "1", p: "0" },
-    { id: "2", p: "0" },
+    { id: "1" },
+    { id: "2" },
     { id: "3", p: "1" },
     { id: "4", p: "1" },
     { id: "5", p: "4" },
@@ -11,16 +11,14 @@ it("should transform list to tree", () => {
   const correct = [
     {
       id: "1",
-      p: "0",
       c: [
-        { id: "3", p: "1", c: [] },
-        { id: "4", p: "1", c: [{ id: "5", p: "4", c: [] }] },
+        { id: "3", p: "1" },
+        { id: "4", p: "1", c: [{ id: "5", p: "4" }] },
       ],
     },
-    { id: "2", p: "0", c: [] },
+    { id: "2" },
   ];
-  const res = list2Tree(list, {
-    topId: "0",
+  const res = list2Tree(list, (item) => !item.p, {
     idKey: "id",
     parentKey: "p",
     childrenKey: "c",
@@ -34,8 +32,7 @@ it("should work if no top node found", () => {
     { id: "4", p: "1" },
   ];
   const run = () => {
-    list2Tree(list, {
-      topId: "0",
+    list2Tree(list, (item) => !item.p, {
       idKey: "id",
       parentKey: "p",
       childrenKey: "c",

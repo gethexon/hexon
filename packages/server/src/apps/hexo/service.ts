@@ -191,7 +191,6 @@ class Hexo implements IHexoAPI, IHexoCommand {
     return docs.map((categoryDoc) => ({
       ...categoryDoc,
       posts: categoryDoc.posts.map((p) => p._id),
-      parent: categoryDoc.parent || "top",
     }));
   }
   async listTag(): Promise<Tag[]> {

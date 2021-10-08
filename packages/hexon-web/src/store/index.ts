@@ -63,9 +63,7 @@ const getters: GetterTree<IState, IState> = {
     return Object.entries(state.categories).map(([key, value]) => value);
   },
   [CATEGORIES_TREE](state, getters) {
-    console.log(getters[CATEGORIES_LIST]);
-    return list2Tree(getters[CATEGORIES_LIST], {
-      topId: "top",
+    return list2Tree(getters[CATEGORIES_LIST], (item) => !item.p, {
       idKey: "_id",
       parentKey: "parent",
       childrenKey: "children",
