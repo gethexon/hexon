@@ -30,7 +30,7 @@ const classes = computed(() => ({ selected: selected.value }));
       :style="{ color }"
       :name="icon"
     />
-    <span>
+    <span class="text">
       {{ text }}
     </span>
     <span
@@ -46,6 +46,7 @@ const classes = computed(() => ({ selected: selected.value }));
   </div>
 </template>
 <style scoped lang="less">
+@import "../styles/mixins.less";
 .h-nav-item {
   padding: 2px 16px;
   margin: 2px 0;
@@ -64,6 +65,9 @@ const classes = computed(() => ({ selected: selected.value }));
   }
   &:active {
     background-color: var(--color-background-5);
+  }
+  .text {
+    .ellipsis(1);
   }
 }
 </style>
