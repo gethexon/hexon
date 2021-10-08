@@ -6,6 +6,7 @@ import logo from "../assets/logo.svg";
 import HInput from "./HInput.vue";
 import HIcon from "./HIcon.vue";
 import HButton from "./HButton.vue";
+import { HIconName } from "./HIconName";
 
 const emits = defineEmits<{
   (e: "on-submit", payload: { username: string; password: string }): void;
@@ -52,9 +53,7 @@ const onHelp = () => {
       clearable
     >
       <template v-slot:prefix>
-        <HIcon>
-          <Person24Filled />
-        </HIcon>
+        <HIcon :name="HIconName.Contact" />
       </template>
     </HInput>
     <HInput
@@ -65,9 +64,7 @@ const onHelp = () => {
       clearable
     >
       <template v-slot:prefix>
-        <HIcon>
-          <Key24Filled />
-        </HIcon>
+        <HIcon :name="HIconName.Lock" />
       </template>
     </HInput>
     <HButton style="margin-top: 16px" block>登录</HButton>

@@ -1,1 +1,1 @@
-export { default as default } from "./Splitview.vue";
+export { default as default } from "./SplitView.vue";

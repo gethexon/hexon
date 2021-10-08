@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, toRefs } from "vue";
-import { Dismiss24Filled } from "@vicons/fluent";
 import HIcon from "./HIcon.vue";
+import { HIconName } from "./HIconName";
 import { InputHTMLAttributes } from "@vue/runtime-dom";
 
 const props = withDefaults(
@@ -40,9 +40,7 @@ const classes = computed(() => {
       :type="attrType"
     />
     <div class="suffix" v-if="showSuffix" @click="onClear">
-      <HIcon>
-        <Dismiss24Filled />
-      </HIcon>
+      <HIcon :name="HIconName.Cancel" />
     </div>
   </label>
 </template>

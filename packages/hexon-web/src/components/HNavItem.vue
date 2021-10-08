@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { toRefs, computed } from "vue";
-import type { Component } from "vue";
 import HIcon from "./HIcon.vue";
+import { HIconName } from "./HIconName";
 
 const props = withDefaults(
   defineProps<{
-    icon: Component;
+    icon: HIconName;
     text: string;
     indent?: number;
     selected?: boolean;
@@ -25,9 +25,11 @@ const classes = computed(() => ({ selected: selected.value }));
   <div class="h-nav-item" :class="classes">
     <span style="width: 16px; display: inline-block" v-for="i in indents">
     </span>
-    <HIcon style="margin-right: 8px; font-size: large" :style="{ color }">
-      <component :is="icon"></component>
-    </HIcon>
+    <HIcon
+      style="margin-right: 8px; font-size: large"
+      :style="{ color }"
+      :name="icon"
+    />
     <span>
       {{ text }}
     </span>

@@ -1,0 +1,16 @@
+---
+sidebarDepth: 1
+---
+
+# HLoginForm
+
+<div style="background-color:var(--color-background-3);padding:20px;display:inline-block">
+<HLoginForm name="HLoginForm" @on-submit="onSignin"></HLoginForm>
+</div>
+
+<script setup>
+import HLoginForm from '../src/components/HLoginForm.vue'
+const onSignin = (payload)=> {
+  console.log(payload);
+}
+</script>

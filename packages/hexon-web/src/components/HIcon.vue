@@ -22,6 +22,7 @@ const classes = computed(() => {
 <style scoped lang="less">
 .h-icon {
   font-family: "Segoe Fluent Icons";
+  user-select: none;
 }
 .h-icon.clickable {
   cursor: pointer;

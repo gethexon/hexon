@@ -1,7 +1,7 @@
 import DefaultTheme from "vitepress/theme";
 import Layout from "./Layout.vue";
 import themes from "../../../src/themes";
-import "../../../src/styles/font.less";
+import "../../../src/styles/index.less";
 
 export default {
   ...DefaultTheme,
