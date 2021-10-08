@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useThemeController, useTheme } from "@winwin/vue-global-theming";
 import { useAccount } from "@winwin/vue-simple-account";
@@ -22,6 +22,7 @@ const state = computed(() => store.state);
 const loadBlogData = async () => {
   await store.dispatch(GET_BLOG_DATA_ACTION);
 };
+onMounted(() => loadBlogData());
 const changeToPurple = () => {
   themeController?.changeTheme("purple");
 };
