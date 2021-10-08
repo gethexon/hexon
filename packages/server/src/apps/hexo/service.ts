@@ -110,8 +110,12 @@ class Hexo implements IHexoAPI, IHexoCommand {
   ) {}
   public async init() {
     const bak = { base_dir: this._base_dir, options: this._options };
-
-    this._base_dir = this._storage.get<string>(HEXO_BASE_DIR_KEY);
+    this._base_dir = path.resolve(
+      __dirname,
+      DEV ? "../../" : "",
+      "../../../",
+      this._storage.get<string>(HEXO_BASE_DIR_KEY)
+    );
     if (!this._base_dir) throw new Error("must have hexo base dir");
     try {
       const data = fs
@@ -125,7 +129,7 @@ class Hexo implements IHexoAPI, IHexoCommand {
     }
 
     this._options =
-      this._storage.get<HexoCore.InstanceOptions>(HEXO_OPTIONS_KEY);
+      this._storage.get<HexoCore.InstanceOptions>(HEXO_OPTIONS_KEY) || {};
     this._options.silent = DEV ? false : this._options.silent;
     this._hexo = new HexoCore(this._base_dir, this._options);
 
@@ -187,6 +191,7 @@ class Hexo implements IHexoAPI, IHexoCommand {
     return docs.map((categoryDoc) => ({
       ...categoryDoc,
       posts: categoryDoc.posts.map((p) => p._id),
+      parent: categoryDoc.parent || "top",
     }));
   }
   async listTag(): Promise<Tag[]> {

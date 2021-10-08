@@ -1,7 +1,15 @@
-import { ActionTree, createStore, MutationTree } from "vuex";
+import {
+  Action,
+  ActionTree,
+  createStore,
+  GetterTree,
+  MutationTree,
+} from "vuex";
 import account from "../account";
+import { list2Tree } from "../lib/list2tree";
 import { Category, Page, Post, Tag } from "../types";
 import { GET_BLOG_DATA_ACTION } from "./action-types";
+import { CATEGORIES_LIST, CATEGORIES_TREE } from "./getter-types";
 import { GET_BLOG_DATA } from "./mutation-types";
 
 export interface IState {
@@ -50,6 +58,21 @@ const actions: ActionTree<IState, IState> = {
   },
 };
 
-const store = createStore({ state, mutations, actions });
+const getters: GetterTree<IState, IState> = {
+  [CATEGORIES_LIST](state) {
+    return Object.entries(state.categories).map(([key, value]) => value);
+  },
+  [CATEGORIES_TREE](state, getters) {
+    console.log(getters[CATEGORIES_LIST]);
+    return list2Tree(getters[CATEGORIES_LIST], {
+      topId: "top",
+      idKey: "_id",
+      parentKey: "parent",
+      childrenKey: "children",
+    });
+  },
+};
+
+const store = createStore({ state, mutations, actions, getters });
 
 export default store;

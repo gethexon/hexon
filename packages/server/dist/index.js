@@ -18,6 +18,7 @@ var HexoCore = require('hexo');
 var Debug = require('debug');
 var chalk = require('chalk');
 var koaSimpleAccount = require('@winwin/koa-simple-account');
+var serve = require('koa-static');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -36,6 +37,7 @@ var Router__default = /*#__PURE__*/_interopDefaultLegacy(Router);
 var HexoCore__default = /*#__PURE__*/_interopDefaultLegacy(HexoCore);
 var Debug__default = /*#__PURE__*/_interopDefaultLegacy(Debug);
 var chalk__default = /*#__PURE__*/_interopDefaultLegacy(chalk);
+var serve__default = /*#__PURE__*/_interopDefaultLegacy(serve);
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -147,7 +149,8 @@ let Hexo = class Hexo {
     }
     async init() {
         const bak = { base_dir: this._base_dir, options: this._options };
-        this._base_dir = this._storage.get(HEXO_BASE_DIR_KEY);
+        this._base_dir = path__default['default'].resolve(__dirname, DEV ? "../../" : "", "../../../", this._storage.get(HEXO_BASE_DIR_KEY));
+        console.log(this._base_dir);
         if (!this._base_dir)
             throw new Error("must have hexo base dir");
         try {
@@ -162,7 +165,7 @@ let Hexo = class Hexo {
             throw new Error(`${this._base_dir} is not a hexo blog`);
         }
         this._options =
-            this._storage.get(HEXO_OPTIONS_KEY);
+            this._storage.get(HEXO_OPTIONS_KEY) || {};
         this._options.silent = DEV ? false : this._options.silent;
         this._hexo = new HexoCore__default['default'](this._base_dir, this._options);
         try {
@@ -225,6 +228,7 @@ let Hexo = class Hexo {
         return docs.map((categoryDoc) => ({
             ...categoryDoc,
             posts: categoryDoc.posts.map((p) => p._id),
+            parent: categoryDoc.parent || "top",
         }));
     }
     async listTag() {
@@ -336,12 +340,19 @@ var apps = compose__default['default']([
     mount__default['default']("/", app$1),
 ]);
 
-/**
- * main app
- *
- * - polyfill ready
- * - di ready
- */
+function statics(root) {
+    return async (ctx, next) => {
+        await serve__default['default'](root, {
+            setHeaders: (res, fullpath, stats) => {
+                const isHtml = path__default['default'].extname(fullpath).toLowerCase() === ".html";
+                if (isHtml)
+                    ctx.set("Cache-Control", "no-cache");
+                else
+                    ctx.set("Cache-Control", "max-age=31536000");
+            },
+        })(ctx, next);
+    };
+}
 
 const app = new Koa__default['default']();
 
@@ -367,6 +378,7 @@ app.use(
   })
 );
 
+app.use(mount__default['default']("/", statics(path__default['default'].resolve(__dirname, "../../hexon-web/dist"))));
 app.use(account.middleware);
 
 app.use(apps);

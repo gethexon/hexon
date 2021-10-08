@@ -7,7 +7,7 @@ import cors from "@koa/cors";
 
 import apps from "./apps/index.ts";
 import account from "./account.ts";
-import statics from "./lib/statics";
+import statics from "./lib/statics.ts";
 import { DEV } from "./utils.ts";
 import mount from "koa-mount";
 
@@ -34,7 +34,7 @@ app.use(
     enableTypes: ["json", "form", "text"],
   })
 );
-console.log(path.resolve(__dirname, "../../hexon-web/dist"));
+
 app.use(mount("/", statics(path.resolve(__dirname, "../../hexon-web/dist"))));
 app.use(account.middleware);
 

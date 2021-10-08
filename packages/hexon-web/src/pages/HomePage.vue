@@ -9,6 +9,7 @@ import { forceReloadWindow } from "../utils";
 import SplitView from "../lib/splitview";
 import HTitle from "../components/HTitle.vue";
 import HNavList from "../components/HNavList.vue";
+import { CATEGORIES_TREE } from "../store/getter-types";
 const store = useStore();
 const account = useAccount();
 const themeController = useThemeController();
@@ -42,17 +43,7 @@ const config = {
     max: 500,
   },
 };
-const categories = [
-  {
-    name: "CA",
-    key: "CA",
-    count: 2,
-    children: [
-      { name: "CA1", key: "CA1", count: 2 },
-      { name: "CA2", key: "CA2", count: 2 },
-    ],
-  },
-];
+const categoriesTree = computed(() => store.getters[CATEGORIES_TREE]);
 </script>
 <template>
   <SplitView
@@ -73,13 +64,19 @@ const categories = [
       >
         <HTitle />
         <div style="flex: 1 0 0; overflow-y: auto">
-          <HNavList :categories="categories" :page="0" :post="0" :draft="0" />
+          <!-- 这层 div 用来滚动 -->
+          <HNavList
+            :categories="categoriesTree"
+            :page="0"
+            :post="0"
+            :draft="0"
+          />
         </div>
         TODO
       </div>
     </template>
     <template v-slot:second>
-      <pre>{{ state }}</pre>
+      <pre>{{ state.categories }}</pre>
     </template>
     <template v-slot:third>
       <button @click="changeToDefault">change default</button>
