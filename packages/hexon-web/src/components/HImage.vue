@@ -13,4 +13,3 @@ const style = computed(() => {
 <template>
   <img v-bind="rest" :style="style" />
 </template>
->
