@@ -52,6 +52,7 @@ const categoriesTree = computed(() => store.getters[CATEGORIES_TREE]);
     v-model:sep2at="sep22"
     :sep1="config.sep1"
     :sep2="config.sep2"
+    style="width: 100%; height: 100%"
   >
     <template v-slot:first>
       <div
@@ -77,17 +78,20 @@ const categoriesTree = computed(() => store.getters[CATEGORIES_TREE]);
       </div>
     </template>
     <template v-slot:second>
-      <pre>{{ state.categories }}</pre>
+      <div style="overflow: auto; width: 100%; height: 100%">TODO</div>
     </template>
     <template v-slot:third>
-      <button @click="changeToDefault">change default</button>
-      <button @click="changeToPurple">change purple</button>
-      <button @click="onSignOut">signout</button>
-      <button @click="loadBlogData">get blog data</button>
-      <pre :style="style">
+      <div style="overflow: auto; width: 100%; height: 100%">
+        <button @click="changeToDefault">change default</button>
+        <button @click="changeToPurple">change purple</button>
+        <button @click="onSignOut">signout</button>
+        <button @click="loadBlogData">get blog data</button>
+        <pre>{{ state }}</pre>
+        <pre :style="style">
     {{ theme }}
   </pre
-      >
+        >
+      </div>
     </template>
   </SplitView>
 </template>

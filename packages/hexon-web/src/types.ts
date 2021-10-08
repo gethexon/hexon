@@ -26,8 +26,8 @@ export interface Page extends Article {
 
 export interface Post extends Article {
   published?: boolean | undefined;
-  categories?: Category[] | undefined;
-  tags: Tag[];
+  categories?: string[] | undefined;
+  tags: string[];
   __post: boolean;
 }
 

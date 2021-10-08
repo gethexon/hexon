@@ -40,8 +40,8 @@ interface Page extends Article {
 
 export interface Post extends Article {
   published?: boolean | undefined;
-  categories?: Category[] | undefined;
-  tags: Tag[];
+  categories?: string[] | undefined;
+  tags: string[];
   __post: boolean;
 }
 
@@ -166,14 +166,8 @@ class Hexo implements IHexoAPI, IHexoCommand {
       updated: postDoc?.updated.valueOf(),
       prev: postDoc?.prev?._id,
       next: postDoc?.next?._id,
-      tags: postDoc.tags.data.map((t) => ({
-        ...t,
-        posts: t.posts.map((p) => p._id),
-      })),
-      categories: postDoc?.categories.data.map((c) => ({
-        ...c,
-        posts: c.posts.map((p) => p._id),
-      })),
+      tags: postDoc.tags.data.map((t) => t._id),
+      categories: postDoc?.categories.data.map((c) => c._id),
     }));
   }
   async listPage(): Promise<Page[]> {
