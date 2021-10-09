@@ -1,8 +1,8 @@
 export interface Article {
   _id: string;
   title: string;
-  date: number;
-  updated?: number | undefined;
+  date: string;
+  updated?: string | undefined;
   comments: boolean;
   layout: string;
   content: string;

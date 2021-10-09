@@ -15,8 +15,8 @@ const debug = createDebug("hexo");
 export interface Article {
   _id: string;
   title: string;
-  date: number;
-  updated?: number | undefined;
+  date: string;
+  updated?: string | undefined;
   comments: boolean;
   layout: string;
   content: string;
@@ -162,8 +162,8 @@ class Hexo implements IHexoAPI, IHexoCommand {
     const docs = this._hexo.locals.get("posts").toArray().map(toPost);
     return docs.map((postDoc) => ({
       ...postDoc,
-      date: postDoc?.date.valueOf(),
-      updated: postDoc?.updated.valueOf(),
+      date: postDoc?.date.toString(),
+      updated: postDoc?.updated.toString(),
       prev: postDoc?.prev?._id,
       next: postDoc?.next?._id,
       tags: postDoc.tags.data.map((t) => t._id),
@@ -174,8 +174,8 @@ class Hexo implements IHexoAPI, IHexoCommand {
     const docs = this._hexo.locals.get("pages").toArray().map(toPage);
     return docs.map((pageDoc) => ({
       ...pageDoc,
-      date: pageDoc?.date.valueOf(),
-      updated: pageDoc?.updated.valueOf(),
+      date: pageDoc?.date.toString(),
+      updated: pageDoc?.updated.toString(),
       prev: pageDoc?.prev?._id,
       next: pageDoc?.next?._id,
     }));
