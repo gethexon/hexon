@@ -8,6 +8,7 @@ import {
 import account from "../account";
 import { list2Tree } from "../lib/list2tree";
 import { Category, Page, Post, Tag } from "../types";
+import { list2object, object2list } from "../utils";
 import { GET_BLOG_DATA_ACTION } from "./action-types";
 import { CATEGORIES_LIST, CATEGORIES_TREE } from "./getter-types";
 import { GET_BLOG_DATA } from "./mutation-types";
@@ -53,14 +54,16 @@ const actions: ActionTree<IState, IState> = {
         access.get("/tags"),
         access.get("/categories"),
       ])
-    ).map((res) => res.data);
+    )
+      .map((res) => res.data)
+      .map((item) => list2object(item, "slug"));
     commit(GET_BLOG_DATA, { posts, pages, tags, categories });
   },
 };
 
 const getters: GetterTree<IState, IState> = {
   [CATEGORIES_LIST](state) {
-    return Object.entries(state.categories).map(([key, value]) => value);
+    return object2list(state.categories, "slug");
   },
   [CATEGORIES_TREE](state, getters) {
     return list2Tree(getters[CATEGORIES_LIST], (item) => !item.parent, {
