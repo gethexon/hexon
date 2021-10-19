@@ -1,8 +1,6 @@
 <script setup lang="ts"></script>
 <template>
-  <div
-    style="height: 50px; display: flex; align-items: center; user-select: none"
-  >
+  <div class="h-toolbar h-12 flex items-center select-none">
     <slot></slot>
   </div>
 </template>

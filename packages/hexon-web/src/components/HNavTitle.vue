@@ -1,14 +1,13 @@
 <script setup lang="ts"></script>
 <template>
-  <div
-    style="
-      color: var(--color-foreground-2);
-      user-select: none;
-      font-weight: bold;
-      line-height: 48px;
-      padding: 0 16px;
-    "
-  >
+  <div class="h-nav-title text-sm select-none font-bold leading-11 px-4">
     <slot></slot>
   </div>
 </template>
+<style lang="less" scoped>
+@import "~/styles/mixins.less";
+.h-nav-title {
+  color: var(--color-foreground-2);
+  .ellipsis(1);
+}
+</style>

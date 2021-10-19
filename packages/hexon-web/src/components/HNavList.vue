@@ -80,7 +80,7 @@ const onClick = (key: string) => {
 };
 </script>
 <template>
-  <div style="padding: 0 10px 0 16px">
+  <div class="py-0 pl-4 pr-2">
     <HNavTitle>操作</HNavTitle>
     <HNavItem
       text="部署"

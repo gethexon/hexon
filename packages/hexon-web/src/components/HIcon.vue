@@ -17,14 +17,13 @@ const classes = computed(() => {
 });
 </script>
 <template>
-  <span class="h-icon" :class="classes">{{ name }}</span>
+  <span class="h-icon select-none" :class="classes">{{ name }}</span>
 </template>
 <style scoped lang="less">
 .h-icon {
   font-family: "Segoe Fluent Icons";
-  user-select: none;
-}
-.h-icon.clickable {
-  cursor: pointer;
+  &.clickable {
+    @apply cursor-pointer;
+  }
 }
 </style>

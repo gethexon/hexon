@@ -2,14 +2,8 @@
 import HToolbar from "./HToolbar.vue";
 </script>
 <template>
-  <HToolbar name="HToolbar">
-    <span
-      style="
-        font-size: 1.5rem;
-        color: var(--color-foreground-2);
-        padding: 0 26px 0 32px;
-      "
-    >
+  <HToolbar>
+    <span class="text-xl pl-8" style="color: var(--color-foreground-2)">
       Hexon
     </span>
   </HToolbar>

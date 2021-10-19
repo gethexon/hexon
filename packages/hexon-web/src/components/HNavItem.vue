@@ -22,25 +22,28 @@ const indents = computed(() => {
 const classes = computed(() => ({ selected: selected.value }));
 </script>
 <template>
-  <div class="h-nav-item" :class="classes">
-    <span style="width: 16px; display: inline-block" v-for="i in indents">
-    </span>
-    <HIcon
-      style="margin-right: 8px; font-size: large"
-      :style="{ color }"
-      :name="icon"
-    />
-    <span class="text">
+  <div
+    class="
+      h-nav-item
+      px-4
+      py-0.5
+      mx-0
+      my-0.5
+      h-7
+      rounded-md
+      select-none
+      cursor-pointer
+      flex
+      items-center
+    "
+    :class="classes"
+  >
+    <span class="w-4 inline-block" v-for="i in indents"> </span>
+    <HIcon class="mr-3 text-lg" :style="{ color }" :name="icon" />
+    <span class="text text-sm">
       {{ text }}
     </span>
-    <span
-      v-if="sub.toString() !== ''"
-      style="
-        font-size: smaller;
-        color: var(--color-foreground-6);
-        margin-left: 4px;
-      "
-    >
+    <span v-if="sub?.toString()" class="sub text-xs ml-2">
       {{ sub }}
     </span>
   </div>
@@ -48,16 +51,12 @@ const classes = computed(() => ({ selected: selected.value }));
 <style scoped lang="less">
 @import "../styles/mixins.less";
 .h-nav-item {
-  padding: 2px 16px;
-  margin: 2px 0;
-  height: 28px;
-  border-radius: 6px;
-  user-select: none;
   color: var(--color-foreground-2);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
   transition: all 0.2s ease;
+
+  .sub {
+    color: var(--color-foreground-6);
+  }
 
   .selected,
   &:hover {

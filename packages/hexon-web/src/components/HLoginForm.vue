@@ -25,32 +25,15 @@ const onHelp = () => {
 };
 </script>
 <template>
-  <form
-    @submit.prevent="onSubmit"
-    style="
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 230px;
-    "
-  >
+  <form @submit.prevent="onSubmit" class="flex flex-col items-center w-60">
     <HImage :src="logo" alt="" size="100px" />
     <div
-      style="
-        color: var(--color-foreground-2);
-        font-size: 1.2rem;
-        margin-top: 16px;
-        user-select: none;
-      "
+      class="text-lg mt-4 select-none"
+      style="color: var(--color-foreground-2)"
     >
       登录到 Hexon
     </div>
-    <HInput
-      placeholder="用户名"
-      v-model="username"
-      style="width: 100%; margin-top: 16px"
-      clearable
-    >
+    <HInput placeholder="用户名" v-model="username" class="mt-4" clearable>
       <template v-slot:prefix>
         <HIcon :name="HIconName.Contact" />
       </template>
@@ -58,7 +41,7 @@ const onHelp = () => {
     <HInput
       placeholder="密码"
       v-model="password"
-      style="width: 100%; margin-top: 16px"
+      class="mt-4"
       attr-type="password"
       clearable
     >
@@ -66,12 +49,12 @@ const onHelp = () => {
         <HIcon :name="HIconName.Lock" />
       </template>
     </HInput>
-    <HButton style="margin-top: 16px" block>登录</HButton>
-    <div style="margin-top: 16px; display: flex; width: 100%">
+    <HButton class="mt-4" block>登录</HButton>
+    <div class="mt-4 flex w-full">
       <HButton
         type="common"
         inverted
-        style="flex: 1"
+        class="flex-1"
         @click="onForget"
         attr-type="button"
       >
@@ -80,7 +63,7 @@ const onHelp = () => {
       <HButton
         type="common"
         inverted
-        style="flex: 1; margin-left: 10px"
+        class="flex-1 ml-2"
         @click="onHelp"
         attr-type="button"
       >

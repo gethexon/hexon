@@ -29,37 +29,38 @@ const classes = computed(() => {
 </script>
 
 <template>
-  <button :class="classes" :type="attrType">
+  <button
+    class="
+      h-button
+      text-xs
+      h-8
+      border-none
+      outline-none
+      rounded-2xl
+      px-3
+      py-0
+      inline-flex
+      items-center
+      justify-center
+      overflow-hidden
+      cursor-pointer
+      select-none
+    "
+    :class="classes"
+    :type="attrType"
+  >
     <slot></slot>
   </button>
 </template>
 
 <style scoped lang="less">
-button {
-  font-size: smaller;
-  height: 32px;
-  border: none;
-  outline: none;
-  border-radius: 16px;
-  padding: 0 16px;
+.h-button {
   transition: color 0.2s ease, background-color 0.2s ease;
-  white-space: nowrap;
-
-  display: inline-flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  cursor: pointer;
-  user-select: none;
-  text-decoration: none;
-  overflow: hidden;
   &.block {
-    display: flex;
-    width: 100%;
+    @apply flex w-full;
   }
   &.round {
-    width: 32px;
+    @apply w-8;
   }
   &.primary {
     background-color: var(--color-primary-n);
@@ -72,7 +73,7 @@ button {
     }
     &.inverted {
       color: var(--color-primary-n);
-      background-color: transparent;
+      @apply bg-transparent;
       &:hover {
         background-color: var(--color-primary-a9);
       }
@@ -92,7 +93,7 @@ button {
     }
     &.inverted {
       color: var(--color-success-n);
-      background-color: transparent;
+      @apply bg-transparent;
       &:hover {
         background-color: var(--color-success-a9);
       }
@@ -112,7 +113,7 @@ button {
     }
     &.inverted {
       color: var(--color-warning-n);
-      background-color: transparent;
+      @apply bg-transparent;
       &:hover {
         background-color: var(--color-warning-a9);
       }
@@ -132,7 +133,7 @@ button {
     }
     &.inverted {
       color: var(--color-error-n);
-      background-color: transparent;
+      @apply bg-transparent;
       &:hover {
         background-color: var(--color-error-a9);
       }
@@ -152,7 +153,7 @@ button {
     }
     &.inverted {
       color: var(--color-common-n);
-      background-color: transparent;
+      @apply bg-transparent;
       &:hover {
         background-color: var(--color-common-a9);
       }
