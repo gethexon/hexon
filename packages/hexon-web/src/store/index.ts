@@ -5,10 +5,10 @@ import {
   GetterTree,
   MutationTree,
 } from "vuex";
-import account from "../account";
-import { list2Tree } from "../lib/list2tree";
-import { Category, Page, Post, Tag } from "../types";
-import { list2object, object2list } from "../utils";
+import account from "~/account";
+import { list2Tree } from "~/lib/list2tree";
+import { Category, Page, Post, Tag } from "~/types";
+import { list2object, object2list } from "~/utils";
 import { GET_BLOG_DATA_ACTION } from "./action-types";
 import { CATEGORIES_LIST, CATEGORIES_TREE } from "./getter-types";
 import { GET_BLOG_DATA } from "./mutation-types";

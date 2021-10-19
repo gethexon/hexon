@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { computed } from "@vue/reactivity";
 import { useRouter } from "vue-router";
 import { useAccount } from "@winwin/vue-simple-account";
-import HLoginForm from "../components/HLoginForm.vue";
-import { computed } from "@vue/reactivity";
+import HLoginForm from "~/components/HLoginForm.vue";
 const router = useRouter();
 const account = useAccount();
 const footer = computed(() => {

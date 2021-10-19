@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { Person24Filled, Key24Filled } from "@vicons/fluent";
+import logo from "~/assets/logo.svg";
 import HImage from "./HImage.vue";
-import logo from "../assets/logo.svg";
 import HInput from "./HInput.vue";
 import HIcon from "./HIcon.vue";
 import HButton from "./HButton.vue";

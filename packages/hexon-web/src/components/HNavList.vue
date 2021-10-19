@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { toRefs, markRaw, computed } from "vue";
 import { useTheme } from "@winwin/vue-global-theming";
-import { HTheme } from "../themes";
+import { HTheme } from "~/themes";
 import HNavTitle from "./HNavTitle.vue";
 import HNavItem from "./HNavItem.vue";
 import { HIconName } from "./HIconName";

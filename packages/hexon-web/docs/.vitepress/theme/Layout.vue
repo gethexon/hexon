@@ -16,5 +16,5 @@ const styles = computed(() => {
   </div>
 </template>
 <style scope lang="less">
-@import "../../../src/styles/index.less";
+@import "~/styles/index.less";
 </style>
