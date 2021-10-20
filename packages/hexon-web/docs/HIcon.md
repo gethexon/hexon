@@ -16,7 +16,12 @@
 
 Icon 使用了字体，其他样式使用 css 和 style 控制
 
+## 所有图标
+
+<HIconMap/>
+
 <script setup>
 import HIcon from '../src/components/HIcon.vue'
+import HIconMap from '../src/components/HIconMap.vue'
 import { HIconName } from '../src/components/HIconName'
 </script>

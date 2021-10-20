@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, toRefs } from "@vue/reactivity";
 import { HIconName } from "./HIconName";
+import HVerticalCenter from "./HVerticalCenter.vue";
 
 const props = withDefaults(
   defineProps<{
@@ -17,7 +18,9 @@ const classes = computed(() => {
 });
 </script>
 <template>
-  <span class="h-icon select-none" :class="classes">{{ name }}</span>
+  <HVerticalCenter>
+    <span class="h-icon select-none" :class="classes">{{ name }}</span>
+  </HVerticalCenter>
 </template>
 <style scoped lang="less">
 .h-icon {
