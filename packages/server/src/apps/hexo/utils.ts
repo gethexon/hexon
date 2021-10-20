@@ -13,6 +13,7 @@ interface Article {
   comments: boolean;
   layout: string;
   content: string;
+  _content: string;
   excerpt?: string | undefined;
   more?: string | undefined;
   source: string;

@@ -1,7 +1,7 @@
 import path from "path";
 import { default as HexoCore } from "hexo";
 import { createDebug, DEV } from "../../utils";
-import { inject, injectable, singleton, container } from "tsyringe";
+import { inject, injectable, singleton } from "tsyringe";
 import {
   IStorageService,
   StorageServiceIdentifier,
@@ -9,58 +9,13 @@ import {
 import { HEXO_BASE_DIR_KEY, HEXO_OPTIONS_KEY } from "./constants";
 import { toCategory, toPage, toPost, toTag } from "./utils";
 import fs from "fs";
+import { BriefPage, BriefPost, Category, Page, Post, Tag } from "./types";
 
 const debug = createDebug("hexo");
 
-export interface Article {
-  _id: string;
-  title: string;
-  date: string;
-  updated?: string | undefined;
-  comments: boolean;
-  layout: string;
-  content: string;
-  excerpt?: string | undefined;
-  more?: string | undefined;
-  source: string;
-  full_source: string;
-  path: string;
-  permalink: string;
-  prev?: string | undefined; // _id
-  next?: string | undefined; // _id
-  raw?: string | undefined;
-  photos?: string[] | undefined;
-  link?: string | undefined;
-  [key: string]: any;
-}
-
-interface Page extends Article {
-  __page: boolean;
-}
-
-export interface Post extends Article {
-  published?: boolean | undefined;
-  categories?: string[] | undefined;
-  tags: string[];
-  __post: boolean;
-}
-
-export interface Tag {
-  _id: string;
-  name: string;
-  slug: string;
-  path: string;
-  permalink: string;
-  posts: string[]; // _id
-  length: number;
-}
-export interface Category extends Tag {
-  parent: string;
-}
-
 interface IHexoAPI {
-  listPost(): Promise<Post[]>;
-  listPage(): Promise<Page[]>;
+  listPost(): Promise<BriefPost[]>;
+  listPage(): Promise<BriefPage[]>;
   listCategory(): Promise<Category[]>;
   listTag(): Promise<Tag[]>;
 }
@@ -158,27 +113,41 @@ class Hexo implements IHexoAPI, IHexoCommand {
   //#endregion
 
   //#region IHexoAPI
-  async listPost(): Promise<Post[]> {
+  async listPost() {
     const docs = this._hexo.locals.get("posts").toArray().map(toPost);
-    return docs.map((postDoc) => ({
-      ...postDoc,
-      date: postDoc?.date.toString(),
-      updated: postDoc?.updated.toString(),
-      prev: postDoc?.prev?._id,
-      next: postDoc?.next?._id,
-      tags: postDoc.tags.data.map((t) => t._id),
-      categories: postDoc?.categories.data.map((c) => c._id),
-    }));
+    return docs.map((postDoc) => {
+      const post: BriefPost = {
+        ...postDoc,
+        date: postDoc?.date.toString(),
+        updated: postDoc?.updated.toString(),
+        prev: postDoc?.prev?._id,
+        next: postDoc?.next?._id,
+        tags: postDoc.tags.data.map((t) => t._id),
+        categories: postDoc?.categories.data.map((c) => c._id),
+      };
+      delete post.content;
+      delete post._content;
+      delete post.raw;
+      delete post.more;
+      return post;
+    });
   }
-  async listPage(): Promise<Page[]> {
+  async listPage() {
     const docs = this._hexo.locals.get("pages").toArray().map(toPage);
-    return docs.map((pageDoc) => ({
-      ...pageDoc,
-      date: pageDoc?.date.toString(),
-      updated: pageDoc?.updated.toString(),
-      prev: pageDoc?.prev?._id,
-      next: pageDoc?.next?._id,
-    }));
+    return docs.map((pageDoc) => {
+      const page: BriefPage = {
+        ...pageDoc,
+        date: pageDoc?.date.toString(),
+        updated: pageDoc?.updated.toString(),
+        prev: pageDoc?.prev?._id,
+        next: pageDoc?.next?._id,
+      };
+      delete page.content;
+      delete page._content;
+      delete page.raw;
+      delete page.more;
+      return page;
+    });
   }
   async listCategory(): Promise<Category[]> {
     const docs = this._hexo.locals.get("categories").toArray().map(toCategory);
