@@ -2,7 +2,7 @@
 
 ## 基础
 
-<div style="background-color:var(--color-background-3);padding:20px;display:inline-block">
+<div style="background-color:var(--color-background-c3);padding:20px;display:inline-block">
 <HLoginForm name="HLoginForm" @on-submit="onSignin"></HLoginForm>
 </div>
 

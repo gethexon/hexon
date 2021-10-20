@@ -3,6 +3,8 @@ import { computed } from "@vue/reactivity";
 import { useRouter } from "vue-router";
 import { useAccount } from "@winwin/vue-simple-account";
 import HLoginForm from "~/components/HLoginForm.vue";
+import { useTheme } from "@winwin/vue-global-theming";
+import { HTheme } from "~/themes";
 const router = useRouter();
 const account = useAccount();
 const footer = computed(() => {
@@ -23,27 +25,17 @@ const onSignIn = async ({
     console.log("fail to signin");
   }
 };
+const theme = useTheme<HTheme>()!;
 </script>
 <template>
   <div
-    style="
-      background-color: var(--color-background-3);
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-top: 20vh;
-      user-select: none;
-    "
+    class="w-full h-full flex flex-col items-center select-none"
+    :style="{ backgroundColor: theme.color.background.c3, paddingTop: '20vh' }"
   >
     <HLoginForm @on-submit="onSignIn" style="flex: 1" />
     <div
-      style="
-        line-height: 32px;
-        color: var(--color-foreground-2);
-        font-size: small;
-      "
+      class="leading-8 text-xs"
+      :style="{ color: theme.color.foreground.c2 }"
     >
       {{ footer }}
     </div>

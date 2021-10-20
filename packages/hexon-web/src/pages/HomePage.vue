@@ -57,7 +57,7 @@ const categoriesTree = computed(() => store.getters[CATEGORIES_TREE]);
     <template v-slot:first>
       <div
         style="
-          background-color: var(--color-background-3);
+          background-color: var(--color-background-c3);
           width: 100%;
           height: 100%;
           display: flex;

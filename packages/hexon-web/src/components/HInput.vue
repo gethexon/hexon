@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { computed, toRefs } from "vue";
+import { InputHTMLAttributes } from "@vue/runtime-dom";
+import { useTheme } from "@winwin/vue-global-theming";
 import HIcon from "./HIcon.vue";
 import { HIconName } from "./HIconName";
-import { InputHTMLAttributes } from "@vue/runtime-dom";
+import { HTheme } from "~/themes";
 
 const props = withDefaults(
   defineProps<{
@@ -24,8 +26,15 @@ const onInput: any = (e: InputEvent) =>
   requestChange((e.target as HTMLInputElement)?.value);
 const onClear = () => requestChange("");
 
-const classes = computed(() => {
-  return { [type.value]: true };
+const theme = useTheme<HTheme>()!;
+const styleVars = computed(() => {
+  const color = theme.value.color.foreground.c2;
+  const bgColor =
+    type.value === "secondary"
+      ? theme.value.color.background.c3
+      : theme.value.color.background.c1;
+  const selectionBgColor = theme.value.color.primary.l8;
+  return { color, bgColor, selectionBgColor };
 });
 </script>
 <template>
@@ -45,7 +54,6 @@ const classes = computed(() => {
       items-center
       w-full
     "
-    :class="classes"
   >
     <div class="prefix mr-1">
       <slot name="prefix"></slot>
@@ -71,14 +79,8 @@ const classes = computed(() => {
 </template>
 <style scoped lang="less">
 .h-input {
-  color: var(--color-foreground-2);
-
-  &.primary {
-    background-color: var(--color-background-1);
-  }
-  &.secondary {
-    background-color: var(--color-background-3);
-  }
+  color: v-bind("styleVars.color");
+  background-color: v-bind("styleVars.bgColor");
   .prefix,
   .suffix {
     @apply flex items-center h-full text-sm;
@@ -89,7 +91,7 @@ const classes = computed(() => {
 
   input {
     &::selection {
-      background-color: var(--color-primary-l8);
+      background-color: v-bind("styleVars.selectionBgColor");
     }
   }
 }

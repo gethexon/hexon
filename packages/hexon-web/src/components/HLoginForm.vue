@@ -6,6 +6,8 @@ import HInput from "./HInput.vue";
 import HIcon from "./HIcon.vue";
 import HButton from "./HButton.vue";
 import { HIconName } from "./HIconName";
+import { useTheme } from "@winwin/vue-global-theming";
+import { HTheme } from "~/themes";
 
 const emits = defineEmits<{
   (e: "on-submit", payload: { username: string; password: string }): void;
@@ -23,13 +25,14 @@ const onForget = () => {
 const onHelp = () => {
   emits("on-help");
 };
+const theme = useTheme<HTheme>()!;
 </script>
 <template>
   <form @submit.prevent="onSubmit" class="flex flex-col items-center w-60">
     <HImage :src="logo" alt="" size="100px" />
     <div
       class="text-lg mt-4 select-none"
-      style="color: var(--color-foreground-2)"
+      :style="{ color: theme.color.foreground.c2 }"
     >
       登录到 Hexon
     </div>

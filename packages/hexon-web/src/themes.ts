@@ -66,19 +66,20 @@ export type HTheme = {
     page: string;
     draft: string;
     background: {
-      1: string;
-      2: string;
-      3: string;
-      4: string;
-      5: string;
-      9: string;
+      c1: string;
+      c2: string;
+      c3: string;
+      c4: string;
+      c5: string;
+      c9: string;
+      transparent: string;
     };
     foreground: {
-      1: string;
-      2: string;
-      3: string;
-      6: string;
-      9: string;
+      c1: string;
+      c2: string;
+      c3: string;
+      c6: string;
+      c9: string;
     };
   };
 };
@@ -96,19 +97,20 @@ export const blueTheme: HTheme = {
     page: "#52bad1",
     draft: "#f1c40f",
     background: {
-      1: "#ffffff",
-      2: "#f8f8f8",
-      3: "#eeeeee",
-      4: "#dfdfdf",
-      5: "#cdcdcd",
-      9: "#282828",
+      c1: "#ffffff",
+      c2: "#f8f8f8",
+      c3: "#eeeeee",
+      c4: "#dfdfdf",
+      c5: "#cdcdcd",
+      c9: "#282828",
+      transparent: "transparent",
     },
     foreground: {
-      1: "#000000",
-      2: "#484848",
-      3: "#000000",
-      6: "#9e9e9e",
-      9: "#ffffff",
+      c1: "#000000",
+      c2: "#484848",
+      c3: "#000000",
+      c6: "#9e9e9e",
+      c9: "#ffffff",
     },
   },
 };
