@@ -1,3 +1,4 @@
+const chalk = require("chalk");
 const { reset } = require("./utils/git");
 const { DEV_BRANCH, PRERELEASE_BRANCH } = require("./utils/constants");
 const {
