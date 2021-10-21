@@ -118,6 +118,7 @@ class Hexo implements IHexoAPI, IHexoCommand {
     return docs.map((postDoc) => {
       const post: BriefPost = {
         ...postDoc,
+        slug: postDoc.slug,
         date: postDoc?.date.toString(),
         updated: postDoc?.updated.toString(),
         prev: postDoc?.prev?._id,
@@ -138,6 +139,7 @@ class Hexo implements IHexoAPI, IHexoCommand {
     return docs.map((pageDoc) => {
       const page: BriefPage = {
         ...pageDoc,
+        slug: pageDoc.slug,
         date: pageDoc?.date.toString(),
         updated: pageDoc?.updated.toString(),
         prev: pageDoc?.prev?._id,

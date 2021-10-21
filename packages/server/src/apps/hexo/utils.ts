@@ -7,6 +7,7 @@ interface Query<T> {
 
 interface Article {
   _id: string;
+  slug: string;
   title: string;
   date: number;
   updated?: number | undefined;
