@@ -1,4 +1,4 @@
-export interface Article {
+export interface BriefArticle {
   _id: string;
   slug: string;
   title: string;
@@ -6,19 +6,35 @@ export interface Article {
   updated?: string | undefined;
   comments: boolean;
   layout: string;
-  content: string;
   excerpt?: string | undefined;
-  more?: string | undefined;
   source: string;
   full_source: string;
   path: string;
   permalink: string;
   prev?: string | undefined; // _id
   next?: string | undefined; // _id
-  raw?: string | undefined;
   photos?: string[] | undefined;
   link?: string | undefined;
+  brief: string;
   [key: string]: any;
+}
+
+export interface BriefPage extends BriefArticle {
+  __page: boolean;
+}
+
+export interface BriefPost extends BriefArticle {
+  published?: boolean | undefined;
+  categories?: string[] | undefined;
+  tags: string[];
+  __post: boolean;
+}
+
+export interface Article extends BriefArticle {
+  _content: string;
+  content: string;
+  raw?: string | undefined;
+  more?: string | undefined;
 }
 
 export interface Page extends Article {

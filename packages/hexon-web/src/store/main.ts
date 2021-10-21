@@ -1,15 +1,15 @@
 import { defineStore } from "pinia";
 import account from "~/account";
 import { list2Tree, TreeNode } from "~/lib/list2tree";
-import { Category, Page, Post, Tag } from "~/types";
+import { BriefPage, BriefPost, Category, Tag } from "~/types";
 import { list2object, object2list } from "~/utils";
 
 export interface IState {
   posts: {
-    [key: string]: Post;
+    [key: string]: BriefPost;
   };
   pages: {
-    [key: string]: Page;
+    [key: string]: BriefPage;
   };
   categories: {
     [key: string]: Category;
@@ -38,8 +38,8 @@ export const useMainStore = defineStore("main", {
             access.get("/categories"),
           ])
         ).map((res) => res.data);
-        this.posts = list2object(posts as Post[], "slug");
-        this.pages = list2object(pages as Page[], "slug");
+        this.posts = list2object(posts as BriefPost[], "slug");
+        this.pages = list2object(pages as BriefPage[], "slug");
         this.tags = list2object(tags as Tag[], "slug");
         this.categories = list2object(categories as Category[], "slug");
       } catch (err) {
