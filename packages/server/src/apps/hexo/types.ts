@@ -14,6 +14,7 @@ export interface BriefArticle {
   next?: string | undefined; // _id
   photos?: string[] | undefined;
   link?: string | undefined;
+  brief: string;
   [key: string]: any;
 }
 

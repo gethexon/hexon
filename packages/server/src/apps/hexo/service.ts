@@ -6,7 +6,7 @@ import {
   IStorageService,
   StorageServiceIdentifier,
 } from "../../services/storage";
-import { HEXO_BASE_DIR_KEY, HEXO_OPTIONS_KEY } from "./constants";
+import { BRIEF_LENGTH, HEXO_BASE_DIR_KEY, HEXO_OPTIONS_KEY } from "./constants";
 import { toCategory, toPage, toPost, toTag } from "./utils";
 import fs from "fs";
 import { BriefPage, BriefPost, Category, Page, Post, Tag } from "./types";
@@ -124,6 +124,7 @@ class Hexo implements IHexoAPI, IHexoCommand {
         next: postDoc?.next?._id,
         tags: postDoc.tags.data.map((t) => t._id),
         categories: postDoc?.categories.data.map((c) => c._id),
+        brief: postDoc._content.slice(0, BRIEF_LENGTH),
       };
       delete post.content;
       delete post._content;
@@ -141,6 +142,7 @@ class Hexo implements IHexoAPI, IHexoCommand {
         updated: pageDoc?.updated.toString(),
         prev: pageDoc?.prev?._id,
         next: pageDoc?.next?._id,
+        brief: pageDoc._content.slice(0, BRIEF_LENGTH),
       };
       delete page.content;
       delete page._content;
