@@ -121,10 +121,10 @@ class Hexo implements IHexoAPI, IHexoCommand {
         slug: postDoc.slug,
         date: postDoc?.date.toString(),
         updated: postDoc?.updated.toString(),
-        prev: postDoc?.prev?._id,
-        next: postDoc?.next?._id,
-        tags: postDoc.tags.data.map((t) => t._id),
-        categories: postDoc?.categories.data.map((c) => c._id),
+        prev: postDoc?.prev?.slug,
+        next: postDoc?.next?.slug,
+        tags: postDoc.tags.data.map((t) => t.slug),
+        categories: postDoc?.categories.data.map((c) => c.slug),
         brief: postDoc._content.slice(0, BRIEF_LENGTH),
       };
       delete post.content;
@@ -142,8 +142,8 @@ class Hexo implements IHexoAPI, IHexoCommand {
         slug: pageDoc.slug,
         date: pageDoc?.date.toString(),
         updated: pageDoc?.updated.toString(),
-        prev: pageDoc?.prev?._id,
-        next: pageDoc?.next?._id,
+        prev: pageDoc?.prev?.slug,
+        next: pageDoc?.next?.slug,
         brief: pageDoc._content.slice(0, BRIEF_LENGTH),
       };
       delete page.content;
@@ -157,14 +157,14 @@ class Hexo implements IHexoAPI, IHexoCommand {
     const docs = this._hexo.locals.get("categories").toArray().map(toCategory);
     return docs.map((categoryDoc) => ({
       ...categoryDoc,
-      posts: categoryDoc.posts.map((p) => p._id),
+      posts: categoryDoc.posts.map((p) => p.slug),
     }));
   }
   async listTag(): Promise<Tag[]> {
     const docs = this._hexo.locals.get("categories").toArray().map(toTag);
     return docs.map((tagDoc) => ({
       ...tagDoc,
-      posts: tagDoc.posts.map((p) => p._id),
+      posts: tagDoc.posts.map((p) => p.slug),
     }));
   }
   //#endregion
