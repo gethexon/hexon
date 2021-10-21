@@ -69,7 +69,9 @@ export type HTheme = {
       c1: string;
       c2: string;
       c3: string;
+      c31: string;
       c4: string;
+      c49: string;
       c5: string;
       c9: string;
       transparent: string;
@@ -100,7 +102,9 @@ export const blueTheme: HTheme = {
       c1: "#ffffff",
       c2: "#f8f8f8",
       c3: "#eeeeee",
+      c31: "#e2e2e2",
       c4: "#dfdfdf",
+      c49: "#d8d8d8",
       c5: "#cdcdcd",
       c9: "#282828",
       transparent: "transparent",

@@ -1934,6 +1934,11 @@ dateformat@^3.0.0:
   resolved "https://registry.npmmirror.com/dateformat/download/dateformat-3.0.3.tgz?cache=0&sync_timestamp=1634391502625&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fdateformat%2Fdownload%2Fdateformat-3.0.3.tgz#a6e37499a4d9a9cf85ef5872044d62901c9889ae"
   integrity sha1-puN0maTZqc+F71hyBE1ikByYia4=
 
+dayjs@^1.10.7:
+  version "1.10.7"
+  resolved "https://registry.nlark.com/dayjs/download/dayjs-1.10.7.tgz#2cf5f91add28116748440866a0a1d26f3a6ce468"
+  integrity sha1-LPX5Gt0oEWdIRAhmoKHSbzps5Gg=
+
 debug@4, debug@^4.1.0, debug@^4.1.1:
   version "4.3.2"
   resolved "https://registry.nlark.com/debug/download/debug-4.3.2.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fdebug%2Fdownload%2Fdebug-4.3.2.tgz#f0a49c18ac8779e31d4a0c6029dfb76873c7428b"

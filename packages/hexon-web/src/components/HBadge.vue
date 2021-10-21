@@ -23,7 +23,17 @@ const styles = computed(() => ({
 </script>
 <template>
   <span
-    class="h-badge px-1.5 py-0.5 rounded text-xs select-none mr-1"
+    class="
+      h-badge
+      px-1.5
+      py-0.5
+      rounded
+      text-xs
+      select-none
+      mr-1
+      mb-0.5
+      inline-block
+    "
     :class="classes"
     :style="styles"
   >
