@@ -13,10 +13,10 @@ const categories = ref([
   {
     name: "CA",
     key: "CA",
-    count: 2,
+    posts: [1,2],
     children: [
-      { name: "CA1", key: "CA1", count: 2 },
-      { name: "CA2", key: "CA2", count: 2 },
+      { name: "CA1", key: "CA1", posts: [1,2] },
+      { name: "CA2", key: "CA2", posts: [1,2] },
     ],
   },
 ])
