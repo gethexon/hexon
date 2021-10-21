@@ -84,7 +84,7 @@ exports.listCategory = async (ctx, next) => {
 exports.new = async (ctx, next) => {
   const hexo = DI.inject(IHexo)
   const { title, layout, path, slug, replace } = ctx.request.body
-  const res = await hexo.new(title, { layout, path, slug, replace })
+  const res = await hexo.new(title, { layout, path: path.split('\\').join('/'), slug, replace })
   ctx.status = 200
   ctx.body = res
 }
