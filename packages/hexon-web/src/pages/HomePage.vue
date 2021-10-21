@@ -13,7 +13,7 @@ import { CATEGORIES_TREE } from "~/store/getter-types";
 const store = useStore();
 const account = useAccount();
 const themeController = useThemeController();
-const theme = useTheme<HTheme>();
+const theme = useTheme<HTheme>()!;
 const onSignOut = async () => {
   await account?.signout();
   forceReloadWindow();
@@ -56,13 +56,8 @@ const categoriesTree = computed(() => store.getters[CATEGORIES_TREE]);
   >
     <template v-slot:first>
       <div
-        style="
-          background-color: var(--color-background-c3);
-          width: 100%;
-          height: 100%;
-          display: flex;
-          flex-direction: column;
-        "
+        class="w-full h-full flex flex-col"
+        :style="{ backgroundColor: theme.color.background.c3 }"
       >
         <HTitle />
         <div style="flex: 1 0 0; overflow-y: auto">
