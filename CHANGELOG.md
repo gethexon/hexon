@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.8.0-beta.4](https://github.com/gethexon/hexon/compare/v0.8.0-beta.3...v0.8.0-beta.4) (2021-10-21)
+
+
+### Bug Fixes
+
+* show 500 instead of 404 when error ([208f9eb](https://github.com/gethexon/hexon/commit/208f9ebca656a48d39c56728c1a02d582c3d3595))
+
+
+
+
+
 # [0.8.0-beta.3](https://github.com/gethexon/hexon/compare/v0.8.0-beta.2...v0.8.0-beta.3) (2021-10-21)
 
 
