@@ -1,5 +1,6 @@
 export interface Article {
   _id: string;
+  slug: string;
   title: string;
   date: string;
   updated?: string | undefined;

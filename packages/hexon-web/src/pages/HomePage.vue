@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import { computed, ref, onMounted } from "vue";
-import { useStore } from "vuex";
 import { useThemeController, useTheme } from "@winwin/vue-global-theming";
 import { useAccount } from "@winwin/vue-simple-account";
-import { GET_BLOG_DATA_ACTION } from "~/store/action-types";
 import { HTheme } from "~/themes";
 import { forceReloadWindow } from "~/utils";
 import SplitView from "~/lib/splitview";
 import HTitle from "~/components/HTitle.vue";
 import HNavList from "~/components/HNavList.vue";
-import { CATEGORIES_TREE } from "~/store/getter-types";
-const store = useStore();
+import { useMainStore } from "~/store/main";
+
+const mainStore = useMainStore();
 const account = useAccount();
 const themeController = useThemeController();
 const theme = useTheme<HTheme>()!;
@@ -18,9 +17,8 @@ const onSignOut = async () => {
   await account?.signout();
   forceReloadWindow();
 };
-const state = computed(() => store.state);
 const loadBlogData = async () => {
-  await store.dispatch(GET_BLOG_DATA_ACTION);
+  mainStore.getBlogData();
 };
 onMounted(() => loadBlogData());
 const changeToPurple = () => {
@@ -44,7 +42,8 @@ const config = {
     max: 500,
   },
 };
-const categoriesTree = computed(() => store.getters[CATEGORIES_TREE]);
+
+const categoriesTree = computed(() => mainStore.categoriesTree);
 </script>
 <template>
   <SplitView
@@ -81,7 +80,7 @@ const categoriesTree = computed(() => store.getters[CATEGORIES_TREE]);
         <button @click="changeToPurple">change purple</button>
         <button @click="onSignOut">signout</button>
         <button @click="loadBlogData">get blog data</button>
-        <pre>{{ state }}</pre>
+        <pre>{{ mainStore }}</pre>
         <pre :style="style">
     {{ theme }}
   </pre

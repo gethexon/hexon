@@ -1,1 +1,0 @@
-export const GET_BLOG_DATA_ACTION = "GET_BLOG_DATA_ACTION";

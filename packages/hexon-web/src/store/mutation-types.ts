@@ -1,2 +1,0 @@
-export const GET_BLOG_DATA = "GET_BLOG_DATA";
-export const GET_BLOG_DATA_FAIL = "GET_BLOG_DATA_FAIL";

@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { toRefs, markRaw, computed } from "vue";
+import { toRefs, computed } from "vue";
 import { useTheme } from "@winwin/vue-global-theming";
 import { HTheme } from "~/themes";
+import { TreeNode } from "~/lib/list2tree";
+import { Category } from "~/types";
 import HNavTitle from "./HNavTitle.vue";
 import HNavItem from "./HNavItem.vue";
 import { HIconName } from "./HIconName";
@@ -18,14 +20,8 @@ type ActionType =
   | "draft";
 
 const t = useTheme<HTheme>();
-interface ICategoryInfo {
-  name: string;
-  count: number;
-  key: string;
-  children?: ICategoryInfo[];
-}
 const props = defineProps<{
-  categories: ICategoryInfo[];
+  categories: TreeNode<Category, "children">[];
   post: number;
   page: number;
   draft: number;
@@ -47,14 +43,14 @@ const data = computed(() => {
     sub?: string | number;
     key: string;
   }[] = [];
-  function go(c: ICategoryInfo, i = 0) {
+  function go(c: TreeNode<Category, "children">, i = 0) {
     res.push({
       text: c.name,
       icon: HIconName.Folder,
       color: t?.value.color.folder,
       indent: i,
-      sub: c.count,
-      key: c.key,
+      sub: c.posts.length,
+      key: c.slug,
     });
     c.children?.forEach((child) => go(child, i + 1));
   }

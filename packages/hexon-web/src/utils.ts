@@ -11,7 +11,7 @@ type ListItem<T1, T2 extends string> = T1 & {
 export function list2object<T1, T2 extends string>(
   list: ListItem<T1, T2>[],
   key: T2
-): { [key: string]: ListItem<T1, T2> } {
+): { [key: string]: T1 } {
   const o: { [key: string]: ListItem<T1, T2> } = {};
   list.forEach((item) => (o[item[key]] = item));
   return o;
@@ -21,6 +21,6 @@ export function object2list<T1, T2 extends string>(
     [key: string]: ListItem<T1, T2>;
   },
   key: T2
-): ListItem<T1, T2>[] {
+): T1[] {
   return Object.entries(object).map(([key, value]) => value);
 }
