@@ -2,21 +2,8 @@
   "name": "hexon-server",
   "version": "0.8.0-beta.5",
   "private": true,
-  "description": "> TODO: description",
   "author": "winwin_2011 <yjh2011@live.com>",
-  "homepage": "",
   "license": "MIT",
-  "directories": {
-    "lib": "lib",
-    "test": "__tests__"
-  },
-  "files": [
-    "lib"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git@gitee.com:winwin_2011/winwinweb.git"
-  },
   "scripts": {
     "start": "export DEBUG=null && export NODE_ENV=production && node dist/index.js",
     "dev": "export DEBUG=hexon-server:* &&  nodemon -e ts,js src/index.js --exec ts-node",
