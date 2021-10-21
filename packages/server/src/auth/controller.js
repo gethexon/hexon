@@ -73,6 +73,7 @@ exports.jwtAuth = compose([async (ctx, next) => {
         message: 'Authtication Error'
       }
     }
+	 throw err
   }
 }, async function (ctx, next) {
   const authService = DI.inject(IAuthService)
