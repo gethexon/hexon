@@ -117,6 +117,7 @@ const styleVars = computed(() => {
       overflow-hidden
       cursor-pointer
       select-none
+      flex-shrink-0
     "
     :class="classes"
     :type="attrType"
