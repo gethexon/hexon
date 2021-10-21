@@ -1,2 +1,2 @@
-exports.NEXT_BRANCH = 'next'
-exports.PRERELEASE_BRANCH = 'prerelease'
+exports.DEV_BRANCH = "develop";
+exports.PRERELEASE_BRANCH = "prerelease";

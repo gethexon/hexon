@@ -9,8 +9,6 @@
   },
   "scripts": {
     "beta": "node ./scripts/prerelease.js",
-    "build":"lerna run build",
-    "ci:mergetonext":"export OPTERATOR=CI && node ./scripts/merge2next.js",
-    "ci:mtn":"yarn ci:mergetonext"
+    "build": "lerna run build"
   }
 }
