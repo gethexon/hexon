@@ -33,6 +33,8 @@ async function wrap() {
   if (currentBranch !== PRERELEASE_BRANCH) await checkout(PRERELEASE_BRANCH);
   await reset(commit, true);
   await version();
+  await checkout(DEV_BRANCH);
+  await reset(PRERELEASE_BRANCH, true);
   console.log(chalk.green("Prerelease done. Remember to push to remote."));
 }
 
