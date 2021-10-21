@@ -16,6 +16,9 @@ async function getCurrentBranch() {
   ]);
   return branch;
 }
+async function reset(commit, hard = false) {
+  await execaInherit("git", ["reset", commit].concat(hard ? ["--hard"] : []));
+}
 
 async function rebase(branch) {
   await execaInherit("git", ["rebase", branch]);
@@ -64,6 +67,7 @@ async function addThenCommit(message) {
 }
 
 module.exports = {
+  reset,
   addAll,
   listBranches,
   getCurrentBranch,

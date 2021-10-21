@@ -1,13 +1,10 @@
-const chalk = require("chalk");
+const { reset } = require("./utils/git");
 const { DEV_BRANCH, PRERELEASE_BRANCH } = require("./utils/constants");
 const {
-  listBranches,
   getCurrentBranch,
   checkout,
-  forceRemoveBranch,
-  branchThenCheckout,
-  setUpstream,
   addThenCommit,
+  listLog,
 } = require("./utils/git");
 
 const { execaInherit } = require("./utils/execa");
@@ -26,32 +23,15 @@ async function version() {
   ]);
 }
 
-async function mergeNextToPrerelease() {
-  await execaInherit("git", [
-    "merge",
-    DEV_BRANCH,
-    "--no-ff",
-    "-m",
-    `Merge branch ${DEV_BRANCH} to ${PRERELEASE_BRANCH}`,
-  ]);
-}
-
 async function wrap() {
-  const branches = await listBranches();
-  if (!branches.includes(DEV_BRANCH)) {
-    console.log(chalk.green(`There no ${DEV_BRANCH} branch. exiting...`));
-    return;
-  }
-
   const currentBranch = await getCurrentBranch();
+  if (currentBranch !== DEV_BRANCH) await checkout(DEV_BRANCH);
   await build();
   await addThenCommit("chore: build");
+  const { commit } = (await listLog())[0];
   if (currentBranch !== PRERELEASE_BRANCH) await checkout(PRERELEASE_BRANCH);
-  await mergeNextToPrerelease();
+  await reset(commit, true);
   await version();
-  await forceRemoveBranch(DEV_BRANCH);
-  await branchThenCheckout(DEV_BRANCH);
-  await setUpstream(DEV_BRANCH, "origin/" + DEV_BRANCH);
   console.log(chalk.green("Prerelease done. Remember to push to remote."));
 }
 
