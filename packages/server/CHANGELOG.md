@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.8.0-beta.3](https://github.com/gethexon/hexon/compare/v0.8.0-beta.2...v0.8.0-beta.3) (2021-10-21)
+
+
+### Bug Fixes
+
+* 转换反斜杠为正斜杠 ([44d8844](https://github.com/gethexon/hexon/commit/44d88441cd63db296a99bbcff728a97a5ae913a4))
+
+
+
+
+
 # [0.8.0-beta.2](https://github.com/gethexon/hexon/compare/v0.8.0-beta.1...v0.8.0-beta.2) (2021-04-23)
 
 
