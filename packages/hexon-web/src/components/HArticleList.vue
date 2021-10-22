@@ -6,7 +6,7 @@ const props = defineProps<{
   articles: {
     title: string;
     brief?: string;
-    tags: string[];
+    tags?: string[];
     date: string;
     slug: string;
   }[];

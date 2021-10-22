@@ -161,7 +161,7 @@ class Hexo implements IHexoAPI, IHexoCommand {
     }));
   }
   async listTag(): Promise<Tag[]> {
-    const docs = this._hexo.locals.get("categories").toArray().map(toTag);
+    const docs = this._hexo.locals.get("tags").toArray().map(toTag);
     return docs.map((tagDoc) => ({
       ...tagDoc,
       posts: tagDoc.posts.map((p) => p.slug),

@@ -10,6 +10,9 @@ import HNavList from "~/components/HNavList.vue";
 import { useMainStore } from "~/store/main";
 import { useArticleListStore } from "~/store/articleList";
 import { HNavListActionPayload } from "~/components/types";
+import HSearchBar from "~/components/HSearchBar.vue";
+import HArticleList from "~/components/HArticleList.vue";
+import { BriefPost } from "~/types";
 
 const mainStore = useMainStore();
 const articleListStore = useArticleListStore();
@@ -81,6 +84,29 @@ const onNavListAction = (payload: HNavListActionPayload) => {
 const draftsCount = computed(() => mainStore.draftsList.length);
 const postsCount = computed(() => mainStore.publishedPostsList.length);
 const pagesCount = computed(() => mainStore.pagesList.length);
+const search = ref("");
+const articleListData = computed(() =>
+  articles.value.map((article) => {
+    const res: {
+      title: string;
+      brief?: string;
+      tags?: string[];
+      date: string;
+      slug: string;
+    } = {
+      title: article.title,
+      brief: article.brief,
+      date: article.date,
+      slug: article.slug,
+    };
+    if (article.__post) {
+      res.tags = (article as BriefPost).tags.map(
+        (tag) => mainStore.tags[tag].name
+      );
+    }
+    return res;
+  })
+);
 </script>
 <template>
   <SplitView
@@ -88,7 +114,7 @@ const pagesCount = computed(() => mainStore.pagesList.length);
     v-model:sep2at="sep22"
     :sep1="config.sep1"
     :sep2="config.sep2"
-    style="width: 100%; height: 100%"
+    class="h-full w-full"
   >
     <template v-slot:first>
       <div
@@ -110,7 +136,13 @@ const pagesCount = computed(() => mainStore.pagesList.length);
       </div>
     </template>
     <template v-slot:second>
-      <div style="overflow: auto; width: 100%; height: 100%">TODO</div>
+      <div
+        class="overflow-auto w-full h-full"
+        :style="{ backgroundColor: theme.color.background.c2 }"
+      >
+        <HSearchBar v-model="search" />
+        <HArticleList :articles="articleListData" />
+      </div>
     </template>
     <template v-slot:third>
       <div style="overflow: auto; width: 100%; height: 100%">
