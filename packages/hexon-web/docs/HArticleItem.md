@@ -34,10 +34,8 @@
 
 <script setup>
 import HArticleItem from '../src/components/HArticleItem.vue'
-const title = 'Lorem ipsum dolor sit amet consectetur, adipisicing elit.'
-const brief = 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Doloribus, tempora nisi. Itaque, ipsum qui. Amet fugiat eligendi harum aspernatur atque? Architecto sit in ad minus reprehenderit quaerat cum nobis exercitationem!'
-const tags = ['hexo','hexon','hexon','hexon','hexon','hexon','hexon']
-const date = new Date()
+import { genArticle } from './helper'
+const { title, brief, tags, date} = genArticle()
 </script>
 <style scope>
 .h-container{

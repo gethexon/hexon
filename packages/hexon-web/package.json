@@ -29,6 +29,7 @@
   "devDependencies": {
     "@types/color": "^3.0.2",
     "@types/color-convert": "^2.0.0",
+    "@types/faker": "^5.5.9",
     "@types/jest": "^27.0.2",
     "@vicons/fluent": "^0.11.0",
     "@vicons/utils": "^0.1.4",
@@ -37,6 +38,7 @@
     "@vue/test-utils": "^2.0.0-rc.15",
     "autoprefixer": "^10.3.7",
     "babel-loader": "^8.2.2",
+    "faker": "^5.5.3",
     "jest": "^27.2.5",
     "jsdom": "^18.0.0",
     "less": "^4.1.1",

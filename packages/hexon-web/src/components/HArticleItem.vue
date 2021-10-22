@@ -13,9 +13,9 @@ const props = withDefaults(
   defineProps<{
     title: string;
     brief?: string;
-    tags: string[];
+    tags?: string[];
     date: string;
-    selected: boolean;
+    selected?: boolean;
   }>(),
   { selected: false }
 );
