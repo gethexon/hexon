@@ -78,6 +78,9 @@ const onNavListAction = (payload: HNavListActionPayload) => {
       break;
   }
 };
+const draftsCount = computed(() => mainStore.draftsList.length);
+const postsCount = computed(() => mainStore.publishedPostsList.length);
+const pagesCount = computed(() => mainStore.pagesList.length);
 </script>
 <template>
   <SplitView
@@ -97,9 +100,9 @@ const onNavListAction = (payload: HNavListActionPayload) => {
           <!-- 这层 div 用来滚动 -->
           <HNavList
             :categories="categoriesTree"
-            :page="0"
-            :post="0"
-            :draft="0"
+            :page="pagesCount"
+            :post="postsCount"
+            :draft="draftsCount"
             @on-action="onNavListAction"
           />
         </div>

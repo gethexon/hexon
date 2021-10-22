@@ -54,6 +54,18 @@ export const useMainStore = defineStore("main", {
         "slug"
       ).concat(object2list<BriefPost | BriefPage, "slug">(state.posts, "slug"));
     },
+    allPostsList(state): BriefPost[] {
+      return object2list(state.posts, "slug");
+    },
+    publishedPostsList(state): BriefPost[] {
+      return this.allPostsList.filter((post) => post.published);
+    },
+    draftsList(state): BriefPost[] {
+      return this.allPostsList.filter((post) => !post.published);
+    },
+    pagesList(state): BriefPage[] {
+      return object2list(state.pages, "slug");
+    },
     categoriesTree(): TreeNode<Category, "children">[] {
       return list2Tree(this.categoriesList, (item) => !item.parent, {
         idKey: "_id",
