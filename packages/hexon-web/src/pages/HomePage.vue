@@ -137,11 +137,13 @@ const articleListData = computed(() =>
     </template>
     <template v-slot:second>
       <div
-        class="overflow-auto w-full h-full"
+        class="flex flex-col w-full h-full"
         :style="{ backgroundColor: theme.color.background.c2 }"
       >
-        <HSearchBar v-model="search" />
-        <HArticleList :articles="articleListData" />
+        <HSearchBar v-model="search" class="flex-shrink-0" />
+        <div class="overflow-auto flex-1">
+          <HArticleList :articles="articleListData" />
+        </div>
       </div>
     </template>
     <template v-slot:third>
