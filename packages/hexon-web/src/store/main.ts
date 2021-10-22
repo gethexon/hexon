@@ -48,6 +48,12 @@ export const useMainStore = defineStore("main", {
     },
   },
   getters: {
+    articles(state): (BriefPost | BriefPage)[] {
+      return object2list<BriefPost | BriefPage, "slug">(
+        state.pages,
+        "slug"
+      ).concat(object2list<BriefPost | BriefPage, "slug">(state.posts, "slug"));
+    },
     categoriesTree(): TreeNode<Category, "children">[] {
       return list2Tree(this.categoriesList, (item) => !item.parent, {
         idKey: "_id",

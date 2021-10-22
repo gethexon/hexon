@@ -8,8 +8,11 @@ import SplitView from "~/lib/splitview";
 import HTitle from "~/components/HTitle.vue";
 import HNavList from "~/components/HNavList.vue";
 import { useMainStore } from "~/store/main";
+import { useArticleListStore } from "~/store/articleList";
+import { HNavListActionPayload } from "~/components/types";
 
 const mainStore = useMainStore();
+const articleListStore = useArticleListStore();
 const account = useAccount();
 const themeController = useThemeController();
 const theme = useTheme<HTheme>()!;
@@ -44,6 +47,37 @@ const config = {
 };
 
 const categoriesTree = computed(() => mainStore.categoriesTree);
+const filter = computed(() => articleListStore.articleFilter);
+const articles = computed(() => filter.value(mainStore.articles));
+const onFilterAll = () => articleListStore.setFilter({ type: "all" });
+const onFilterPost = () => articleListStore.setFilter({ type: "post" });
+const onFilterPage = () => articleListStore.setFilter({ type: "page" });
+const onFilterDraft = () => articleListStore.setFilter({ type: "draft" });
+const onFilterCategory = (slug: string) =>
+  articleListStore.setFilter({ type: "category", slug });
+const onFilterTag = (slug: string) =>
+  articleListStore.setFilter({ type: "tag", slug });
+const onNavListAction = (payload: HNavListActionPayload) => {
+  switch (payload.type) {
+    case "all":
+      onFilterAll();
+      break;
+    case "post":
+      onFilterPost();
+      break;
+    case "page":
+      onFilterPage();
+      break;
+    case "draft":
+      onFilterDraft();
+      break;
+    case "category":
+      onFilterCategory(payload.slug);
+      break;
+    default:
+      break;
+  }
+};
 </script>
 <template>
   <SplitView
@@ -66,6 +100,7 @@ const categoriesTree = computed(() => mainStore.categoriesTree);
             :page="0"
             :post="0"
             :draft="0"
+            @on-action="onNavListAction"
           />
         </div>
         TODO
@@ -80,7 +115,7 @@ const categoriesTree = computed(() => mainStore.categoriesTree);
         <button @click="changeToPurple">change purple</button>
         <button @click="onSignOut">signout</button>
         <button @click="loadBlogData">get blog data</button>
-        <pre>{{ mainStore }}</pre>
+        <pre>{{ articles }}</pre>
         <pre :style="style">
     {{ theme }}
   </pre
