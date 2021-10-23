@@ -26,10 +26,9 @@ export const useDetailStore = defineStore("detail", {
     async getArticle(options: { source: string; type: "post" | "page" }) {
       let res;
       try {
-        res = await account.access.get(
-          `/${options.type}/${encodeURIComponent(options.source)}`
-        );
+        res = await account.access.get(`/${options.type}/${options.source}`);
       } catch (err) {
+        console.error(err);
         return;
       }
       this.article =

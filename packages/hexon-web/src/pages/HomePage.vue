@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, onMounted } from "vue";
-import { useThemeController, useTheme } from "@winwin/vue-global-theming";
-import { useAccount } from "@winwin/vue-simple-account";
+import { RouterView, useRouter, useRoute } from "vue-router";
+import { useTheme } from "@winwin/vue-global-theming";
 import { HTheme } from "~/themes";
-import { forceReloadWindow } from "~/utils";
 import SplitView from "~/lib/splitview";
 import HTitle from "~/components/HTitle.vue";
 import HNavList from "~/components/HNavList.vue";
@@ -13,24 +12,16 @@ import { HNavListActionPayload } from "~/components/types";
 import HSearchBar from "~/components/HSearchBar.vue";
 import HArticleList from "~/components/HArticleList.vue";
 import { BriefPost } from "~/types";
-import { useDetailStore } from "~/store/detail";
 
 const mainStore = useMainStore();
+const router = useRouter();
+const route = useRoute();
 const articleListStore = useArticleListStore();
-const account = useAccount();
-const themeController = useThemeController();
 const theme = useTheme<HTheme>()!;
-const onSignOut = async () => {
-  await account?.signout();
-  forceReloadWindow();
-};
 const loadBlogData = async () => {
   mainStore.getBlogData();
 };
 onMounted(() => loadBlogData());
-const style = computed(() => ({
-  backgroundColor: theme?.value.color.primary.n,
-}));
 const sep11 = ref(200);
 const sep22 = ref(300);
 const config = {
@@ -87,12 +78,14 @@ const articleListData = computed(() =>
       brief?: string;
       tags?: string[];
       date: string;
-      slug: string;
+      source: string;
+      type: "post" | "page";
     } = {
       title: article.title,
       brief: article.brief,
       date: article.date,
-      slug: article.slug,
+      source: article.source,
+      type: article.__post ? "post" : "page",
     };
     if (article.__post) {
       res.tags = (article as BriefPost).tags.map(
@@ -102,31 +95,22 @@ const articleListData = computed(() =>
     return res;
   })
 );
-const detailStore = useDetailStore();
-const onGetArticle = () => {
-  detailStore.getArticle({
-    type: "post",
-    source: mainStore.allPostsList[0].source,
-  });
-};
-const openArticle = () => {
-  detailStore.openArticle();
-};
-const saveArticle = () => {
-  detailStore.saveArticle();
-};
-const updateArticle = () => {
-  if (!detailStore.article) return;
-  detailStore.updateArticle({
-    ...detailStore.article,
-    title: new Date().getTime().toString(),
-  });
-};
-const closeArticle = () => {
-  detailStore.closeArticle();
-};
-const clearArticle = () => {
-  detailStore.clearArticle();
+const selected = computed(() =>
+  decodeURIComponent(route.params.source as string)
+);
+const onArticleClick = ({
+  source,
+  type,
+}: {
+  source: string;
+  type: "post" | "page";
+}) => {
+  if (source === selected.value) router.push("/");
+  else
+    router.push({
+      name: "view",
+      params: { source: encodeURIComponent(source), type },
+    });
 };
 </script>
 <template>
@@ -163,22 +147,16 @@ const clearArticle = () => {
       >
         <HSearchBar v-model="search" class="flex-shrink-0" />
         <div class="overflow-auto flex-1">
-          <HArticleList :articles="articleListData" />
+          <HArticleList
+            :articles="articleListData"
+            :selected="selected"
+            @on-click="onArticleClick"
+          />
         </div>
       </div>
     </template>
     <template v-slot:third>
-      <div style="overflow: auto; width: 100%; height: 100%">
-        <button @click="onGetArticle">onGetArticle</button><br />
-        <button @click="openArticle">openArticle</button><br />
-        <button @click="saveArticle">saveArticle</button><br />
-        <button @click="updateArticle">updateArticle</button><br />
-        <button @click="closeArticle">closeArticle</button><br />
-        <button @click="clearArticle">clearArticle</button><br />
-        <button @click="onSignOut">signout</button><br />
-        <button @click="loadBlogData">get blog data</button><br />
-        <pre>{{ detailStore }}</pre>
-      </div>
+      <RouterView />
     </template>
   </SplitView>
 </template>

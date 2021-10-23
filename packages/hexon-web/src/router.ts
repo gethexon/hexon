@@ -2,10 +2,16 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import account from "./account";
 
 const routes: RouteRecordRaw[] = [
-  { path: "/", redirect: "/home" },
   {
-    path: "/home",
+    path: "/",
     component: () => import("./pages/HomePage.vue"),
+    children: [
+      {
+        path: "view/:type/:source",
+        component: () => import("./views/ViewerView.vue"),
+        name: "view",
+      },
+    ],
   },
   {
     path: "/signin",
@@ -13,7 +19,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: "/:pathMatch(.*)*",
-    redirect: "/home",
+    redirect: "/",
   },
 ];
 
@@ -21,7 +27,7 @@ const router = createRouter({ history: createWebHashHistory(), routes });
 
 router.beforeEach(
   account.beforeEachGuard({
-    home: "/home",
+    home: "/",
     signin: "/signin",
   })
 );
