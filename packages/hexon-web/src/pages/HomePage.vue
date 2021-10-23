@@ -13,6 +13,7 @@ import { HNavListActionPayload } from "~/components/types";
 import HSearchBar from "~/components/HSearchBar.vue";
 import HArticleList from "~/components/HArticleList.vue";
 import { BriefPost } from "~/types";
+import { useDetailStore } from "~/store/detail";
 
 const mainStore = useMainStore();
 const articleListStore = useArticleListStore();
@@ -27,12 +28,6 @@ const loadBlogData = async () => {
   mainStore.getBlogData();
 };
 onMounted(() => loadBlogData());
-const changeToPurple = () => {
-  themeController?.changeTheme("purple");
-};
-const changeToDefault = () => {
-  themeController?.changeTheme("default");
-};
 const style = computed(() => ({
   backgroundColor: theme?.value.color.primary.n,
 }));
@@ -107,6 +102,32 @@ const articleListData = computed(() =>
     return res;
   })
 );
+const detailStore = useDetailStore();
+const onGetArticle = () => {
+  detailStore.getArticle({
+    type: "post",
+    source: mainStore.allPostsList[0].source,
+  });
+};
+const openArticle = () => {
+  detailStore.openArticle();
+};
+const saveArticle = () => {
+  detailStore.saveArticle();
+};
+const updateArticle = () => {
+  if (!detailStore.article) return;
+  detailStore.updateArticle({
+    ...detailStore.article,
+    title: new Date().getTime().toString(),
+  });
+};
+const closeArticle = () => {
+  detailStore.closeArticle();
+};
+const clearArticle = () => {
+  detailStore.clearArticle();
+};
 </script>
 <template>
   <SplitView
@@ -148,15 +169,15 @@ const articleListData = computed(() =>
     </template>
     <template v-slot:third>
       <div style="overflow: auto; width: 100%; height: 100%">
-        <button @click="changeToDefault">change default</button>
-        <button @click="changeToPurple">change purple</button>
-        <button @click="onSignOut">signout</button>
-        <button @click="loadBlogData">get blog data</button>
-        <pre>{{ articles }}</pre>
-        <pre :style="style">
-    {{ theme }}
-  </pre
-        >
+        <button @click="onGetArticle">onGetArticle</button><br />
+        <button @click="openArticle">openArticle</button><br />
+        <button @click="saveArticle">saveArticle</button><br />
+        <button @click="updateArticle">updateArticle</button><br />
+        <button @click="closeArticle">closeArticle</button><br />
+        <button @click="clearArticle">clearArticle</button><br />
+        <button @click="onSignOut">signout</button><br />
+        <button @click="loadBlogData">get blog data</button><br />
+        <pre>{{ detailStore }}</pre>
       </div>
     </template>
   </SplitView>

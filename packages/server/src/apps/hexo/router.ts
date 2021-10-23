@@ -24,7 +24,7 @@ router.get("/posts", async (ctx: Context) => {
 router.get("/post/:source", async (ctx: Context) => {
   const hexo = container.resolve(Hexo);
   const source = ctx.params.source;
-  ctx.body = await hexo.getPostBySource(source);
+  ctx.body = await hexo.getPostBySource(decodeURIComponent(source));
 });
 router.get("/pages", async (ctx: Context) => {
   const hexo = container.resolve(Hexo);
@@ -33,7 +33,7 @@ router.get("/pages", async (ctx: Context) => {
 router.get("/page/:source", async (ctx: Context) => {
   const hexo = container.resolve(Hexo);
   const source = ctx.params.source;
-  ctx.body = await hexo.getPageBySource(source);
+  ctx.body = await hexo.getPageBySource(decodeURIComponent(source));
 });
 router.get("/tags", async (ctx: Context) => {
   const hexo = container.resolve(Hexo);
