@@ -23,7 +23,7 @@ const loadBlogData = async () => {
 };
 onMounted(() => loadBlogData());
 const sep11 = ref(200);
-const sep22 = ref(300);
+const sep22 = ref(320);
 const config = {
   sep1: {
     min: 150,

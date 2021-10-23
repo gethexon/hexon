@@ -10,3 +10,9 @@ export type HNavListActionPayload =
   | { type: "draft" }
   | { type: "category"; slug: string }
   | { type: "tag"; slug: string };
+
+export type HViewerToolbarActionPayload =
+  | { type: "edit" }
+  | { type: "delete" }
+  | { type: "publish" }
+  | { type: "code" };

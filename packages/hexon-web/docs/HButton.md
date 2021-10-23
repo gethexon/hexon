@@ -2,13 +2,14 @@
 
 ## 类型
 
-`type?: "primary" | "success" | "warning" | "error" = "primary"`
+`type?: "primary" | "success" | "warning" | "error" | "common" = "primary"`
 
 <NSpace>
 <HButton type="primary">primary</HButton>
 <HButton type="success">success</HButton>
 <HButton type="warning">warning</HButton>
 <HButton type="error">error</HButton>
+<HButton type="common">common</HButton>
 </NSpace>
 
 ## 颜色反转
@@ -20,6 +21,7 @@
 <HButton type="success" inverted>success</HButton>
 <HButton type="warning" inverted>warning</HButton>
 <HButton type="error" inverted>error</HButton>
+<HButton type="common" inverted>common</HButton>
 </NSpace>
 
 ## 圆的

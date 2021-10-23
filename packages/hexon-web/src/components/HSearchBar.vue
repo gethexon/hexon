@@ -29,9 +29,9 @@ const onInput: any = (value: string) => emits("update:modelValue", value);
       >
       </HInput>
       <!-- <HButton class="ml-2" round><HIcon :name="HIconName.Search" /></HButton> -->
-      <HButton class="ml-2" round @click="emits('on-add')"
-        ><HIcon :name="HIconName.Add"
-      /></HButton>
+      <HButton class="ml-2" round @click="emits('on-add')">
+        <HIcon :name="HIconName.Add" />
+      </HButton>
     </div>
   </HToolbar>
 </template>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 import { useDetailStore } from "~/store/detail";
+import HViewerToolbar from "~/components/HViewerToolbar.vue";
 
 const router = useRouter();
 const detailStore = useDetailStore();
@@ -14,4 +15,9 @@ router.beforeEach((to) => {
   }
 });
 </script>
-<template>{{ detailStore.article?.content }}</template>
+<template>
+  <div class="w-full h-full flex flex-col">
+    <HViewerToolbar />
+    {{ detailStore.article?._content }}
+  </div>
+</template>
