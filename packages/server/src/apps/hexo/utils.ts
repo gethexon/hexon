@@ -5,7 +5,7 @@ interface Query<T> {
   length: number;
 }
 
-interface Article {
+export interface HexoArticle {
   _id: string;
   slug: string;
   title: string;
@@ -21,41 +21,41 @@ interface Article {
   full_source: string;
   path: string;
   permalink: string;
-  prev?: Page | undefined;
-  next?: Page | undefined;
+  prev?: HexoPage | undefined;
+  next?: HexoPage | undefined;
   raw?: string | undefined;
   photos?: string[] | undefined;
   link?: string | undefined;
   [key: string]: any;
 }
 
-interface Page extends Article {
+export interface HexoPage extends HexoArticle {
   __page: boolean;
 }
 
-interface Post extends Article {
+export interface HexoPost extends HexoArticle {
   published?: boolean | undefined;
-  categories?: Query<Category> | undefined;
-  tags: Query<Tag>;
+  categories?: Query<HexoCategory> | undefined;
+  tags: Query<HexoTag>;
   __post: boolean;
 }
 
-interface Tag {
+export interface HexoTag {
   _id: string;
   name: string;
   slug: string;
   path: string;
   permalink: string;
-  posts: Post[];
+  posts: HexoPost[];
   length: number;
 }
 
-interface Category extends Tag {
+export interface HexoCategory extends HexoTag {
   parent: string;
 }
 
-export const toPost = (post: Hexo.Locals.Post) => post as unknown as Post;
-export const toPage = (post: Hexo.Locals.Page) => post as unknown as Page;
+export const toPost = (post: Hexo.Locals.Post) => post as unknown as HexoPost;
+export const toPage = (post: Hexo.Locals.Page) => post as unknown as HexoPage;
 export const toCategory = (post: Hexo.Locals.Category) =>
-  post as unknown as Category;
-export const toTag = (post: Hexo.Locals.Tag) => post as unknown as Tag;
+  post as unknown as HexoCategory;
+export const toTag = (post: Hexo.Locals.Tag) => post as unknown as HexoTag;

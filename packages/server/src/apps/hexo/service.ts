@@ -7,7 +7,7 @@ import {
   StorageServiceIdentifier,
 } from "../../services/storage";
 import { BRIEF_LENGTH, HEXO_BASE_DIR_KEY, HEXO_OPTIONS_KEY } from "./constants";
-import { toCategory, toPage, toPost, toTag } from "./utils";
+import { HexoPage, HexoPost, toCategory, toPage, toPost, toTag } from "./utils";
 import fs from "fs";
 import { BriefPage, BriefPost, Category, Page, Post, Tag } from "./types";
 
@@ -18,6 +18,8 @@ interface IHexoAPI {
   listPage(): Promise<BriefPage[]>;
   listCategory(): Promise<Category[]>;
   listTag(): Promise<Tag[]>;
+  getPostBySource(source: string): Promise<Post>;
+  getPageBySource(source: string): Promise<Page>;
 }
 
 interface ICreateOptions {
@@ -50,6 +52,47 @@ interface IHexoCli {
   create(title: string, options?: ICreateOptions): Promise<void>; // new
   update(): Promise<void>;
   delete(): Promise<void>;
+}
+
+function transformPost(doc: HexoPost): Post {
+  return {
+    ...doc,
+    slug: doc.slug,
+    date: doc?.date.toString(),
+    updated: doc?.updated.toString(),
+    prev: doc?.prev?.source,
+    next: doc?.next?.source,
+    tags: doc.tags.data.map((t) => t.slug),
+    categories: doc?.categories.data.map((c) => c.slug),
+  };
+}
+
+function transformPostToBrief(doc: Post): BriefPost {
+  const res = { ...doc, brief: doc._content.slice(0, BRIEF_LENGTH) };
+  delete res._content;
+  delete doc.content;
+  delete doc.raw;
+  return res;
+}
+
+function transformPage(doc: HexoPage) {
+  return {
+    ...doc,
+    slug: doc.slug,
+    date: doc?.date.toString(),
+    updated: doc?.updated.toString(),
+    prev: doc?.prev?.source,
+    next: doc?.next?.source,
+    brief: doc._content.slice(0, BRIEF_LENGTH),
+  };
+}
+
+function transformPageToBrief(doc: Page): BriefPage {
+  const res = { ...doc, brief: doc._content.slice(0, BRIEF_LENGTH) };
+  delete res._content;
+  delete res.content;
+  delete res.raw;
+  return res;
 }
 
 @injectable()
@@ -116,17 +159,7 @@ class Hexo implements IHexoAPI, IHexoCommand {
   async listPost() {
     const docs = this._hexo.locals.get("posts").toArray().map(toPost);
     return docs.map((postDoc) => {
-      const post: BriefPost = {
-        ...postDoc,
-        slug: postDoc.slug,
-        date: postDoc?.date.toString(),
-        updated: postDoc?.updated.toString(),
-        prev: postDoc?.prev?.slug,
-        next: postDoc?.next?.slug,
-        tags: postDoc.tags.data.map((t) => t.slug),
-        categories: postDoc?.categories.data.map((c) => c.slug),
-        brief: postDoc._content.slice(0, BRIEF_LENGTH),
-      };
+      const post: BriefPost = transformPostToBrief(transformPost(postDoc));
       delete post.content;
       delete post._content;
       delete post.raw;
@@ -134,24 +167,28 @@ class Hexo implements IHexoAPI, IHexoCommand {
       return post;
     });
   }
+  async getPostBySource(source: string) {
+    const docs = this._hexo.locals.get("posts").toArray().map(toPost);
+    const doc = docs.find((item) => item.source === source);
+    if (!doc) throw new Error("not found");
+    return transformPost(doc);
+  }
   async listPage() {
     const docs = this._hexo.locals.get("pages").toArray().map(toPage);
     return docs.map((pageDoc) => {
-      const page: BriefPage = {
-        ...pageDoc,
-        slug: pageDoc.slug,
-        date: pageDoc?.date.toString(),
-        updated: pageDoc?.updated.toString(),
-        prev: pageDoc?.prev?.slug,
-        next: pageDoc?.next?.slug,
-        brief: pageDoc._content.slice(0, BRIEF_LENGTH),
-      };
+      const page: BriefPage = transformPageToBrief(transformPage(pageDoc));
       delete page.content;
       delete page._content;
       delete page.raw;
       delete page.more;
       return page;
     });
+  }
+  async getPageBySource(source: string) {
+    const docs = this._hexo.locals.get("pages").toArray().map(toPage);
+    const doc = docs.find((item) => item.source === source);
+    if (!doc) throw new Error("not found");
+    return transformPage(doc);
   }
   async listCategory(): Promise<Category[]> {
     const docs = this._hexo.locals.get("categories").toArray().map(toCategory);

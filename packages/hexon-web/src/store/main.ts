@@ -38,8 +38,8 @@ export const useMainStore = defineStore("main", {
             access.get("/categories"),
           ])
         ).map((res) => res.data);
-        this.posts = list2object(posts as BriefPost[], "slug");
-        this.pages = list2object(pages as BriefPage[], "slug");
+        this.posts = list2object(posts as BriefPost[], "source");
+        this.pages = list2object(pages as BriefPage[], "source");
         this.tags = list2object(tags as Tag[], "slug");
         this.categories = list2object(categories as Category[], "slug");
       } catch (err) {
@@ -49,13 +49,15 @@ export const useMainStore = defineStore("main", {
   },
   getters: {
     articles(state): (BriefPost | BriefPage)[] {
-      return object2list<BriefPost | BriefPage, "slug">(
+      return object2list<BriefPost | BriefPage, "source">(
         state.pages,
-        "slug"
-      ).concat(object2list<BriefPost | BriefPage, "slug">(state.posts, "slug"));
+        "source"
+      ).concat(
+        object2list<BriefPost | BriefPage, "source">(state.posts, "source")
+      );
     },
     allPostsList(state): BriefPost[] {
-      return object2list(state.posts, "slug");
+      return object2list(state.posts, "source");
     },
     publishedPostsList(state): BriefPost[] {
       return this.allPostsList.filter((post) => post.published);
@@ -64,7 +66,7 @@ export const useMainStore = defineStore("main", {
       return this.allPostsList.filter((post) => !post.published);
     },
     pagesList(state): BriefPage[] {
-      return object2list(state.pages, "slug");
+      return object2list(state.pages, "source");
     },
     categoriesTree(): TreeNode<Category, "children">[] {
       return list2Tree(this.categoriesList, (item) => !item.parent, {

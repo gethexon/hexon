@@ -3,15 +3,37 @@ import { container } from "tsyringe";
 import { Context } from "koa";
 import Hexo from "./service";
 
-const router = new Router();
+declare class ControllerError extends Error {
+  public code?: number;
+}
 
+const router = new Router();
+router.use(async (ctx, next) => {
+  try {
+    await next();
+  } catch (err) {
+    if (err instanceof Error && err.message === "not found") {
+      ctx.status = 404;
+    } else throw err;
+  }
+});
 router.get("/posts", async (ctx: Context) => {
   const hexo = container.resolve(Hexo);
   ctx.body = await hexo.listPost();
 });
+router.get("/post/:source", async (ctx: Context) => {
+  const hexo = container.resolve(Hexo);
+  const source = ctx.params.source;
+  ctx.body = await hexo.getPostBySource(source);
+});
 router.get("/pages", async (ctx: Context) => {
   const hexo = container.resolve(Hexo);
   ctx.body = await hexo.listPage();
+});
+router.get("/page/:source", async (ctx: Context) => {
+  const hexo = container.resolve(Hexo);
+  const source = ctx.params.source;
+  ctx.body = await hexo.getPageBySource(source);
 });
 router.get("/tags", async (ctx: Context) => {
   const hexo = container.resolve(Hexo);

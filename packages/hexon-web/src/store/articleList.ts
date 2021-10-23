@@ -51,7 +51,9 @@ export const useArticleListStore = defineStore("article-list", {
           case "post":
             return articles.filter((article) => article.__post);
           case "draft":
-            return articles.filter((article) => !article.published);
+            return articles.filter(
+              (article) => article.__post && !article.published
+            );
           case "category":
             return (
               articles.filter((article) => article.__post) as BriefPost[]
