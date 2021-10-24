@@ -10,6 +10,9 @@ const theme = useTheme<HTheme>()!;
 const { content } = toRefs(props);
 const styleVars = computed(() => ({
   primary: theme.value.color.primary.n,
+  mainColor: theme.value.color.foreground.main,
+  base3BgColor: theme.value.color.background.base3,
+  base2BgColor: theme.value.color.background.base2,
 }));
 </script>
 <template>
@@ -18,11 +21,11 @@ const styleVars = computed(() => ({
 <style lang="stylus">
 
 // Colors
-color-default = #555
+color-default = v-bind('styleVars.mainColor')
 color-grey = #999
 color-border = #ddd
 color-link = v-bind('styleVars.primary')
-color-background = #eee
+color-background = v-bind('styleVars.base3BgColor')
 color-sidebar-text = #777
 color-widget-background = #ddd
 color-widget-border = #ccc
@@ -69,19 +72,19 @@ mq-mobile = "screen and (max-width: 479px)"
 mq-tablet = "screen and (min-width: 480px) and (max-width: 767px)"
 mq-normal = "screen and (min-width: 768px)"
 
-$base-style
+.article-entry
   h1
-    font-size: 2em
+    @apply text-4xl
   h2
-    font-size: 1.5em
+    @apply text-2xl
   h3
-    font-size: 1.3em
+    @apply text-xl
   h4
-    font-size: 1.2em
+    @apply text-lg
   h5
-    font-size: 1em
+    @apply text-base
   h6
-    font-size: 1em
+    @apply text-base
     color: color-grey
   hr
     border: 1px dashed color-border
@@ -90,7 +93,7 @@ $base-style
   em, cite
     font-style: italic
   sup, sub
-    font-size: 0.75em
+    @apply text-xs
     line-height: 0
     position: relative
     vertical-align: baseline
@@ -99,7 +102,7 @@ $base-style
   sub
     bottom: -0.2em
   small
-    font-size: 0.85em
+    @apply text-xs
   acronym, abbr
     border-bottom: 1px dotted
   ul, ol, dl
@@ -115,9 +118,6 @@ $base-style
     list-style: decimal
   dt
     font-weight: bold
-
-.article-entry
-  @extend $base-style
   margin: 0 auto
   max-width: 768px
   clearfix()
@@ -158,11 +158,14 @@ $base-style
     border-bottom: 1px solid color-border
     padding: 10px 0
   blockquote
-    font-size: 1.4em
-    margin: line-height 20px
-    text-align: center
+    margin: line-height 0
+    background: v-bind('styleVars.base2BgColor')
+    @apply border-l-4 px-3 py-3
+    p:first-of-type
+      @apply mt-0
+    p:last-of-type
+      @apply mb-0
     footer
-      font-size: font-size
       margin: line-height 0
       cite
         &:before
@@ -219,7 +222,6 @@ $code-block
   padding: 15px article-padding
   border-style: solid
   border-color: color-border
-  border-width: 1px 0
   overflow: auto
   color: highlight-foreground
   line-height: font-size * line-height
@@ -233,8 +235,7 @@ $line-numbers
     font-family: font-mono
   code
     background: color-background
-    text-shadow: 0 1px #fff
-    padding: 0 0.3em
+    @apply rounded-md py-0 px-1 my-0 mx-1
   pre
     @extend $code-block
     code
@@ -243,7 +244,7 @@ $line-numbers
       padding: 0
   .highlight
     @extend $code-block
-    border-radius: 0.375rem
+    @apply rounded-md
     pre
       border: none
       margin: 0
