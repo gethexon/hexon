@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useTheme } from "@winwin/vue-global-theming";
-import { computed, toRefs } from "vue-demi";
+import { computed, toRefs } from "vue";
 import { HTheme } from "~/themes";
 
 const props = defineProps<{

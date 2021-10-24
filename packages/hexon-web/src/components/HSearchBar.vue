@@ -4,7 +4,7 @@ import HInput from "./HInput.vue";
 import HButton from "./HButton.vue";
 import HIcon from "./HIcon.vue";
 import { HIconName } from "./HIconName";
-import { toRefs } from "vue-demi";
+import { toRefs } from "vue";
 
 const props = defineProps<{
   modelValue: string;
