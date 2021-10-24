@@ -11,11 +11,12 @@ watch(
   () => [route.params.type, route.params.source],
   () => {
     const { type, source } = route.params;
-    if (!type || !source) return;
-    detailStore.getArticle({ source, type } as {
-      type: "post" | "page";
-      source: string;
-    });
+    if (!type || !source) detailStore.clearArticle();
+    else
+      detailStore.getArticle({ source, type } as {
+        type: "post" | "page";
+        source: string;
+      });
   },
   { immediate: true }
 );
