@@ -28,11 +28,11 @@ const onClear = () => requestChange("");
 
 const theme = useTheme<HTheme>()!;
 const styleVars = computed(() => {
-  const color = theme.value.color.foreground.c2;
+  const color = theme.value.color.foreground.main;
   const bgColor =
     type.value === "secondary"
-      ? theme.value.color.background.c3
-      : theme.value.color.background.c1;
+      ? theme.value.color.background.base3
+      : theme.value.color.background.base1;
   const selectionBgColor = theme.value.color.primary.l8;
   return { color, bgColor, selectionBgColor };
 });

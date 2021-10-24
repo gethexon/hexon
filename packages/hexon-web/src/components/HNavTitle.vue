@@ -4,7 +4,7 @@ import { useTheme } from "@winwin/vue-global-theming";
 import { HTheme } from "~/themes";
 
 const theme = useTheme<HTheme>()!;
-const color = computed(() => theme.value.color.foreground.c2);
+const color = computed(() => theme.value.color.foreground.main);
 </script>
 <template>
   <div class="h-nav-title text-sm select-none font-bold leading-11 px-4">

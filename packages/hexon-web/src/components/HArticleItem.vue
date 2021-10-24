@@ -27,12 +27,12 @@ const theme = useTheme<HTheme>()!;
 const styleVars = computed(() => {
   return {
     bgColor: selected.value
-      ? theme.value.color.background.c3
+      ? theme.value.color.background.selected
       : theme.value.color.background.transparent,
-    hoverBgColor: theme.value.color.background.c31,
-    activeBgColor: theme.value.color.background.c49,
-    titleColor: theme.value.color.foreground.c2,
-    briefColor: theme.value.color.foreground.c3,
+    hoverBgColor: theme.value.color.background.hover,
+    activeBgColor: theme.value.color.background.active,
+    titleColor: theme.value.color.foreground.main,
+    briefColor: theme.value.color.foreground.sub,
   };
 });
 </script>
@@ -42,8 +42,8 @@ const styleVars = computed(() => {
     <div class="brief text-xs mt-1" v-if="brief">{{ brief }}</div>
     <div v-if="tags && tags.length" class="mt-0.5">
       <HBadge
-        :color="theme.color.foreground.c2"
-        :bg-color="theme.color.background.c5"
+        :color="theme.color.foreground.main"
+        :bg-color="theme.color.background.badge"
         v-for="tag in tags"
         :key="tag"
       >

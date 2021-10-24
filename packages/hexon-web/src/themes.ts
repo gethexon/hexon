@@ -66,22 +66,43 @@ export type HTheme = {
     page: string;
     draft: string;
     background: {
-      c1: string;
-      c2: string;
-      c3: string;
-      c31: string;
-      c4: string;
-      c49: string;
-      c5: string;
-      c9: string;
       transparent: string;
+      hover: string;
+      active: string;
+      selected: string;
+      /**
+       * 右侧栏
+       */
+      base1: string;
+      /**
+       * 中间栏
+       */
+      base2: string;
+      /**
+       * 左侧栏
+       */
+      base3: string;
+      badge: string;
+      /**
+       * 亮主题的白
+       */
+      max: string;
+      /**
+       * 亮主题的黑
+       */
+      min: string;
     };
     foreground: {
-      c1: string;
-      c2: string;
-      c3: string;
-      c6: string;
-      c9: string;
+      main: string;
+      sub: string;
+      /**
+       * 亮主题的黑
+       */
+      max: string;
+      /**
+       * 亮主题的白
+       */
+      min: string;
     };
   };
 };
@@ -99,22 +120,22 @@ export const blueTheme: HTheme = {
     page: "#52bad1",
     draft: "#f1c40f",
     background: {
-      c1: "#ffffff",
-      c2: "#f8f8f8",
-      c3: "#eeeeee",
-      c31: "#e2e2e2",
-      c4: "#dfdfdf",
-      c49: "#d8d8d8",
-      c5: "#cdcdcd",
-      c9: "#282828",
       transparent: "transparent",
+      hover: "#00000015",
+      active: "#00000020",
+      selected: "#00000010",
+      base1: "#ffffff",
+      base2: "#f8f8f8",
+      base3: "#eeeeee",
+      badge: "#cccccc",
+      max: "#ffffff",
+      min: "#000000",
     },
     foreground: {
-      c1: "#000000",
-      c2: "#484848",
-      c3: "#757575",
-      c6: "#9e9e9e",
-      c9: "#ffffff",
+      main: "#484848",
+      sub: "#757575",
+      max: "#000000",
+      min: "#ffffff",
     },
   },
 };

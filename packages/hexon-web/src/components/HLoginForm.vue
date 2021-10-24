@@ -32,7 +32,7 @@ const theme = useTheme<HTheme>()!;
     <HImage :src="logo" alt="" size="100px" />
     <div
       class="text-lg mt-4 select-none"
-      :style="{ color: theme.color.foreground.c2 }"
+      :style="{ color: theme.color.foreground.main }"
     >
       登录到 Hexon
     </div>

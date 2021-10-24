@@ -2,7 +2,7 @@
 
 ## 基础
 
-<div style="background-color:var(--color-background-c3);display:inline-block;width:200px">
+<div style="background-color:var(--color-background-base3);display:inline-block;width:200px">
 <HNavItem :text="d.text" :icon="d.icon" :indent="d.indent" :color="d.color" :sub="d.sub" v-for="d in data"></HNavItem>
 </div>
 

@@ -14,7 +14,7 @@ const onSelected = slug => { selected.value = slug }
 </script>
 <style scope>
 .h-container{
-  background: var(--color-background-c2);
+  background: var(--color-background-base2);
   width: 300px;
 }
 </style>

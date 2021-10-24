@@ -8,6 +8,7 @@ import HNavTitle from "./HNavTitle.vue";
 import HNavItem from "./HNavItem.vue";
 import { HIconName } from "./HIconName";
 import { HNavListActionPayload } from "./types";
+import { useArticleListStore } from "~/store/articleList";
 
 const t = useTheme<HTheme>();
 const props = defineProps<{
@@ -63,6 +64,8 @@ const colors = computed(() => ({
 const onAction = (payload: HNavListActionPayload) => {
   emits("on-action", payload);
 };
+const articleList = useArticleListStore();
+const type = computed(() => articleList.filter.type);
 </script>
 <template>
   <div class="py-0 pl-4 pr-2">
@@ -103,6 +106,7 @@ const onAction = (payload: HNavListActionPayload) => {
       :icon="HIconName.Home"
       :sub="all"
       :color="colors.all"
+      :selected="type === 'all'"
       @click="onAction({ type: 'all' })"
     ></HNavItem>
     <HNavItem
@@ -111,6 +115,7 @@ const onAction = (payload: HNavListActionPayload) => {
       :sub="post"
       :color="colors.post"
       @click="onAction({ type: 'post' })"
+      :selected="type === 'post'"
     ></HNavItem>
     <HNavItem
       text="页面"
@@ -118,6 +123,7 @@ const onAction = (payload: HNavListActionPayload) => {
       :sub="page"
       :color="colors.page"
       @click="onAction({ type: 'page' })"
+      :selected="type === 'page'"
     ></HNavItem>
     <HNavItem
       text="草稿"
@@ -125,6 +131,7 @@ const onAction = (payload: HNavListActionPayload) => {
       :sub="draft"
       :color="colors.draft"
       @click="onAction({ type: 'draft' })"
+      :selected="type === 'draft'"
     ></HNavItem>
     <HNavTitle>分类</HNavTitle>
     <HNavItem

@@ -30,12 +30,15 @@ const theme = useTheme<HTheme>()!;
 <template>
   <div
     class="w-full h-full flex flex-col items-center select-none"
-    :style="{ backgroundColor: theme.color.background.c3, paddingTop: '20vh' }"
+    :style="{
+      backgroundColor: theme.color.background.base3,
+      paddingTop: '20vh',
+    }"
   >
     <HLoginForm @on-submit="onSignIn" style="flex: 1" />
     <div
       class="leading-8 text-xs"
-      :style="{ color: theme.color.foreground.c2 }"
+      :style="{ color: theme.color.foreground.main }"
     >
       {{ footer }}
     </div>

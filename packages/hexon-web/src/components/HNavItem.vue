@@ -23,13 +23,13 @@ const indents = computed(() => {
 });
 const theme = useTheme<HTheme>()!;
 const styleVars = computed(() => {
-  const color = theme.value.color.foreground.c2;
+  const color = theme.value.color.foreground.main;
   const bgColor = selected.value
-    ? theme.value.color.background.c4
+    ? theme.value.color.background.selected
     : theme.value.color.background.transparent;
-  const subColor = theme.value.color.foreground.c6;
-  const hoverBgColor = theme.value.color.background.c4;
-  const activeBgColor = theme.value.color.background.c5;
+  const subColor = theme.value.color.foreground.sub;
+  const hoverBgColor = theme.value.color.background.hover;
+  const activeBgColor = theme.value.color.background.active;
   return { color, bgColor, subColor, hoverBgColor, activeBgColor };
 });
 </script>

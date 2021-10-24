@@ -39,7 +39,7 @@ const { title, brief, tags, date} = genArticle()
 </script>
 <style scope>
 .h-container{
-  background: var(--color-background-c2);
+  background: var(--color-background-base2);
   width: 300px;
   padding: 10px
 }

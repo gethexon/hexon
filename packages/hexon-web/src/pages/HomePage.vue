@@ -124,7 +124,7 @@ const onArticleClick = ({
     <template v-slot:first>
       <div
         class="w-full h-full flex flex-col"
-        :style="{ backgroundColor: theme.color.background.c3 }"
+        :style="{ backgroundColor: theme.color.background.base3 }"
       >
         <HTitle />
         <div style="flex: 1 0 0; overflow-y: auto">
@@ -143,7 +143,7 @@ const onArticleClick = ({
     <template v-slot:second>
       <div
         class="flex flex-col w-full h-full"
-        :style="{ backgroundColor: theme.color.background.c2 }"
+        :style="{ backgroundColor: theme.color.background.base2 }"
       >
         <HSearchBar v-model="search" class="flex-shrink-0" />
         <div class="overflow-auto flex-1">
@@ -156,12 +156,12 @@ const onArticleClick = ({
       </div>
     </template>
     <template v-slot:third>
-      <RouterView />
+      <div
+        class="w-full h-full"
+        :style="{ backgroundColor: theme.color.background.base1 }"
+      >
+        <RouterView />
+      </div>
     </template>
   </SplitView>
 </template>
-<style scoped>
-h1 {
-  color: var(--color-primary);
-}
-</style>

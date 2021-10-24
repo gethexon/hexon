@@ -6,7 +6,7 @@ const theme = useTheme<HTheme>()!;
 </script>
 <template>
   <HToolbar>
-    <span class="text-xl pl-8" :style="{ color: theme.color.foreground.c2 }">
+    <span class="text-xl pl-8" :style="{ color: theme.color.foreground.main }">
       Hexon
     </span>
   </HToolbar>
