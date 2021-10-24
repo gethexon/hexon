@@ -31,6 +31,8 @@ const styleVars = computed(() => {
       : theme.value.color.background.transparent,
     hoverBgColor: theme.value.color.background.c31,
     activeBgColor: theme.value.color.background.c49,
+    titleColor: theme.value.color.foreground.c2,
+    briefColor: theme.value.color.foreground.c3,
   };
 });
 </script>
@@ -67,9 +69,11 @@ const styleVars = computed(() => {
     cursor: pointer;
   }
   .title {
+    color: v-bind("styleVars.titleColor");
     .ellipsis(1);
   }
   .brief {
+    color: v-bind("styleVars.briefColor");
     .ellipsis(3);
   }
   .date {

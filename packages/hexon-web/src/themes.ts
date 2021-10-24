@@ -112,7 +112,7 @@ export const blueTheme: HTheme = {
     foreground: {
       c1: "#000000",
       c2: "#484848",
-      c3: "#000000",
+      c3: "#757575",
       c6: "#9e9e9e",
       c9: "#ffffff",
     },
