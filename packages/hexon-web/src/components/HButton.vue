@@ -33,7 +33,7 @@ const styleVars = computed(() => {
     case "primary":
       return {
         bgColor: theme.value.color.primary.n,
-        color: theme.value.color.foreground.min,
+        color: theme.value.color.white,
         hoverBgColor: theme.value.color.primary.l2,
         activeBgColor: theme.value.color.primary.l4,
         invertedColor: theme.value.color.primary.n,
@@ -44,7 +44,7 @@ const styleVars = computed(() => {
     case "success":
       return {
         bgColor: theme.value.color.success.n,
-        color: theme.value.color.foreground.min,
+        color: theme.value.color.white,
         hoverBgColor: theme.value.color.success.l2,
         activeBgColor: theme.value.color.success.l4,
         invertedColor: theme.value.color.success.n,
@@ -55,7 +55,7 @@ const styleVars = computed(() => {
     case "error":
       return {
         bgColor: theme.value.color.error.n,
-        color: theme.value.color.foreground.min,
+        color: theme.value.color.white,
         hoverBgColor: theme.value.color.error.l2,
         activeBgColor: theme.value.color.error.l4,
         invertedColor: theme.value.color.error.n,
@@ -66,7 +66,7 @@ const styleVars = computed(() => {
     case "warning":
       return {
         bgColor: theme.value.color.warning.n,
-        color: theme.value.color.foreground.min,
+        color: theme.value.color.white,
         hoverBgColor: theme.value.color.warning.l2,
         activeBgColor: theme.value.color.warning.l4,
         invertedColor: theme.value.color.warning.n,
@@ -77,7 +77,7 @@ const styleVars = computed(() => {
     case "common":
       return {
         bgColor: theme.value.color.common.n,
-        color: theme.value.color.foreground.min,
+        color: theme.value.color.white,
         hoverBgColor: theme.value.color.common.l2,
         activeBgColor: theme.value.color.common.l4,
         invertedColor: theme.value.color.common.n,
@@ -88,7 +88,7 @@ const styleVars = computed(() => {
     default:
       return {
         bgColor: theme.value.color.common.n,
-        color: theme.value.color.foreground.min,
+        color: theme.value.color.white,
         hoverBgColor: theme.value.color.common.l2,
         activeBgColor: theme.value.color.common.l4,
         invertedColor: theme.value.color.common.n,

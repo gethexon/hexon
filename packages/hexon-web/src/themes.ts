@@ -65,6 +65,8 @@ export type HTheme = {
     post: string;
     page: string;
     draft: string;
+    black: string;
+    white: string;
     background: {
       transparent: string;
       hover: string;
@@ -107,7 +109,7 @@ export type HTheme = {
   };
 };
 
-export const blueTheme: HTheme = {
+export const lightTheme: HTheme = {
   color: {
     primary: createColor("#3498db"),
     success: createColor("#27ae60"),
@@ -119,6 +121,8 @@ export const blueTheme: HTheme = {
     post: "#3883c7",
     page: "#52bad1",
     draft: "#f1c40f",
+    black: "#000000",
+    white: "#ffffff",
     background: {
       transparent: "transparent",
       hover: "#00000015",
@@ -140,4 +144,39 @@ export const blueTheme: HTheme = {
   },
 };
 
-export default createTheme({ default: blueTheme });
+export const darkTheme: HTheme = {
+  color: {
+    primary: createColor("#3498db"),
+    success: createColor("#27ae60"),
+    warning: createColor("#f39c12"),
+    error: createColor("#e74c3c"),
+    common: createColor("#888888"),
+    folder: "#f3c04f",
+    all: "#27ae60",
+    post: "#3883c7",
+    page: "#52bad1",
+    draft: "#f1c40f",
+    black: "#000000",
+    white: "#ffffff",
+    background: {
+      transparent: "transparent",
+      hover: "#ffffff15",
+      active: "#ffffff20",
+      selected: "#ffffff10",
+      base1: "#323232",
+      base2: "#282828",
+      base3: "#1f1f1f",
+      badge: "#222222",
+      max: "#000000",
+      min: "#ffffff",
+    },
+    foreground: {
+      main: "#dddddd",
+      sub: "#a9a9a9",
+      max: "#ffffff",
+      min: "#000000",
+    },
+  },
+};
+
+export default createTheme({ default: lightTheme, dark: darkTheme });
