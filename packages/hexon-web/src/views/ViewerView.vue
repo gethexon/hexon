@@ -1,21 +1,24 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import { useRouter } from "vue-router";
+import { computed, watch } from "vue";
+import { useRoute } from "vue-router";
 import { useDetailStore } from "~/store/detail";
 import HViewerToolbar from "~/components/HViewerToolbar.vue";
 import HViewerContent from "~/components/HViewerContent.vue";
 
-const router = useRouter();
+const route = useRoute();
 const detailStore = useDetailStore();
-router.beforeEach((to) => {
-  if (to.name === "view") {
-    const { type, source } = to.params;
+watch(
+  () => [route.params.type, route.params.source],
+  () => {
+    const { type, source } = route.params;
+    if (!type || !source) return;
     detailStore.getArticle({ source, type } as {
       type: "post" | "page";
       source: string;
     });
-  }
-});
+  },
+  { immediate: true }
+);
 const content = computed(() => detailStore.article?.content || "");
 </script>
 <template>
