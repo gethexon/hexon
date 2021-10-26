@@ -74,4 +74,24 @@ router.post("/create", async (ctx: Context) => {
   }
   ctx.body = await hexo.create(title, { layout, path, slug, replace });
 });
+router.post("/update/post", async (ctx: Context) => {
+  const hexo = container.resolve(Hexo);
+  const { source, raw } = ctx.request.body;
+  if (!source || !raw) {
+    ctx.status = 400;
+    ctx.body = "need `source` and `raw`";
+    return;
+  }
+  ctx.body = await hexo.update(source, raw, "post");
+});
+router.post("/update/page", async (ctx: Context) => {
+  const hexo = container.resolve(Hexo);
+  const { source, raw } = ctx.request.body;
+  if (!source || !raw) {
+    ctx.status = 400;
+    ctx.body = "need `source` and `raw`";
+    return;
+  }
+  ctx.body = await hexo.update(source, raw, "page");
+});
 export default router;

@@ -1,6 +1,7 @@
 import path from "path";
 import { default as HexoCore } from "hexo";
 import { inject, injectable, singleton } from "tsyringe";
+import fs from "fs";
 import { createDebug, DEV, expandHomeDir } from "../../utils";
 import {
   IStorageService,
@@ -16,7 +17,6 @@ import {
   toPost,
   toTag,
 } from "./utils";
-import fs from "fs";
 import { BriefPage, BriefPost, Category, Page, Post, Tag } from "./types";
 
 declare module "hexo" {
@@ -64,8 +64,12 @@ interface IGenerateOptions {
 interface IHexoCli {
   // run with --config
   publish(source: string, layout?: string): Promise<Post>;
-  // create(title: string, options?: ICreateOptions): Promise<void>; // new
-  // update(): Promise<void>;
+  create(title: string, options?: ICreateOptions): Promise<Post>; // new
+  update(
+    source: string,
+    raw: string,
+    type: "post" | "page"
+  ): Promise<Post | Page>;
   // delete(): Promise<void>;
 }
 
@@ -210,7 +214,7 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
       return post;
     });
   }
-  async getPostBySource(source: string) {
+  async getPostBySource(source: string): Promise<Post> {
     const docs = this._hexo.locals.get("posts").toArray().map(toPost);
     const doc = docs.find((item) => item.source === source);
     if (!doc) throw new Error("not found");
@@ -227,7 +231,7 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
       return page;
     });
   }
-  async getPageBySource(source: string) {
+  async getPageBySource(source: string): Promise<Page> {
     const docs = this._hexo.locals.get("pages").toArray().map(toPage);
     const doc = docs.find((item) => item.source === source);
     if (!doc) throw new Error("not found");
@@ -291,8 +295,7 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
     if (layout) args.push(layout);
     args.push(filename);
     const info = await run("hexo", args, { cwd: this._base_dir });
-    await this._hexo.locals.invalidate();
-    await this._hexo.load();
+    await this.reload();
     const fullSource = expandHomeDir(info.split("Published: ")[1].trim());
     return this.getPostByFullSource(fullSource);
   }
@@ -311,10 +314,54 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
     }
     if (title) args.push(title);
     const info = await run("hexo", args, { cwd: this._base_dir });
-    await this._hexo.locals.invalidate();
-    await this._hexo.load();
+    await this.reload();
     const fullSource = expandHomeDir(info.split("Created: ")[1].trim());
     return this.getPostByFullSource(fullSource);
+  }
+
+  private write(fullPath: string, content: string) {
+    try {
+      fs.writeFileSync(fullPath, content);
+    } catch (e) {
+      console.error(e);
+      throw new Error("fail to write file");
+    }
+  }
+
+  private async reload() {
+    await this._hexo.locals.invalidate();
+    await this._hexo.load();
+  }
+
+  private getFullPathBySource(source: string, type: "post" | "page") {
+    if (type === "post")
+      return this._hexo.locals
+        .get("posts")
+        .toArray()
+        .find((item) => item.source === source).full_source;
+    else
+      return this._hexo.locals
+        .get("pages")
+        .toArray()
+        .find((item) => item.source === source).full_source;
+  }
+
+  async update(source: string, raw: string, type: "post"): Promise<Post>;
+  async update(source: string, raw: string, type: "page"): Promise<Page>;
+  async update(source: string, raw: string, type: "post" | "page") {
+    if (type === "post") {
+      const fullPath = this.getFullPathBySource(source, "post");
+      if (!fullPath) throw new Error("not found");
+      this.write(fullPath, raw);
+      await this.reload();
+      return this.getPostBySource(source);
+    } else {
+      const fullPath = this.getFullPathBySource(source, "page");
+      if (!fullPath) throw new Error("not found");
+      this.write(fullPath, raw);
+      await this.reload();
+      return this.getPageBySource(source);
+    }
   }
   //#endregion
 }
