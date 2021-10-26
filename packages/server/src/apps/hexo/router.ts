@@ -3,10 +3,6 @@ import { container } from "tsyringe";
 import { Context } from "koa";
 import Hexo from "./service";
 
-declare class ControllerError extends Error {
-  public code?: number;
-}
-
 const router = new Router();
 router.use(async (ctx, next) => {
   try {
