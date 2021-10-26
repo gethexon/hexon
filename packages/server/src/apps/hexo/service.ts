@@ -11,6 +11,13 @@ import { HexoPage, HexoPost, toCategory, toPage, toPost, toTag } from "./utils";
 import fs from "fs";
 import { BriefPage, BriefPost, Category, Page, Post, Tag } from "./types";
 
+declare module "hexo" {
+  interface InstanceOptions {
+    draft?: boolean;
+    drafts?: boolean;
+  }
+}
+
 const debug = createDebug("hexo");
 
 interface IHexoAPI {
@@ -106,6 +113,25 @@ class Hexo implements IHexoAPI, IHexoCommand {
   constructor(
     @inject(StorageServiceIdentifier) private _storage: IStorageService
   ) {}
+
+  //#region helpers
+  private withDraft(
+    options: HexoCore.InstanceOptions
+  ): HexoCore.InstanceOptions {
+    return { ...options, draft: true, drafts: true };
+  }
+
+  private async runWithModifiedDraftOption(fn: (ctx: Hexo) => Promise<void>) {
+    this._hexo = new HexoCore(this._base_dir, this._options);
+    await this._hexo.init();
+    await this._hexo.load();
+    await fn(this);
+    this._hexo = new HexoCore(this._base_dir, this.withDraft(this._options));
+    await this._hexo.init();
+    await this._hexo.load();
+  }
+  //#endregion
+
   public async init() {
     const bak = { base_dir: this._base_dir, options: this._options };
     this._base_dir = path.resolve(
@@ -129,7 +155,7 @@ class Hexo implements IHexoAPI, IHexoCommand {
     this._options =
       this._storage.get<HexoCore.InstanceOptions>(HEXO_OPTIONS_KEY) || {};
     this._options.silent = DEV ? false : this._options.silent;
-    this._hexo = new HexoCore(this._base_dir, this._options);
+    this._hexo = new HexoCore(this._base_dir, this.withDraft(this._options));
 
     try {
       await this._hexo.init();
@@ -211,7 +237,9 @@ class Hexo implements IHexoAPI, IHexoCommand {
     const { generate = false } = options;
     const args: string[] = [];
     if (generate) args.push("--generate");
-    await this._hexo.call("deploy", { _: args });
+    this.runWithModifiedDraftOption(async (ctx) => {
+      await ctx._hexo.call("deploy", { _: args });
+    });
   }
 
   async generate(options: IGenerateOptions = {}) {
@@ -227,12 +255,16 @@ class Hexo implements IHexoAPI, IHexoCommand {
     if (watch) args.push("--watch");
     if (bail) args.push("--bail");
     if (force) args.push("--force");
-    if (concurrency) args.push("--concurrency");
-    await this._hexo.call("generate", { _: args });
+    this.runWithModifiedDraftOption(async (ctx) => {
+      if (concurrency) args.push("--concurrency");
+      await ctx._hexo.call("generate", { _: args });
+    });
   }
 
   async clean() {
-    await this._hexo.call("clean");
+    this.runWithModifiedDraftOption(async (ctx) => {
+      await ctx._hexo.call("clean");
+    });
   }
   //#endregion
 }
