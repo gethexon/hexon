@@ -5,6 +5,7 @@ import { useDetailStore } from "~/store/detail";
 import HViewerToolbar from "~/components/HViewerToolbar.vue";
 import HViewerContent from "~/components/HViewerContent.vue";
 import HViewerHeader from "~/components/HViewerHeader.vue";
+import { HViewerToolbarActionPayload } from "~/components/types";
 
 const route = useRoute();
 const router = useRouter();
@@ -48,10 +49,24 @@ router.beforeEach(async (to, from) => {
 const content = computed(() => detailStore.article?.content || "");
 const title = computed(() => detailStore.article?.title || "");
 const raw = computed(() => detailStore.article?.raw || "");
+const onAction = (payload: HViewerToolbarActionPayload) => {
+  switch (payload.type) {
+    case "code":
+      break;
+    case "edit":
+      break;
+    case "delete":
+      break;
+    case "publish":
+      break;
+    default:
+      break;
+  }
+};
 </script>
 <template>
   <div class="w-full h-full flex flex-col">
-    <HViewerToolbar />
+    <HViewerToolbar @on-action="onAction" />
     <div class="overflow-auto flex-1">
       <HViewerHeader :title="title" :raw="raw" />
       <HViewerContent :content="content" />
