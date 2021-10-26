@@ -64,4 +64,14 @@ router.post("/publish", async (ctx: Context) => {
   }
   ctx.body = await hexo.publish(filename, layout);
 });
+router.post("/create", async (ctx: Context) => {
+  const hexo = container.resolve(Hexo);
+  const { title, layout, path, slug, replace } = ctx.request.body;
+  if (!title) {
+    ctx.status = 400;
+    ctx.body = "need `title`";
+    return;
+  }
+  ctx.body = await hexo.create(title, { layout, path, slug, replace });
+});
 export default router;

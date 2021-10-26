@@ -38,9 +38,9 @@ interface IHexoAPI {
 }
 
 interface ICreateOptions {
-  layout?: boolean;
-  path?: boolean;
-  slug?: boolean;
+  layout?: string;
+  path?: string;
+  slug?: string;
   replace?: boolean;
 }
 
@@ -138,6 +138,14 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
     this._hexo = new HexoCore(this._base_dir, this.withDraft(this._options));
     await this._hexo.init();
     await this._hexo.load();
+  }
+
+  private getPostByFullSource(fullSource: string) {
+    const post = this._hexo.locals
+      .get("posts")
+      .toArray()
+      .find((item) => item.full_source === fullSource)!;
+    return this.getPostBySource(post.source);
   }
   //#endregion
 
@@ -279,19 +287,34 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
 
   //#region IHexoCli
   async publish(filename: string, layout?: string) {
-    const info = await run(
-      "hexo",
-      ["publish"].concat(layout ? [layout] : []).concat([filename]),
-      { cwd: this._base_dir }
-    );
+    const args: string[] = ["publish"];
+    if (layout) args.push(layout);
+    args.push(filename);
+    const info = await run("hexo", args, { cwd: this._base_dir });
     await this._hexo.locals.invalidate();
     await this._hexo.load();
     const fullSource = expandHomeDir(info.split("Published: ")[1].trim());
-    const post = this._hexo.locals
-      .get("posts")
-      .toArray()
-      .find((item) => item.full_source === fullSource)!;
-    return this.getPostBySource(post.source);
+    return this.getPostByFullSource(fullSource);
+  }
+
+  async create(title: string, options?: ICreateOptions) {
+    const args: string[] = ["new"];
+    if (options.layout) args.push(options.layout);
+    if (options.path) {
+      args.push("--path");
+      args.push(options.path);
+    }
+    if (options.replace) args.push("--replace");
+    if (options.slug) {
+      args.push("--slug");
+      args.push(options.slug);
+    }
+    if (title) args.push(title);
+    const info = await run("hexo", args, { cwd: this._base_dir });
+    await this._hexo.locals.invalidate();
+    await this._hexo.load();
+    const fullSource = expandHomeDir(info.split("Created: ")[1].trim());
+    return this.getPostByFullSource(fullSource);
   }
   //#endregion
 }
