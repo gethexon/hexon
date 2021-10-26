@@ -45,8 +45,8 @@ const rest = computed(() => {
 });
 </script>
 <template>
-  <div class="h-viewer-header text-base px-5">
-    <h1 class="text-4xl text-main mb-5" v-if="title">{{ title }}</h1>
+  <div class="h-viewer-header text-base px-5 mx-auto" style="max-width: 768px">
+    <h1 class="text-4xl text-main my-5" v-if="title">{{ title }}</h1>
     <div class="updated text-sub" v-if="updated">
       <HIcon
         class="mr-1"
