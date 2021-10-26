@@ -1,4 +1,4 @@
-export interface BaseArticle {
+interface IArticle {
   _id: string;
   title: string;
   date: string;
@@ -16,40 +16,33 @@ export interface BaseArticle {
   link?: string | undefined;
   [key: string]: any;
 }
-export interface BriefArticle extends BaseArticle {
+interface IBrief {
   brief: string;
 }
-
-export interface BriefPage extends BriefArticle {
-  __page: boolean;
+interface IPage {
+  brief: string;
 }
-
-export interface BriefPost extends BriefArticle {
+interface IPost {
   slug: string;
   published?: boolean | undefined;
   categories?: string[] | undefined;
   tags: string[];
   __post: boolean;
 }
-
-export interface Article extends BaseArticle {
+interface IDetail {
   _content: string;
   content: string;
   raw?: string | undefined;
   more?: string | undefined;
 }
 
-export interface Page extends Article {
-  __page: boolean;
-}
+export interface BriefPage extends IArticle, IBrief, IPage {}
 
-export interface Post extends Article {
-  slug: string;
-  published?: boolean | undefined;
-  categories?: string[] | undefined;
-  tags: string[];
-  __post: boolean;
-}
+export interface BriefPost extends IArticle, IBrief, IPost {}
+
+export interface Page extends IArticle, IBrief, IPage, IDetail {}
+
+export interface Post extends IArticle, IBrief, IPost, IDetail {}
 
 export interface Tag {
   _id: string;

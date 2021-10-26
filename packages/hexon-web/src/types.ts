@@ -1,6 +1,5 @@
-export interface BriefArticle {
+interface IArticle {
   _id: string;
-  slug: string;
   title: string;
   date: string;
   updated?: string | undefined;
@@ -15,37 +14,47 @@ export interface BriefArticle {
   next?: string | undefined; // _id
   photos?: string[] | undefined;
   link?: string | undefined;
-  brief: string;
   [key: string]: any;
 }
-
-export interface BriefPage extends BriefArticle {
-  __page: boolean;
+interface IBrief {
+  brief: string;
 }
-
-export interface BriefPost extends BriefArticle {
+interface IPage {
+  brief: string;
+}
+interface IPost {
+  slug: string;
   published?: boolean | undefined;
   categories?: string[] | undefined;
   tags: string[];
   __post: boolean;
 }
-
-export interface Article extends BriefArticle {
+interface IDetail {
   _content: string;
   content: string;
   raw?: string | undefined;
   more?: string | undefined;
 }
 
-export interface Page extends Article {
-  __page: boolean;
-}
+export interface BriefPage extends IArticle, IBrief, IPage {}
 
-export interface Post extends Article {
-  published?: boolean | undefined;
-  categories?: string[] | undefined;
-  tags: string[];
-  __post: boolean;
+export interface BriefPost extends IArticle, IBrief, IPost {}
+
+export interface Page extends IArticle, IBrief, IPage, IDetail {}
+
+export interface Post extends IArticle, IBrief, IPost, IDetail {}
+
+export interface Tag {
+  _id: string;
+  name: string;
+  slug: string;
+  path: string;
+  permalink: string;
+  posts: string[]; // _id
+  length: number;
+}
+export interface Category extends Tag {
+  parent: string;
 }
 
 export interface Tag {

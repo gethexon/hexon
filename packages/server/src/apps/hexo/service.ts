@@ -1,13 +1,21 @@
 import path from "path";
 import { default as HexoCore } from "hexo";
-import { createDebug, DEV } from "../../utils";
 import { inject, injectable, singleton } from "tsyringe";
+import { createDebug, DEV, expandHomeDir } from "../../utils";
 import {
   IStorageService,
   StorageServiceIdentifier,
 } from "../../services/storage";
 import { BRIEF_LENGTH, HEXO_BASE_DIR_KEY, HEXO_OPTIONS_KEY } from "./constants";
-import { HexoPage, HexoPost, toCategory, toPage, toPost, toTag } from "./utils";
+import {
+  HexoPage,
+  HexoPost,
+  run,
+  toCategory,
+  toPage,
+  toPost,
+  toTag,
+} from "./utils";
 import fs from "fs";
 import { BriefPage, BriefPost, Category, Page, Post, Tag } from "./types";
 
@@ -40,7 +48,6 @@ interface IHexoCommand {
   deploy(options?: IDeployOptions): Promise<void>;
   generate(): Promise<void>;
   clean(): Promise<void>;
-  // publish(): Promise<void>;
 }
 interface IDeployOptions {
   generate?: boolean;
@@ -56,9 +63,10 @@ interface IGenerateOptions {
 
 interface IHexoCli {
   // run with --config
-  create(title: string, options?: ICreateOptions): Promise<void>; // new
-  update(): Promise<void>;
-  delete(): Promise<void>;
+  publish(source: string, layout?: string): Promise<Post>;
+  // create(title: string, options?: ICreateOptions): Promise<void>; // new
+  // update(): Promise<void>;
+  // delete(): Promise<void>;
 }
 
 function transformPost(doc: HexoPost): Post {
@@ -71,6 +79,7 @@ function transformPost(doc: HexoPost): Post {
     next: doc?.next?.source,
     tags: doc.tags.data.map((t) => t.slug),
     categories: doc?.categories.data.map((c) => c.slug),
+    brief: doc._content.slice(0, BRIEF_LENGTH),
   };
 }
 
@@ -104,7 +113,7 @@ function transformPageToBrief(doc: Page): BriefPage {
 
 @injectable()
 @singleton()
-class Hexo implements IHexoAPI, IHexoCommand {
+class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
   //#region init
   private _hexo: HexoCore = null;
   private _base_dir: string = null;
@@ -265,6 +274,24 @@ class Hexo implements IHexoAPI, IHexoCommand {
     this.runWithModifiedDraftOption(async (ctx) => {
       await ctx._hexo.call("clean");
     });
+  }
+  //#endregion
+
+  //#region IHexoCli
+  async publish(filename: string, layout?: string) {
+    const info = await run(
+      "hexo",
+      ["publish"].concat(layout ? [layout] : []).concat([filename]),
+      { cwd: this._base_dir }
+    );
+    await this._hexo.locals.invalidate();
+    await this._hexo.load();
+    const fullSource = expandHomeDir(info.split("Published: ")[1].trim());
+    const post = this._hexo.locals
+      .get("posts")
+      .toArray()
+      .find((item) => item.full_source === fullSource)!;
+    return this.getPostBySource(post.source);
   }
   //#endregion
 }

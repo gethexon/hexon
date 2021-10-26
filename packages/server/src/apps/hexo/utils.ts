@@ -1,4 +1,5 @@
 import Hexo from "hexo";
+import execa from "execa";
 
 interface Query<T> {
   data: T[];
@@ -59,3 +60,11 @@ export const toPage = (post: Hexo.Locals.Page) => post as unknown as HexoPage;
 export const toCategory = (post: Hexo.Locals.Category) =>
   post as unknown as HexoCategory;
 export const toTag = (post: Hexo.Locals.Tag) => post as unknown as HexoTag;
+
+export async function run(
+  command: string,
+  args?: string[],
+  opt?: execa.Options
+) {
+  return (await execa(command, args, { ...opt, stdio: "pipe" })).stdout;
+}

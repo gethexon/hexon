@@ -54,5 +54,14 @@ router.post("/clean", async (ctx: Context) => {
   await hexo.clean();
   ctx.status = 200;
 });
-
+router.post("/publish", async (ctx: Context) => {
+  const hexo = container.resolve(Hexo);
+  const { filename, layout } = ctx.request.body;
+  if (!filename) {
+    ctx.status = 400;
+    ctx.body = "need `filename`";
+    return;
+  }
+  ctx.body = await hexo.publish(filename, layout);
+});
 export default router;
