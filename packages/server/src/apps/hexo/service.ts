@@ -61,15 +61,24 @@ interface IGenerateOptions {
   concurrency?: boolean;
 }
 
+interface WithCategoriesTags<T> {
+  article: T;
+  categories: Category[];
+  tags: Tag[];
+}
+
 interface IHexoCli {
   // run with --config
-  publish(source: string, layout?: string): Promise<Post>;
-  create(title: string, options?: ICreateOptions): Promise<Post>; // new
+  publish(source: string, layout?: string): Promise<WithCategoriesTags<Post>>;
+  create(
+    title: string,
+    options?: ICreateOptions
+  ): Promise<WithCategoriesTags<Post>>; // new
   update(
     source: string,
     raw: string,
     type: "post" | "page"
-  ): Promise<Post | Page>;
+  ): Promise<WithCategoriesTags<Post | Page>>;
   // delete(): Promise<void>;
 }
 
@@ -150,6 +159,39 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
       .toArray()
       .find((item) => item.full_source === fullSource)!;
     return this.getPostBySource(post.source);
+  }
+  private write(fullPath: string, content: string) {
+    try {
+      fs.writeFileSync(fullPath, content);
+    } catch (e) {
+      console.error(e);
+      throw new Error("fail to write file");
+    }
+  }
+
+  private async reload() {
+    await this._hexo.locals.invalidate();
+    await this._hexo.load();
+  }
+
+  private getFullPathBySource(source: string, type: "post" | "page") {
+    if (type === "post")
+      return this._hexo.locals
+        .get("posts")
+        .toArray()
+        .find((item) => item.source === source).full_source;
+    else
+      return this._hexo.locals
+        .get("pages")
+        .toArray()
+        .find((item) => item.source === source).full_source;
+  }
+  private async withCategoriesTags<T>(
+    article: T
+  ): Promise<WithCategoriesTags<T>> {
+    const categories = await this.listCategory();
+    const tags = await this.listTag();
+    return { article, categories, tags };
   }
   //#endregion
 
@@ -297,7 +339,8 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
     const info = await run("hexo", args, { cwd: this._base_dir });
     await this.reload();
     const fullSource = expandHomeDir(info.split("Published: ")[1].trim());
-    return this.getPostByFullSource(fullSource);
+    const article = await this.getPostByFullSource(fullSource);
+    return this.withCategoriesTags(article);
   }
 
   async create(title: string, options?: ICreateOptions) {
@@ -316,51 +359,35 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
     const info = await run("hexo", args, { cwd: this._base_dir });
     await this.reload();
     const fullSource = expandHomeDir(info.split("Created: ")[1].trim());
-    return this.getPostByFullSource(fullSource);
+    const article = await this.getPostByFullSource(fullSource);
+    return this.withCategoriesTags(article);
   }
 
-  private write(fullPath: string, content: string) {
-    try {
-      fs.writeFileSync(fullPath, content);
-    } catch (e) {
-      console.error(e);
-      throw new Error("fail to write file");
-    }
-  }
-
-  private async reload() {
-    await this._hexo.locals.invalidate();
-    await this._hexo.load();
-  }
-
-  private getFullPathBySource(source: string, type: "post" | "page") {
-    if (type === "post")
-      return this._hexo.locals
-        .get("posts")
-        .toArray()
-        .find((item) => item.source === source).full_source;
-    else
-      return this._hexo.locals
-        .get("pages")
-        .toArray()
-        .find((item) => item.source === source).full_source;
-  }
-
-  async update(source: string, raw: string, type: "post"): Promise<Post>;
-  async update(source: string, raw: string, type: "page"): Promise<Page>;
+  async update(
+    source: string,
+    raw: string,
+    type: "post"
+  ): Promise<WithCategoriesTags<Post>>;
+  async update(
+    source: string,
+    raw: string,
+    type: "page"
+  ): Promise<WithCategoriesTags<Page>>;
   async update(source: string, raw: string, type: "post" | "page") {
     if (type === "post") {
       const fullPath = this.getFullPathBySource(source, "post");
       if (!fullPath) throw new Error("not found");
       this.write(fullPath, raw);
       await this.reload();
-      return this.getPostBySource(source);
+      const article = await this.getPostBySource(source);
+      return this.withCategoriesTags(article);
     } else {
       const fullPath = this.getFullPathBySource(source, "page");
       if (!fullPath) throw new Error("not found");
       this.write(fullPath, raw);
       await this.reload();
-      return this.getPageBySource(source);
+      const article = await this.getPageBySource(source);
+      return this.withCategoriesTags(article);
     }
   }
   //#endregion
