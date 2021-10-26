@@ -79,7 +79,10 @@ interface IHexoCli {
     raw: string,
     type: "post" | "page"
   ): Promise<WithCategoriesTags<Post | Page>>;
-  // delete(): Promise<void>;
+  delete(
+    source: string,
+    type: "post" | "page"
+  ): Promise<WithCategoriesTags<void>>;
 }
 
 function transformPost(doc: HexoPost): Post {
@@ -160,12 +163,22 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
       .find((item) => item.full_source === fullSource)!;
     return this.getPostBySource(post.source);
   }
-  private write(fullPath: string, content: string) {
+
+  private writeFile(fullPath: string, content: string) {
     try {
       fs.writeFileSync(fullPath, content);
     } catch (e) {
       console.error(e);
       throw new Error("fail to write file");
+    }
+  }
+
+  private deleteFile(fullPath: string) {
+    try {
+      fs.rmSync(fullPath);
+    } catch (e) {
+      console.error(e);
+      throw new Error("fail to delete file");
     }
   }
 
@@ -377,17 +390,36 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
     if (type === "post") {
       const fullPath = this.getFullPathBySource(source, "post");
       if (!fullPath) throw new Error("not found");
-      this.write(fullPath, raw);
+      this.writeFile(fullPath, raw);
       await this.reload();
       const article = await this.getPostBySource(source);
       return this.withCategoriesTags(article);
     } else {
       const fullPath = this.getFullPathBySource(source, "page");
       if (!fullPath) throw new Error("not found");
-      this.write(fullPath, raw);
+      this.writeFile(fullPath, raw);
       await this.reload();
       const article = await this.getPageBySource(source);
       return this.withCategoriesTags(article);
+    }
+  }
+
+  async delete(
+    source: string,
+    type: "post" | "page"
+  ): Promise<WithCategoriesTags<void>> {
+    if (type === "post") {
+      const fullPath = this.getFullPathBySource(source, "post");
+      if (!fullPath) throw new Error("not found");
+      this.deleteFile(fullPath);
+      await this.reload();
+      return this.withCategoriesTags(null);
+    } else {
+      const fullPath = this.getFullPathBySource(source, "page");
+      if (!fullPath) throw new Error("not found");
+      this.deleteFile(fullPath);
+      await this.reload();
+      return this.withCategoriesTags(null);
     }
   }
   //#endregion

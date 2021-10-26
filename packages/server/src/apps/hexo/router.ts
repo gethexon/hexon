@@ -19,7 +19,11 @@ router.get("/posts", async (ctx: Context) => {
 });
 router.get("/post/:source", async (ctx: Context) => {
   const hexo = container.resolve(Hexo);
-  const source = ctx.params.source;
+  const { source } = ctx.params;
+  if (!source) {
+    ctx.status = 400;
+    ctx.body = "need `source`";
+  }
   ctx.body = await hexo.getPostBySource(decodeURIComponent(source));
 });
 router.get("/pages", async (ctx: Context) => {
@@ -28,7 +32,11 @@ router.get("/pages", async (ctx: Context) => {
 });
 router.get("/page/:source", async (ctx: Context) => {
   const hexo = container.resolve(Hexo);
-  const source = ctx.params.source;
+  const { source } = ctx.params;
+  if (!source) {
+    ctx.status = 400;
+    ctx.body = "need `source`";
+  }
   ctx.body = await hexo.getPageBySource(decodeURIComponent(source));
 });
 router.get("/tags", async (ctx: Context) => {
@@ -74,9 +82,11 @@ router.post("/create", async (ctx: Context) => {
   }
   ctx.body = await hexo.create(title, { layout, path, slug, replace });
 });
-router.put("/update/post", async (ctx: Context) => {
+router.put("/post/:source", async (ctx: Context) => {
   const hexo = container.resolve(Hexo);
-  const { source, raw } = ctx.request.body;
+  const { source } = ctx.params;
+  const { raw } = ctx.request.body;
+
   if (!source || !raw) {
     ctx.status = 400;
     ctx.body = "need `source` and `raw`";
@@ -84,14 +94,35 @@ router.put("/update/post", async (ctx: Context) => {
   }
   ctx.body = await hexo.update(source, raw, "post");
 });
-router.put("/update/page", async (ctx: Context) => {
+router.put("/page/:source", async (ctx: Context) => {
   const hexo = container.resolve(Hexo);
-  const { source, raw } = ctx.request.body;
+  const { source } = ctx.params;
+  const { raw } = ctx.request.body;
   if (!source || !raw) {
     ctx.status = 400;
     ctx.body = "need `source` and `raw`";
     return;
   }
   ctx.body = await hexo.update(source, raw, "page");
+});
+router.delete("/post/:source", async (ctx: Context) => {
+  const hexo = container.resolve(Hexo);
+  const { source } = ctx.params;
+  if (!source) {
+    ctx.status = 400;
+    ctx.body = "need `source` ";
+    return;
+  }
+  ctx.body = await hexo.delete(source, "post");
+});
+router.delete("/page/:source", async (ctx: Context) => {
+  const hexo = container.resolve(Hexo);
+  const { source } = ctx.params;
+  if (!source) {
+    ctx.status = 400;
+    ctx.body = "need `source` ";
+    return;
+  }
+  ctx.body = await hexo.delete(source, "page");
 });
 export default router;
