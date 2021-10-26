@@ -12,6 +12,7 @@ import { HNavListActionPayload } from "~/components/types";
 import HSearchBar from "~/components/HSearchBar.vue";
 import HArticleList from "~/components/HArticleList.vue";
 import { BriefPost } from "~/types";
+import HNavSetting from "~/components/HNavSetting.vue";
 
 const mainStore = useMainStore();
 const router = useRouter();
@@ -137,7 +138,7 @@ const onArticleClick = ({
             @on-action="onNavListAction"
           />
         </div>
-        TODO
+        <HNavSetting />
       </div>
     </template>
     <template v-slot:second>
