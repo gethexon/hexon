@@ -4,6 +4,7 @@ import { useRoute, useRouter } from "vue-router";
 import { useDetailStore } from "~/store/detail";
 import HViewerToolbar from "~/components/HViewerToolbar.vue";
 import HViewerContent from "~/components/HViewerContent.vue";
+import HViewerHeader from "~/components/HViewerHeader.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -45,11 +46,14 @@ router.beforeEach(async (to, from) => {
   }
 });
 const content = computed(() => detailStore.article?.content || "");
+const title = computed(() => detailStore.article?.title || "");
+const raw = computed(() => detailStore.article?.raw || "");
 </script>
 <template>
   <div class="w-full h-full flex flex-col">
     <HViewerToolbar />
     <div class="overflow-auto flex-1">
+      <HViewerHeader :title="title" :raw="raw" />
       <HViewerContent :content="content" />
     </div>
   </div>
