@@ -2,12 +2,18 @@ import path from "path";
 import { default as HexoCore } from "hexo";
 import { inject, injectable, singleton } from "tsyringe";
 import fs from "fs";
-import { createDebug, DEV, expandHomeDir } from "../../utils";
+import { createDebug, DEV, expandHomeDir } from "~/server/utils";
 import {
   IStorageService,
   StorageServiceIdentifier,
-} from "../../services/storage";
-import { BRIEF_LENGTH, HEXO_BASE_DIR_KEY, HEXO_OPTIONS_KEY } from "./constants";
+} from "~/shared/storage-service";
+import {
+  HEXO_BASE_DIR_KEY,
+  HEXO_OPTIONS_KEY,
+  BRIEF_LENGTH,
+} from "~/shared/constants";
+import { isBlog, toRealPath } from "~/shared/utils";
+import { BriefPage, BriefPost, Category, Page, Post, Tag } from "./types";
 import {
   HexoPage,
   HexoPost,
@@ -17,7 +23,6 @@ import {
   toPost,
   toTag,
 } from "./utils";
-import { BriefPage, BriefPost, Category, Page, Post, Tag } from "./types";
 
 declare module "hexo" {
   interface InstanceOptions {
@@ -142,7 +147,7 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
   private withModifiedOption(
     options: HexoCore.InstanceOptions
   ): HexoCore.InstanceOptions {
-    return { ...options, draft: true, drafts: true, debug: true };
+    return { ...options, draft: true, drafts: true };
   }
 
   private async runWithoutModifiedOption(fn: (ctx: Hexo) => Promise<void>) {
@@ -212,21 +217,10 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
 
   public async init() {
     const bak = { base_dir: this._base_dir, options: this._options };
-    this._base_dir = path.resolve(
-      __dirname,
-      DEV ? "../../" : "",
-      "../../../",
-      this._storage.get<string>(HEXO_BASE_DIR_KEY)
-    );
+    const base = this._storage.get<string>(HEXO_BASE_DIR_KEY);
+    this._base_dir = path.resolve(__dirname, toRealPath(base));
     if (!this._base_dir) throw new Error("must have hexo base dir");
-    try {
-      const data = fs
-        .readFileSync(path.resolve(this._base_dir, "package.json"))
-        .toString();
-      const parsed = JSON.parse(data);
-      if (!parsed?.dependencies?.hexo)
-        throw new Error(`${this._base_dir} is not a hexo blog`);
-    } catch (_) {
+    if (!isBlog(this._base_dir)) {
       throw new Error(`${this._base_dir} is not a hexo blog`);
     }
 

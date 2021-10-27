@@ -17,7 +17,7 @@ const classes = computed(() => ({
   clickable: clickable.value,
 }));
 const styles = computed(() => ({
-  color: color?.value ?? theme.value.color.foreground.c9,
+  color: color?.value ?? theme.value.color.foreground.min,
   backgroundColor: bgColor?.value ?? theme.value.color.primary.n,
 }));
 </script>

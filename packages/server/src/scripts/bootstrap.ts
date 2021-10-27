@@ -4,7 +4,10 @@
 
 import "reflect-metadata";
 import { container } from "tsyringe";
-import { StorageService, StorageServiceIdentifier } from "./services/storage";
+import {
+  StorageService,
+  StorageServiceIdentifier,
+} from "~/shared/storage-service";
 
 /**
  * setup di

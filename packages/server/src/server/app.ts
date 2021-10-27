@@ -2,18 +2,16 @@ import path from "path";
 import Koa from "koa";
 import logger from "koa-logger";
 import bodyParser from "koa-bodyparser";
-import onerror from "koa-onerror";
 import cors from "@koa/cors";
 
-import apps from "./apps/index.ts";
-import account from "./account.ts";
-import statics from "./lib/statics.ts";
-import { DEV } from "./utils.ts";
+import apps from "./apps/index";
+import account from "./account";
+import statics from "./lib/statics";
+import { DEV } from "./utils";
 import mount from "koa-mount";
 
 const app = new Koa();
 
-onerror(app);
 app.use(cors());
 app.use(async (ctx, next) => {
   try {
