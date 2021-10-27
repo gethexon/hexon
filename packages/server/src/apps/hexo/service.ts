@@ -68,12 +68,11 @@ interface WithCategoriesTags<T> {
 }
 
 interface IHexoCli {
-  // run with --config
   publish(source: string, layout?: string): Promise<WithCategoriesTags<Post>>;
   create(
     title: string,
     options?: ICreateOptions
-  ): Promise<WithCategoriesTags<Post>>; // new
+  ): Promise<WithCategoriesTags<Post>>;
   update(
     source: string,
     raw: string,
@@ -140,18 +139,21 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
   ) {}
 
   //#region helpers
-  private withDraft(
+  private withModifiedOption(
     options: HexoCore.InstanceOptions
   ): HexoCore.InstanceOptions {
-    return { ...options, draft: true, drafts: true };
+    return { ...options, draft: true, drafts: true, debug: true };
   }
 
-  private async runWithModifiedDraftOption(fn: (ctx: Hexo) => Promise<void>) {
+  private async runWithoutModifiedOption(fn: (ctx: Hexo) => Promise<void>) {
     this._hexo = new HexoCore(this._base_dir, this._options);
     await this._hexo.init();
     await this._hexo.load();
     await fn(this);
-    this._hexo = new HexoCore(this._base_dir, this.withDraft(this._options));
+    this._hexo = new HexoCore(
+      this._base_dir,
+      this.withModifiedOption(this._options)
+    );
     await this._hexo.init();
     await this._hexo.load();
   }
@@ -231,7 +233,10 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
     this._options =
       this._storage.get<HexoCore.InstanceOptions>(HEXO_OPTIONS_KEY) || {};
     this._options.silent = DEV ? false : this._options.silent;
-    this._hexo = new HexoCore(this._base_dir, this.withDraft(this._options));
+    this._hexo = new HexoCore(
+      this._base_dir,
+      this.withModifiedOption(this._options)
+    );
 
     try {
       await this._hexo.init();
@@ -313,7 +318,7 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
     const { generate = false } = options;
     const args: string[] = [];
     if (generate) args.push("--generate");
-    this.runWithModifiedDraftOption(async (ctx) => {
+    this.runWithoutModifiedOption(async (ctx) => {
       await ctx._hexo.call("deploy", { _: args });
     });
   }
@@ -331,14 +336,14 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
     if (watch) args.push("--watch");
     if (bail) args.push("--bail");
     if (force) args.push("--force");
-    this.runWithModifiedDraftOption(async (ctx) => {
+    this.runWithoutModifiedOption(async (ctx) => {
       if (concurrency) args.push("--concurrency");
       await ctx._hexo.call("generate", { _: args });
     });
   }
 
   async clean() {
-    this.runWithModifiedDraftOption(async (ctx) => {
+    this.runWithoutModifiedOption(async (ctx) => {
       await ctx._hexo.call("clean");
     });
   }
