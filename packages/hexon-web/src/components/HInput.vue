@@ -22,7 +22,7 @@ const { modelValue, placeholder, clearable, type, attrType } = toRefs(props);
 const showSuffix = computed(() => clearable.value && modelValue.value);
 
 const requestChange = (value: string) => emit("update:modelValue", value);
-const onInput: any = (e: InputEvent) =>
+const onInput = (e: Event) =>
   requestChange((e.target as HTMLInputElement)?.value);
 const onClear = () => requestChange("");
 
