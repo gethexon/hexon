@@ -23,6 +23,7 @@
     "color-convert": "^2.0.1",
     "dayjs": "^1.10.7",
     "hexo-front-matter": "^2.0.0",
+    "monaco-editor": "^0.29.1",
     "pinia": "^2.0.0-rc.14",
     "vue": "^3.2.6",
     "vue-router": "4"

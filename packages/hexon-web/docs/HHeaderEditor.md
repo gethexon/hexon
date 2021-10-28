@@ -8,7 +8,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import HHeaderEditor from '../src/components/HHeaderEditor.vue'
+import HHeaderEditor from '../src/components/Editors/HHeaderEditor.vue'
 const value = ref('Hello World')
 const onUpdate = (v) => {
   value.value = v
