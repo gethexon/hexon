@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.8.0-beta.5](https://github.com/gethexon/hexon/compare/v0.8.0-beta.4...v0.8.0-beta.5) (2021-11-03)
+
+**Note:** Version bump only for package hexon-web
+
+
+
+
+
 # [0.8.0-beta.3](https://github.com/gethexon/hexon/compare/v0.8.0-beta.2...v0.8.0-beta.3) (2021-10-21)
 
 **Note:** Version bump only for package hexon-web

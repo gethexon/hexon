@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.8.0-beta.5](https://github.com/gethexon/hexon/compare/v0.8.0-beta.4...v0.8.0-beta.5) (2021-11-03)
+
+
+### Bug Fixes
+
+* path 为空时新建文章崩溃 ([bcc2ee9](https://github.com/gethexon/hexon/commit/bcc2ee9189b0d1e3785e9937f70ef39d9ffdc3f3))
+* prd script 路径错误 ([21e2cfb](https://github.com/gethexon/hexon/commit/21e2cfb61fb32b0562740123e3c258a99bc64749))
+
+
+
+
+
 # [0.8.0-beta.4](https://github.com/gethexon/hexon/compare/v0.8.0-beta.3...v0.8.0-beta.4) (2021-10-21)
 
 
