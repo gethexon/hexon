@@ -13,6 +13,10 @@ export default defineConfig({
         find: "~",
         replacement: path.resolve(projectRootDir, "src"),
       },
+      {
+        find: "@",
+        replacement: path.resolve(projectRootDir, "src/components"),
+      },
     ],
   },
 });

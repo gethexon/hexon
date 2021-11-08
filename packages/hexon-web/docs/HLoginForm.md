@@ -7,7 +7,7 @@
 </div>
 
 <script setup>
-import HLoginForm from '../src/components/HLoginForm.vue'
+import HLoginForm from '../src/components/forms/HLoginForm.vue'
 const onSignin = (payload)=> {
   console.log(payload);
 }

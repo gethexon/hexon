@@ -1,5 +1,12 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import account from "./account";
+import { isInstalled } from "./api";
+
+const path = {
+  home: "/",
+  signin: "/signin",
+  install: "/install",
+};
 
 const routes: RouteRecordRaw[] = [
   {
@@ -14,8 +21,12 @@ const routes: RouteRecordRaw[] = [
     ],
   },
   {
-    path: "/signin",
+    path: path.signin,
     component: () => import("./pages/SignInPage.vue"),
+  },
+  {
+    path: path.install,
+    component: () => import("./pages/InstallPage.vue"),
   },
   {
     path: "/:pathMatch(.*)*",
@@ -25,11 +36,26 @@ const routes: RouteRecordRaw[] = [
 
 const router = createRouter({ history: createWebHashHistory(), routes });
 
-router.beforeEach(
-  account.beforeEachGuard({
-    home: "/",
-    signin: "/signin",
-  })
-);
+let checked = false;
+let installed = false;
+router.beforeEach(async (to, from) => {
+  if (!checked) {
+    installed = await isInstalled();
+    checked = true;
+  }
+  if (!installed) {
+    if (to.path !== path.install) return path.install;
+    else return true;
+  } else {
+    if (to.path === path.install) return path.home;
+  }
+  if (account.isSignedIn) {
+    if (to.path === path.signin) return path.home;
+    else return true;
+  } else {
+    if (to.path !== path.signin) return path.signin;
+    else return true;
+  }
+});
 
 export default router;

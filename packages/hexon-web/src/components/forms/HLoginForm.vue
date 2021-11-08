@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import logo from "~/assets/logo.svg";
-import HImage from "./HImage.vue";
-import HInput from "./HInput.vue";
-import HIcon from "./HIcon.vue";
-import HButton from "./HButton.vue";
-import { HIconName } from "./HIconName";
 import { useTheme } from "@winwin/vue-global-theming";
+import logo from "~/assets/logo.svg";
 import { HTheme } from "~/themes";
+import HImage from "@/HImage.vue";
+import HInput from "@/HInput.vue";
+import HIcon from "@/HIcon.vue";
+import HButton from "@/HButton.vue";
+import { HIconName } from "@/HIconName";
 
 const emits = defineEmits<{
   (e: "on-submit", payload: { username: string; password: string }): void;

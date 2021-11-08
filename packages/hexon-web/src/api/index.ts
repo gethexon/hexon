@@ -14,3 +14,32 @@ export const getAllData = async () => {
     account.access.get("/hexo/categories"),
   ]).then((list) => list.map((item) => item.data));
 };
+
+export const isInstalled = async () => {
+  return account.origin.get("/install").then(
+    () => false,
+    () => true
+  );
+};
+
+export const install = async ({
+  username,
+  password,
+  secret,
+  expiresIn,
+  refreshableIn,
+}: {
+  username: string;
+  password: string;
+  secret: string;
+  expiresIn: number;
+  refreshableIn: number;
+}) => {
+  return account.origin.post("/install", {
+    username,
+    password,
+    secret,
+    expiresIn: expiresIn + "h",
+    refreshableIn: refreshableIn + "d",
+  });
+};

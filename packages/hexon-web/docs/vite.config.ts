@@ -1,6 +1,6 @@
 import path from "path";
 import { defineConfig } from "vite";
-const projectRootDir = path.resolve(__dirname);
+const projectRootDir = path.resolve(__dirname, "..");
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -8,7 +8,11 @@ export default defineConfig({
     alias: [
       {
         find: "~",
-        replacement: path.resolve(projectRootDir, "../src"),
+        replacement: path.resolve(projectRootDir, "src"),
+      },
+      {
+        find: "@",
+        replacement: path.resolve(projectRootDir, "src/components"),
       },
     ],
   },

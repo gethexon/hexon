@@ -2,7 +2,7 @@
 import { computed } from "@vue/reactivity";
 import { useRouter } from "vue-router";
 import { useAccount } from "@winwin/vue-simple-account";
-import HLoginForm from "~/components/HLoginForm.vue";
+import HLoginForm from "~/components/forms/HLoginForm.vue";
 import { useTheme } from "@winwin/vue-global-theming";
 import { HTheme } from "~/themes";
 const router = useRouter();

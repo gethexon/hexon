@@ -1081,6 +1081,21 @@
   resolved "https://registry.npmmirror.com/@vue/test-utils/download/@vue/test-utils-2.0.0-rc.16.tgz?cache=0&sync_timestamp=1634084875328&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40vue%2Ftest-utils%2Fdownload%2F%40vue%2Ftest-utils-2.0.0-rc.16.tgz#59380f02870f856ac002a29c02681d3f3fcbafeb"
   integrity sha1-WTgPAocPhWrAAqKcAmgdPz/Lr+s=
 
+"@vueuse/core@^6.8.0":
+  version "6.8.0"
+  resolved "https://registry.npmmirror.com/@vueuse/core/download/@vueuse/core-6.8.0.tgz#dc004bc30031e053e9ef5011203c4a80f00986ed"
+  integrity sha1-3ABLwwAx4FPp71ARIDxKgPAJhu0=
+  dependencies:
+    "@vueuse/shared" "6.8.0"
+    vue-demi "*"
+
+"@vueuse/shared@6.8.0":
+  version "6.8.0"
+  resolved "https://registry.npmmirror.com/@vueuse/shared/download/@vueuse/shared-6.8.0.tgz#50713b770941293e557a4eae9424cad2aad44a85"
+  integrity sha1-UHE7dwlBKT5Vek6ulCTK0qrUSoU=
+  dependencies:
+    vue-demi "*"
+
 "@winwin/vue-global-theming@^0.1.4":
   version "0.1.4"
   resolved "https://registry.npmmirror.com/@winwin/vue-global-theming/download/@winwin/vue-global-theming-0.1.4.tgz#a482660167ff103a247155511bf4cbb86d05fdfb"
@@ -1089,10 +1104,10 @@
     standard-version "^9.3.1"
     vue "^3.2.6"
 
-"@winwin/vue-simple-account@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.npmmirror.com/@winwin/vue-simple-account/download/@winwin/vue-simple-account-0.0.1.tgz#9c32fbec8258a08e9026a1fdb34658b78a78fa40"
-  integrity sha1-nDL77IJYoI6QJqH9s0ZYt4p4+kA=
+"@winwin/vue-simple-account@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.npmjs.org/@winwin/vue-simple-account/-/vue-simple-account-0.0.3.tgz#ec04adabb8e11d7d8370508289597777af4611d6"
+  integrity sha512-PsKDwx2JkOq62CihAF9lIs425DOBTuIJmVckB5FpmHEN5MOn2VCeTgpihrqDXtNM/ih6azceis9lCs2dNNrs6g==
   dependencies:
     axios "^0.21.4"
     vue "^3.2.6"

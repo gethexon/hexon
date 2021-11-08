@@ -16,3 +16,12 @@ export type HViewerToolbarActionPayload =
   | { type: "delete" }
   | { type: "publish" }
   | { type: "code" };
+
+export interface IFormData {
+  username: string;
+  password: string;
+  password2: string;
+  secret: string;
+  expiresIn: string;
+  refreshableIn: string;
+}
