@@ -33,7 +33,7 @@ app.use(
   })
 );
 
-app.use(mount("/", statics(path.resolve(__dirname, "../../hexon-web/dist"))));
+app.use(mount("/", statics(path.resolve(process.cwd(), "../hexon-web/dist"))));
 app.use(account.middleware);
 
 app.use(apps);

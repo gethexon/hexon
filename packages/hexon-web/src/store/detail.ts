@@ -1,6 +1,5 @@
-import { useAccount } from "@winwin/vue-simple-account";
 import { defineStore } from "pinia";
-import account from "~/account";
+import { getArticle } from "~/api";
 import { Page, Post } from "~/types";
 
 interface IState {
@@ -26,13 +25,13 @@ export const useDetailStore = defineStore("detail", {
     async getArticle(options: { source: string; type: "post" | "page" }) {
       let res;
       try {
-        res = await account.access.get(`/${options.type}/${options.source}`);
+        res = await getArticle(options.type, options.source);
       } catch (err) {
+        // TODO 获取失败之后怎么办
         console.error(err);
         return;
       }
-      this.article =
-        options.type === "post" ? (res.data as Post) : (res.data as Page);
+      this.article = options.type === "post" ? (res as Post) : (res as Page);
       this.tmp = null;
       this.changed = false;
       this.status = "VIEW";

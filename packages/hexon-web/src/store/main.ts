@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import account from "~/account";
+import { getAllData } from "~/api";
 import { list2Tree, TreeNode } from "~/lib/list2tree";
 import { BriefPage, BriefPost, Category, Tag } from "~/types";
 import { list2object, object2list } from "~/utils";
@@ -28,16 +28,8 @@ export const useMainStore = defineStore("main", {
   }),
   actions: {
     async getBlogData() {
-      const access = account.access;
       try {
-        const [posts, pages, tags, categories] = (
-          await Promise.all([
-            access.get("/posts"),
-            access.get("/pages"),
-            access.get("/tags"),
-            access.get("/categories"),
-          ])
-        ).map((res) => res.data);
+        const [posts, pages, tags, categories] = await getAllData();
         this.posts = list2object(posts as BriefPost[], "source");
         this.pages = list2object(pages as BriefPage[], "source");
         this.tags = list2object(tags as Tag[], "slug");
