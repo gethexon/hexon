@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
-    "prebuild": "jest",
+    "prebuild": "yarn && jest",
     "test": "jest",
     "serve": "vite preview",
     "nc": "hygen component new",
