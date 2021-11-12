@@ -110,7 +110,7 @@ const onArticleClick = ({
   else
     router.push({
       name: "view",
-      params: { source: encodeURIComponent(source), type },
+      params: { source, type },
     });
 };
 </script>

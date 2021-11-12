@@ -1,7 +1,9 @@
 import account from "~/account";
 
 export const getArticle = async (type: "post" | "page", source: string) => {
-  return account.access.get(`/hexo/${type}/${source}`).then((res) => res.data);
+  return account.access
+    .get(`/hexo/${type}/${encodeURIComponent(source)}`)
+    .then((res) => res.data);
 };
 
 export const getAllData = async () => {
