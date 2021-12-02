@@ -1,30 +1,33 @@
 <script setup lang="ts">
-import { computed, ref, onMounted } from "vue";
-import { RouterView, useRouter, useRoute } from "vue-router";
-import { useTheme } from "@winwin/vue-global-theming";
-import { HTheme } from "~/themes";
-import SplitView from "~/lib/splitview";
-import HTitle from "~/components/HTitle.vue";
-import HNavList from "~/components/HNavList.vue";
-import { useMainStore } from "~/store/main";
-import { useArticleListStore } from "~/store/articleList";
-import { HNavListActionPayload } from "~/components/types";
-import HSearchBar from "~/components/HSearchBar.vue";
-import HArticleList from "~/components/HArticleList.vue";
-import { BriefPost } from "~/types";
-import HNavSetting from "~/components/HNavSetting.vue";
+import { computed, ref, onMounted } from "vue"
+import { RouterView, useRouter, useRoute } from "vue-router"
+import { useTheme } from "@winwin/vue-global-theming"
+import { HTheme } from "~/themes"
+import SplitView from "~/lib/splitview"
+import HTitle from "~/components/HTitle.vue"
+import HNavList from "~/components/HNavList.vue"
+import { useMainStore } from "~/store/main"
+import { useArticleListStore } from "~/store/articleList"
+import { HNavListActionPayload } from "~/components/types"
+import HSearchBar from "~/components/HSearchBar.vue"
+import HArticleList from "~/components/HArticleList.vue"
+import { BriefPost } from "~/types"
+import HNavSetting from "~/components/HNavSetting.vue"
+import { noop } from "~/utils"
 
-const mainStore = useMainStore();
-const router = useRouter();
-const route = useRoute();
-const articleListStore = useArticleListStore();
-const theme = useTheme<HTheme>()!;
+const mainStore = useMainStore()
+const router = useRouter()
+const route = useRoute()
+const articleListStore = useArticleListStore()
+const theme = useTheme<HTheme>()!
 const loadBlogData = async () => {
-  mainStore.getBlogData();
-};
-onMounted(() => loadBlogData());
-const sep11 = ref(200);
-const sep22 = ref(320);
+  await mainStore.getBlogData().catch(noop)
+}
+onMounted(async () => {
+  loadBlogData()
+})
+const sep11 = ref(200)
+const sep22 = ref(320)
 const config = {
   sep1: {
     min: 150,
@@ -34,85 +37,85 @@ const config = {
     min: 200,
     max: 500,
   },
-};
+}
 
-const categoriesTree = computed(() => mainStore.categoriesTree);
-const filter = computed(() => articleListStore.articleFilter);
-const articles = computed(() => filter.value(mainStore.articles));
-const onFilterAll = () => articleListStore.setFilter({ type: "all" });
-const onFilterPost = () => articleListStore.setFilter({ type: "post" });
-const onFilterPage = () => articleListStore.setFilter({ type: "page" });
-const onFilterDraft = () => articleListStore.setFilter({ type: "draft" });
+const categoriesTree = computed(() => mainStore.categoriesTree)
+const filter = computed(() => articleListStore.articleFilter)
+const articles = computed(() => filter.value(mainStore.articles))
+const onFilterAll = () => articleListStore.setFilter({ type: "all" })
+const onFilterPost = () => articleListStore.setFilter({ type: "post" })
+const onFilterPage = () => articleListStore.setFilter({ type: "page" })
+const onFilterDraft = () => articleListStore.setFilter({ type: "draft" })
 const onFilterCategory = (slug: string) =>
-  articleListStore.setFilter({ type: "category", slug });
+  articleListStore.setFilter({ type: "category", slug })
 const onFilterTag = (slug: string) =>
-  articleListStore.setFilter({ type: "tag", slug });
+  articleListStore.setFilter({ type: "tag", slug })
 const onNavListAction = (payload: HNavListActionPayload) => {
   switch (payload.type) {
     case "all":
-      onFilterAll();
-      break;
+      onFilterAll()
+      break
     case "post":
-      onFilterPost();
-      break;
+      onFilterPost()
+      break
     case "page":
-      onFilterPage();
-      break;
+      onFilterPage()
+      break
     case "draft":
-      onFilterDraft();
-      break;
+      onFilterDraft()
+      break
     case "category":
-      onFilterCategory(payload.slug);
-      break;
+      onFilterCategory(payload.slug)
+      break
     default:
-      break;
+      break
   }
-};
-const draftsCount = computed(() => mainStore.draftsList.length);
-const postsCount = computed(() => mainStore.publishedPostsList.length);
-const pagesCount = computed(() => mainStore.pagesList.length);
-const search = ref("");
+}
+const draftsCount = computed(() => mainStore.draftsList.length)
+const postsCount = computed(() => mainStore.publishedPostsList.length)
+const pagesCount = computed(() => mainStore.pagesList.length)
+const search = ref("")
 const articleListData = computed(() =>
   articles.value.map((article) => {
     const res: {
-      title: string;
-      brief?: string;
-      tags?: string[];
-      date: string;
-      source: string;
-      type: "post" | "page";
+      title: string
+      brief?: string
+      tags?: string[]
+      date: string
+      source: string
+      type: "post" | "page"
     } = {
       title: article.title,
       brief: article.brief,
       date: article.date,
       source: article.source,
       type: article.__post ? "post" : "page",
-    };
+    }
     if (article.__post) {
       res.tags = (article as BriefPost).tags.map(
         (tag) => mainStore.tags[tag].name
-      );
+      )
     }
-    return res;
+    return res
   })
-);
+)
 const selected = computed(() =>
   decodeURIComponent(route.params.source as string)
-);
+)
 const onArticleClick = ({
   source,
   type,
 }: {
-  source: string;
-  type: "post" | "page";
+  source: string
+  type: "post" | "page"
 }) => {
-  if (source === selected.value) router.push("/");
+  if (source === selected.value) router.push("/")
   else
     router.push({
       name: "view",
       params: { source, type },
-    });
-};
+    })
+}
 </script>
 <template>
   <SplitView

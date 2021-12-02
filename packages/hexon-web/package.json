@@ -25,6 +25,7 @@
     "hexo-front-matter": "^2.0.0",
     "monaco-editor": "^0.29.1",
     "pinia": "^2.0.0-rc.14",
+    "uuid": "^8.3.2",
     "vue": "^3.2.6",
     "vue-router": "4"
   },
@@ -33,6 +34,7 @@
     "@types/color-convert": "^2.0.0",
     "@types/faker": "^5.5.9",
     "@types/jest": "^27.0.2",
+    "@types/uuid": "^8.3.3",
     "@vicons/fluent": "^0.11.0",
     "@vicons/utils": "^0.1.4",
     "@vitejs/plugin-vue": "^1.6.1",

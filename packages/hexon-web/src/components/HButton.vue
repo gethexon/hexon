@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { computed, toRefs } from "@vue/reactivity";
-import { ButtonHTMLAttributes } from "@vue/runtime-dom";
-import { useTheme } from "@winwin/vue-global-theming";
-import { HTheme } from "~/themes";
+import { computed, toRefs } from "@vue/reactivity"
+import { ButtonHTMLAttributes } from "@vue/runtime-dom"
+import { useTheme } from "@winwin/vue-global-theming"
+import { HTheme } from "~/themes"
 
 const props = withDefaults(
   defineProps<{
-    type?: "primary" | "success" | "warning" | "error" | "common";
-    inverted?: boolean;
-    round?: boolean;
-    block?: boolean;
-    attrType?: ButtonHTMLAttributes["type"];
+    type?: "primary" | "success" | "warning" | "error" | "common"
+    inverted?: boolean
+    round?: boolean
+    block?: boolean
+    attrType?: ButtonHTMLAttributes["type"]
   }>(),
   {
     type: "primary",
@@ -18,16 +18,16 @@ const props = withDefaults(
     round: false,
     block: false,
   }
-);
-const { type, inverted, round, block, attrType } = toRefs(props);
+)
+const { type, inverted, round, block, attrType } = toRefs(props)
 const classes = computed(() => {
   return {
     inverted: inverted.value,
     round: round.value,
     block: block.value,
-  };
-});
-const theme = useTheme<HTheme>()!;
+  }
+})
+const theme = useTheme<HTheme>()!
 const styleVars = computed(() => {
   switch (type.value) {
     case "primary":
@@ -40,7 +40,7 @@ const styleVars = computed(() => {
         invertedBgColor: theme.value.color.background.transparent,
         invertedHoverBgColor: theme.value.color.primary.a9,
         invertedActiveBgColor: theme.value.color.primary.a8,
-      };
+      }
     case "success":
       return {
         bgColor: theme.value.color.success.n,
@@ -51,7 +51,7 @@ const styleVars = computed(() => {
         invertedBgColor: theme.value.color.background.transparent,
         invertedHoverBgColor: theme.value.color.success.a9,
         invertedActiveBgColor: theme.value.color.success.a8,
-      };
+      }
     case "error":
       return {
         bgColor: theme.value.color.error.n,
@@ -62,7 +62,7 @@ const styleVars = computed(() => {
         invertedBgColor: theme.value.color.background.transparent,
         invertedHoverBgColor: theme.value.color.error.a9,
         invertedActiveBgColor: theme.value.color.error.a8,
-      };
+      }
     case "warning":
       return {
         bgColor: theme.value.color.warning.n,
@@ -73,7 +73,7 @@ const styleVars = computed(() => {
         invertedBgColor: theme.value.color.background.transparent,
         invertedHoverBgColor: theme.value.color.warning.a9,
         invertedActiveBgColor: theme.value.color.warning.a8,
-      };
+      }
     case "common":
       return {
         bgColor: theme.value.color.common.n,
@@ -84,7 +84,7 @@ const styleVars = computed(() => {
         invertedBgColor: theme.value.color.background.transparent,
         invertedHoverBgColor: theme.value.color.common.a9,
         invertedActiveBgColor: theme.value.color.common.a8,
-      };
+      }
     default:
       return {
         bgColor: theme.value.color.common.n,
@@ -95,9 +95,9 @@ const styleVars = computed(() => {
         invertedBgColor: theme.value.color.background.transparent,
         invertedHoverBgColor: theme.value.color.common.a9,
         invertedActiveBgColor: theme.value.color.common.a8,
-      } as never;
+      } as never
   }
-});
+})
 </script>
 
 <template>
