@@ -116,6 +116,8 @@ const onArticleClick = ({
       params: { source, type },
     })
 }
+const articleList = useArticleListStore()
+const type = computed(() => articleList.filter.type)
 </script>
 <template>
   <SplitView
@@ -138,6 +140,7 @@ const onArticleClick = ({
             :page="pagesCount"
             :post="postsCount"
             :draft="draftsCount"
+            :type="type"
             @on-action="onNavListAction"
           />
         </div>

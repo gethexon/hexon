@@ -1,40 +1,40 @@
 <script setup lang="ts">
-import { toRefs, computed } from "vue";
-import { useTheme } from "@winwin/vue-global-theming";
-import { HTheme } from "~/themes";
-import { TreeNode } from "~/lib/list2tree";
-import { Category } from "~/types";
-import HNavTitle from "./HNavTitle.vue";
-import HNavItem from "./HNavItem.vue";
-import { HIconName } from "./HIconName";
-import { HNavListActionPayload } from "./types";
-import { useArticleListStore } from "~/store/articleList";
+import { toRefs, computed } from "vue"
+import { useTheme } from "@winwin/vue-global-theming"
+import { HTheme } from "~/themes"
+import { TreeNode } from "~/lib/list2tree"
+import { Category } from "~/types"
+import HNavTitle from "./HNavTitle.vue"
+import HNavItem from "./HNavItem.vue"
+import { HIconName } from "./HIconName"
+import { HNavListActionPayload } from "./types"
 
-const t = useTheme<HTheme>();
+const t = useTheme<HTheme>()
 const props = defineProps<{
-  categories: TreeNode<Category, "children">[];
-  post: number;
-  page: number;
-  draft: number;
-}>();
+  categories: TreeNode<Category, "children">[]
+  post: number
+  page: number
+  draft: number
+  type: "all" | "post" | "page" | "draft" | "category" | "tag"
+}>()
 const emits = defineEmits<{
-  (e: "on-action", payload: HNavListActionPayload): void;
-  (e: "on-click", key: string): void;
-}>();
-const { categories, post, page, draft } = toRefs(props);
-const all = computed(() => post.value + page.value + draft.value);
+  (e: "on-action", payload: HNavListActionPayload): void
+  (e: "on-click", key: string): void
+}>()
+const { categories, post, page, draft, type } = toRefs(props)
+const all = computed(() => post.value + page.value + draft.value)
 
 const data = computed(() => {
   const res: {
-    icon: HIconName;
-    text: string;
-    indent?: number;
-    selected?: boolean;
-    color?: string;
-    sub?: string | number;
-    key: string;
-    slug: string;
-  }[] = [];
+    icon: HIconName
+    text: string
+    indent?: number
+    selected?: boolean
+    color?: string
+    sub?: string | number
+    key: string
+    slug: string
+  }[] = []
   function go(c: TreeNode<Category, "children">, i = 0) {
     res.push({
       text: c.name,
@@ -44,12 +44,12 @@ const data = computed(() => {
       sub: c.posts.length,
       key: c.slug,
       slug: c.slug,
-    });
-    c.children?.forEach((child) => go(child, i + 1));
+    })
+    c.children?.forEach((child) => go(child, i + 1))
   }
-  categories.value.forEach((c) => go(c));
-  return res;
-});
+  categories.value.forEach((c) => go(c))
+  return res
+})
 const colors = computed(() => ({
   deploy: t?.value.color.primary.n,
   generate: t?.value.color.primary.n,
@@ -60,12 +60,10 @@ const colors = computed(() => ({
   post: t?.value.color.post,
   page: t?.value.color.page,
   draft: t?.value.color.draft,
-}));
+}))
 const onAction = (payload: HNavListActionPayload) => {
-  emits("on-action", payload);
-};
-const articleList = useArticleListStore();
-const type = computed(() => articleList.filter.type);
+  emits("on-action", payload)
+}
 </script>
 <template>
   <div class="py-0 pl-4 pr-2">
