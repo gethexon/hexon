@@ -1,14 +1,14 @@
-import { useTheme } from "@winwin/vue-global-theming";
-import { computed, watch } from "vue-demi";
-import { HTheme } from "~/themes";
-import * as monaco from "monaco-editor";
+import { useTheme } from "@winwin/vue-global-theming"
+import { computed, watch } from "vue-demi"
+import { HTheme } from "~/themes"
+import * as monaco from "monaco-editor"
 
 function removeHash(str: string) {
-  return str.slice(1);
+  return str.slice(1)
 }
 
 export function useMonacoTheme() {
-  const theme = useTheme<HTheme>()!;
+  const theme = useTheme<HTheme>()!
   const custom = computed(() => {
     return {
       base: "vs" as monaco.editor.BuiltinTheme,
@@ -17,6 +17,10 @@ export function useMonacoTheme() {
         {
           foreground: removeHash(theme.value.color.foreground.sub),
           token: "comment.content.md",
+        },
+        {
+          foreground: removeHash(theme.value.color.foreground.sub),
+          token: "comment.md",
         },
         {
           foreground: removeHash(theme.value.color.foreground.main),
@@ -51,16 +55,16 @@ export function useMonacoTheme() {
         "editor.lineHighlightBackground": theme.value.color.primary.a1,
         "editor.selectionBackground": theme.value.color.background.hover,
       },
-    };
-  });
+    }
+  })
   const update = () => {
-    monaco.editor.defineTheme("hexon", custom.value);
-  };
+    monaco.editor.defineTheme("hexon", custom.value)
+  }
   watch(
     () => custom,
     () => {
-      update();
+      update()
     },
     { immediate: true }
-  );
+  )
 }

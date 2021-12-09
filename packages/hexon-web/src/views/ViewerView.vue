@@ -7,48 +7,24 @@ import HViewerContent from "~/components/HViewerContent.vue"
 import HViewerHeader from "~/components/HViewerHeader.vue"
 import { HViewerToolbarActionPayload } from "~/components/types"
 import { noop } from "~/utils"
+import { IArticleIdentifier } from "~/types"
 import ErroredView from "./ErroredView.vue"
 
 const route = useRoute()
 const router = useRouter()
 const detailStore = useDetailStore()
 watch(
-  () => [route.params.type, route.params.source],
+  () => (route.params.type as string) + (route.params.source as string),
   async () => {
+    // 跳转其他路由的时候交给 beforeEach guard 这里只处理 view 内跳转
+    if (route.name !== "view") return
     const { type, source } = route.params
-    // FIXME 这个 if 可以删掉么，删掉会有什么影响
-    if (
-      route.name === "view" // 仅控制 view 路由
-    ) {
-      await detailStore
-        .viewArticle({ source, type } as {
-          type: "post" | "page"
-          source: string
-        })
-        .catch(noop)
-    }
+    await detailStore
+      .viewArticle({ source, type } as IArticleIdentifier)
+      .catch(noop)
   },
   { immediate: true }
 )
-router.beforeEach(async (to, from) => {
-  // 这里只写跳出 view 路由的逻辑，同路由跳转写到 watch 中
-  if (
-    to.name === "edit" &&
-    to.params.source === from.params.source &&
-    to.params.type === from.params.type
-  ) {
-    // same article view -> edit
-    return
-  } else if (to.name === "view") {
-    // view -> view
-    // 只有在组件加载后 guard 内容才会在路由变化后执行
-    // 立即执行需要写在 watch 中
-    return
-  } else {
-    // others
-    detailStore.clearArticle()
-  }
-})
 const content = computed(() => detailStore.article?.content || "")
 const title = computed(() => detailStore.article?.title || "")
 const raw = computed(() => detailStore.article?.raw || "")
@@ -57,6 +33,13 @@ const onAction = (payload: HViewerToolbarActionPayload) => {
     case "code":
       break
     case "edit":
+      router.push({
+        name: "edit",
+        params: {
+          source: route.params.source,
+          type: route.params.type,
+        },
+      })
       break
     case "delete":
       break
@@ -66,10 +49,9 @@ const onAction = (payload: HViewerToolbarActionPayload) => {
       break
   }
 }
-const errored = computed(() => detailStore.status === "ERRORED")
 </script>
 <template>
-  <ErroredView v-if="errored" />
+  <ErroredView v-if="detailStore.errored" />
   <div class="w-full h-full flex flex-col" v-else>
     <HViewerToolbar @on-action="onAction" />
     <div class="overflow-auto flex-1">

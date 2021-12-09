@@ -10,9 +10,9 @@ interface IState {
    */
   article: Post | Page | null
   /**
-   * 用于编辑的缓存
+   * 用于编辑的缓存 raw
    */
-  tmp: Post | Page | null
+  tmp: string
   changed: boolean
   status: "INIT" | "VIEW" | "SAVED" | "CHANGED" | "ERRORED"
 }
@@ -20,16 +20,24 @@ export const useDetailStore = defineStore("detail", {
   state: (): IState => ({
     type: null,
     article: null,
-    tmp: null,
+    tmp: "",
     changed: false,
     status: "INIT",
   }),
+  getters: {
+    errored(): boolean {
+      return this.status === "ERRORED"
+    },
+    identifier(): string {
+      return (this.article?.source ?? "" + this.type ?? "") || "unkown"
+    },
+  },
   actions: {
     /**
-     * 从服务器获取文章并查看
-     * @returns
+     * 从服务器获取文章并
+     * @param
      */
-    async viewArticle(options: { source: string; type: "post" | "page" }) {
+    async _loadArticle(options: { source: string; type: "post" | "page" }) {
       let res
       try {
         res = await getArticle(options.type, options.source)
@@ -44,17 +52,31 @@ export const useDetailStore = defineStore("detail", {
         this.status = "ERRORED"
         throw err
       }
+      this.type = options.type
       this.article = options.type === "post" ? (res as Post) : (res as Page)
-      this.tmp = null
+      this.tmp = ""
       this.changed = false
+    },
+    /**
+     * 查看文章
+     * @returns
+     */
+    async viewArticle(options: { source: string; type: "post" | "page" }) {
+      await this._loadArticle(options)
       this.status = "VIEW"
     },
     /**
      * 打开已获取的文章
      */
-    async openArticle() {
-      if (this.status !== "VIEW") return
-      this.tmp = JSON.parse(JSON.stringify(this.article))
+    async editArticle(options: { source: string; type: "post" | "page" }) {
+      if (
+        this.status !== "VIEW" ||
+        this.article?.source !== options.source ||
+        this.type !== options.type
+      ) {
+        await this._loadArticle(options)
+      }
+      this.tmp = this.article?.raw ?? ""
       this.changed = false
       this.status = "SAVED"
     },
@@ -66,18 +88,20 @@ export const useDetailStore = defineStore("detail", {
       if (import.meta.env.DEV) {
         // TODO: switch to api
         console.log(`saved`, this.tmp)
-        this.article = JSON.parse(JSON.stringify(this.tmp))
-        this.tmp = JSON.parse(JSON.stringify(this.tmp))
-        this.changed = false
+        // TODO 获取更新后的文章
+        // this.article =
+        // this.tmp =
         this.status = "SAVED"
       }
     },
     /**
      * 更新本地文章
+     * @param updatedRaw 更新后的 raw
+     * @returns
      */
-    async updateArticle(updated: Post | Page) {
-      if (this.status !== "SAVED") return
-      this.tmp = updated
+    async updateArticle(updatedRaw: string) {
+      if (this.status !== "SAVED" && this.status !== "CHANGED") return
+      this.tmp = updatedRaw
       this.changed = true
       this.status = "CHANGED"
     },
@@ -86,7 +110,7 @@ export const useDetailStore = defineStore("detail", {
      */
     async closeArticle() {
       if (this.status !== "SAVED" && this.status !== "CHANGED") return
-      this.tmp = null
+      this.tmp = ""
       this.changed = false
       this.status = "VIEW"
     },

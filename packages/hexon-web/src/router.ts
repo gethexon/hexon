@@ -1,12 +1,12 @@
-import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
-import account from "./account";
-import { isInstalled } from "./api";
+import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router"
+import account from "./account"
+import { isInstalled } from "./api"
 
 const path = {
   home: "/",
   signin: "/signin",
   install: "/install",
-};
+}
 
 const routes: RouteRecordRaw[] = [
   {
@@ -21,6 +21,11 @@ const routes: RouteRecordRaw[] = [
     ],
   },
   {
+    path: "/edit/:type/:source",
+    component: () => import("./views/EditorView.vue"),
+    name: "edit",
+  },
+  {
     path: path.signin,
     component: () => import("./pages/SignInPage.vue"),
   },
@@ -32,30 +37,30 @@ const routes: RouteRecordRaw[] = [
     path: "/:pathMatch(.*)*",
     redirect: "/",
   },
-];
+]
 
-const router = createRouter({ history: createWebHashHistory(), routes });
+const router = createRouter({ history: createWebHashHistory(), routes })
 
-let checked = false;
-let installed = false;
+let checked = false
+let installed = false
 router.beforeEach(async (to, from) => {
   if (!checked) {
-    installed = await isInstalled();
-    checked = true;
+    installed = await isInstalled()
+    checked = true
   }
   if (!installed) {
-    if (to.path !== path.install) return path.install;
-    else return true;
+    if (to.path !== path.install) return path.install
+    else return true
   } else {
-    if (to.path === path.install) return path.home;
+    if (to.path === path.install) return path.home
   }
   if (account.isSignedIn) {
-    if (to.path === path.signin) return path.home;
-    else return true;
+    if (to.path === path.signin) return path.home
+    else return true
   } else {
-    if (to.path !== path.signin) return path.signin;
-    else return true;
+    if (to.path !== path.signin) return path.signin
+    else return true
   }
-});
+})
 
-export default router;
+export default router

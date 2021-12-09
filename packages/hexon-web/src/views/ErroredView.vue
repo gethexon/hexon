@@ -13,13 +13,15 @@ const styleVars = computed(() => ({
     class="
       h-errored-view h-full
       w-full
-      flex
+      flex flex-col
       items-center
       justify-center
       select-none
     "
   >
-    <span class="text-xl">出错啦~</span>
+    <slot>
+      <span class="text-xl">出错啦~</span>
+    </slot>
   </div>
 </template>
 <style lang="less" scoped>
