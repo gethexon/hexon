@@ -63,7 +63,7 @@ const theme = useTheme<HTheme>()!
     </div>
   </div>
 </template>
-<style lang="less" scopr>
+<style lang="less" scope>
 .rotating {
   animation: rotate 1s linear infinite;
 }

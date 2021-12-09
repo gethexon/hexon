@@ -7,6 +7,7 @@ import HViewerContent from "~/components/HViewerContent.vue"
 import HViewerHeader from "~/components/HViewerHeader.vue"
 import { HViewerToolbarActionPayload } from "~/components/types"
 import { noop } from "~/utils"
+import ErroredView from "./ErroredView.vue"
 
 const route = useRoute()
 const router = useRouter()
@@ -15,6 +16,7 @@ watch(
   () => [route.params.type, route.params.source],
   async () => {
     const { type, source } = route.params
+    // FIXME 这个 if 可以删掉么，删掉会有什么影响
     if (
       route.name === "view" // 仅控制 view 路由
     ) {
@@ -64,9 +66,11 @@ const onAction = (payload: HViewerToolbarActionPayload) => {
       break
   }
 }
+const errored = computed(() => detailStore.status === "ERRORED")
 </script>
 <template>
-  <div class="w-full h-full flex flex-col">
+  <ErroredView v-if="errored" />
+  <div class="w-full h-full flex flex-col" v-else>
     <HViewerToolbar @on-action="onAction" />
     <div class="overflow-auto flex-1">
       <HViewerHeader :title="title" :raw="raw" />

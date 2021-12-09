@@ -14,7 +14,7 @@ interface IState {
    */
   tmp: Post | Page | null
   changed: boolean
-  status: "INIT" | "VIEW" | "SAVED" | "CHANGED"
+  status: "INIT" | "VIEW" | "SAVED" | "CHANGED" | "ERRORED"
 }
 export const useDetailStore = defineStore("detail", {
   state: (): IState => ({
@@ -40,6 +40,8 @@ export const useDetailStore = defineStore("detail", {
           type: "error",
           duration: 5000,
         })
+        this.$reset()
+        this.status = "ERRORED"
         throw err
       }
       this.article = options.type === "post" ? (res as Post) : (res as Page)
