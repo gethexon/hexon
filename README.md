@@ -10,14 +10,17 @@ winwin-hexo-editor has been renamed to Hexon witch means hexo online. Wish you l
 
 We are working on docs. Comming soon. Here's a simple version:
 
+## Before Install
+
+Make sure your `git`, `hexo` and `Node.js` workflow is fine. Hexon only provide a GUI for these commands, but **not implememnt them**.
+
 ### Install
 
 ```bash
 git clone https://github.com/gethexon/hexon
 cd hexon/packages/server
 yarn
-node install.js
-yarn start
+yarn setup
 ```
 
 ### Uninstall

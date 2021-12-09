@@ -13,8 +13,8 @@ var cors = require('@koa/cors');
 var compose = require('koa-compose');
 var mount = require('koa-mount');
 var Router = require('@koa/router');
-var chalk = require('chalk');
 var koaSimpleAccount = require('@winwin/koa-simple-account');
+var chalk = require('chalk');
 var HexoCore = require('hexo');
 var Debug = require('debug');
 var execa = require('execa');
@@ -107,22 +107,6 @@ tsyringe.container.register(StorageServiceIdentifier, {
     useClass: StorageService,
 });
 
-const app$3 = new Koa__default["default"]();
-const router$2 = new Router__default["default"]();
-router$2.get("/", (ctx) => {
-    ctx.status = 404;
-});
-app$3.use(router$2.routes());
-app$3.use(router$2.allowedMethods());
-
-const router$1 = new Router__default["default"]();
-router$1.get("/", (ctx) => {
-    ctx.status = 200;
-});
-const app$2 = new Koa__default["default"]();
-app$2.use(router$1.routes());
-app$2.use(router$1.allowedMethods());
-
 const account = koaSimpleAccount.createSimpleAccount({
     path: path__default["default"].resolve(process.cwd(), "data/account.db"),
     secret: "secret",
@@ -135,6 +119,83 @@ const HEXO_OPTIONS_KEY = "hexo-options";
 const BRIEF_LENGTH = 500;
 const HEXON_PORT_KEY = "hexon-port";
 const HEXON_DEFAULT_PORT = 5777;
+const HEXON_ISINSTALL_KEY = "hexon-installed";
+
+let InstallService = class InstallService {
+    _storage;
+    constructor(_storage) {
+        this._storage = _storage;
+        if (!this._storage.get(HEXON_ISINSTALL_KEY))
+            this._storage.set(HEXON_ISINSTALL_KEY, false);
+    }
+    isInstalled() {
+        return this._storage.get(HEXON_ISINSTALL_KEY);
+    }
+    async install(options) {
+        const { username, password, ...auth } = options;
+        account.setUserInfo({ username, password });
+        account.setAuthInfo(auth);
+        this._storage.set(HEXON_ISINSTALL_KEY, true);
+    }
+};
+InstallService = __decorate([
+    tsyringe.injectable(),
+    tsyringe.singleton(),
+    __param(0, tsyringe.inject(StorageServiceIdentifier)),
+    __metadata("design:paramtypes", [Object])
+], InstallService);
+
+const app$3 = new Koa__default["default"]();
+const router$2 = new Router__default["default"]();
+const checkInstall = () => async (ctx, next) => {
+    const service = tsyringe.container.resolve(InstallService);
+    if (!service.isInstalled()) {
+        ctx.status = 404;
+        ctx.body = "Install required";
+    }
+    else
+        await next();
+};
+router$2.get("/", (ctx) => {
+    const service = tsyringe.container.resolve(InstallService);
+    if (service.isInstalled()) {
+        ctx.status = 404;
+    }
+    else {
+        ctx.status = 200;
+        ctx.body = "Waiting For Install";
+    }
+});
+router$2.post("/", async (ctx) => {
+    const service = tsyringe.container.resolve(InstallService);
+    if (service.isInstalled()) {
+        ctx.status = 404;
+        return;
+    }
+    const { username, password, secret, expiresIn, refreshableIn } = ctx.request.body;
+    if ([username, password, secret, expiresIn, refreshableIn].some((value) => !value))
+        ctx.status = 400;
+    else {
+        await service.install({
+            username,
+            password,
+            secret,
+            expiresIn,
+            refreshableIn,
+        });
+        ctx.status = 200;
+    }
+});
+app$3.use(router$2.routes());
+app$3.use(router$2.allowedMethods());
+
+const router$1 = new Router__default["default"]();
+router$1.get("/", (ctx) => {
+    ctx.status = 200;
+});
+const app$2 = new Koa__default["default"]();
+app$2.use(router$1.routes());
+app$2.use(router$1.allowedMethods());
 
 const DEV = process.env.NODE_ENV !== "production";
 function createDebug(scope) {
@@ -648,8 +709,9 @@ app$1.use(router.allowedMethods());
  */
 var apps = compose__default["default"]([
     mount__default["default"]("/install", app$3),
+    checkInstall(),
     mount__default["default"]("/health", app$2),
-    mount__default["default"]("/", app$1),
+    mount__default["default"]("/hexo", app$1),
 ]);
 
 function statics(root) {
@@ -686,7 +748,7 @@ app.use(logger__default["default"]());
 app.use(bodyParser__default["default"]({
     enableTypes: ["json", "form", "text"],
 }));
-app.use(mount__default["default"]("/", statics(path__default["default"].resolve(__dirname, "../../hexon-web/dist"))));
+app.use(mount__default["default"]("/", statics(path__default["default"].resolve(process.cwd(), "../hexon-web/dist"))));
 app.use(account.middleware);
 app.use(apps);
 

@@ -4,9 +4,8 @@
   "private": true,
   "author": "winwin_2011 <yjh2011@live.com>",
   "license": "MIT",
-  "bin": "./bin/index.js",
   "scripts": {
-    "setup": "npx . install",
+    "setup": "node ./bin/index.js install",
     "start": "export DEBUG=null && export NODE_ENV=production && node dist/index.js",
     "stop": "pm2 stop hexon",
     "restart": "pm2 restart hexon",

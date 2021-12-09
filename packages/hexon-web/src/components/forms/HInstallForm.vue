@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { useTheme } from "@winwin/vue-global-theming";
-import HInput from "@/HInput.vue";
-import HIcon from "@/HIcon.vue";
-import { HIconName } from "../HIconName";
-import { HTheme } from "~/themes";
-import HButton from "../HButton.vue";
-import logo from "~/assets/logo-invert.svg";
-import { randomString } from "~/utils";
-import { IFormData } from "../types";
+import { ref } from "vue"
+import { useTheme } from "@winwin/vue-global-theming"
+import HInput from "@/HInput.vue"
+import HIcon from "@/HIcon.vue"
+import { HIconName } from "../HIconName"
+import { HTheme } from "~/themes"
+import HButton from "../HButton.vue"
+import logo from "~/assets/logo-invert.svg"
+import { randomString } from "~/utils"
+import { IFormData } from "../types"
 const formData = ref<IFormData>({
   username: "",
   password: "",
@@ -16,18 +16,18 @@ const formData = ref<IFormData>({
   secret: randomString(),
   expiresIn: "1",
   refreshableIn: "7",
-});
+})
 const emits = defineEmits<{
-  (e: "on-back");
-  (e: "on-submit", value: IFormData);
-}>();
+  (e: "on-back"): void
+  (e: "on-submit", value: IFormData): void
+}>()
 const validate = (): boolean => {
-  return true;
-};
+  return true
+}
 const onSubmit = () => {
-  if (validate()) emits("on-submit", formData.value);
-};
-const theme = useTheme<HTheme>()!;
+  if (validate()) emits("on-submit", formData.value)
+}
+const theme = useTheme<HTheme>()!
 </script>
 <template>
   <form

@@ -1,29 +1,38 @@
 <script setup lang="ts">
-import { useTheme } from "@winwin/vue-global-theming";
-import { ref } from "vue";
-import { install } from "~/api";
-import HInstallForm from "~/components/forms/HInstallForm.vue";
-import { IFormData } from "~/components/types";
-import { HTheme } from "~/themes";
-import { forceReloadWindow } from "~/utils";
-import HIcon from "~/components/HIcon.vue";
-import { HIconName } from "~/components/HIconName";
+import { useTheme } from "@winwin/vue-global-theming"
+import { ref } from "vue"
+import { install } from "~/api"
+import HInstallForm from "~/components/forms/HInstallForm.vue"
+import { IFormData } from "~/components/types"
+import { HTheme } from "~/themes"
+import { forceReloadWindow } from "~/utils"
+import HIcon from "~/components/HIcon.vue"
+import { HIconName } from "~/components/HIconName"
 const props = defineProps<{
-  prev: () => void;
-}>();
-const installing = ref(false);
+  prev: () => void
+}>()
+const installing = ref(false)
 const onSubmit = async (data: IFormData) => {
-  const { password2, ...info } = data;
-  installing.value = true;
+  const { password2, ...info } = data
+  // TODO 表单验证
+  installing.value = true
   try {
-    await install(info);
-    forceReloadWindow();
+    await install({
+      username: info.username,
+      password: info.password,
+      secret: info.secret,
+      // FIXME 如何让 HInput 同时支持 string 和 number
+      expiresIn: info.expiresIn as unknown as number,
+      refreshableIn: info.refreshableIn as unknown as number,
+    })
+    forceReloadWindow()
   } catch (err) {
-    installing.value = false;
-    throw err;
+    installing.value = false
+    // TODO 安装失败后的提示
+    throw err
   }
-};
-const theme = useTheme<HTheme>()!;
+}
+const theme = useTheme<HTheme>()!
 </script>
 <template>
   <div class="w-full h-full relative flex flex-col items-center justify-center">
@@ -45,7 +54,9 @@ const theme = useTheme<HTheme>()!;
       :style="{
         backgroundColor: theme.color.primary.n,
         opacity: installing ? 0.9 : 0,
-        pointerEvents: installing ? '' : 'none',
+        ...(!installing && {
+          pointerEvents: 'none',
+        }),
       }"
     >
       <HIcon class="rotating" :name="HIconName.Refresh" />
