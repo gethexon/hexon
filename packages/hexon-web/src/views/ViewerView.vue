@@ -6,6 +6,7 @@ import HViewerToolbar from "~/components/HViewerToolbar.vue"
 import HViewerContent from "~/components/HViewerContent.vue"
 import HViewerHeader from "~/components/HViewerHeader.vue"
 import { HViewerToolbarActionPayload } from "~/components/types"
+import { noop } from "~/utils"
 
 const route = useRoute()
 const router = useRouter()
@@ -17,16 +18,12 @@ watch(
     if (
       route.name === "view" // 仅控制 view 路由
     ) {
-      // FIXME: 解决闪屏的问题
-      await detailStore.clearArticle()
       await detailStore
-        .getArticle({ source, type } as {
+        .viewArticle({ source, type } as {
           type: "post" | "page"
           source: string
         })
-        .catch(() => {
-          router.push("/")
-        })
+        .catch(noop)
     }
   },
   { immediate: true }

@@ -5,7 +5,13 @@ import { Page, Post } from "~/types"
 
 interface IState {
   type: "post" | "page" | null
+  /**
+   * 用于显示的文章数据
+   */
   article: Post | Page | null
+  /**
+   * 用于编辑的缓存
+   */
   tmp: Post | Page | null
   changed: boolean
   status: "INIT" | "VIEW" | "SAVED" | "CHANGED"
@@ -20,10 +26,10 @@ export const useDetailStore = defineStore("detail", {
   }),
   actions: {
     /**
-     * 从服务器获取文章
+     * 从服务器获取文章并查看
      * @returns
      */
-    async getArticle(options: { source: string; type: "post" | "page" }) {
+    async viewArticle(options: { source: string; type: "post" | "page" }) {
       let res
       try {
         res = await getArticle(options.type, options.source)
