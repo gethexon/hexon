@@ -14,7 +14,6 @@ const emits = defineEmits<{
 const dom = ref<HTMLElement>()
 let instance: monaco.editor.IStandaloneCodeEditor
 function resetModal() {
-  console.log("reset modal")
   const modal = monaco.editor.createModel(props.value, "markdown")
   instance.setModel(modal)
 }

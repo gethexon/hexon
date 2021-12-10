@@ -39,10 +39,9 @@ const styleVars = computed(() => {
       break
   }
   return {
-    main,
-    bgColor: theme.value.color.background.base3,
-    color: theme.value.color.foreground.main,
-    subColor: theme.value.color.foreground.sub,
+    bgColor: main,
+    color: theme.value.color.foreground.min,
+    subColor: theme.value.color.foreground.min,
   }
 })
 const onClose = () => emits("on-close")
@@ -85,7 +84,8 @@ const onClick = () => emits("on-click")
 .h-notification-item {
   background-color: v-bind("styleVars.bgColor");
   .title {
-    color: v-bind("styleVars.main");
+    @apply font-bold;
+    color: v-bind("styleVars.color");
   }
   .desc {
     color: v-bind("styleVars.subColor");

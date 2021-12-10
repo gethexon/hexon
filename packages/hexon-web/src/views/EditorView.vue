@@ -14,6 +14,7 @@ import { HEditorToolbarActionPayload } from "~/components/types"
 import router from "~/router"
 import { parseHfm } from "~/utils/hfm"
 import { parse, stringify } from "hexo-front-matter"
+import { useNotification } from "~/lib/notification"
 
 const route = useRoute()
 const detailStore = useDetailStore()
@@ -48,6 +49,7 @@ const styleVars = computed(() => ({
 const onHome = () => {
   router.push("/")
 }
+const notification = useNotification()
 const onAction = (payload: HEditorToolbarActionPayload) => {
   switch (payload.type) {
     case "back":
@@ -60,7 +62,12 @@ const onAction = (payload: HEditorToolbarActionPayload) => {
       })
       break
     case "save":
-      detailStore.saveArticle()
+      detailStore.saveArticle().then(() => {
+        notification.notify({
+          title: "保存成功",
+          type: "success",
+        })
+      })
       break
     default:
       break

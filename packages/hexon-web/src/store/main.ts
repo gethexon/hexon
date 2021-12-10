@@ -29,6 +29,7 @@ export const useMainStore = defineStore("main", {
     tags: {},
   }),
   actions: {
+    // FIXME 如何处理 store 中的数据和路由切换之间的关系
     async getBlogData() {
       try {
         const [posts, pages, tags, categories] = await getAllData()
@@ -45,6 +46,22 @@ export const useMainStore = defineStore("main", {
         })
         throw err
       }
+    },
+    setCatAndTags({
+      posts,
+      pages,
+      categories,
+      tags,
+    }: {
+      posts: BriefPost[]
+      pages: BriefPage[]
+      categories: Category[]
+      tags: Tag[]
+    }) {
+      this.posts = list2object(posts as BriefPost[], "source")
+      this.pages = list2object(pages as BriefPage[], "source")
+      this.tags = list2object(tags as Tag[], "slug")
+      this.categories = list2object(categories as Category[], "slug")
     },
   },
   getters: {

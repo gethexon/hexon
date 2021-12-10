@@ -1,7 +1,8 @@
 import { defineStore } from "pinia"
-import { getArticle } from "~/api"
+import { getArticle, saveArticle } from "~/api"
 import notification from "~/notification"
-import { Page, Post } from "~/types"
+import { Page, Post, WithCategoriesTagsBriefArticleList } from "~/types"
+import { useMainStore } from "./main"
 
 interface IState {
   type: "post" | "page" | null
@@ -85,14 +86,28 @@ export const useDetailStore = defineStore("detail", {
      */
     async saveArticle() {
       if (this.status !== "CHANGED") return
-      if (import.meta.env.DEV) {
-        // TODO: switch to api
-        console.log(`saved`, this.tmp)
-        // TODO 获取更新后的文章
-        // this.article =
-        // this.tmp =
-        this.status = "SAVED"
-      }
+      if (!this.article || !this.type) return
+      const mainStore = useMainStore()
+      await saveArticle(this.article.source, this.type, this.tmp)
+        .then((res) => {
+          const { article, categories, tags, pages, posts } =
+            res as WithCategoriesTagsBriefArticleList<Post | Page>
+          mainStore.setCatAndTags({ categories, tags, pages, posts })
+          this.article = article
+          this.tmp = this.article.raw ?? ""
+        })
+        .then(() => {
+          this.status = "SAVED"
+        })
+        .catch((err) => {
+          notification.notify({
+            title: "文章保存失败",
+            desc: (err as Error).message,
+            type: "error",
+            duration: 5000,
+          })
+          throw err
+        })
     },
     /**
      * 更新本地文章

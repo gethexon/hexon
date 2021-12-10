@@ -69,7 +69,13 @@ export interface Tag {
 export interface Category extends Tag {
   parent: string
 }
-
+export interface WithCategoriesTagsBriefArticleList<T> {
+  article: T
+  posts: BriefPost[]
+  pages: BriefPage[]
+  categories: Category[]
+  tags: Tag[]
+}
 export interface IArticleIdentifier {
   type: "post" | "page"
   source: string

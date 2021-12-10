@@ -66,27 +66,32 @@ interface IGenerateOptions {
   concurrency?: boolean;
 }
 
-interface WithCategoriesTags<T> {
+interface WithCategoriesTagsBriefArticleList<T> {
   article: T;
+  posts: BriefPost[];
+  pages: BriefPage[];
   categories: Category[];
   tags: Tag[];
 }
 
 interface IHexoCli {
-  publish(source: string, layout?: string): Promise<WithCategoriesTags<Post>>;
+  publish(
+    source: string,
+    layout?: string
+  ): Promise<WithCategoriesTagsBriefArticleList<Post>>;
   create(
     title: string,
     options?: ICreateOptions
-  ): Promise<WithCategoriesTags<Post>>;
+  ): Promise<WithCategoriesTagsBriefArticleList<Post>>;
   update(
     source: string,
     raw: string,
     type: "post" | "page"
-  ): Promise<WithCategoriesTags<Post | Page>>;
+  ): Promise<WithCategoriesTagsBriefArticleList<Post | Page>>;
   delete(
     source: string,
     type: "post" | "page"
-  ): Promise<WithCategoriesTags<void>>;
+  ): Promise<WithCategoriesTagsBriefArticleList<void>>;
 }
 
 function transformPost(doc: HexoPost): Post {
@@ -206,12 +211,14 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
         .toArray()
         .find((item) => item.source === source).full_source;
   }
-  private async withCategoriesTags<T>(
+  private async WithCategoriesTagsBriefArticleList<T>(
     article: T
-  ): Promise<WithCategoriesTags<T>> {
+  ): Promise<WithCategoriesTagsBriefArticleList<T>> {
     const categories = await this.listCategory();
     const tags = await this.listTag();
-    return { article, categories, tags };
+    const pages = await this.listPage();
+    const posts = await this.listPost();
+    return { article, categories, tags, pages, posts };
   }
   //#endregion
 
@@ -352,7 +359,7 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
     await this.reload();
     const fullSource = expandHomeDir(info.split("Published: ")[1].trim());
     const article = await this.getPostByFullSource(fullSource);
-    return this.withCategoriesTags(article);
+    return this.WithCategoriesTagsBriefArticleList(article);
   }
 
   async create(title: string, options?: ICreateOptions) {
@@ -372,19 +379,19 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
     await this.reload();
     const fullSource = expandHomeDir(info.split("Created: ")[1].trim());
     const article = await this.getPostByFullSource(fullSource);
-    return this.withCategoriesTags(article);
+    return this.WithCategoriesTagsBriefArticleList(article);
   }
 
   async update(
     source: string,
     raw: string,
     type: "post"
-  ): Promise<WithCategoriesTags<Post>>;
+  ): Promise<WithCategoriesTagsBriefArticleList<Post>>;
   async update(
     source: string,
     raw: string,
     type: "page"
-  ): Promise<WithCategoriesTags<Page>>;
+  ): Promise<WithCategoriesTagsBriefArticleList<Page>>;
   async update(source: string, raw: string, type: "post" | "page") {
     if (type === "post") {
       const fullPath = this.getFullPathBySource(source, "post");
@@ -392,33 +399,33 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
       this.writeFile(fullPath, raw);
       await this.reload();
       const article = await this.getPostBySource(source);
-      return this.withCategoriesTags(article);
+      return this.WithCategoriesTagsBriefArticleList(article);
     } else {
       const fullPath = this.getFullPathBySource(source, "page");
       if (!fullPath) throw new Error("not found");
       this.writeFile(fullPath, raw);
       await this.reload();
       const article = await this.getPageBySource(source);
-      return this.withCategoriesTags(article);
+      return this.WithCategoriesTagsBriefArticleList(article);
     }
   }
 
   async delete(
     source: string,
     type: "post" | "page"
-  ): Promise<WithCategoriesTags<void>> {
+  ): Promise<WithCategoriesTagsBriefArticleList<void>> {
     if (type === "post") {
       const fullPath = this.getFullPathBySource(source, "post");
       if (!fullPath) throw new Error("not found");
       this.deleteFile(fullPath);
       await this.reload();
-      return this.withCategoriesTags(null);
+      return this.WithCategoriesTagsBriefArticleList(null);
     } else {
       const fullPath = this.getFullPathBySource(source, "page");
       if (!fullPath) throw new Error("not found");
       this.deleteFile(fullPath);
       await this.reload();
-      return this.withCategoriesTags(null);
+      return this.WithCategoriesTagsBriefArticleList(null);
     }
   }
   //#endregion
