@@ -19,6 +19,6 @@ declare module "hexo-front-matter" {
     prefixSeparator: boolean
   }
 
-  export function parse(str: string, options: LoadOptions): IParseResult
+  export function parse(str: string, options?: LoadOptions): IParseResult
   export function stringify(obj: any, options?: IStringifyOptions): string
 }

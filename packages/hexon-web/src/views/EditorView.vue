@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue"
+import { computed, defineAsyncComponent, onMounted, ref } from "vue"
 import { useRoute } from "vue-router"
 import { useDetailStore } from "~/store/detail"
 import { IArticleIdentifier, Page, Post } from "~/types"
 import ErroredView from "./ErroredView.vue"
 import HHeaderEditor from "~/components/Editors/HHeaderEditor.vue"
-import HMonacoEditor from "~/components/Editors/HMonacoEditor.vue"
 import { useTheme } from "@winwin/vue-global-theming"
 import { HTheme } from "~/themes"
 import HEditorToolbar from "~/components/HEditorToolbar.vue"
@@ -15,6 +14,10 @@ import router from "~/router"
 import { parseHfm } from "~/utils/hfm"
 import { parse, stringify } from "hexo-front-matter"
 import { useNotification } from "~/lib/notification"
+
+const HMonacoEditor = defineAsyncComponent(
+  () => import("@/Editors/HMonacoEditor.vue")
+)
 
 const route = useRoute()
 const detailStore = useDetailStore()
@@ -31,7 +34,7 @@ const data = computed(() => {
   return { _content, title }
 })
 
-const header = computed(() => data.value.title)
+const header = computed(() => (data.value.title as string | undefined) ?? "")
 const getUpdatedFromObj = (obj: any) =>
   stringify({ ...parse(detailStore.tmp), ...obj })
 const onHeader = (title: string) => {
