@@ -2,6 +2,7 @@ import { useTheme } from "@winwin/vue-global-theming"
 import { computed, watch } from "vue-demi"
 import { HTheme } from "~/themes"
 import * as monaco from "monaco-editor"
+import { useDark } from "@vueuse/core"
 
 function removeHash(str: string) {
   return str.slice(1)
@@ -9,9 +10,10 @@ function removeHash(str: string) {
 
 export function useMonacoTheme() {
   const theme = useTheme<HTheme>()!
+  const isDark = useDark()
   const custom = computed(() => {
     return {
-      base: "vs" as monaco.editor.BuiltinTheme,
+      base: (isDark.value ? "vs-dark" : "vs") as monaco.editor.BuiltinTheme,
       inherit: true,
       rules: [
         {
@@ -61,7 +63,7 @@ export function useMonacoTheme() {
     monaco.editor.defineTheme("hexon", custom.value)
   }
   watch(
-    () => custom,
+    () => custom.value,
     () => {
       update()
     },
