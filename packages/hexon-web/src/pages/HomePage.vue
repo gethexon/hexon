@@ -24,7 +24,7 @@ const loadBlogData = async () => {
   await mainStore.getBlogData().catch(noop)
 }
 onMounted(async () => {
-  loadBlogData()
+  if (mainStore.first) loadBlogData()
 })
 const sep11 = ref(200)
 const sep22 = ref(320)

@@ -7,6 +7,7 @@ import { BriefPage, BriefPost, Category, Tag } from "~/types"
 import { list2object, object2list } from "~/utils"
 
 export interface IState {
+  first: boolean
   posts: {
     [key: string]: BriefPost
   }
@@ -23,6 +24,7 @@ export interface IState {
 
 export const useMainStore = defineStore("main", {
   state: (): IState => ({
+    first: true,
     posts: {},
     pages: {},
     categories: {},
@@ -37,6 +39,7 @@ export const useMainStore = defineStore("main", {
         this.pages = list2object(pages as BriefPage[], "source")
         this.tags = list2object(tags as Tag[], "slug")
         this.categories = list2object(categories as Category[], "slug")
+        this.first = false
       } catch (err) {
         notification.notify({
           title: "博客数据载入失败",

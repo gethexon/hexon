@@ -1,39 +1,53 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, onMounted, ref } from "vue"
-import { useRoute } from "vue-router"
-import { useDetailStore } from "~/store/detail"
-import { IArticleIdentifier, Page, Post } from "~/types"
-import ErroredView from "./ErroredView.vue"
-import HHeaderEditor from "~/components/Editors/HHeaderEditor.vue"
-import { useTheme } from "@winwin/vue-global-theming"
-import { HTheme } from "~/themes"
-import HEditorToolbar from "~/components/HEditorToolbar.vue"
-import { HButton } from "~/components/ui/button"
-import { HEditorToolbarActionPayload } from "~/components/types"
-import router from "~/router"
-import { parseHfm } from "~/utils/hfm"
+import { computed, defineAsyncComponent, watch } from "vue"
+import { useRoute, useRouter } from "vue-router"
 import { parse, stringify } from "hexo-front-matter"
+import { useTheme } from "@winwin/vue-global-theming"
+import { useDetailStore } from "~/store/detail"
+import { IArticleIdentifier } from "~/types"
+import { HTheme } from "~/themes"
+import { parseHfm } from "~/utils/hfm"
 import { useNotification } from "~/lib/notification"
-
+import { noop } from "~/utils"
+import { HButton } from "@/ui/button"
+import HHeaderEditor from "@/Editors/HHeaderEditor.vue"
+import HEditorToolbar from "@/HEditorToolbar.vue"
+import { HEditorToolbarActionPayload } from "@/types"
+import ErroredView from "./ErroredView.vue"
 const HMonacoEditor = defineAsyncComponent(
   () => import("@/Editors/HMonacoEditor.vue")
 )
 
+//#region hooks
 const route = useRoute()
+const router = useRouter()
 const detailStore = useDetailStore()
+const notification = useNotification()
+//#endregion
 
-onMounted(() => {
-  const { type, source } = route.params
-  detailStore.editArticle({ source, type } as IArticleIdentifier)
-})
+//#region actions
+watch(
+  () => [route.params.type, route.params.source],
+  async ([type, source]) => {
+    if (route.name !== "edit") {
+      if (route.name !== "view") detailStore.clearArticle()
+      return
+    }
+    await detailStore
+      .editArticle({ source, type } as IArticleIdentifier)
+      .catch(noop)
+  },
+  { immediate: true }
+)
+//#endregion
 
+//#region data
 const data = computed(() => {
   const { _content, title = detailStore.article?.title } = parseHfm(
     detailStore.tmp
   )
   return { _content, title }
 })
-
 const header = computed(() => (data.value.title as string | undefined) ?? "")
 const getUpdatedFromObj = (obj: any) =>
   stringify({ ...parse(detailStore.tmp), ...obj })
@@ -45,14 +59,19 @@ const onContent = (_content: string) => {
   detailStore.updateArticle(getUpdatedFromObj({ _content }))
 }
 const identifier = computed(() => detailStore.identifier)
+//#endregion
+
+//#region style
 const theme = useTheme<HTheme>()!
 const styleVars = computed(() => ({
   bgColor: theme.value.color.background.base3,
 }))
+//#endregion
+
+//#region handlers
 const onHome = () => {
   router.push("/")
 }
-const notification = useNotification()
 const onAction = (payload: HEditorToolbarActionPayload) => {
   switch (payload.type) {
     case "back":
@@ -76,6 +95,7 @@ const onAction = (payload: HEditorToolbarActionPayload) => {
       break
   }
 }
+//#endregion
 </script>
 <template>
   <ErroredView v-if="detailStore.errored">

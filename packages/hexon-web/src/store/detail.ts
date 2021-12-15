@@ -63,7 +63,15 @@ export const useDetailStore = defineStore("detail", {
      * @returns
      */
     async viewArticle(options: { source: string; type: "post" | "page" }) {
-      await this._loadArticle(options)
+      if (
+        // 不是从编辑状态跳转来
+        (this.status !== "SAVED" && this.status !== "CHANGED") ||
+        // 或者不是这篇文章
+        this.article?.source !== options.source ||
+        this.type !== options.type
+      ) {
+        await this._loadArticle(options)
+      }
       this.status = "VIEW"
     },
     /**
@@ -71,7 +79,9 @@ export const useDetailStore = defineStore("detail", {
      */
     async editArticle(options: { source: string; type: "post" | "page" }) {
       if (
+        // 不是从查看状态跳转来
         this.status !== "VIEW" ||
+        // 或者不是这篇文章
         this.article?.source !== options.source ||
         this.type !== options.type
       ) {
@@ -119,15 +129,6 @@ export const useDetailStore = defineStore("detail", {
       this.tmp = updatedRaw
       this.changed = true
       this.status = "CHANGED"
-    },
-    /**
-     * 放弃更改关闭本地文章
-     */
-    async closeArticle() {
-      if (this.status !== "SAVED" && this.status !== "CHANGED") return
-      this.tmp = ""
-      this.changed = false
-      this.status = "VIEW"
     },
     /**
      * 清空本地文章

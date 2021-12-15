@@ -2,32 +2,43 @@
 import { computed, watch } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { useDetailStore } from "~/store/detail"
-import HViewerToolbar from "~/components/HViewerToolbar.vue"
-import HViewerContent from "~/components/HViewerContent.vue"
-import HViewerHeader from "~/components/HViewerHeader.vue"
-import { HViewerToolbarActionPayload } from "~/components/types"
 import { noop } from "~/utils"
 import { IArticleIdentifier } from "~/types"
+import HViewerToolbar from "@/HViewerToolbar.vue"
+import HViewerContent from "@/HViewerContent.vue"
+import HViewerHeader from "@/HViewerHeader.vue"
+import { HViewerToolbarActionPayload } from "@/types"
 import ErroredView from "./ErroredView.vue"
 
+//#region hooks
 const route = useRoute()
 const router = useRouter()
 const detailStore = useDetailStore()
+//#endregion
+
+//#region actions
 watch(
-  () => (route.params.type as string) + (route.params.source as string),
-  async () => {
-    // 跳转其他路由的时候交给 beforeEach guard 这里只处理 view 内跳转
-    if (route.name !== "view") return
-    const { type, source } = route.params
+  () => [route.params.type, route.params.source],
+  async ([type, source]) => {
+    if (route.name !== "view") {
+      if (route.name !== "edit") detailStore.clearArticle()
+      return
+    }
     await detailStore
       .viewArticle({ source, type } as IArticleIdentifier)
       .catch(noop)
   },
   { immediate: true }
 )
+//#endregion
+
+//#region data
 const content = computed(() => detailStore.article?.content || "")
 const title = computed(() => detailStore.article?.title || "")
 const raw = computed(() => detailStore.article?.raw || "")
+//#endregion
+
+//#region handlers
 const onAction = (payload: HViewerToolbarActionPayload) => {
   switch (payload.type) {
     case "code":
@@ -49,6 +60,7 @@ const onAction = (payload: HViewerToolbarActionPayload) => {
       break
   }
 }
+//#endregion
 </script>
 <template>
   <ErroredView v-if="detailStore.errored" />
