@@ -63,9 +63,6 @@ const identifier = computed(() => detailStore.identifier)
 
 //#region style
 const theme = useTheme<HTheme>()!
-const styleVars = computed(() => ({
-  bgColor: theme.value.color.background.base3,
-}))
 //#endregion
 
 //#region handlers
@@ -104,7 +101,7 @@ const onAction = (payload: HEditorToolbarActionPayload) => {
     </HButton>
   </ErroredView>
   <div class="flex h-full w-full" v-else>
-    <div class="flex-1 min-w-0 flex flex-col h-full">
+    <div class="main bg-base1 flex-1 min-w-0 flex flex-col h-full">
       <HEditorToolbar @on-action="onAction" />
       <div class="flex flex-col flex-1 w-full min-h-0 max-w-2xl mx-auto">
         <HHeaderEditor :value="header" @update:value="onHeader" />
@@ -116,11 +113,6 @@ const onAction = (payload: HEditorToolbarActionPayload) => {
         />
       </div>
     </div>
-    <div class="side w-72 h-full"></div>
+    <div class="side bg-base3 w-72 h-full"></div>
   </div>
 </template>
-<style lang="less">
-.side {
-  background-color: v-bind("styleVars.bgColor");
-}
-</style>

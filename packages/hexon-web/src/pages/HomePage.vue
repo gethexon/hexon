@@ -128,10 +128,7 @@ const type = computed(() => articleList.filter.type)
     class="h-full w-full"
   >
     <template v-slot:first>
-      <div
-        class="w-full h-full flex flex-col"
-        :style="{ backgroundColor: theme.color.background.base3 }"
-      >
+      <div class="bg-base3 w-full h-full flex flex-col">
         <HTitle />
         <div style="flex: 1 0 0; overflow-y: auto">
           <!-- 这层 div 用来滚动 -->
@@ -148,10 +145,7 @@ const type = computed(() => articleList.filter.type)
       </div>
     </template>
     <template v-slot:second>
-      <div
-        class="flex flex-col w-full h-full"
-        :style="{ backgroundColor: theme.color.background.base2 }"
-      >
+      <div class="bg-base2 flex flex-col w-full h-full">
         <HSearchBar v-model="search" class="flex-shrink-0" />
         <div class="overflow-auto flex-1">
           <HArticleList
@@ -163,10 +157,7 @@ const type = computed(() => articleList.filter.type)
       </div>
     </template>
     <template v-slot:third>
-      <div
-        class="w-full h-full"
-        :style="{ backgroundColor: theme.color.background.base1 }"
-      >
+      <div class="bg-base1 w-full h-full">
         <RouterView />
       </div>
     </template>
