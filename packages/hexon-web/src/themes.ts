@@ -179,4 +179,4 @@ export const darkTheme: HTheme = {
   },
 }
 
-export default createTheme({ default: darkTheme, dark: darkTheme })
+export default createTheme({ default: lightTheme, dark: darkTheme })
