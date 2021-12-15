@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed } from "@vue/reactivity"
-import HNotification from "@/HNotification/HNotification.vue"
 import ClassProvider from "~/ClassProvider.vue"
+import { Notification } from "~/lib/notification"
+import HNotificationItem from "~/components/HNotificationItem.vue"
+import { transformType } from "~/utils"
 const styles = computed(() => {
   return {
     width: "100vw",
@@ -14,7 +16,20 @@ const styles = computed(() => {
   <div :style="styles">
     <ClassProvider>
       <router-view></router-view>
-      <HNotification />
+      <Notification>
+        <template #default="slotsProps">
+          <HNotificationItem
+            :class="slotsProps.class"
+            :type="transformType(slotsProps.item.type)"
+            :title="slotsProps.item.title"
+            :desc="slotsProps.item.desc"
+            :clickable="slotsProps.item.clickable"
+            :closeable="slotsProps.item.permanent"
+            @on-close="slotsProps.onClose"
+            @on-click="slotsProps.item.onClick"
+          />
+        </template>
+      </Notification>
     </ClassProvider>
   </div>
 </template>

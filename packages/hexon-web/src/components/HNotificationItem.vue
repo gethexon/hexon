@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useTheme } from "@winwin/vue-global-theming"
 import { toRefs, computed } from "vue"
-import { HTheme } from "~/themes"
-import { HButton } from "../ui/button"
+import { useTheme } from "@winwin/vue-global-theming"
 import { HIcon, HIconName } from "@/ui/icon"
+import { HTheme } from "~/themes"
+import { HButton } from "./ui/button"
 
 const props = withDefaults(
   defineProps<{
@@ -39,8 +39,8 @@ const styleVars = computed(() => {
   }
   return {
     bgColor: main,
-    color: theme.value.color.foreground.min,
-    subColor: theme.value.color.foreground.min,
+    color: theme.value.color.white,
+    subColor: theme.value.color.white,
   }
 })
 const onClose = () => emits("on-close")
@@ -59,6 +59,7 @@ const onClick = () => emits("on-click")
       select-none
       shadow
       flex-shrink-0
+      mt-1
     "
     :class="{ 'cursor-pointer': clickable }"
     @click="onClick"

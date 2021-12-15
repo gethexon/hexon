@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue-demi"
-import { useNotification } from "~/lib/notification"
-import { INotificationType } from "~/lib/notification/types"
-import HNotificationItem from "./HNotificationItem.vue"
+import { useNotification } from "."
 const props = withDefaults(
   defineProps<{
     zIndex?: number
@@ -11,10 +9,6 @@ const props = withDefaults(
   { type: "fixed" }
 )
 const notification = useNotification()
-const transformType = (type: INotificationType) => {
-  if (type === "info") return "primary"
-  return type
-}
 const list = computed(() =>
   notification.notificationList.value.filter((item) => item.show)
 )
@@ -28,18 +22,13 @@ const close = (id: string) => notification.close(id)
     :style="{ zIndex: zIndex }"
   >
     <transition-group name="list-complete">
-      <HNotificationItem
-        class="list-complete-item"
-        v-for="item in list"
-        :key="item.id"
-        :type="transformType(item.type)"
-        :title="item.title"
-        :desc="item.desc"
-        :clickable="item.clickable"
-        :closeable="item.permanent"
-        @on-close="close(item.id)"
-        @on-click="item.onClick"
-      />
+      <template v-for="item in list" :key="item.id">
+        <slot
+          :item="item"
+          :onClose="() => close(item.id)"
+          :class="'list-complete-item'"
+        ></slot>
+      </template>
     </transition-group>
   </div>
 </template>

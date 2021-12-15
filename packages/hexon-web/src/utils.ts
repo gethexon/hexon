@@ -1,3 +1,5 @@
+import { INotificationType } from "./lib/notification/types"
+
 export const forceReloadWindow = () => {
   window.onbeforeunload = () => {}
   window.location.reload()
@@ -63,4 +65,9 @@ export function randomString(length: number = 8) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength))
   }
   return result
+}
+
+export const transformType = (type: INotificationType) => {
+  if (type === "info") return "primary"
+  return type
 }

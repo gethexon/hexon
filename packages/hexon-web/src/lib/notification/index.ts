@@ -118,3 +118,4 @@ export const createNotification = () => {
   return new NotificationPlugin()
 }
 //#endregion
+export { default as Notification } from "./Notification.vue"
