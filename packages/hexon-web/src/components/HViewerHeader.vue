@@ -1,23 +1,23 @@
 <script setup lang="ts">
-import { computed, toRefs } from "vue";
-import { parse } from "hexo-front-matter";
-import { categories2Array2d, isMultiCategories } from "~/utils";
-import HIcon from "./HIcon.vue";
-import { HIconName } from "./HIconName";
-import dayjs from "dayjs";
+import { computed, toRefs } from "vue"
+import { parse } from "hexo-front-matter"
+import { categories2Array2d, isMultiCategories } from "~/utils"
+import { HIcon } from "./ui/icon"
+import { HIconName } from "./ui/icon"
+import dayjs from "dayjs"
 
 const props = withDefaults(
   defineProps<{
-    title: string;
-    raw: string;
+    title: string
+    raw: string
   }>(),
   { title: "", raw: "" }
-);
-const { title, raw } = toRefs(props);
-const all = computed(() => parse(raw.value));
+)
+const { title, raw } = toRefs(props)
+const all = computed(() => parse(raw.value))
 const fm = computed(() => {
   const { _content, categories, tags, date, updated, title, ...rest } =
-    all.value;
+    all.value
   return {
     _content,
     categories: categories || [],
@@ -26,23 +26,23 @@ const fm = computed(() => {
     updated,
     title,
     rest,
-  };
-});
+  }
+})
 const date = computed(() =>
   fm.value.date ? dayjs(fm.value.date).format("lll") : ""
-);
+)
 const updated = computed(() =>
   fm.value.updated ? dayjs(fm.value.updated).format("lll") : ""
-);
-const categories2d = computed(() => categories2Array2d(fm.value.categories));
-const tags = computed(() => fm.value.tags);
+)
+const categories2d = computed(() => categories2Array2d(fm.value.categories))
+const tags = computed(() => fm.value.tags)
 const rest = computed(() => {
-  const data = fm.value.rest;
-  if (JSON.stringify(data) === JSON.stringify({})) return "";
+  const data = fm.value.rest
+  if (JSON.stringify(data) === JSON.stringify({})) return ""
   return Object.entries(data)
     .map(([key, value]) => `${key}: ${value}`)
-    .join("\n");
-});
+    .join("\n")
+})
 </script>
 <template>
   <div class="h-viewer-header text-base px-5 mx-auto" style="max-width: 768px">

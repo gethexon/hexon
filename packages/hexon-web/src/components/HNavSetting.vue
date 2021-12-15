@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { toRefs, computed } from "vue"
 import HToolbar from "./HToolbar.vue"
-import HIcon from "./HIcon.vue"
-import { HIconName } from "./HIconName"
+import { HIcon } from "./ui/icon"
+import { HIconName } from "./ui/icon"
 import { useTheme } from "@winwin/vue-global-theming"
 import { HTheme } from "~/themes"
 

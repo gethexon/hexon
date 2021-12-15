@@ -1,2 +1,2 @@
-export { default as default } from "./src/Popover.vue"
+export { default as HPopover } from "./src/HPopover.vue"
 export * from "./src/interface"

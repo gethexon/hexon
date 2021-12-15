@@ -1,6 +1,6 @@
-import { Meta, Story, Canvas } from "@storybook/addon-docs";
-import HButton from "./HButton.vue";
-import HModal from "./HModal.vue";
+import { Meta, Story, Canvas } from "@storybook/addon-docs"
+import { HButton } from "./HButton.vue"
+import HModal from "./HModal.vue"
 
 <Meta title="HModal" component={HModal} name="HModal" argTypes={{}} />
 
@@ -14,14 +14,14 @@ import HModal from "./HModal.vue";
       data() {
         return {
           show: false,
-        };
+        }
       },
       methods: {
         showModal() {
-          this.show = true;
+          this.show = true
         },
         hideModal() {
-          this.show = false;
+          this.show = false
         },
       },
       components: { HModal, HButton },

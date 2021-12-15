@@ -1,31 +1,31 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { useTheme } from "@winwin/vue-global-theming";
-import logo from "~/assets/logo.svg";
-import { HTheme } from "~/themes";
-import HImage from "@/HImage.vue";
-import HInput from "@/HInput.vue";
-import HIcon from "@/HIcon.vue";
-import HButton from "@/HButton.vue";
-import { HIconName } from "@/HIconName";
+import { ref } from "vue"
+import { useTheme } from "@winwin/vue-global-theming"
+import logo from "~/assets/logo.svg"
+import { HTheme } from "~/themes"
+import HImage from "@/HImage.vue"
+import HInput from "~/components/ui/input/src/HInput.vue"
+import { HIcon } from "~/components/ui/icon"
+import { HButton } from "~/components/ui/button"
+import { HIconName } from "~/components/ui/icon/src/interface"
 
 const emits = defineEmits<{
-  (e: "on-submit", payload: { username: string; password: string }): void;
-  (e: "on-forget"): void;
-  (e: "on-help"): void;
-}>();
-const username = ref("");
-const password = ref("");
+  (e: "on-submit", payload: { username: string; password: string }): void
+  (e: "on-forget"): void
+  (e: "on-help"): void
+}>()
+const username = ref("")
+const password = ref("")
 const onSubmit = () => {
-  emits("on-submit", { username: username.value, password: password.value });
-};
+  emits("on-submit", { username: username.value, password: password.value })
+}
 const onForget = () => {
-  emits("on-forget");
-};
+  emits("on-forget")
+}
 const onHelp = () => {
-  emits("on-help");
-};
-const theme = useTheme<HTheme>()!;
+  emits("on-help")
+}
+const theme = useTheme<HTheme>()!
 </script>
 <template>
   <form @submit.prevent="onSubmit" class="flex flex-col items-center w-60">

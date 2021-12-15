@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import HToolbar from "./HToolbar.vue";
-import HInput from "./HInput.vue";
-import HButton from "./HButton.vue";
-import HIcon from "./HIcon.vue";
-import { HIconName } from "./HIconName";
-import { toRefs } from "vue";
+import HToolbar from "./HToolbar.vue"
+import HInput from "./ui/input/src/HInput.vue"
+import { HButton } from "./ui/button"
+import { HIcon } from "./ui/icon"
+import { HIconName } from "./ui/icon"
+import { toRefs } from "vue"
 
 const props = defineProps<{
-  modelValue: string;
-}>();
+  modelValue: string
+}>()
 const emits = defineEmits<{
-  (e: "update:modelValue", value: string): void;
-  (e: "on-add"): void;
-}>();
-const { modelValue } = toRefs(props);
-const onInput: any = (value: string) => emits("update:modelValue", value);
+  (e: "update:modelValue", value: string): void
+  (e: "on-add"): void
+}>()
+const { modelValue } = toRefs(props)
+const onInput: any = (value: string) => emits("update:modelValue", value)
 </script>
 <template>
   <HToolbar class="px-6">

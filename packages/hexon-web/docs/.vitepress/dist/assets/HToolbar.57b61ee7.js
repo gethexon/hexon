@@ -1,1 +1,0 @@
-import{_ as s,o as r,c as t,r as o}from"./app.378bd7d4.js";const n={},a={style:{height:"50px",display:"flex","align-items":"center","user-select":"none"}};function c(e,l){return r(),t("div",a,[o(e.$slots,"default")])}var d=s(n,[["render",c]]);export{d as H};

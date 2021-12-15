@@ -1,87 +1,87 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
-import { useTheme } from "@winwin/vue-global-theming";
-import { AsyncQueue } from "~/lib/async-queue";
-import { HTheme } from "~/themes";
-import HIcon from "~/components/HIcon.vue";
-import { HIconName } from "~/components/HIconName";
+import { computed, onMounted, ref } from "vue"
+import { useTheme } from "@winwin/vue-global-theming"
+import { AsyncQueue } from "~/lib/async-queue"
+import { HTheme } from "~/themes"
+import { HIcon } from "~/components/ui/icon"
+import { HIconName } from "~/components/ui/icon/src/interface"
 const props = defineProps<{
-  next: () => void;
-}>();
-const theme = useTheme<HTheme>()!;
+  next: () => void
+}>()
+const theme = useTheme<HTheme>()!
 const styleVars = computed(() => {
   return {
     bgColor: theme.value.color.primary.n,
     color: theme.value.color.white,
-  };
-});
-const animate = new AsyncQueue();
-animate.sleep(2.25);
+  }
+})
+const animate = new AsyncQueue()
+animate.sleep(2.25)
 "Hexo".split("").map((v, idx) => {
-  if (idx > 0) animate.sleep(0.075);
+  if (idx > 0) animate.sleep(0.075)
   animate.exec(() => {
-    hexoText.value += v;
-  });
-});
-animate.sleep(1.5);
+    hexoText.value += v
+  })
+})
+animate.sleep(1.5)
 " online".split("").map((v, idx) => {
-  if (idx > 0) animate.sleep(0.075);
+  if (idx > 0) animate.sleep(0.075)
   animate.exec(() => {
-    onlineText.value += v;
-  });
-});
-animate.sleep(1.5);
+    onlineText.value += v
+  })
+})
+animate.sleep(1.5)
 animate.interval(
   () => {
-    onlineText.value = onlineText.value.slice(0, onlineText.value.length - 1);
+    onlineText.value = onlineText.value.slice(0, onlineText.value.length - 1)
   },
   0.05,
   7
-);
+)
 animate.interval(
   () => {
-    hexoText.value = hexoText.value.slice(0, hexoText.value.length - 1);
+    hexoText.value = hexoText.value.slice(0, hexoText.value.length - 1)
   },
   0.05,
   4
-);
-animate.sleep(0.075);
+)
+animate.sleep(0.075)
 "Hexon".split("").map((v, idx) => {
-  if (idx > 0) animate.sleep(0.075);
+  if (idx > 0) animate.sleep(0.075)
   animate.exec(() => {
-    hexoText.value += v;
-  });
-});
+    hexoText.value += v
+  })
+})
 "line".split("").map((v, idx) => {
-  if (idx > 0) animate.sleep(0.075);
+  if (idx > 0) animate.sleep(0.075)
   animate.exec(() => {
-    lineText.value += v;
-  });
-});
-animate.sleep(1.5);
+    lineText.value += v
+  })
+})
+animate.sleep(1.5)
 animate.interval(
   () => {
-    lineText.value = lineText.value.slice(0, lineText.value.length - 1);
+    lineText.value = lineText.value.slice(0, lineText.value.length - 1)
   },
   0.25,
   4
-);
-animate.sleep(1.5);
+)
+animate.sleep(1.5)
 animate.exec(() => {
-  hexoText.value += ".";
-});
-animate.sleep(1.5);
+  hexoText.value += "."
+})
+animate.sleep(1.5)
 animate.exec(() => {
-  opacity.value = 1;
-});
+  opacity.value = 1
+})
 
-const hexoText = ref("");
-const onlineText = ref("");
-const lineText = ref("");
+const hexoText = ref("")
+const onlineText = ref("")
+const lineText = ref("")
 onMounted(() => {
-  animate.start();
-});
-const opacity = ref(0);
+  animate.start()
+})
+const opacity = ref(0)
 </script>
 <template>
   <div

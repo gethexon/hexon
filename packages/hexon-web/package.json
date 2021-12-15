@@ -7,13 +7,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
-    "prebuild": "yarn && jest",
+    "prebuild": "yarn && yarn test",
     "test": "jest",
     "serve": "vite preview",
-    "nc": "hygen component new",
-    "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs",
-    "docs:serve": "vitepress serve docs"
+    "doc": "vite --config .demo/vite.config.ts"
   },
   "dependencies": {
     "@types/js-yaml": "^4.0.5",
@@ -56,7 +53,6 @@
     "ts-jest": "^27.0.5",
     "typescript": "^4.3.2",
     "vite": "^2.5.4",
-    "vitepress": "^0.19.2",
     "vue-tsc": "^0.2.2"
   }
 }

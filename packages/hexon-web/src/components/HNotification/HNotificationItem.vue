@@ -2,9 +2,8 @@
 import { useTheme } from "@winwin/vue-global-theming"
 import { toRefs, computed } from "vue"
 import { HTheme } from "~/themes"
-import HButton from "../HButton.vue"
-import HIcon from "../HIcon.vue"
-import { HIconName } from "../HIconName"
+import { HButton } from "../ui/button"
+import { HIcon, HIconName } from "@/ui/icon"
 
 const props = withDefaults(
   defineProps<{

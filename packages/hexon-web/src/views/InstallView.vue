@@ -6,8 +6,8 @@ import HInstallForm from "~/components/forms/HInstallForm.vue"
 import { IFormData } from "~/components/types"
 import { HTheme } from "~/themes"
 import { forceReloadWindow } from "~/utils"
-import HIcon from "~/components/HIcon.vue"
-import { HIconName } from "~/components/HIconName"
+import { HIcon } from "~/components/ui/icon"
+import { HIconName } from "~/components/ui/icon/src/interface"
 const props = defineProps<{
   prev: () => void
 }>()

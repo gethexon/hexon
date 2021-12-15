@@ -1,37 +1,37 @@
 <script setup lang="ts">
-import { useTheme } from "@winwin/vue-global-theming";
-import { toRefs, computed } from "vue";
-import { HTheme } from "~/themes";
-import HIcon from "./HIcon.vue";
-import { HIconName } from "./HIconName";
+import { useTheme } from "@winwin/vue-global-theming"
+import { toRefs, computed } from "vue"
+import { HTheme } from "~/themes"
+import { HIcon } from "./ui/icon"
+import { HIconName } from "./ui/icon"
 
 const props = withDefaults(
   defineProps<{
-    icon: HIconName;
-    text: string;
-    indent?: number;
-    selected?: boolean;
-    color?: string;
-    sub?: string | number;
+    icon: HIconName
+    text: string
+    indent?: number
+    selected?: boolean
+    color?: string
+    sub?: string | number
   }>(),
   { indent: 0, selected: false, sub: "" }
-);
-const { icon, text, indent, selected, color } = toRefs(props);
+)
+const { icon, text, indent, selected, color } = toRefs(props)
 const indents = computed(() => {
-  if (indent.value === 0) return [];
-  else return new Array(indent.value).fill(0).map((v, i) => i);
-});
-const theme = useTheme<HTheme>()!;
+  if (indent.value === 0) return []
+  else return new Array(indent.value).fill(0).map((v, i) => i)
+})
+const theme = useTheme<HTheme>()!
 const styleVars = computed(() => {
-  const color = theme.value.color.foreground.main;
+  const color = theme.value.color.foreground.main
   const bgColor = selected.value
     ? theme.value.color.background.selected
-    : theme.value.color.background.transparent;
-  const subColor = theme.value.color.foreground.sub;
-  const hoverBgColor = theme.value.color.background.hover;
-  const activeBgColor = theme.value.color.background.active;
-  return { color, bgColor, subColor, hoverBgColor, activeBgColor };
-});
+    : theme.value.color.background.transparent
+  const subColor = theme.value.color.foreground.sub
+  const hoverBgColor = theme.value.color.background.hover
+  const activeBgColor = theme.value.color.background.active
+  return { color, bgColor, subColor, hoverBgColor, activeBgColor }
+})
 </script>
 <template>
   <div

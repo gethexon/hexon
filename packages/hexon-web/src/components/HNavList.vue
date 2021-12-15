@@ -6,7 +6,7 @@ import { TreeNode } from "~/lib/list2tree"
 import { Category } from "~/types"
 import HNavTitle from "./HNavTitle.vue"
 import HNavItem from "./HNavItem.vue"
-import { HIconName } from "./HIconName"
+import { HIconName } from "./ui/icon"
 import { HNavListActionPayload } from "./types"
 
 const t = useTheme<HTheme>()
