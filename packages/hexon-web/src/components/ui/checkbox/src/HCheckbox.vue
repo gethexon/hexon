@@ -8,24 +8,24 @@ const emits = defineEmits<{
   (e: "update:checked", value: boolean): void
 }>()
 const { checked } = toRefs(props)
-const invernalValue = ref(false)
+const internalValue = ref(false)
 watch(
   () => checked.value,
   (value) => {
-    invernalValue.value = value
+    internalValue.value = value
   }
 )
 watch(
-  () => invernalValue.value,
+  () => internalValue.value,
   (value) => {
     emits("update:checked", value)
   }
 )
 const icon = computed(() =>
-  invernalValue.value ? HIconName.CheckboxComposite : HIconName.Checkbox
+  internalValue.value ? HIconName.CheckboxComposite : HIconName.Checkbox
 )
 const toggle = () => {
-  invernalValue.value = !invernalValue.value
+  internalValue.value = !internalValue.value
 }
 </script>
 <template>
