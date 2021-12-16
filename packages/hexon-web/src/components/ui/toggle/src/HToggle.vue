@@ -38,7 +38,7 @@ const bgColor = computed(() => theme.value.color.foreground.main)
     @click="toggle"
     class="cursor-pointer select-none rounded-full relative flex items-center"
     :class="{ 'justify-end': internalValue, 'justify-start': !internalValue }"
-    style="height: 1em; width: 2em; border: 1px solid"
+    style="height: 1em; width: 2em; border: 1px solid; padding-left: 1px"
     :style="{ borderColor: bgColor }"
   >
     <div
