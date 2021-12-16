@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, onBeforeUnmount } from "vue"
 import * as monaco from "monaco-editor"
+import { MonacoMarkdownExtension } from "monaco-markdown"
 import { editorOptions } from "./monaco"
 import "./workers"
 import { useMonacoTheme } from "./theme"
@@ -19,6 +20,9 @@ function resetModal() {
 }
 onMounted(() => {
   instance = monaco.editor.create(dom.value!, editorOptions)
+  const extension = new MonacoMarkdownExtension()
+  extension.activate(instance)
+
   resetModal()
   instance.onDidChangeModelContent(() => {
     emits("update:value", instance.getValue())

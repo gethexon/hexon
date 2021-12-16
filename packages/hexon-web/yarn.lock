@@ -3823,10 +3823,18 @@ modify-values@^1.0.0:
   resolved "https://registry.nlark.com/modify-values/download/modify-values-1.0.1.tgz#b3939fa605546474e3e3e3c63d64bd43b4ee6022"
   integrity sha1-s5OfpgVUZHTj4+PGPWS9Q7TuYCI=
 
-monaco-editor@^0.29.1:
-  version "0.29.1"
-  resolved "https://registry.npmmirror.com/monaco-editor/download/monaco-editor-0.29.1.tgz#6ee93d8a5320704d48fd7058204deed72429c020"
-  integrity sha1-buk9ilMgcE1I/XBYIE3u1yQpwCA=
+monaco-editor@0.30.1:
+  version "0.30.1"
+  resolved "https://registry.npmmirror.com/monaco-editor/download/monaco-editor-0.30.1.tgz#47f8d18a0aa2264fc5654581741ab8d7bec01689"
+  integrity sha512-B/y4+b2O5G2gjuxIFtCE2EkM17R2NM7/3F8x0qcPsqy4V83bitJTIO4TIeZpYlzu/xy6INiY/+84BEm6+7Cmzg==
+
+monaco-markdown@^0.0.12:
+  version "0.0.12"
+  resolved "https://registry.npmmirror.com/monaco-markdown/download/monaco-markdown-0.0.12.tgz#b7a65d34539579872bf366610e6540cb7dd95dad"
+  integrity sha512-KkGheL2pUazZJY2DfBqpHuMQOjILkbYGNtF5MzpT3ZWupKjunkpL7ByKTllBQGKKcVNt5nuRHl7YsKFskWlc6Q==
+  dependencies:
+    monaco-editor "0.30.1"
+    string-similarity "^3.0.0"
 
 ms@2.0.0:
   version "2.0.0"
@@ -4815,6 +4823,11 @@ string-length@^4.0.1:
   dependencies:
     char-regex "^1.0.2"
     strip-ansi "^6.0.0"
+
+string-similarity@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.nlark.com/string-similarity/download/string-similarity-3.0.0.tgz#07b0bc69fae200ad88ceef4983878d03793847c7"
+  integrity sha1-B7C8afriAK2Izu9Jg4eNA3k4R8c=
 
 string-width@^4.1.0, string-width@^4.2.0:
   version "4.2.3"
