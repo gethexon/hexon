@@ -93,6 +93,7 @@ export type HTheme = {
        * 亮主题的黑
        */
       min: string
+      secondInput: string
     }
     foreground: {
       main: string
@@ -134,6 +135,7 @@ export const lightTheme: HTheme = {
       badge: "#cccccc",
       max: "#ffffff",
       min: "#000000",
+      secondInput: "#eeeeee",
     },
     foreground: {
       main: "#484848",
@@ -169,6 +171,7 @@ export const darkTheme: HTheme = {
       badge: "#3e3e3e",
       max: "#000000",
       min: "#ffffff",
+      secondInput: "#323232",
     },
     foreground: {
       main: "#dddddd",

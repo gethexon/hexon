@@ -29,7 +29,7 @@ const styleVars = computed(() => {
   const color = theme.value.color.foreground.main
   const bgColor =
     type.value === "secondary"
-      ? theme.value.color.background.base3
+      ? theme.value.color.background.secondInput
       : theme.value.color.background.base1
   const selectionBgColor = theme.value.color.primary.l8
   return { color, bgColor, selectionBgColor }
@@ -90,6 +90,9 @@ const styleVars = computed(() => {
   input {
     &::selection {
       background-color: v-bind("styleVars.selectionBgColor");
+    }
+    &::placeholder {
+      transform: translateY(-1px);
     }
   }
 }
