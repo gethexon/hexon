@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, toRefs, InputHTMLAttributes } from "vue"
 import { useTheme } from "@winwin/vue-global-theming"
-import { HIcon, HIconName } from "../../icon"
 import { HTheme } from "~/themes"
+import { HIcon, HIconName } from "../../icon"
 
 const props = withDefaults(
   defineProps<{
@@ -27,12 +27,12 @@ const onClear = () => requestChange("")
 const theme = useTheme<HTheme>()!
 const styleVars = computed(() => {
   const color = theme.value.color.foreground.main
+  const plshdColor = theme.value.color.foreground.sub
   const bgColor =
     type.value === "secondary"
       ? theme.value.color.background.secondInput
       : theme.value.color.background.base1
-  const selectionBgColor = theme.value.color.primary.l8
-  return { color, bgColor, selectionBgColor }
+  return { color, bgColor, plshdColor }
 })
 </script>
 <template>
@@ -64,6 +64,7 @@ const styleVars = computed(() => {
         rounded-none
         leading-full
         bg-transparent
+        mx-1
       "
       :value="modelValue"
       @input="onInput"
@@ -88,11 +89,10 @@ const styleVars = computed(() => {
   }
 
   input {
-    &::selection {
-      background-color: v-bind("styleVars.selectionBgColor");
-    }
     &::placeholder {
       transform: translateY(-1px);
+      @apply text-sm;
+      color: v-bind("styleVars.plshdColor");
     }
   }
 }

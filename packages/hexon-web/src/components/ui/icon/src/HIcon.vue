@@ -19,7 +19,7 @@ const classes = computed(() => {
 </script>
 <template>
   <HVerticalCenter>
-    <span class="h-icon select-none" :class="classes">{{ name }}</span>
+    <span class="h-icon" :class="classes">{{ name }}</span>
   </HVerticalCenter>
 </template>
 <style scoped lang="less">

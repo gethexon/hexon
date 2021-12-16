@@ -26,6 +26,9 @@ const onInput: any = (value: string) => emits("update:modelValue", value)
       placeholder="搜索"
       clearable
     >
+      <template v-slot:prefix>
+        <HIcon :name="HIconName.Search" />
+      </template>
     </HInput>
     <!-- <HButton class="ml-2" round><HIcon :name="HIconName.Search" /></HButton> -->
     <HButton class="ml-2" round @click="emits('on-add')">

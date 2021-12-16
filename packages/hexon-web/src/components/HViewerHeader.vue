@@ -29,13 +29,15 @@ const fm = computed(() => {
   }
 })
 const date = computed(() =>
-  fm.value.date ? dayjs(fm.value.date).format("lll") : ""
+  fm.value.date ? dayjs(fm.value.date as number).format("lll") : ""
 )
 const updated = computed(() =>
-  fm.value.updated ? dayjs(fm.value.updated).format("lll") : ""
+  fm.value.updated ? dayjs(fm.value.updated as number).format("lll") : ""
 )
-const categories2d = computed(() => categories2Array2d(fm.value.categories))
-const tags = computed(() => fm.value.tags)
+const categories2d = computed(() =>
+  categories2Array2d(fm.value.categories as string[] | (string | string[])[])
+)
+const tags = computed(() => fm.value.tags as string[])
 const rest = computed(() => {
   const data = fm.value.rest
   if (JSON.stringify(data) === JSON.stringify({})) return ""
@@ -79,7 +81,7 @@ const rest = computed(() => {
         <span class="ml-0.5">{{ tag }}</span>
       </template>
     </div>
-    <pre class="rest text-sub" v-if="rest">{{ rest }}</pre>
+    <pre class="rest text-sub text-xs" v-if="rest">{{ rest }}</pre>
   </div>
 </template>
 <style lang="less" scoped></style>

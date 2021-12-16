@@ -104,7 +104,7 @@ const styleVars = computed(() => {
   <button
     class="
       h-button
-      text-xs
+      text-sm
       h-8
       border-none
       outline-none

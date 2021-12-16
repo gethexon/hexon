@@ -171,7 +171,7 @@ export const darkTheme: HTheme = {
       badge: "#3e3e3e",
       max: "#000000",
       min: "#ffffff",
-      secondInput: "#323232",
+      secondInput: "#424242",
     },
     foreground: {
       main: "#dddddd",

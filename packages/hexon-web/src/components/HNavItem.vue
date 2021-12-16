@@ -51,7 +51,7 @@ const styleVars = computed(() => {
   >
     <span class="w-4 inline-block" v-for="i in indents"> </span>
     <HIcon class="mr-3 text-lg" :style="{ color }" :name="icon" />
-    <span class="text text-sm">
+    <span class="text text-sm uppercase">
       {{ text }}
     </span>
     <span v-if="sub?.toString()" class="sub text-xs ml-2">
