@@ -34,7 +34,6 @@ watch(
       <Notification>
         <template #default="slotsProps">
           <HNotificationItem
-            :class="slotsProps.class"
             :type="transformType(slotsProps.item.type)"
             :title="slotsProps.item.title"
             :desc="slotsProps.item.desc"
