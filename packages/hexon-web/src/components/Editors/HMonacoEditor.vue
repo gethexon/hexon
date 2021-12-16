@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, onBeforeUnmount } from "vue"
 import * as monaco from "monaco-editor"
-import { MonacoMarkdownExtension } from "monaco-markdown"
-import { editorOptions } from "./monaco"
 import "./workers"
+import { MonacoMarkdownExtension } from "~/lib/monaco-markdown"
+import { editorOptions } from "./monaco"
 import { useMonacoTheme } from "./theme"
+
 const props = defineProps<{
   value: string
   id: string
@@ -27,6 +28,10 @@ onMounted(() => {
   instance.onDidChangeModelContent(() => {
     emits("update:value", instance.getValue())
   })
+
+  setTimeout(() => {
+    instance.trigger("editor", "editor.action.formatDocument", null)
+  }, 3000)
 })
 onBeforeUnmount(() => {
   instance.dispose()

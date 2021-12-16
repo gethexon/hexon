@@ -13,7 +13,6 @@
     "doc": "vite --config .demo/vite.config.ts"
   },
   "dependencies": {
-    "@types/js-yaml": "^4.0.5",
     "@vueuse/core": "^6.8.0",
     "@winwin/vue-global-theming": "^0.1.4",
     "@winwin/vue-simple-account": "^0.0.3",
@@ -25,6 +24,8 @@
     "monaco-editor": "0.30.1",
     "monaco-markdown": "^0.0.12",
     "pinia": "^2.0.0-rc.14",
+    "prettier": "^2.5.1",
+    "string-similarity": "^4.0.4",
     "uuid": "^8.3.2",
     "vue": "^3.2.6",
     "vue-router": "4"
@@ -34,6 +35,7 @@
     "@types/color-convert": "^2.0.0",
     "@types/faker": "^5.5.9",
     "@types/jest": "^27.0.2",
+    "@types/js-yaml": "^4.0.5",
     "@types/uuid": "^8.3.3",
     "@vicons/fluent": "^0.11.0",
     "@vicons/utils": "^0.1.4",
