@@ -13,10 +13,11 @@ const props = withDefaults(
     selected?: boolean
     color?: string
     sub?: string | number
+    uppercase?: boolean
   }>(),
-  { indent: 0, selected: false, sub: "" }
+  { indent: 0, selected: false, sub: "", uppercase: true }
 )
-const { icon, text, indent, selected, color } = toRefs(props)
+const { icon, text, indent, selected, color, uppercase } = toRefs(props)
 const indents = computed(() => {
   if (indent.value === 0) return []
   else return new Array(indent.value).fill(0).map((v, i) => i)
@@ -51,7 +52,7 @@ const styleVars = computed(() => {
   >
     <span class="w-4 inline-block" v-for="i in indents"> </span>
     <HIcon class="mr-3 text-lg" :style="{ color }" :name="icon" />
-    <span class="text text-sm uppercase">
+    <span class="text text-sm" :class="{ uppercase }">
       {{ text }}
     </span>
     <span v-if="sub?.toString()" class="sub text-xs ml-2">

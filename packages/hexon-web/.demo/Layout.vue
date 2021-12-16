@@ -28,6 +28,7 @@ const name = computed(() => route.meta.name)
           :text="link.text"
           v-for="link in links"
           :key="link.text"
+          :uppercase="false"
         />
       </div>
     </div>
