@@ -11,7 +11,6 @@ import { useArticleListStore } from "~/store/articleList"
 import { HNavListActionPayload } from "~/components/types"
 import HSearchBar from "~/components/HSearchBar.vue"
 import HArticleList from "~/components/HArticleList.vue"
-import { BriefPost } from "~/types"
 import HNavSetting from "~/components/HNavSetting.vue"
 import { noop } from "~/utils"
 
@@ -92,9 +91,7 @@ const articleListData = computed(() =>
       type: article.__post ? "post" : "page",
     }
     if (article.__post) {
-      res.tags = (article as BriefPost).tags.map(
-        (tag) => mainStore.tags[tag].name
-      )
+      res.tags = article.tags.map((tag) => mainStore.tags[tag].name)
     }
     return res
   })

@@ -3,7 +3,7 @@ import { toRefs, computed } from "vue"
 import { useTheme } from "@winwin/vue-global-theming"
 import { HTheme } from "~/themes"
 import { TreeNode } from "~/lib/list2tree"
-import { Category } from "~/types"
+import { Category } from "~/api"
 import HNavTitle from "./HNavTitle.vue"
 import HNavItem from "./HNavItem.vue"
 import { HIconName } from "./ui/icon"
@@ -41,7 +41,7 @@ const data = computed(() => {
       icon: HIconName.Folder,
       color: t?.value.color.folder,
       indent: i,
-      sub: c.posts.length,
+      sub: c.posts?.length,
       key: c.slug,
       slug: c.slug,
     })

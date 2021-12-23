@@ -1,7 +1,6 @@
 import { defineStore } from "pinia"
-import { getArticle, saveArticle } from "~/api"
+import { api, Page, Post } from "~/api"
 import notification from "~/notification"
-import { Page, Post, WithCategoriesTagsBriefArticleList } from "~/types"
 import { useMainStore } from "./main"
 
 interface IState {
@@ -39,9 +38,11 @@ export const useDetailStore = defineStore("detail", {
      * @param
      */
     async _loadArticle(options: { source: string; type: "post" | "page" }) {
-      let res
       try {
-        res = await getArticle(options.type, options.source)
+        this.article = await api.getArticle(options.type, options.source)
+        this.type = options.type
+        this.tmp = ""
+        this.changed = false
       } catch (err) {
         notification.notify({
           title: "文章载入失败",
@@ -53,10 +54,6 @@ export const useDetailStore = defineStore("detail", {
         this.status = "ERRORED"
         throw err
       }
-      this.type = options.type
-      this.article = options.type === "post" ? (res as Post) : (res as Page)
-      this.tmp = ""
-      this.changed = false
     },
     /**
      * 查看文章
@@ -98,12 +95,12 @@ export const useDetailStore = defineStore("detail", {
       if (this.status !== "CHANGED") return
       if (!this.article || !this.type) return
       const mainStore = useMainStore()
-      await saveArticle(this.article.source, this.type, this.tmp)
+      await api
+        .saveArticle(this.type, this.article.source, this.tmp)
         .then((res) => {
-          const { article, categories, tags, pages, posts } =
-            res as WithCategoriesTagsBriefArticleList<Post | Page>
+          const { categories, tags, pages, posts } = res
           mainStore.setCatAndTags({ categories, tags, pages, posts })
-          this.article = article
+          this.article = "post" in res ? res.post : res.page
           this.tmp = this.article.raw ?? ""
         })
         .then(() => {

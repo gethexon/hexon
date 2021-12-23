@@ -1,9 +1,7 @@
 import { defineStore } from "pinia"
-import { getAllData } from "~/api"
 import { list2Tree, TreeNode } from "~/lib/list2tree"
-import { useNotification } from "~/lib/notification"
 import notification from "~/notification"
-import { BriefPage, BriefPost, Category, Tag } from "~/types"
+import { api, BriefPage, BriefPost, Category, Tag } from "~/api"
 import { list2object, object2list } from "~/utils"
 
 export interface IState {
@@ -34,11 +32,11 @@ export const useMainStore = defineStore("main", {
     // FIXME 如何处理 store 中的数据和路由切换之间的关系
     async getBlogData() {
       try {
-        const [posts, pages, tags, categories] = await getAllData()
-        this.posts = list2object(posts as BriefPost[], "source")
-        this.pages = list2object(pages as BriefPage[], "source")
-        this.tags = list2object(tags as Tag[], "slug")
-        this.categories = list2object(categories as Category[], "slug")
+        const { posts, pages, tags, categories } = await api.getAllData()
+        this.posts = list2object(posts, "source")
+        this.pages = list2object(pages, "source")
+        this.tags = list2object(tags, "slug")
+        this.categories = list2object(categories, "slug")
         this.first = false
       } catch (err) {
         notification.notify({
@@ -61,10 +59,10 @@ export const useMainStore = defineStore("main", {
       categories: Category[]
       tags: Tag[]
     }) {
-      this.posts = list2object(posts as BriefPost[], "source")
-      this.pages = list2object(pages as BriefPage[], "source")
-      this.tags = list2object(tags as Tag[], "slug")
-      this.categories = list2object(categories as Category[], "slug")
+      this.posts = list2object(posts, "source")
+      this.pages = list2object(pages, "source")
+      this.tags = list2object(tags, "slug")
+      this.categories = list2object(categories, "slug")
     },
   },
   getters: {
@@ -90,7 +88,7 @@ export const useMainStore = defineStore("main", {
     },
     categoriesTree(): TreeNode<Category, "children">[] {
       return list2Tree(this.categoriesList, (item) => !item.parent, {
-        idKey: "_id",
+        idKey: "id",
         parentKey: "parent",
         childrenKey: "children",
       })

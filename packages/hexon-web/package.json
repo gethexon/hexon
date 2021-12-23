@@ -28,7 +28,8 @@
     "string-similarity": "^4.0.4",
     "uuid": "^8.3.2",
     "vue": "^3.2.6",
-    "vue-router": "4"
+    "vue-router": "4",
+    "zod": "^3.11.6"
   },
   "devDependencies": {
     "@types/color": "^3.0.2",

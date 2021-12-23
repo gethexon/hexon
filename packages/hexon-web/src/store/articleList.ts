@@ -1,71 +1,71 @@
-import { defineStore } from "pinia";
-import { BriefPage, BriefPost } from "~/types";
+import { defineStore } from "pinia"
+import { BriefPage, BriefPost } from "~/api"
 
 type AllFilter = {
-  type: "all";
-};
+  type: "all"
+}
 type PostFilter = {
-  type: "post";
-};
+  type: "post"
+}
 type pageFilter = {
-  type: "page";
-};
+  type: "page"
+}
 type DraftFilter = {
-  type: "draft";
-};
+  type: "draft"
+}
 type CategorieFilter = {
-  type: "category";
-  slug: string;
-};
+  type: "category"
+  slug: string
+}
 type TagFilter = {
-  type: "tag";
-  slug: string;
-};
+  type: "tag"
+  slug: string
+}
 type Filter =
   | AllFilter
   | PostFilter
   | pageFilter
   | DraftFilter
   | CategorieFilter
-  | TagFilter;
+  | TagFilter
 
 interface IState {
-  filter: Filter;
+  filter: Filter
 }
 export const useArticleListStore = defineStore("article-list", {
   state: (): IState => ({ filter: { type: "all" } }),
   actions: {
     setFilter(filter: Filter) {
-      this.filter = filter;
+      this.filter = filter
     },
   },
   getters: {
     articleFilter(state) {
-      const filter = state.filter;
+      const filter = state.filter
       return (articles: (BriefPage | BriefPost)[]) => {
         switch (filter.type) {
           case "all":
-            return articles;
+            return articles
           case "page":
-            return articles.filter((article) => article.__page);
+            return articles.filter((article) => article.__page)
           case "post":
-            return articles.filter((article) => article.__post);
+            return articles.filter((article) => article.__post)
           case "draft":
             return articles.filter(
               (article) => article.__post && !article.published
-            );
+            )
           case "category":
             return (
               articles.filter((article) => article.__post) as BriefPost[]
-            ).filter((post) => post.categories?.includes(filter.slug));
+            ).filter((post) => post.categories?.includes(filter.slug))
           case "tag":
             return (
               articles.filter((article) => article.__post) as BriefPost[]
-            ).filter((post) => post.tags?.includes(filter.slug));
+            ).filter((post) => post.tags?.includes(filter.slug))
           default:
-            return [] as never[];
+            return [] as never[]
         }
-      };
+      }
     },
   },
-});
+})
