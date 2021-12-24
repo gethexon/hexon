@@ -7,6 +7,8 @@ import { useThemeController } from "@winwin/vue-global-theming"
 import { watch } from "vue"
 import HNotificationItem from "./components/HNotificationItem.vue"
 import { transformType } from "./utils"
+import { useRoute } from "vue-router"
+const route = useRoute()
 const styles = computed(() => {
   return {
     width: "100vw",

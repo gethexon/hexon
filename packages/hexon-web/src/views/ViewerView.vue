@@ -2,13 +2,14 @@
 import { computed, watch } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { useDetailStore } from "~/store/detail"
-import { noop } from "~/utils"
-import { IArticleIdentifier } from "~/types"
+import notification from "~/notification"
 import HViewerToolbar from "@/HViewerToolbar.vue"
 import HViewerContent from "@/HViewerContent.vue"
 import HViewerHeader from "@/HViewerHeader.vue"
 import { HViewerToolbarActionPayload } from "@/types"
 import ErroredView from "./ErroredView.vue"
+import { HButton } from "~/components/ui/button"
+import HLoading from "~/components/ui/loading/src/HLoading.vue"
 
 //#region hooks
 const route = useRoute()
@@ -16,19 +17,34 @@ const router = useRouter()
 const detailStore = useDetailStore()
 //#endregion
 
-//#region actions
+//#region data
+function load() {
+  const type = route.params.type as string
+  const source = route.params.source as string
+  if (type === "post" || type === "page") {
+    detailStore.getArticle(type, source).catch((err) => {
+      if (err?.response?.status === 404) {
+        router.push("/")
+      } else {
+        notification.notify({
+          title: "文章载入失败",
+          desc: (err as Error).message,
+          type: "error",
+          duration: 5000,
+        })
+      }
+    })
+  }
+}
 watch(
-  () => [route.params.type, route.params.source],
-  async ([type, source]) => {
-    if (route.name !== "view") {
-      if (route.name !== "edit") detailStore.clearArticle()
-      return
-    }
-    await detailStore
-      .viewArticle({ source, type } as IArticleIdentifier)
-      .catch(noop)
+  () => route.fullPath,
+  () => {
+    if (route.name !== "view") return
+    load()
   },
-  { immediate: true }
+  {
+    immediate: true,
+  }
 )
 //#endregion
 
@@ -63,12 +79,16 @@ const onAction = (payload: HViewerToolbarActionPayload) => {
 //#endregion
 </script>
 <template>
-  <ErroredView v-if="detailStore.errored" />
-  <div class="w-full h-full flex flex-col" v-else>
-    <HViewerToolbar @on-action="onAction" />
-    <div class="overflow-auto flex-1">
-      <HViewerHeader :title="title" :raw="raw" />
-      <HViewerContent :content="content" />
+  <HLoading :loading="detailStore.loading">
+    <ErroredView v-if="detailStore.error">
+      <HButton @click="load"> 重试 </HButton>
+    </ErroredView>
+    <div class="w-full h-full flex flex-col" v-else>
+      <HViewerToolbar @on-action="onAction" />
+      <div class="overflow-auto flex-1">
+        <HViewerHeader :title="title" :raw="raw" />
+        <HViewerContent :content="content" />
+      </div>
     </div>
-  </div>
+  </HLoading>
 </template>

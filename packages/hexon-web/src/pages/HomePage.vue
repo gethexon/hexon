@@ -3,16 +3,16 @@ import { computed, ref, onMounted } from "vue"
 import { RouterView, useRouter, useRoute } from "vue-router"
 import { useTheme } from "@winwin/vue-global-theming"
 import { HTheme } from "~/themes"
+import notification from "~/notification"
 import SplitView from "~/lib/splitview"
-import HTitle from "~/components/HTitle.vue"
-import HNavList from "~/components/HNavList.vue"
 import { useMainStore } from "~/store/main"
 import { useArticleListStore } from "~/store/articleList"
-import { HNavListActionPayload } from "~/components/types"
-import HSearchBar from "~/components/HSearchBar.vue"
-import HArticleList from "~/components/HArticleList.vue"
-import HNavSetting from "~/components/HNavSetting.vue"
-import { noop } from "~/utils"
+import HNavList from "@/HNavList.vue"
+import HSearchBar from "@/HSearchBar.vue"
+import HTitle from "@/HTitle.vue"
+import HArticleList from "@/HArticleList.vue"
+import HNavSetting from "@/HNavSetting.vue"
+import { HNavListActionPayload } from "@/types"
 
 const mainStore = useMainStore()
 const router = useRouter()
@@ -20,10 +20,18 @@ const route = useRoute()
 const articleListStore = useArticleListStore()
 const theme = useTheme<HTheme>()!
 const loadBlogData = async () => {
-  await mainStore.getBlogData().catch(noop)
+  await mainStore.getBlogData().catch((err) => {
+    notification.notify({
+      title: `博客数据载入失败`,
+      desc: (err as Error).message,
+      type: "error",
+      permanent: true,
+      // TODO 支持 action
+    })
+  })
 }
-onMounted(async () => {
-  if (mainStore.first) loadBlogData()
+onMounted(() => {
+  loadBlogData()
 })
 const sep11 = ref(200)
 const sep22 = ref(320)

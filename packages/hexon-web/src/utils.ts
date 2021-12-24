@@ -1,3 +1,4 @@
+import { computed, ComputedRef, defineAsyncComponent, ref } from "vue"
 import { INotificationType } from "./lib/notification/types"
 
 export const forceReloadWindow = () => {
@@ -70,4 +71,20 @@ export function randomString(length: number = 8) {
 export const transformType = (type: INotificationType) => {
   if (type === "info") return "primary"
   return type
+}
+
+export function useAsyncComponentWithLoading(
+  loader: Parameters<typeof defineAsyncComponent>[0]
+): [ReturnType<typeof defineAsyncComponent>, ComputedRef<boolean>] {
+  const loading = ref(true)
+  const _loader = "loader" in loader ? loader.loader : loader
+  return [
+    defineAsyncComponent(() =>
+      _loader().then((res) => {
+        loading.value = false
+        return res
+      })
+    ),
+    computed(() => loading.value),
+  ]
 }

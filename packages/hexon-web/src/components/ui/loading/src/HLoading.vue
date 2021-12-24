@@ -2,18 +2,26 @@
 import { useTheme } from "@winwin/vue-global-theming"
 import { HTheme } from "~/themes"
 
-const props = defineProps<{
-  loading: boolean
-}>()
+const props = withDefaults(
+  defineProps<{
+    loading?: boolean
+    overlay?: boolean
+  }>(),
+  {
+    loading: true,
+    overlay: false,
+  }
+)
 const theme = useTheme<HTheme>()!
 
+// TODO 加上提示语
 // TODO loading 切换动画
 </script>
 <template>
+  <slot v-if="overlay || !loading"></slot>
   <div v-if="loading" class="h-loading">
     <div class="icon"></div>
   </div>
-  <slot v-else></slot>
 </template>
 <style lang="less">
 .h-loading {
