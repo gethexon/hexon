@@ -3,3 +3,4 @@ node_modules
 dist-ssr
 *.local
 yarn-error.log
+stats.html

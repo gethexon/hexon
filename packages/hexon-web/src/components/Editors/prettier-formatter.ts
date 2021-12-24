@@ -9,5 +9,6 @@ export function formatMarkdown(value: string) {
   return prettier.format(value, {
     parser: "markdown",
     plugins: [markdown, typescript, html, yaml, postcss],
+    semi: false,
   })
 }

@@ -1,1 +1,0 @@
-export { MonacoMarkdownExtension } from "./src"

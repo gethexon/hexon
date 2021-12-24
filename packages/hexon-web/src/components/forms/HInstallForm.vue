@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref } from "vue"
 import { useTheme } from "@winwin/vue-global-theming"
-import HInput from "~/components/ui/input/src/HInput.vue"
-import { HIcon } from "~/components/ui/icon"
-import { HIconName } from ".ui/icon"
-import { HTheme } from "~/themes"
-import { HButton } from "../ui/button"
 import logo from "~/assets/logo-invert.svg"
+import { HTheme } from "~/themes"
+import HInput from "@/ui/input/src/HInput.vue"
+import { HIcon } from "@/ui/icon"
+import { HIconName } from "@/ui/icon"
+import { HButton } from "@/ui/button"
 import { randomString } from "~/utils"
 import { IFormData } from "../types"
 const formData = ref<IFormData>({

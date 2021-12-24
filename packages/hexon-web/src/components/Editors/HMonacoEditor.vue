@@ -2,7 +2,8 @@
 import { ref, onMounted, watch, onBeforeUnmount } from "vue"
 import * as monaco from "monaco-editor"
 import "./workers"
-import { MonacoMarkdownExtension } from "~/lib/monaco-markdown"
+import { MonacoMarkdownExtension } from "monaco-markdown"
+import { PrettierFormatterExtension } from "./prettier-formatter-ext"
 import { editorOptions } from "./monaco"
 import { useMonacoTheme } from "./theme"
 
@@ -21,8 +22,11 @@ function resetModal() {
 }
 onMounted(() => {
   instance = monaco.editor.create(dom.value!, editorOptions)
-  const extension = new MonacoMarkdownExtension()
-  extension.activate(instance)
+  const mdExtension = new MonacoMarkdownExtension()
+  mdExtension.activate(instance)
+
+  const fmExtension = new PrettierFormatterExtension()
+  fmExtension.activate(instance)
 
   resetModal()
   instance.onDidChangeModelContent(() => {

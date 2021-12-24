@@ -1,7 +1,8 @@
-import path from "path";
-import { defineConfig } from "vite";
-import vue from "@vitejs/plugin-vue";
-const projectRootDir = path.resolve(__dirname);
+import path from "path"
+import { defineConfig } from "vite"
+import vue from "@vitejs/plugin-vue"
+import visualizer from "rollup-plugin-visualizer"
+const projectRootDir = path.resolve(__dirname)
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -19,4 +20,9 @@ export default defineConfig({
       },
     ],
   },
-});
+  build: {
+    rollupOptions: {
+      plugins: [visualizer()],
+    },
+  },
+})

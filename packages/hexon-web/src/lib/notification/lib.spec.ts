@@ -1,4 +1,4 @@
-import { createNotification } from "."
+import { createNotification } from "./lib"
 
 describe("notification", () => {
   beforeEach(() => {
