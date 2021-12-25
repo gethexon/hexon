@@ -40,7 +40,7 @@ color-linkedin = #0077B5
 // Fonts
 font-mono = "Source Code Pro", Consolas, Monaco, Menlo, Consolas, monospace
 font-size = 14px
-line-height = 1.6em
+line-height = 1.4em
 line-height-title = 1.1em
 
 // Header
@@ -74,6 +74,7 @@ mq-tablet = "screen and (min-width: 480px) and (max-width: 767px)"
 mq-normal = "screen and (min-width: 768px)"
 
 .article-entry
+  font-size: font-size
   h1
     @apply text-4xl
   h2
