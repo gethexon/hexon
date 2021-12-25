@@ -49,6 +49,7 @@ const onAction = (payload: HEditorToolbarActionPayload) => {
             type: "success",
           })
           loadBlogData(true)
+          load()
         },
         (err) => {
           notification.notify({
