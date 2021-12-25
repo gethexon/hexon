@@ -52,6 +52,104 @@ const value = ref("")
     >
     </HInput>
   </div>
+
+  <h2>错误</h2>
+
+  <div class="bg-base3 h-input-container">
+    <HInput
+      v-model="value"
+      placeholder="type something"
+      type="primary"
+      error="文字错误"
+      clearable
+    >
+    </HInput>
+  </div>
+
+  <div class="bg-base1 h-input-container">
+    <HInput
+      v-model="value"
+      placeholder="type something"
+      type="secondary"
+      error="文字错误"
+      clearable
+    >
+    </HInput>
+  </div>
+
+  <div class="bg-base3 h-input-container">
+    <HInput v-model="value" placeholder="type something" error="文字错误">
+      <template v-slot:prefix>
+        <HIcon :name="HIconName.Search" />
+      </template>
+    </HInput>
+  </div>
+
+  <h2>有占位符</h2>
+
+  <code>error !== undefined</code>
+
+  <div class="bg-base3 h-input-container">
+    <HInput
+      v-model="value"
+      placeholder="type something"
+      type="primary"
+      error=""
+      clearable
+    >
+    </HInput>
+  </div>
+
+  <div class="bg-base1 h-input-container">
+    <HInput
+      v-model="value"
+      placeholder="type something"
+      type="secondary"
+      error=""
+      clearable
+    >
+    </HInput>
+  </div>
+
+  <h2>表单</h2>
+
+  <div class="bg-base3 h-input-container">
+    <HInput
+      v-model="value"
+      placeholder="type something"
+      type="primary"
+      :error="value"
+      clearable
+    >
+    </HInput>
+    <HInput
+      v-model="value"
+      placeholder="type something"
+      type="primary"
+      :error="value"
+      clearable
+    >
+    </HInput>
+  </div>
+
+  <div class="bg-base1 h-input-container">
+    <HInput
+      v-model="value"
+      placeholder="type something"
+      type="secondary"
+      :error="value"
+      clearable
+    >
+    </HInput>
+    <HInput
+      v-model="value"
+      placeholder="type something"
+      type="secondary"
+      :error="value"
+      clearable
+    >
+    </HInput>
+  </div>
 </template>
 
 <style scope>

@@ -96,6 +96,7 @@ export type HTheme = {
       secondInput: string
     }
     foreground: {
+      transparent: string
       main: string
       sub: string
       /**
@@ -138,6 +139,7 @@ export const lightTheme: HTheme = {
       secondInput: "#eeeeee",
     },
     foreground: {
+      transparent: "transparent",
       main: "#484848",
       sub: "#757575",
       max: "#000000",
@@ -174,6 +176,7 @@ export const darkTheme: HTheme = {
       secondInput: "#424242",
     },
     foreground: {
+      transparent: "transparent",
       main: "#dddddd",
       sub: "#a9a9a9",
       max: "#ffffff",
