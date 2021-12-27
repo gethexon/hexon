@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { onClickOutside } from "@vueuse/core"
-import { ref, toRefs, watch } from "vue"
+import { ref, watch } from "vue"
 import ClassProvider from "~/ClassProvider.vue"
+import FadeTransition from "@/transitions/FadeTransition.vue"
 const props = withDefaults(defineProps<{ show?: boolean }>(), { show: false })
 const emits = defineEmits<{
   (e: "update:show", value: boolean): void
@@ -27,7 +28,7 @@ const hide = () => {
 </script>
 <template>
   <teleport to="body">
-    <transition name="h-modal">
+    <FadeTransition>
       <div
         v-if="internalShow"
         style="
@@ -46,17 +47,6 @@ const hide = () => {
           <slot :hide="hide" />
         </ClassProvider>
       </div>
-    </transition>
+    </FadeTransition>
   </teleport>
 </template>
-<style>
-.h-modal-enter-active,
-.h-modal-leave-active {
-  transition: opacity 0.2s ease;
-}
-
-.h-modal-enter-from,
-.h-modal-leave-to {
-  opacity: 0;
-}
-</style>

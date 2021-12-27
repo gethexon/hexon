@@ -31,7 +31,7 @@ function leave(el: Element, done: () => void) {
 </script>
 
 <template>
-  <TransitionGroup @enter="enter" @before-enter="beforeEnter" @leave="leave">
+  <Transition @enter="enter" @before-enter="beforeEnter" @leave="leave">
     <slot></slot>
-  </TransitionGroup>
+  </Transition>
 </template>
