@@ -5,6 +5,7 @@ import App from "./App.vue"
 import router from "./router"
 import themes from "./themes"
 import notification from "./notification"
+import dialog from "./plugins/dialog"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import localizedFormat from "dayjs/plugin/localizedFormat"
@@ -19,5 +20,6 @@ createApp(App)
   .use(createPinia())
   .use(themes)
   .use(notification)
+  .use(dialog)
   .use(account)
   .mount("#app")

@@ -5,9 +5,12 @@ import ClassProvider from "./ClassProvider.vue"
 import { useDark } from "@vueuse/core"
 import { useThemeController } from "@winwin/vue-global-theming"
 import { watch } from "vue"
-import HNotificationItem from "./components/HNotificationItem.vue"
+import HNotificationItem from "@/HNotificationItem.vue"
 import { transformType } from "./utils"
 import { useRoute } from "vue-router"
+import { DialogContainer } from "./lib/dialog"
+import HDialog from "@/others/HDialog.vue"
+
 const route = useRoute()
 const styles = computed(() => {
   return {
@@ -46,6 +49,11 @@ watch(
           />
         </template>
       </Notification>
+      <DialogContainer>
+        <template #default="slotProps">
+          <HDialog :data="slotProps.data" />
+        </template>
+      </DialogContainer>
     </ClassProvider>
   </div>
 </template>

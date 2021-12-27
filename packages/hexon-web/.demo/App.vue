@@ -2,8 +2,11 @@
 import { computed } from "@vue/reactivity"
 import ClassProvider from "~/ClassProvider.vue"
 import { Notification } from "~/lib/notification"
-import HNotificationItem from "~/components/HNotificationItem.vue"
+import HNotificationItem from "@/HNotificationItem.vue"
 import { transformType } from "~/utils"
+import { DialogContainer } from "~/lib/dialog"
+import HDialog from "~/components/others/HDialog.vue"
+
 const styles = computed(() => {
   return {
     width: "100vw",
@@ -30,6 +33,11 @@ const styles = computed(() => {
           />
         </template>
       </Notification>
+      <DialogContainer>
+        <template #default="slotProps">
+          <HDialog :data="slotProps.data" />
+        </template>
+      </DialogContainer>
     </ClassProvider>
   </div>
 </template>
