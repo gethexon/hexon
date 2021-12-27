@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from "vue"
+import { computed, ref, watch } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { stringify } from "hexo-front-matter"
-import { useNotification } from "~/lib/notification"
-import { useMainStore } from "~/store/main"
 import { useDetailStore } from "~/store/detail"
 import { parseHfm } from "~/utils/hfm"
 import { HButton } from "@/ui/button"
@@ -13,6 +11,8 @@ import HEditorToolbar from "@/HEditorToolbar.vue"
 import { HEditorToolbarActionPayload } from "@/types"
 import ErroredView from "./ErroredView.vue"
 import { useAsyncComponentWithLoading } from "~/utils"
+import { useDispatcher } from "~/store/dispatcher"
+import { PostOrPage } from "~/types"
 
 const [HMonacoEditor, monacoLoading] = useAsyncComponentWithLoading(
   () => import("@/Editors/HMonacoEditor.vue")
@@ -21,8 +21,7 @@ const [HMonacoEditor, monacoLoading] = useAsyncComponentWithLoading(
 //#region hooks
 const route = useRoute()
 const router = useRouter()
-const notification = useNotification()
-const mainStore = useMainStore()
+const dispatcher = useDispatcher()
 const detailStore = useDetailStore()
 //#endregion
 
@@ -31,35 +30,17 @@ const onHome = () => {
   router.push("/")
 }
 const onAction = (payload: HEditorToolbarActionPayload) => {
+  const type = route.params.type as PostOrPage
+  const source = route.params.source as string
   switch (payload.type) {
     case "back":
-      router.push({
-        name: "view",
-        params: {
-          source: route.params.source,
-          type: route.params.type,
-        },
-      })
+      dispatcher.viewArticle({ type, source })
       break
     case "save":
-      detailStore.saveArticle(internal_raw.value).then(
-        () => {
-          notification.notify({
-            title: "保存成功",
-            type: "success",
-          })
-          loadBlogData(true)
-          load()
-        },
-        (err) => {
-          notification.notify({
-            title: "文章保存失败",
-            desc: (err as Error).message,
-            type: "error",
-            duration: 5000,
-          })
-        }
-      )
+      dispatcher.saveArticle(internal_raw.value)
+      break
+    case "delete":
+      dispatcher.deleteArticle({ type, source })
       break
     default:
       break
@@ -68,33 +49,13 @@ const onAction = (payload: HEditorToolbarActionPayload) => {
 //#endregion
 
 //#region data
-function loadBlogData(refresh: boolean = false) {
-  mainStore.getBlogData().catch((err) => {
-    notification.notify({
-      title: `博客数据${refresh ? "刷新" : "载入"}失败`,
-      desc: (err as Error).message,
-      type: "error",
-      permanent: true,
-      // TODO 支持 action
-    })
-  })
-}
 function load() {
   const type = route.params.type as string
   const source = route.params.source as string
   if (type === "post" || type === "page") {
-    detailStore.getArticle(type, source).catch((err) => {
-      if (err?.response?.status === 404) {
-        router.push("/")
-      } else {
-        notification.notify({
-          title: "文章载入失败",
-          desc: (err as Error).message,
-          type: "error",
-          duration: 5000,
-        })
-      }
-    })
+    dispatcher.getArticle({ type, source })
+  } else {
+    dispatcher.goHome()
   }
 }
 watch(
@@ -102,7 +63,7 @@ watch(
   () => {
     if (route.name !== "edit") return
     load()
-    loadBlogData()
+    dispatcher.loadBlogData()
   },
   {
     immediate: true,

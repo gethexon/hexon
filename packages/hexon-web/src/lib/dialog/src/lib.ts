@@ -3,10 +3,7 @@ import { v4 as uuid } from "uuid"
 import { DialogType, IDialog, IDialogAction, IDialogOption } from "./interface"
 import { noop } from "~/utils"
 
-const key: InjectionKey<{
-  dialogs: Ref<IDialog[]>
-  create: (option: IDialogOption) => void
-}> = Symbol("hdialog")
+const key: InjectionKey<Dialog> = Symbol("hdialog")
 
 class DialogItem implements IDialog {
   public id: string
@@ -16,16 +13,14 @@ class DialogItem implements IDialog {
   public persistent: boolean
   public actions: IDialogAction[]
   public close: () => void
-  constructor(option: IDialogOption, dialog: Dialog) {
+  constructor(option: IDialogOption, dialogs: Ref<IDialog[]>) {
     this.id = uuid()
     this.type = option.type ?? "info"
     this.title = option.title
     this.content = option.content ?? ""
     this.persistent = option.persistent ?? false
     this.close = () =>
-      (dialog.dialogs.value = dialog.dialogs.value.filter(
-        (item) => item.id !== this.id
-      ))
+      (dialogs.value = dialogs.value.filter((item) => item.id !== this.id))
     this.actions = option.actions.map((action) => {
       const run = async () => {
         this.close()
@@ -37,22 +32,26 @@ class DialogItem implements IDialog {
   }
 }
 
-class Dialog {
-  public dialogs = ref<IDialog[]>([])
-  public create(option: IDialogOption) {
-    const item = new DialogItem(option, this)
-    this.dialogs.value.push(item)
-  }
+export interface Dialog {
+  dialogs: Ref<IDialog[]>
+  create(option: IDialogOption): void
+  install(app: App): void
 }
 
-class DialogPlugin extends Dialog {
-  public install(app: App) {
-    app.provide(key, this)
+export function createDialogPlugin(): Dialog {
+  const dialogs = ref<IDialog[]>([])
+  function create(option: IDialogOption) {
+    const item = new DialogItem(option, dialogs)
+    dialogs.value.push(item)
   }
-}
-
-export function createDialogPlugin() {
-  return new DialogPlugin()
+  return {
+    dialogs,
+    create,
+    install(app: App) {
+      const dialog = this
+      app.provide(key, dialog)
+    },
+  }
 }
 
 export function useDialog() {

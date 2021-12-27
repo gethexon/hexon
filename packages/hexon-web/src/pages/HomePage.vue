@@ -3,8 +3,8 @@ import { computed, ref, onMounted } from "vue"
 import { RouterView, useRouter, useRoute } from "vue-router"
 import { useTheme } from "@winwin/vue-global-theming"
 import { HTheme } from "~/themes"
-import notification from "~/notification"
 import SplitView from "~/lib/splitview"
+import { useNotification } from "~/lib/notification"
 import { useMainStore } from "~/store/main"
 import { useArticleListStore } from "~/store/articleList"
 import HNavList from "@/HNavList.vue"
@@ -17,6 +17,7 @@ import { HNavListActionPayload } from "@/types"
 const mainStore = useMainStore()
 const router = useRouter()
 const route = useRoute()
+const notification = useNotification()
 const articleListStore = useArticleListStore()
 const theme = useTheme<HTheme>()!
 const loadBlogData = async () => {

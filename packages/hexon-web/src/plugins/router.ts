@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router"
-import account from "./account"
-import { isInstalled } from "./api"
+import account from "../account"
+import { isInstalled } from "../api"
 
 const path = {
   home: "/",
@@ -11,28 +11,28 @@ const path = {
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
-    component: () => import("./pages/HomePage.vue"),
+    component: () => import("../pages/HomePage.vue"),
     name: "home",
     children: [
       {
         path: "view/:type/:source",
-        component: () => import("./views/ViewerView.vue"),
+        component: () => import("../views/ViewerView.vue"),
         name: "view",
       },
     ],
   },
   {
     path: "/edit/:type/:source",
-    component: () => import("./views/EditorView.vue"),
+    component: () => import("../views/EditorView.vue"),
     name: "edit",
   },
   {
     path: path.signin,
-    component: () => import("./pages/SignInPage.vue"),
+    component: () => import("../pages/SignInPage.vue"),
   },
   {
     path: path.install,
-    component: () => import("./pages/InstallPage.vue"),
+    component: () => import("../pages/InstallPage.vue"),
   },
   {
     path: "/:pathMatch(.*)*",

@@ -45,6 +45,8 @@ export interface INotification {
    * later-top list
    */
   notificationList: ComputedRef<INotificationItem[]>
+  defaults: ComputedRef<INotificationDefaults>
+  position: ComputedRef<INotificationPosition>
   /**
    * create a notification
    * @returns
@@ -62,6 +64,10 @@ export interface INotification {
    * change notification plugin default settings
    */
   setDefaults: (options: Partial<INotificationDefaults>) => void
+  /**
+   * change notification plugin position
+   */
+  setPosition: (position: INotificationPosition) => void
 }
 
 export interface INotificationDefaults {

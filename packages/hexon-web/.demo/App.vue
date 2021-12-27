@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "@vue/reactivity"
 import ClassProvider from "~/ClassProvider.vue"
-import { Notification } from "~/lib/notification"
+import { Notifications } from "~/lib/notification"
 import HNotificationItem from "@/HNotificationItem.vue"
 import { transformType } from "~/utils"
 import { DialogContainer } from "~/lib/dialog"
@@ -19,7 +19,7 @@ const styles = computed(() => {
   <div :style="styles">
     <ClassProvider>
       <router-view></router-view>
-      <Notification>
+      <Notifications>
         <template #default="slotsProps">
           <HNotificationItem
             :class="slotsProps.class"
@@ -32,7 +32,7 @@ const styles = computed(() => {
             @on-click="slotsProps.item.onClick"
           />
         </template>
-      </Notification>
+      </Notifications>
       <DialogContainer>
         <template #default="slotProps">
           <HDialog :data="slotProps.data" />

@@ -1,23 +1,16 @@
-import { createPinia } from "pinia"
 import { createApp } from "vue"
 import account from "./account"
 import App from "./App.vue"
-import router from "./router"
 import themes from "./themes"
-import notification from "./notification"
+import router from "./plugins/router"
+import notification from "./plugins/notification"
 import dialog from "./plugins/dialog"
-import dayjs from "dayjs"
-import relativeTime from "dayjs/plugin/relativeTime"
-import localizedFormat from "dayjs/plugin/localizedFormat"
-import "dayjs/locale/zh-cn"
-
-dayjs.extend(relativeTime)
-dayjs.extend(localizedFormat)
-dayjs.locale("zh-cn")
+import pinia from "./plugins/pinia"
+import "./plugins/dayjs"
 
 createApp(App)
+  .use(pinia)
   .use(router)
-  .use(createPinia())
   .use(themes)
   .use(notification)
   .use(dialog)

@@ -1,7 +1,7 @@
 import { createApp } from "vue"
 import App from "./App.vue"
 import themes from "~/themes"
-import notification from "~/notification"
+import notification from "~/plugins/notification"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import localizedFormat from "dayjs/plugin/localizedFormat"

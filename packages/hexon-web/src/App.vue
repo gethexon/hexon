@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from "@vue/reactivity"
-import { Notification } from "./lib/notification"
+import { Notifications } from "./lib/notification"
 import ClassProvider from "./ClassProvider.vue"
 import { useDark } from "@vueuse/core"
 import { useThemeController } from "@winwin/vue-global-theming"
@@ -36,7 +36,7 @@ watch(
   <div :style="styles">
     <ClassProvider>
       <router-view></router-view>
-      <Notification>
+      <Notifications>
         <template #default="slotsProps">
           <HNotificationItem
             :type="transformType(slotsProps.item.type)"
@@ -48,7 +48,7 @@ watch(
             @on-click="slotsProps.item.onClick"
           />
         </template>
-      </Notification>
+      </Notifications>
       <DialogContainer>
         <template #default="slotProps">
           <HDialog :data="slotProps.data" />
