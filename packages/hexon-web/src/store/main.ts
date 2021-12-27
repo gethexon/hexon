@@ -2,7 +2,7 @@ import { defineStore } from "pinia"
 import { list2Tree, TreeNode } from "~/lib/list2tree"
 import { api, BriefPage, BriefPost, Category, Tag } from "~/api"
 import { list2object, object2list } from "~/utils"
-import { PostOrPage } from "~/types"
+import { PostOrPage } from "~/interface"
 
 export interface IState {
   posts: {

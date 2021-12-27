@@ -12,7 +12,7 @@ import { HEditorToolbarActionPayload } from "@/types"
 import ErroredView from "./ErroredView.vue"
 import { useAsyncComponentWithLoading } from "~/utils"
 import { useDispatcher } from "~/store/dispatcher"
-import { PostOrPage } from "~/types"
+import { PostOrPage } from "~/interface"
 
 const [HMonacoEditor, monacoLoading] = useAsyncComponentWithLoading(
   () => import("@/Editors/HMonacoEditor.vue")

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import HToolbar from "./HToolbar.vue"
-import HInput from "./ui/input/src/HInput.vue"
+import { HInput } from "./ui/input"
 import { HButton } from "./ui/button"
 import { HIcon } from "./ui/icon"
 import { HIconName } from "./ui/icon"

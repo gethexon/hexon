@@ -3,12 +3,12 @@ import { useTheme } from "@winwin/vue-global-theming"
 import { DialogActionType, IDialog } from "~/lib/dialog"
 import { HTheme } from "~/themes"
 import HButton from "../ui/button/src/HButton.vue"
+import { HButtonType } from "../ui/button/src/interface"
 const props = defineProps<{ data: IDialog }>()
-function transformType(type: DialogActionType) {
+function transformType(type: DialogActionType): HButtonType {
   switch (type) {
     case "info":
       return "primary"
-
     default:
       return type
   }

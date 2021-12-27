@@ -1,5 +1,5 @@
 import { computed, ComputedRef, defineAsyncComponent, ref } from "vue"
-import { INotificationType } from "./lib/notification/interface"
+import { INotificationType } from "./lib/notification"
 
 export const forceReloadWindow = () => {
   window.onbeforeunload = () => {}

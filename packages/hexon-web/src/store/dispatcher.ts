@@ -1,5 +1,5 @@
 import { defineStore } from "pinia"
-import { IArticleIdentifier, PostOrPage } from "~/types"
+import { IArticleIdentifier } from "~/interface"
 import { useDetailStore } from "./detail"
 import { useMainStore } from "./main"
 

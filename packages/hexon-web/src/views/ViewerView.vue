@@ -10,7 +10,7 @@ import HViewerHeader from "@/HViewerHeader.vue"
 import { HViewerToolbarActionPayload } from "@/types"
 import ErroredView from "./ErroredView.vue"
 import { useDispatcher } from "~/store/dispatcher"
-import { PostOrPage } from "~/types"
+import { PostOrPage } from "~/interface"
 
 //#region hooks
 const route = useRoute()

@@ -1,6 +1,6 @@
 import { defineStore } from "pinia"
 import { api, Page, Post } from "~/api"
-import { PostOrPage } from "~/types"
+import { PostOrPage } from "~/interface"
 
 interface IState {
   article: Post | Page | null

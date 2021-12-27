@@ -4,10 +4,10 @@ import { useTheme } from "@winwin/vue-global-theming"
 import logo from "~/assets/logo.svg"
 import { HTheme } from "~/themes"
 import HImage from "@/HImage.vue"
-import HInput from "~/components/ui/input/src/HInput.vue"
+import { HInput } from "~/components/ui/input"
 import { HIcon } from "~/components/ui/icon"
 import { HButton } from "~/components/ui/button"
-import { HIconName } from "~/components/ui/icon/src/interface"
+import { HIconName } from "~/components/ui/icon"
 
 const emits = defineEmits<{
   (e: "on-submit", payload: { username: string; password: string }): void
