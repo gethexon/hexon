@@ -5,6 +5,7 @@ import {
   ZCategory,
   ZIPageWithAllData,
   ZIPostWithAllData,
+  ZIWithAllData,
   ZPage,
   ZPost,
   ZTag,
@@ -123,5 +124,27 @@ export class HttpApiProvider implements IApiProvider {
       })
       return data
     }
+  }
+  async deleteArticle(type: "post", source: string): Promise<IWithAllData>
+  async deleteArticle(type: "page", source: string): Promise<IWithAllData>
+  async deleteArticle(
+    type: "post" | "page",
+    source: string
+  ): Promise<IWithAllData>
+  async deleteArticle(
+    type: "post" | "page",
+    source: string
+  ): Promise<IWithAllData> {
+    const res = await account.access.delete(
+      `/hexo/${type}/${encodeURIComponent(source)}`
+    )
+    const { posts, pages, tags, categories } = res.data
+    const data = ZIWithAllData.parse({
+      posts: posts.map(dashIdToId),
+      pages: pages.map(dashIdToId),
+      tags: tags.map(dashIdToId),
+      categories: categories.map(dashIdToId),
+    })
+    return data
   }
 }

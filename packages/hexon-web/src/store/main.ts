@@ -2,6 +2,7 @@ import { defineStore } from "pinia"
 import { list2Tree, TreeNode } from "~/lib/list2tree"
 import { api, BriefPage, BriefPost, Category, Tag } from "~/api"
 import { list2object, object2list } from "~/utils"
+import { PostOrPage } from "~/types"
 
 export interface IState {
   posts: {
@@ -28,6 +29,16 @@ export const useMainStore = defineStore("main", {
   actions: {
     async getBlogData() {
       const { posts, pages, tags, categories } = await api.getAllData()
+      this.posts = list2object(posts, "source")
+      this.pages = list2object(pages, "source")
+      this.tags = list2object(tags, "slug")
+      this.categories = list2object(categories, "slug")
+    },
+    async deleteArticle(type: PostOrPage, source: string) {
+      const { posts, pages, tags, categories } = await api.deleteArticle(
+        type,
+        source
+      )
       this.posts = list2object(posts, "source")
       this.pages = list2object(pages, "source")
       this.tags = list2object(tags, "slug")

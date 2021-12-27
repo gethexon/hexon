@@ -18,6 +18,7 @@ export interface IApiProvider {
   getCategories(): Promise<Category[]>
   getArticle(type: "post", source: string): Promise<Post>
   getArticle(type: "page", source: string): Promise<Page>
+  getArticle(type: "post" | "page", source: string): Promise<Post | Page>
   saveArticle(
     type: "post",
     source: string,
@@ -28,4 +29,12 @@ export interface IApiProvider {
     source: string,
     raw: string
   ): Promise<IPageWithAllData>
+  saveArticle(
+    type: "post" | "page",
+    source: string,
+    raw: string
+  ): Promise<IPostWithAllData | IPageWithAllData>
+  deleteArticle(type: "post", source: string): Promise<IWithAllData>
+  deleteArticle(type: "page", source: string): Promise<IWithAllData>
+  deleteArticle(type: "post" | "page", source: string): Promise<IWithAllData>
 }
