@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed } from "vue"
 import { RouterView, useRoute, useRouter } from "vue-router"
-import HNavItem from "@/HNavItem.vue"
+import HNavItem from "~/components/ui/nav-list/src/HNavItem.vue"
 import { HIconName } from "@/ui/icon/src/interface"
-import HNavTitle from "@/HNavTitle.vue"
+import HNavTitle from "~/components/ui/nav-list/src/HNavTitle.vue"
 import { getNameFromPath, modules } from "./utils"
 
 const links = Object.entries(modules).map(([path]) => ({

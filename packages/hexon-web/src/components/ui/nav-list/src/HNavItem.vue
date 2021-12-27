@@ -2,8 +2,7 @@
 import { useTheme } from "@winwin/vue-global-theming"
 import { toRefs, computed } from "vue"
 import { HTheme } from "~/themes"
-import { HIcon } from "./ui/icon"
-import { HIconName } from "./ui/icon"
+import { HIcon, HIconName } from "../../icon"
 
 const props = withDefaults(
   defineProps<{
@@ -15,7 +14,12 @@ const props = withDefaults(
     sub?: string | number
     uppercase?: boolean
   }>(),
-  { indent: 0, selected: false, sub: "", uppercase: true }
+  {
+    indent: 0,
+    selected: false,
+    sub: "",
+    uppercase: true,
+  }
 )
 const { icon, text, indent, selected, color, uppercase } = toRefs(props)
 const indents = computed(() => {
@@ -36,19 +40,7 @@ const styleVars = computed(() => {
 </script>
 <template>
   <div
-    class="
-      h-nav-item
-      px-4
-      py-0.5
-      mx-0
-      my-0.5
-      h-7
-      rounded-md
-      select-none
-      cursor-pointer
-      flex
-      items-center
-    "
+    class="h-nav-item px-4 py-0.5 mx-0 my-0.5 h-7 rounded-md select-none cursor-pointer flex items-center"
   >
     <span class="w-4 inline-block" v-for="i in indents"> </span>
     <HIcon class="mr-3 text-lg" :style="{ color }" :name="icon" />
@@ -61,7 +53,7 @@ const styleVars = computed(() => {
   </div>
 </template>
 <style scoped lang="less">
-@import "../styles/mixins.less";
+@import "~/styles/mixins.less";
 .h-nav-item {
   color: v-bind("styleVars.color");
   background-color: v-bind("styleVars.bgColor");

@@ -1,38 +1,24 @@
 <script setup lang="ts">
 import { computed, ref, onMounted } from "vue"
 import { RouterView, useRouter, useRoute } from "vue-router"
-import { useTheme } from "@winwin/vue-global-theming"
-import { HTheme } from "~/themes"
 import SplitView from "~/lib/splitview"
-import { useNotification } from "~/lib/notification"
 import { useMainStore } from "~/store/main"
 import { useArticleListStore } from "~/store/articleList"
-import HNavList from "@/HNavList.vue"
+import { useDispatcher } from "~/store/dispatcher"
+import HomeNavView from "~/views/HomeNavView.vue"
 import HSearchBar from "@/HSearchBar.vue"
-import HTitle from "@/HTitle.vue"
 import HArticleList from "@/HArticleList.vue"
-import HNavSetting from "@/HNavSetting.vue"
-import { HNavListActionPayload } from "@/types"
 
+//#region hooks
 const mainStore = useMainStore()
 const router = useRouter()
 const route = useRoute()
-const notification = useNotification()
+const dispatcher = useDispatcher()
 const articleListStore = useArticleListStore()
-const theme = useTheme<HTheme>()!
-const loadBlogData = async () => {
-  await mainStore.getBlogData().catch((err) => {
-    notification.notify({
-      title: `博客数据载入失败`,
-      desc: (err as Error).message,
-      type: "error",
-      permanent: true,
-      // TODO 支持 action
-    })
-  })
-}
+//#endregion
+
 onMounted(() => {
-  loadBlogData()
+  dispatcher.loadBlogData()
 })
 const sep11 = ref(200)
 const sep22 = ref(320)
@@ -47,41 +33,8 @@ const config = {
   },
 }
 
-const categoriesTree = computed(() => mainStore.categoriesTree)
 const filter = computed(() => articleListStore.articleFilter)
 const articles = computed(() => filter.value(mainStore.articles))
-const onFilterAll = () => articleListStore.setFilter({ type: "all" })
-const onFilterPost = () => articleListStore.setFilter({ type: "post" })
-const onFilterPage = () => articleListStore.setFilter({ type: "page" })
-const onFilterDraft = () => articleListStore.setFilter({ type: "draft" })
-const onFilterCategory = (slug: string) =>
-  articleListStore.setFilter({ type: "category", slug })
-const onFilterTag = (slug: string) =>
-  articleListStore.setFilter({ type: "tag", slug })
-const onNavListAction = (payload: HNavListActionPayload) => {
-  switch (payload.type) {
-    case "all":
-      onFilterAll()
-      break
-    case "post":
-      onFilterPost()
-      break
-    case "page":
-      onFilterPage()
-      break
-    case "draft":
-      onFilterDraft()
-      break
-    case "category":
-      onFilterCategory(payload.slug)
-      break
-    default:
-      break
-  }
-}
-const draftsCount = computed(() => mainStore.draftsList.length)
-const postsCount = computed(() => mainStore.publishedPostsList.length)
-const pagesCount = computed(() => mainStore.pagesList.length)
 const search = ref("")
 const articleListData = computed(() =>
   articles.value.map((article) => {
@@ -123,7 +76,6 @@ const onArticleClick = ({
     })
 }
 const articleList = useArticleListStore()
-const type = computed(() => articleList.filter.type)
 </script>
 <template>
   <SplitView
@@ -134,21 +86,7 @@ const type = computed(() => articleList.filter.type)
     class="h-full w-full"
   >
     <template v-slot:first>
-      <div class="bg-base-3 w-full h-full flex flex-col">
-        <HTitle />
-        <div style="flex: 1 0 0; overflow-y: auto">
-          <!-- 这层 div 用来滚动 -->
-          <HNavList
-            :categories="categoriesTree"
-            :page="pagesCount"
-            :post="postsCount"
-            :draft="draftsCount"
-            :type="type"
-            @on-action="onNavListAction"
-          />
-        </div>
-        <HNavSetting />
-      </div>
+      <HomeNavView />
     </template>
     <template v-slot:second>
       <div class="bg-base-2 flex flex-col w-full h-full">
