@@ -44,6 +44,7 @@ const closeOutside = () => {
           v-for="item in data.actions"
           :type="transformType(item.type)"
           :key="item.label"
+          size="small"
           @click="item.run"
           >{{ item.label }}</HButton
         >

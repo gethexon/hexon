@@ -10,8 +10,8 @@ const emits = defineEmits<{
 </script>
 <template>
   <HToolbar class="px-2">
-    <HButton type="primary" round @click="emits('on-action', { type: 'back' })">
-      <HIcon :name="HIconName.ChevronLeft" />
+    <HButton size="small" @click="emits('on-action', { type: 'back' })">
+      返回
     </HButton>
     <div class="flex-1"></div>
     <HButton

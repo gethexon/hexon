@@ -9,6 +9,10 @@ import { HIcon, HIconName } from "../../icon"
   <HButton type="warning">warning</HButton>
   <HButton type="error">error</HButton>
   <HButton type="common">common</HButton>
+  <h2>大小</h2>
+  <HButton>medium</HButton>
+  <HButton size="small">small</HButton>
+  <HButton size="small" round>圆</HButton>
   <h2>颜色反转</h2>
   <HButton type="primary" inverted>primary</HButton>
   <HButton type="success" inverted>success</HButton>

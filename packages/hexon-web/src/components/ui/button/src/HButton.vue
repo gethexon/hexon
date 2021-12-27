@@ -3,31 +3,38 @@ import { computed, toRefs } from "@vue/reactivity"
 import { ButtonHTMLAttributes } from "@vue/runtime-dom"
 import { useTheme } from "@winwin/vue-global-theming"
 import { HTheme } from "~/themes"
+import { HButtonSize, HButtonType } from "./interface"
 
 const props = withDefaults(
   defineProps<{
-    type?: "primary" | "success" | "warning" | "error" | "common"
+    type?: HButtonType
     inverted?: boolean
     round?: boolean
     block?: boolean
     attrType?: ButtonHTMLAttributes["type"]
+    size?: HButtonSize
   }>(),
   {
     type: "primary",
     inverted: false,
     round: false,
     block: false,
+    size: "medium",
   }
 )
 const { type, inverted, round, block, attrType } = toRefs(props)
 const classes = computed(() => {
-  return {
-    inverted: inverted.value,
-    round: round.value,
-    block: block.value,
-  }
+  return [
+    {
+      inverted: inverted.value,
+      round: round.value,
+      block: block.value,
+    },
+    props.size,
+  ]
 })
 const theme = useTheme<HTheme>()!
+// TODO 这个需要用 theme system 干掉，太恶心了
 const styleVars = computed(() => {
   switch (type.value) {
     case "primary":
@@ -102,23 +109,7 @@ const styleVars = computed(() => {
 
 <template>
   <button
-    class="
-      h-button
-      text-sm
-      h-8
-      border-none
-      outline-none
-      rounded-2xl
-      px-3
-      py-0
-      inline-flex
-      items-center
-      justify-center
-      overflow-hidden
-      cursor-pointer
-      select-none
-      flex-shrink-0
-    "
+    class="h-button text-sm border-none outline-none rounded-2xl px-3 py-0 inline-flex items-center justify-center overflow-hidden cursor-pointer select-none flex-shrink-0"
     :class="classes"
     :type="attrType"
   >
@@ -129,11 +120,21 @@ const styleVars = computed(() => {
 <style scoped lang="less">
 .h-button {
   transition: color 0.2s ease, background-color 0.2s ease;
+  &.medium {
+    @apply h-8;
+  }
+
+  &.small {
+    @apply h-7;
+  }
   &.block {
     @apply flex w-full;
   }
-  &.round {
+  &.round.medium {
     @apply w-8;
+  }
+  &.round.small {
+    @apply w-7;
   }
   color: v-bind("styleVars.color");
   background-color: v-bind("styleVars.bgColor");
