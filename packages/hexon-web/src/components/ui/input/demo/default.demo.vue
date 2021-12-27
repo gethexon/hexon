@@ -7,13 +7,13 @@ const value = ref("")
 <template>
   <h2>基础</h2>
 
-  <div class="bg-base3 h-input-container">
+  <div class="bg-base-3 h-input-container">
     <HInput v-model="value" placeholder="type something"> </HInput>
   </div>
 
   <h2>带前缀</h2>
 
-  <div class="bg-base3 h-input-container">
+  <div class="bg-base-3 h-input-container">
     <HInput v-model="value" placeholder="type something">
       <template v-slot:prefix>
         <HIcon :name="HIconName.Search" />
@@ -23,7 +23,7 @@ const value = ref("")
 
   <h2>可清空</h2>
 
-  <div class="bg-base3 h-input-container">
+  <div class="bg-base-3 h-input-container">
     <HInput v-model="value" placeholder="type something" clearable> </HInput>
   </div>
 
@@ -31,7 +31,7 @@ const value = ref("")
 
   <h3>Primary</h3>
 
-  <div class="bg-base3 h-input-container">
+  <div class="bg-base-3 h-input-container">
     <HInput
       v-model="value"
       placeholder="type something"
@@ -43,7 +43,7 @@ const value = ref("")
 
   <h3>Secondary</h3>
 
-  <div class="bg-base2 h-input-container">
+  <div class="bg-base-2 h-input-container">
     <HInput
       v-model="value"
       placeholder="type something"
@@ -55,7 +55,7 @@ const value = ref("")
 
   <h2>错误</h2>
 
-  <div class="bg-base3 h-input-container">
+  <div class="bg-base-3 h-input-container">
     <HInput
       v-model="value"
       placeholder="type something"
@@ -66,7 +66,7 @@ const value = ref("")
     </HInput>
   </div>
 
-  <div class="bg-base1 h-input-container">
+  <div class="bg-base-1 h-input-container">
     <HInput
       v-model="value"
       placeholder="type something"
@@ -77,7 +77,7 @@ const value = ref("")
     </HInput>
   </div>
 
-  <div class="bg-base3 h-input-container">
+  <div class="bg-base-3 h-input-container">
     <HInput v-model="value" placeholder="type something" error="文字错误">
       <template v-slot:prefix>
         <HIcon :name="HIconName.Search" />
@@ -89,7 +89,7 @@ const value = ref("")
 
   <code>error !== undefined</code>
 
-  <div class="bg-base3 h-input-container">
+  <div class="bg-base-3 h-input-container">
     <HInput
       v-model="value"
       placeholder="type something"
@@ -100,7 +100,7 @@ const value = ref("")
     </HInput>
   </div>
 
-  <div class="bg-base1 h-input-container">
+  <div class="bg-base-1 h-input-container">
     <HInput
       v-model="value"
       placeholder="type something"
@@ -113,7 +113,7 @@ const value = ref("")
 
   <h2>表单</h2>
 
-  <div class="bg-base3 h-input-container">
+  <div class="bg-base-3 h-input-container">
     <HInput
       v-model="value"
       placeholder="type something"
@@ -132,7 +132,7 @@ const value = ref("")
     </HInput>
   </div>
 
-  <div class="bg-base1 h-input-container">
+  <div class="bg-base-1 h-input-container">
     <HInput
       v-model="value"
       placeholder="type something"

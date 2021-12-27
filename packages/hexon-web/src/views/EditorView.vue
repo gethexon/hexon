@@ -148,7 +148,7 @@ const updateContent = (_content: string = "") => {
       </div>
     </ErroredView>
     <div class="flex h-full w-full" v-else>
-      <div class="main bg-base1 flex-1 min-w-0 flex flex-col h-full">
+      <div class="main bg-base-1 flex-1 min-w-0 flex flex-col h-full">
         <HEditorToolbar @on-action="onAction" />
         <div class="flex flex-col flex-1 w-full min-h-0 max-w-2xl mx-auto">
           <HHeaderEditor :value="title" @update:value="updateTitle" />
@@ -164,7 +164,7 @@ const updateContent = (_content: string = "") => {
           </div>
         </div>
       </div>
-      <div class="side bg-base3 w-72 h-full"></div>
+      <div class="side bg-base-3 w-72 h-full"></div>
     </div>
   </HLoading>
 </template>

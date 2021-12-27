@@ -19,13 +19,13 @@ const bgBase3 = computed(() => theme.value.color.background.base3)
 .text-sub {
   color: v-bind("textSub");
 }
-.bg-base1 {
+.bg-base-1 {
   background-color: v-bind("bgBase1");
 }
-.bg-base2 {
+.bg-base-2 {
   background-color: v-bind("bgBase2");
 }
-.bg-base3 {
+.bg-base-3 {
   background-color: v-bind("bgBase3");
 }
 </style>

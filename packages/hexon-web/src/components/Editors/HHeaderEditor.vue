@@ -11,7 +11,7 @@ const onInput = (e: Event) =>
 </script>
 <template>
   <input
-    class="bg-base1 text-main text-2xl outline-none py-4 w-full pl-2 pr-3"
+    class="bg-base-1 text-main text-2xl outline-none py-4 w-full pl-2 pr-3"
     :value="props.value"
     @input="onInput"
   />

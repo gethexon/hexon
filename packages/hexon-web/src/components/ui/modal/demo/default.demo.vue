@@ -8,7 +8,7 @@ const show = ref(false)
   <HButton @click="show = true">show</HButton>
   <HModal v-model:show="show">
     <template #default="slotProps">
-      <div class="px-20 py-10 rounded bg-base1">
+      <div class="px-20 py-10 rounded bg-base-1">
         <HButton @click="slotProps.hide">hide</HButton>
       </div>
     </template>
