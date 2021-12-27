@@ -593,6 +593,11 @@
   resolved "https://registry.npmmirror.com/@tootallnate/once/download/@tootallnate/once-2.0.0.tgz?cache=0&sync_timestamp=1632734591231&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40tootallnate%2Fonce%2Fdownload%2F%40tootallnate%2Fonce-2.0.0.tgz#f544a148d3ab35801c1f633a7441fd87c2e484bf"
   integrity sha1-9UShSNOrNYAcH2M6dEH9h8LkhL8=
 
+"@types/animejs@^3.1.4":
+  version "3.1.4"
+  resolved "https://registry.npmmirror.com/@types/animejs/download/@types/animejs-3.1.4.tgz#92f90d1c800b9041b64a7da9da0e68e690146b0e"
+  integrity sha1-kvkNHIALkEG2Sn2p2g5o5pAUaw4=
+
 "@types/babel__core@^7.0.0", "@types/babel__core@^7.1.14":
   version "7.1.16"
   resolved "https://registry.nlark.com/@types/babel__core/download/@types/babel__core-7.1.16.tgz#bc12c74b7d65e82d29876b5d0baf5c625ac58702"
@@ -1059,6 +1064,11 @@ ajv@^6.12.4, ajv@^6.12.5:
     fast-json-stable-stringify "^2.0.0"
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
+
+animejs@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.npmmirror.com/animejs/download/animejs-3.2.1.tgz#de9fe2e792f44a777a7fdf6ae160e26604b0cdda"
+  integrity sha512-sWno3ugFryK5nhiDm/2BKeFCpZv7vzerWUcUPyAZLDhMek3+S/p418ldZJbJXo5ZUOpfm2kP2XRO4NJcULMy9A==
 
 ansi-escapes@^4.2.1:
   version "4.3.2"

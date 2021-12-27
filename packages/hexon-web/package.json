@@ -16,6 +16,7 @@
     "@vueuse/core": "^6.8.0",
     "@winwin/vue-global-theming": "^0.1.4",
     "@winwin/vue-simple-account": "^0.0.3",
+    "animejs": "^3.2.1",
     "axios": "^0.21.4",
     "color": "^4.0.1",
     "color-convert": "^2.0.1",
@@ -32,6 +33,7 @@
     "zod": "^3.11.6"
   },
   "devDependencies": {
+    "@types/animejs": "^3.1.4",
     "@types/color": "^3.0.2",
     "@types/color-convert": "^2.0.0",
     "@types/faker": "^5.5.9",
