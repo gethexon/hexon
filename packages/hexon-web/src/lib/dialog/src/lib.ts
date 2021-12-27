@@ -1,6 +1,7 @@
 import { App, inject, InjectionKey, provide, Ref, ref } from "vue"
 import { v4 as uuid } from "uuid"
 import { DialogType, IDialog, IDialogAction, IDialogOption } from "./interface"
+import { noop } from "~/utils"
 
 const key: InjectionKey<{
   dialogs: Ref<IDialog[]>
@@ -27,7 +28,9 @@ class DialogItem implements IDialog {
       ))
     this.actions = option.actions.map((action) => {
       const run = async () => {
-        await action.run(this)
+        this.close()
+        const exec = action.run ?? noop
+        await exec(this)
       }
       return { ...action, run }
     })
