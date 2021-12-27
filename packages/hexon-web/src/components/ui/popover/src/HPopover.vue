@@ -1,8 +1,22 @@
 <script setup lang="ts">
-import { computed, getCurrentInstance, onMounted, ref, toRefs } from "vue"
-import { onClickOutside } from "@vueuse/core"
+import {
+  computed,
+  getCurrentInstance,
+  onMounted,
+  Ref,
+  ref,
+  toRefs,
+  watch,
+} from "vue"
+import { onClickOutside, useElementHover, useEventListener } from "@vueuse/core"
 import { useRect } from "./utils"
 import { Position } from "./interface"
+import { getPlacement } from "./get-placement"
+import FadeTransition from "@/transitions/FadeTransition.vue"
+import ClassProvider from "~/ClassProvider.vue"
+import { TriggerType } from ".."
+import { useTheme } from "@winwin/vue-global-theming"
+import { HTheme } from "~/themes"
 
 //#region props and emits
 const props = withDefaults(
@@ -10,13 +24,35 @@ const props = withDefaults(
     show?: boolean
     position?: Position
     persistent?: boolean
+    trigger?: TriggerType
+    raw?: boolean
   }>(),
-  { show: false, position: "top", persistent: false }
+  {
+    show: false,
+    position: "top",
+    persistent: false,
+    trigger: "click",
+    raw: false,
+  }
 )
 const emits = defineEmits<{
-  (e: "on-hide", value: boolean): void
+  (e: "update:show", value: boolean): void
 }>()
-const { show } = toRefs(props)
+const { show: propsShow } = toRefs(props)
+
+const show = ref(false)
+watch(
+  () => propsShow.value,
+  (v) => {
+    show.value = v
+  }
+)
+watch(
+  () => show.value,
+  (v) => {
+    emits("update:show", v)
+  }
+)
 //#endregion
 
 //#region refs
@@ -28,117 +64,43 @@ onMounted(() => {
 })
 //#endregion
 
+//#region click
+useEventListener(containerElRef, "click", () => {
+  show.value = !show.value
+})
+//#endregion
+
+//#region hover
+const isHover = useElementHover(containerElRef as Ref<HTMLElement>)
+watch(
+  () => isHover.value,
+  (hover) => {
+    if (props.trigger === "hover") {
+      show.value = hover
+    }
+  }
+)
+//#endregion
+
 //#region rects
 const containerRect = useRect(containerElRef)
 const contentRect = useRect(contentElRef)
 //#endregion
 
-// BUG 直接修改 content element 的 id 不会更新 popover 位置
-
 //#region click
 onClickOutside(contentElRef, () => {
-  if (props.show && !props.persistent) emits("on-hide", false)
+  if (show.value && !props.persistent) show.value = false
 })
 //#endregion
 
 //#region style
 const style = computed(() => {
-  let x = 0,
-    y = 0,
-    margin = {
-      top: 0,
-      left: 0,
-      bottom: 0,
-      right: 0,
-    }
-  switch (props.position) {
-    case "top-left":
-      x = containerRect.value.left
-      y = containerRect.value.top - contentRect.value.height
-      margin.bottom = 4
-      break
-    case "top":
-      x =
-        containerRect.value.left +
-        containerRect.value.width / 2 -
-        contentRect.value.width / 2
-      y = containerRect.value.top - contentRect.value.height
-      margin.bottom = 4
-      break
-    case "top-right":
-      x =
-        containerRect.value.left +
-        containerRect.value.width -
-        contentRect.value.width
-      y = containerRect.value.top - contentRect.value.height
-      margin.bottom = 4
-      break
-    case "right-top":
-      x = containerRect.value.left + containerRect.value.width
-      y = containerRect.value.top
-      margin.left = 4
-      break
-    case "right":
-      x = containerRect.value.left + containerRect.value.width
-      y =
-        containerRect.value.top +
-        containerRect.value.height / 2 -
-        contentRect.value.height / 2
-      margin.left = 4
-      break
-    case "right-bottom":
-      x = containerRect.value.left + containerRect.value.width
-      y =
-        containerRect.value.top +
-        containerRect.value.height -
-        contentRect.value.height
-      margin.left = 4
-      break
-    case "bottom-left":
-      x = containerRect.value.left
-      y = containerRect.value.top + containerRect.value.height
-      margin.top = 4
-      break
-    case "bottom":
-      x =
-        containerRect.value.left +
-        containerRect.value.width / 2 -
-        contentRect.value.width / 2
-      y = containerRect.value.top + containerRect.value.height
-      margin.top = 4
-      break
-    case "bottom-right":
-      x =
-        containerRect.value.left +
-        containerRect.value.width -
-        contentRect.value.width
-      y = containerRect.value.top + containerRect.value.height
-      margin.top = 4
-      break
-    case "left-top":
-      x = containerRect.value.left - contentRect.value.width
-      y = containerRect.value.top
-      margin.right = 4
-      break
-    case "left":
-      x = containerRect.value.left - contentRect.value.width
-      y =
-        containerRect.value.top +
-        containerRect.value.height / 2 -
-        contentRect.value.height / 2
-      margin.right = 4
-      break
-    case "left-bottom":
-      x = containerRect.value.left - contentRect.value.width
-      y =
-        containerRect.value.top +
-        containerRect.value.height -
-        contentRect.value.height
-      margin.right = 4
-      break
-    default:
-      break
-  }
+  // FIXME 如果元素位置发生了变化，且没有 resize 或 scroll 则 popover 位置不会更新
+  const { x, y, margin } = getPlacement(
+    props.position,
+    containerRect.value,
+    contentRect.value
+  )
   return {
     outer: {
       transform: `translateX(${x}px) translateY(${y}px)`,
@@ -149,15 +111,36 @@ const style = computed(() => {
   }
 })
 //#endregion
+
+const theme = useTheme<HTheme>()!
 </script>
 
 <template>
   <teleport to="body">
-    <div v-if="show" class="popover" ref="contentElRef" :style="style.outer">
-      <div :style="style.inner">
-        <slot></slot>
-      </div>
-    </div>
+    <ClassProvider>
+      <FadeTransition>
+        <div
+          v-if="show"
+          class="popover"
+          ref="contentElRef"
+          :style="style.outer"
+        >
+          <div :style="style.inner">
+            <slot v-if="raw"> </slot>
+            <div
+              class="p-1 rounded-md"
+              :style="{
+                backgroundColor: theme.color.common.d5,
+                color: theme.color.white,
+              }"
+              v-else
+            >
+              <slot></slot>
+            </div>
+          </div>
+        </div>
+      </FadeTransition>
+    </ClassProvider>
   </teleport>
 </template>
 <style scoped>

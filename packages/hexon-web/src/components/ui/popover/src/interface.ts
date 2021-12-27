@@ -18,3 +18,5 @@ export type Position =
   | "bottom-left"
   | "bottom"
   | "bottom-right"
+
+export type TriggerType = "click" | "hover"

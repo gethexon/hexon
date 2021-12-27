@@ -22,5 +22,9 @@ const routes: RouteRecordRaw[] = [
       { path: "", component: () => import("./Welcome.vue") },
     ],
   },
+  {
+    path: "/:pathMatch(.*)*",
+    redirect: "/",
+  },
 ]
 export const router = createRouter({ history: createWebHashHistory(), routes })

@@ -1,57 +1,56 @@
 <script setup lang="ts">
-import { reactive, ref } from "vue"
 import { HPopover } from ".."
 import { HButton } from "~/components/ui/button"
+import { useTheme } from "@winwin/vue-global-theming"
+import { HTheme } from "~/themes"
 
-const show = ref(false)
-const position = reactive({
-  topLeft: false,
-  top: false,
-  topRight: false,
-})
+const theme = useTheme<HTheme>()!
 </script>
 <template>
-  <HButton @click="show = true">
+  <h2>基础</h2>
+  <HButton>
     点我
-    <HPopover :show="show" @on-hide="show = false">
-      <div class="border-2 border-black border-solid bg-white">
-        这是一个提示
-      </div>
+    <HPopover>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit.
     </HPopover>
   </HButton>
   <h2>不同位置</h2>
-  <HButton @click="position.topLeft = true">
+  <HButton>
     top-left
-    <HPopover
-      :show="position.topLeft"
-      @on-hide="position.topLeft = false"
-      position="top-left"
-    >
-      <div class="border-2 border-black border-solid bg-white">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-      </div>
+    <HPopover position="top-left">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit.
     </HPopover>
   </HButton>
-  <HButton @click="position.top = true">
+  <HButton>
     top
-    <HPopover
-      :show="position.top"
-      @on-hide="position.top = false"
-      position="top-left"
-    >
-      <div class="border-2 border-black border-solid bg-white">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-      </div>
+    <HPopover position="top">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit.
     </HPopover>
   </HButton>
-  <HButton @click="position.topRight = true">
+  <HButton>
     top-right
-    <HPopover
-      :show="position.topRight"
-      @on-hide="position.topRight = false"
-      position="top-left"
-    >
-      <div class="border-2 border-black border-solid bg-white">
+    <HPopover position="top-right">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+    </HPopover>
+  </HButton>
+  <h2>Trigger</h2>
+  <HButton>
+    hover
+    <HPopover position="top-left" trigger="hover">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+    </HPopover>
+  </HButton>
+  <HButton>
+    click
+    <HPopover position="top-left" trigger="click">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+    </HPopover>
+  </HButton>
+  <h2>自定义内容</h2>
+  <HButton>
+    RAW
+    <HPopover position="top-left" trigger="click" raw>
+      <div class="bg-red-500 p-5">
         Lorem ipsum dolor sit amet consectetur adipisicing elit.
       </div>
     </HPopover>
