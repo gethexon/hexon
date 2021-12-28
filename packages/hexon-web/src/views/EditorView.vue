@@ -70,13 +70,10 @@ watch(
   }
 )
 const raw = computed(() => detailStore.article?.raw ?? "")
-const internal_raw = ref("")
+const internal_raw = ref(raw.value)
 watch(
   () => raw.value,
-  (v) => (internal_raw.value = v),
-  {
-    immediate: true,
-  }
+  (v) => (internal_raw.value = v)
 )
 const data = computed(() => {
   const { _content, title = detailStore.article?.title } = parseHfm(

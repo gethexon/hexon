@@ -47,4 +47,15 @@ import { HIcon, HIconName } from "../../icon"
   <HButton>
     <HIcon :name="HIconName.Edit" />
   </HButton>
+  <h2>不可用</h2>
+  <HButton type="primary" disabled>primary</HButton>
+  <HButton type="success" disabled>success</HButton>
+  <HButton type="warning" disabled>warning</HButton>
+  <HButton type="error" disabled>error</HButton>
+  <HButton type="common" disabled>common</HButton>
+  <HButton type="primary" disabled inverted>primary</HButton>
+  <HButton type="success" disabled inverted>success</HButton>
+  <HButton type="warning" disabled inverted>warning</HButton>
+  <HButton type="error" disabled inverted>error</HButton>
+  <HButton type="common" disabled inverted>common</HButton>
 </template>

@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { onClickOutside } from "@vueuse/core"
+import anime from "animejs"
 import { ref, watch } from "vue"
 import ClassProvider from "~/ClassProvider.vue"
-import FadeTransition from "@/transitions/FadeTransition.vue"
-const props = withDefaults(defineProps<{ show?: boolean }>(), { show: false })
+import ModalFadeTransition from "./ModalFadeTransition.vue"
+const props = withDefaults(
+  defineProps<{ show?: boolean; persistent?: boolean }>(),
+  { show: false, persistent: false }
+)
 const emits = defineEmits<{
   (e: "update:show", value: boolean): void
 }>()
@@ -18,17 +21,24 @@ watch(
   () => internalShow.value,
   (value) => emits("update:show", value)
 )
-const modalRef = ref<HTMLElement | null>(null)
-onClickOutside(modalRef, () => {
-  internalShow.value = false
-})
 const hide = () => {
   internalShow.value = false
+}
+const contentRef = ref<HTMLElement | null>(null)
+const clickOutside = () => {
+  if (!props.persistent) hide()
+  else
+    anime({
+      targets: contentRef.value,
+      keyframes: [{ scale: 1.05 }, { scale: 1 }],
+      duration: 200,
+      easing: "easeInOutSine",
+    })
 }
 </script>
 <template>
   <teleport to="body">
-    <FadeTransition>
+    <ModalFadeTransition>
       <div
         v-if="internalShow"
         style="
@@ -42,11 +52,14 @@ const hide = () => {
           align-items: center;
           justify-content: center;
         "
+        @click="clickOutside"
       >
         <ClassProvider>
-          <slot :hide="hide" />
+          <div ref="contentRef" @click.prevent.stop>
+            <slot :hide="hide" />
+          </div>
         </ClassProvider>
       </div>
-    </FadeTransition>
+    </ModalFadeTransition>
   </teleport>
 </template>

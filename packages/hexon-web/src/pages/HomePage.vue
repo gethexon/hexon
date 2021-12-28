@@ -8,6 +8,7 @@ import { useDispatcher } from "~/store/dispatcher"
 import HomeNavView from "~/views/HomeNavView.vue"
 import HSearchBar from "@/HSearchBar.vue"
 import HArticleList from "@/HArticleList.vue"
+import HCreateArticleModal from "@/modals/HCreateArticleModal.vue"
 
 //#region hooks
 const mainStore = useMainStore()
@@ -76,6 +77,7 @@ const onArticleClick = ({
     })
 }
 const articleList = useArticleListStore()
+const show = ref(false)
 </script>
 <template>
   <SplitView
@@ -90,7 +92,12 @@ const articleList = useArticleListStore()
     </template>
     <template v-slot:second>
       <div class="bg-base-2 flex flex-col w-full h-full">
-        <HSearchBar v-model="search" class="flex-shrink-0" />
+        <HSearchBar
+          v-model="search"
+          class="flex-shrink-0"
+          @on-add="show = true"
+        />
+        <HCreateArticleModal v-model:show="show" />
         <div class="overflow-auto flex-1">
           <HArticleList
             :articles="articleListData"

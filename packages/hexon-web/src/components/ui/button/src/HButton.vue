@@ -13,6 +13,7 @@ const props = withDefaults(
     block?: boolean
     attrType?: ButtonHTMLAttributes["type"]
     size?: HButtonSize
+    disabled?: boolean
   }>(),
   {
     type: "primary",
@@ -20,6 +21,7 @@ const props = withDefaults(
     round: false,
     block: false,
     size: "medium",
+    disabled: false,
   }
 )
 const { type, inverted, round, block, attrType } = toRefs(props)
@@ -29,6 +31,7 @@ const classes = computed(() => {
       inverted: inverted.value,
       round: round.value,
       block: block.value,
+      disabled: props.disabled,
     },
     props.size,
   ]
@@ -112,6 +115,7 @@ const styleVars = computed(() => {
     class="h-button text-sm border-none outline-none rounded-2xl px-3 py-0 inline-flex items-center justify-center overflow-hidden cursor-pointer select-none flex-shrink-0"
     :class="classes"
     :type="attrType"
+    :disabled="disabled"
   >
     <slot></slot>
   </button>
@@ -125,7 +129,7 @@ const styleVars = computed(() => {
   }
 
   &.small {
-    @apply h-7;
+    @apply h-7 px-4;
   }
   &.block {
     @apply flex w-full;
@@ -152,6 +156,13 @@ const styleVars = computed(() => {
     }
     &:active {
       background-color: v-bind("styleVars.invertedActiveBgColor");
+    }
+  }
+  &.disabled {
+    background-color: v-bind("styleVars.activeBgColor") !important;
+    @apply cursor-not-allowed;
+    &.inverted {
+      background-color: v-bind("styleVars.invertedBgColor") !important;
     }
   }
 }

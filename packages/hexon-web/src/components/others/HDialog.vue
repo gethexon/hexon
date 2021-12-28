@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { useTheme } from "@winwin/vue-global-theming"
+import anime from "animejs"
+import { ref } from "vue"
 import { DialogActionType, IDialog } from "~/lib/dialog"
 import { HTheme } from "~/themes"
 import HButton from "../ui/button/src/HButton.vue"
@@ -14,8 +16,17 @@ function transformType(type: DialogActionType): HButtonType {
   }
 }
 const theme = useTheme<HTheme>()!
+const contentRef = ref<HTMLElement | null>(null)
 const closeOutside = () => {
-  if (props.data.persistent) return
+  if (props.data.persistent) {
+    anime({
+      targets: contentRef.value,
+      keyframes: [{ scale: 1.05 }, { scale: 1 }],
+      duration: 200,
+      easing: "easeInOutSine",
+    })
+    return
+  }
   props.data.close()
 }
 </script>
@@ -35,7 +46,7 @@ const closeOutside = () => {
     "
     @click="closeOutside"
   >
-    <div class="rounded-md bg-base-1 w-96" @click.prevent.stop>
+    <div class="rounded-md bg-base-1 w-96" @click.prevent.stop ref="contentRef">
       <h2 class="p-4 text-xl font-bold text-main">{{ data.title }}</h2>
       <div class="pb-4 px-4 text-sm text-sub">{{ data.content }}</div>
       <div class="p-2 flex justify-end">
@@ -46,8 +57,9 @@ const closeOutside = () => {
           :key="item.label"
           size="small"
           @click="item.run"
-          >{{ item.label }}</HButton
         >
+          {{ item.label }}
+        </HButton>
       </div>
     </div>
   </div>

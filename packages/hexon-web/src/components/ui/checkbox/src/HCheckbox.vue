@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, toRefs, watch } from "vue"
+import { computed, ref, watch } from "vue"
 import { HIcon, HIconName } from "../../icon"
 const props = defineProps<{
   checked: boolean
@@ -7,10 +7,10 @@ const props = defineProps<{
 const emits = defineEmits<{
   (e: "update:checked", value: boolean): void
 }>()
-const { checked } = toRefs(props)
-const internalValue = ref(false)
+
+const internalValue = ref(props.checked)
 watch(
-  () => checked.value,
+  () => props.checked,
   (value) => {
     internalValue.value = value
   }
@@ -29,7 +29,12 @@ const toggle = () => {
 }
 </script>
 <template>
-  <label @click="toggle" class="cursor-pointer select-none">
-    <HIcon :name="icon" class="mr-2" /><slot></slot>
+  <label
+    @click="toggle"
+    class="cursor-pointer select-none"
+    style="line-height: 30px"
+  >
+    <HIcon :name="icon" class="mr-2" />
+    <slot></slot>
   </label>
 </template>
