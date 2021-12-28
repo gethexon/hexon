@@ -6,8 +6,6 @@ export const forceReloadWindow = () => {
   window.location.reload()
 }
 
-export const DEV = process.env.NODE_ENV !== "production"
-
 export function list2object<
   T extends {
     [key in K]: string
@@ -66,11 +64,6 @@ export function randomString(length: number = 8) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength))
   }
   return result
-}
-
-export const transformType = (type: INotificationType) => {
-  if (type === "info") return "primary"
-  return type
 }
 
 export function useAsyncComponentWithLoading(

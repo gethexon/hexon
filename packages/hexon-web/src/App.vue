@@ -5,8 +5,7 @@ import ClassProvider from "./ClassProvider.vue"
 import { useDark } from "@vueuse/core"
 import { useThemeController } from "@winwin/vue-global-theming"
 import { watch } from "vue"
-import HNotificationItem from "@/HNotificationItem.vue"
-import { transformType } from "./utils"
+import HNotificationItem from "~/components/others/HNotificationItem.vue"
 import { useRoute } from "vue-router"
 import { DialogContainer } from "./lib/dialog"
 import HDialog from "@/others/HDialog.vue"
@@ -38,15 +37,7 @@ watch(
       <router-view></router-view>
       <Notifications>
         <template #default="slotsProps">
-          <HNotificationItem
-            :type="transformType(slotsProps.item.type)"
-            :title="slotsProps.item.title"
-            :desc="slotsProps.item.desc"
-            :clickable="slotsProps.item.clickable"
-            :closeable="slotsProps.item.permanent"
-            @on-close="slotsProps.onClose"
-            @on-click="slotsProps.item.onClick"
-          />
+          <HNotificationItem :data="slotsProps.item" />
         </template>
       </Notifications>
       <DialogContainer>

@@ -19,12 +19,16 @@ export interface INotificationItem {
   type: INotificationType
   desc: string
   duration: number
-  clickable: boolean
   permanent: boolean
-  onClick: () => void
+  close: () => void
+  onClick?: () => void
   show: boolean
   token?: NodeJS.Timeout
   createdAt: Date
+  actions?: {
+    label: string
+    run: () => void
+  }[]
 }
 
 export interface INotificationOptions {
@@ -36,7 +40,11 @@ export interface INotificationOptions {
   desc?: string
   duration?: number
   permanent?: boolean
-  onClick?: () => Promise<void>
+  onClick?: () => void
+  actions?: {
+    label: string
+    run: () => void
+  }[]
 }
 
 export interface INotification {

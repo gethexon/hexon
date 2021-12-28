@@ -81,8 +81,14 @@ export const useDispatcher = defineStore("dispatcher", {
           title: `博客数据刷新失败`,
           desc: (err as Error).message,
           type: "error",
-          permanent: true,
-          // TODO 支持 action
+          actions: [
+            {
+              label: "重试",
+              run: () => {
+                this.reloadBlogData()
+              },
+            },
+          ],
         })
       })
     },

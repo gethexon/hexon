@@ -45,16 +45,17 @@ export function createNotification(): Notification {
   function _createNotificationItem(
     options: INotificationOptions
   ): INotificationItem {
+    const id = uuid()
+    const _close = () => close(id)
     const {
       title,
       type = _defaults.value.type,
       desc = "",
       duration = _defaults.value.duration,
       permanent = false,
-      onClick = noop,
+      onClick,
+      actions = [],
     } = options
-    const clickable = !!options.onClick
-    const id = uuid()
     const show = true
     const createdAt = new Date()
     return {
@@ -63,11 +64,24 @@ export function createNotification(): Notification {
       type,
       desc,
       duration,
-      clickable,
-      permanent,
-      onClick,
+      permanent: options.actions === void 0 ? permanent : true,
+      onClick:
+        onClick !== void 0
+          ? () => {
+              _close()
+              onClick()
+            }
+          : void 0,
       show,
       createdAt,
+      close: _close,
+      actions: actions.map((item) => {
+        const run = () => {
+          _close()
+          item.run()
+        }
+        return { ...item, run }
+      }),
     }
   }
   function notify(options: INotificationOptions) {
