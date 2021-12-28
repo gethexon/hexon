@@ -25,7 +25,7 @@ export interface INotificationItem {
   show: boolean
   token?: NodeJS.Timeout
   createdAt: Date
-  actions?: {
+  actions: {
     label: string
     run: () => void
   }[]

@@ -46,7 +46,7 @@ const closeOutside = () => {
     "
     @click="closeOutside"
   >
-    <div class="rounded-md bg-base-1 w-96" @click.prevent.stop ref="contentRef">
+    <div class="rounded-md bg-base-1 w-96" @click.stop ref="contentRef">
       <h2 class="p-4 text-xl font-bold text-main">{{ data.title }}</h2>
       <div class="pb-4 px-4 text-sm text-sub">{{ data.content }}</div>
       <div class="p-2 flex justify-end">

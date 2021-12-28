@@ -55,7 +55,7 @@ const clickOutside = () => {
         @click="clickOutside"
       >
         <ClassProvider>
-          <div ref="contentRef" @click.prevent.stop>
+          <div ref="contentRef" @click.stop>
             <slot :hide="hide" />
           </div>
         </ClassProvider>

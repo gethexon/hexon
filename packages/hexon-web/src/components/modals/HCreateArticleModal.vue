@@ -18,12 +18,15 @@ const onCreate = (value: {
   path?: string
   replace?: boolean
 }) => {
-  console.log(value)
+  // FIXME 仅供测试
   notification.notify({
     type: "info",
     title: "on-create",
+    // permanent: true,
+    actions: [],
     desc: JSON.stringify(value, null, " "),
   })
+  emits("update:show", false)
 }
 </script>
 <template>

@@ -64,7 +64,7 @@ export function createNotification(): Notification {
       type,
       desc,
       duration,
-      permanent: options.actions === void 0 ? permanent : true,
+      permanent: !actions.length ? permanent : true,
       onClick:
         onClick !== void 0
           ? () => {

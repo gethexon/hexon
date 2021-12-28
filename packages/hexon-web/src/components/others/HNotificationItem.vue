@@ -15,7 +15,9 @@ const transformType = (type: INotificationType): HButtonType => {
 }
 
 const type = computed(() => transformType(props.data.type))
-const closeable = computed(() => props.data.permanent && !props.data.actions)
+const closeable = computed(
+  () => props.data.permanent && !props.data.actions.length
+)
 const theme = useTheme<HTheme>()!
 const styleVars = computed(() => {
   let main = theme.value.color.primary.n
