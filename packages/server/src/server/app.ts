@@ -7,6 +7,7 @@ import cors from "@koa/cors";
 import apps from "./apps/index";
 import account from "./account";
 import statics from "./lib/statics";
+import httpSecure from "./lib/http-secure";
 import { DEV } from "./utils";
 import mount from "koa-mount";
 
@@ -25,13 +26,13 @@ app.use(async (ctx, next) => {
   }
 });
 
-app.use(logger());
-
 app.use(
   bodyParser({
     enableTypes: ["json", "form", "text"],
   })
 );
+app.use(httpSecure());
+app.use(logger());
 
 app.use(mount("/", statics(path.resolve(process.cwd(), "../hexon-web/dist"))));
 app.use(account.middleware);

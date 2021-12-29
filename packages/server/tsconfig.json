@@ -1,5 +1,5 @@
 {
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts"],
   "compilerOptions": {
     "baseUrl": ".",
     "declaration": false,
@@ -13,7 +13,8 @@
     "emitDecoratorMetadata": true,
     "paths": {
       "~/*": ["./src/*"]
-    }
+    },
+    "typeRoots": ["src/types", "./node_modules/@types"]
   },
   "ts-node": {
     "require": ["tsconfig-paths/register"]

@@ -650,6 +650,11 @@
   dependencies:
     "@types/color-convert" "*"
 
+"@types/crypto-js@^4.1.0":
+  version "4.1.0"
+  resolved "https://registry.npmmirror.com/@types/crypto-js/download/@types/crypto-js-4.1.0.tgz#09ba1b49bcce62c9a8e6d5e50a3364aa98975578"
+  integrity sha512-DCFfy/vh2lG6qHSGezQ+Sn2Ulf/1Mx51dqOdmOKyW5nMK3maLlxeS3onC7r212OnBM2pBR95HkAmAjjF08YkxQ==
+
 "@types/faker@^5.5.9":
   version "5.5.9"
   resolved "https://registry.npmmirror.com/@types/faker/download/@types/faker-5.5.9.tgz#588ede92186dc557bff8341d294335d50d255f0c"
@@ -977,10 +982,10 @@
     standard-version "^9.3.1"
     vue "^3.2.6"
 
-"@winwin/vue-simple-account@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.npmmirror.com/@winwin/vue-simple-account/download/@winwin/vue-simple-account-0.0.3.tgz#ec04adabb8e11d7d8370508289597777af4611d6"
-  integrity sha512-PsKDwx2JkOq62CihAF9lIs425DOBTuIJmVckB5FpmHEN5MOn2VCeTgpihrqDXtNM/ih6azceis9lCs2dNNrs6g==
+"@winwin/vue-simple-account@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.npmmirror.com/@winwin/vue-simple-account/download/@winwin/vue-simple-account-0.0.5.tgz#e09643481e59b9fd5bb056eddde43449bac6a28d"
+  integrity sha512-2UbOw3mR/GTB2r0yVq4Oo8g0izTw7tgyclG+pF3NM/a+bh8zIttkdiys/d+eMutTfylRxhtzSkQaSTFB/mvi/w==
   dependencies:
     axios "^0.21.4"
     vue "^3.2.6"
@@ -1727,6 +1732,11 @@ cross-spawn@^7.0.3:
     path-key "^3.1.0"
     shebang-command "^2.0.0"
     which "^2.0.1"
+
+crypto-js@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.npmmirror.com/crypto-js/download/crypto-js-4.1.1.tgz#9e485bcf03521041bd85844786b83fb7619736cf"
+  integrity sha512-o2JlM7ydqd3Qk9CA0L4NL6mTzU2sdx96a+oOfPu8Mkl/PK51vSyoi8/rQ8NknZtk44vq15lmhAj9CIAGwgeWKw==
 
 css-color-names@^0.0.4:
   version "0.0.4"
@@ -3477,6 +3487,11 @@ jsdom@^18.0.0:
     whatwg-url "^10.0.0"
     ws "^8.2.3"
     xml-name-validator "^4.0.0"
+
+jsencrypt@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.npmmirror.com/jsencrypt/download/jsencrypt-3.2.1.tgz#09766983cc760088ff26b12fe7e574252af97727"
+  integrity sha512-k1sD5QV0KPn+D8uG9AdGzTQuamt82QZ3A3l6f7TRwMU6Oi2Vg0BsL+wZIQBONcraO1pc78ExMdvmBBJ8WhNYUA==
 
 jsesc@^2.5.1:
   version "2.5.2"
