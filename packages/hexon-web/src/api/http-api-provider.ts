@@ -1,4 +1,4 @@
-import account from "~/account"
+import account from "~/plugins/account"
 import {
   ZBriefPage,
   ZBriefPost,

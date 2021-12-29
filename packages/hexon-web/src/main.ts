@@ -1,7 +1,7 @@
 import { createApp } from "vue"
-import account from "./account"
 import App from "./App.vue"
 import themes from "./themes"
+import account from "./plugins/account"
 import router from "./plugins/router"
 import notification from "./plugins/notification"
 import dialog from "./plugins/dialog"

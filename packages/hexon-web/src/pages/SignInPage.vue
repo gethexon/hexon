@@ -1,31 +1,31 @@
 <script setup lang="ts">
-import { computed } from "@vue/reactivity";
-import { useRouter } from "vue-router";
-import { useAccount } from "@winwin/vue-simple-account";
-import HLoginForm from "~/components/forms/HLoginForm.vue";
-import { useTheme } from "@winwin/vue-global-theming";
-import { HTheme } from "~/themes";
-const router = useRouter();
-const account = useAccount();
+import { computed } from "vue"
+import { useRouter } from "vue-router"
+import { useAccount } from "@winwin/vue-simple-account"
+import HLoginForm from "~/components/forms/HLoginForm.vue"
+import { useTheme } from "@winwin/vue-global-theming"
+import { HTheme } from "~/themes"
+const router = useRouter()
+const account = useAccount()
 const footer = computed(() => {
-  return `©️ 2019 ~ ${new Date().getFullYear()} winwin_2011`;
-});
+  return `©️ 2019 ~ ${new Date().getFullYear()} winwin_2011`
+})
 const onSignIn = async ({
   username,
   password,
 }: {
-  username: string;
-  password: string;
+  username: string
+  password: string
 }) => {
   try {
-    await account?.signin(username, password);
-    router.push("/home");
+    await account?.signin(username, password)
+    router.push("/home")
   } catch (e) {
     // TODO 登录失败弹窗
-    console.log("fail to signin");
+    console.log("fail to signin")
   }
-};
-const theme = useTheme<HTheme>()!;
+}
+const theme = useTheme<HTheme>()!
 </script>
 <template>
   <div

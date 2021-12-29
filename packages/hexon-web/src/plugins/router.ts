@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router"
-import account from "../account"
+import account from "./account"
 import { isInstalled } from "../api"
 
 const path = {

@@ -1,4 +1,4 @@
-import account from "~/account"
+import account from "~/plugins/account"
 import { HttpApiProvider } from "./http-api-provider"
 
 export const isInstalled = async () => {

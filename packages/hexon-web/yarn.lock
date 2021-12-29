@@ -979,7 +979,7 @@
 
 "@winwin/vue-simple-account@^0.0.3":
   version "0.0.3"
-  resolved "https://registry.npmjs.org/@winwin/vue-simple-account/-/vue-simple-account-0.0.3.tgz#ec04adabb8e11d7d8370508289597777af4611d6"
+  resolved "https://registry.npmmirror.com/@winwin/vue-simple-account/download/@winwin/vue-simple-account-0.0.3.tgz#ec04adabb8e11d7d8370508289597777af4611d6"
   integrity sha512-PsKDwx2JkOq62CihAF9lIs425DOBTuIJmVckB5FpmHEN5MOn2VCeTgpihrqDXtNM/ih6azceis9lCs2dNNrs6g==
   dependencies:
     axios "^0.21.4"
