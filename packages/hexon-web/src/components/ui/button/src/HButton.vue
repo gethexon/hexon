@@ -37,27 +37,40 @@ const { classNames } = createClassNames("h-button", (add, m) => {
 const theme = useTheme("Button")
 
 const styleVars = computed(() => {
+  if (props.inverted && props.disabled) {
+    return {
+      color: theme.value[createKey("colorActiveInverted", props.type)],
+      backgroundColor: theme.value.colorWhite,
+    }
+  }
   if (props.inverted) {
     return {
       color: theme.value[createKey("color", props.type)],
       backgroundColor: theme.value.colorTransparent,
-      colorHover: theme.value[createKey("colorHover", props.type)],
-      backgroundColorHover: theme.value.colorWhite,
-      colorActive: theme.value[createKey("colorActive", props.type)],
-      backgroundColorActive: theme.value.colorWhite,
-      colorDisabled: theme.value[createKey("colorActive", props.type)],
-      backgroundColorDisabled: theme.value.colorWhite,
+      colorHover: theme.value[createKey("color", props.type)],
+      backgroundColorHover:
+        theme.value[createKey("backgroundColorHoverInverted", props.type)],
+      colorActive: theme.value[createKey("color", props.type)],
+      backgroundColorActive:
+        theme.value[createKey("backgroundColorActiveInverted", props.type)],
+    }
+  }
+  if (props.disabled) {
+    return {
+      color: theme.value.colorWhite,
+      backgroundColor:
+        theme.value[createKey("backgroundColorActive", props.type)],
     }
   }
   return {
     color: theme.value.colorWhite,
     backgroundColor: theme.value[createKey("color", props.type)],
     colorHover: theme.value.colorWhite,
-    backgroundColorHover: theme.value[createKey("colorHover", props.type)],
+    backgroundColorHover:
+      theme.value[createKey("backgroundColorHover", props.type)],
     colorActive: theme.value.colorWhite,
-    backgroundColorActive: theme.value[createKey("colorActive", props.type)],
-    colorDisabled: theme.value.colorWhite,
-    backgroundColorDisabled: theme.value[createKey("colorActive", props.type)],
+    backgroundColorActive:
+      theme.value[createKey("backgroundColorActive", props.type)],
   }
 })
 </script>
@@ -87,9 +100,15 @@ const styleVars = computed(() => {
     background-color: v-bind("styleVars.backgroundColorActive");
   }
   &-disabled {
-    color: v-bind("styleVars.colorDisabled");
-    background-color: v-bind("styleVars.backgroundColorDisabled");
     cursor: not-allowed;
+    &:hover {
+      color: v-bind("styleVars.color");
+      background-color: v-bind("styleVars.backgroundColor");
+    }
+    &:active {
+      color: v-bind("styleVars.color");
+      background-color: v-bind("styleVars.backgroundColor");
+    }
   }
 
   &-medium {
