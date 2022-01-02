@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, toRefs } from "@vue/reactivity"
+import { createClassNames } from "~/utils/create-classnames"
 import HVerticalCenter from "@/ui/vertical-center"
 import { HIconName } from "./interface"
 
@@ -12,21 +12,20 @@ const props = withDefaults(
     clickable: false,
   }
 )
-const { name, clickable } = toRefs(props)
-const classes = computed(() => {
-  return { clickable: clickable.value }
+const { classNames } = createClassNames("h-icon", (add, m) => {
+  props.clickable && add(m("clickable"))
 })
 </script>
 <template>
   <HVerticalCenter>
-    <span class="h-icon" :class="classes">{{ name }}</span>
+    <span :class="classNames">{{ props.name }}</span>
   </HVerticalCenter>
 </template>
 <style scoped lang="less">
 .h-icon {
   font-family: "Segoe Fluent Icons";
   -webkit-font-smoothing: auto;
-  &.clickable {
+  &-clickable {
     @apply cursor-pointer;
   }
 }

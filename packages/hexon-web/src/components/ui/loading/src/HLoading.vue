@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { useTheme } from "@winwin/vue-global-theming"
-import { HTheme } from "~/themes"
+import { useTheme } from "@/ui/theme"
 
 const props = withDefaults(
   defineProps<{
@@ -12,7 +11,7 @@ const props = withDefaults(
     overlay: false,
   }
 )
-const theme = useTheme<HTheme>()!
+const theme = useTheme("Loading")
 
 // TODO 加上提示语
 // TODO loading 切换动画
@@ -37,7 +36,7 @@ const theme = useTheme<HTheme>()!
     animation: loading 0.5s linear infinite;
     border-width: 2px;
     border-style: solid;
-    border-color: v-bind("theme.color.primary.a8");
+    border-color: v-bind("theme.backgroundColorIcon");
     border-radius: 15px;
     width: 30px;
     height: 30px;
@@ -46,7 +45,7 @@ const theme = useTheme<HTheme>()!
       content: "";
       border-width: 2px;
       border-style: solid;
-      border-color: v-bind("theme.color.primary.n");
+      border-color: v-bind("theme.colorPrimary");
       border-radius: 15px;
       clip-path: polygon(50% 0%, 59% 50%, 0% 50%, 0% 0%);
       width: 30px;

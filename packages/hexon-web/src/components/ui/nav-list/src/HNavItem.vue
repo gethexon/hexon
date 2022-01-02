@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { useTheme } from "@winwin/vue-global-theming"
 import { toRefs, computed } from "vue"
-import { HTheme } from "~/themes"
-import { HIcon, HIconName } from "../../icon"
+import { useTheme } from "@/ui/theme"
+import { HIcon, HIconName } from "@/ui/icon"
 
 const props = withDefaults(
   defineProps<{
@@ -26,15 +25,15 @@ const indents = computed(() => {
   if (indent.value === 0) return []
   else return new Array(indent.value).fill(0).map((v, i) => i)
 })
-const theme = useTheme<HTheme>()!
+const theme = useTheme("NavList")
 const styleVars = computed(() => {
-  const color = theme.value.color.foreground.main
+  const color = theme.value.textColorPrimary
   const bgColor = selected.value
-    ? theme.value.color.background.selected
-    : theme.value.color.background.transparent
-  const subColor = theme.value.color.foreground.sub
-  const hoverBgColor = theme.value.color.background.hover
-  const activeBgColor = theme.value.color.background.active
+    ? theme.value.backgroundColorSelected
+    : theme.value.backgroundColorTransparent
+  const subColor = theme.value.textColorSecondary
+  const hoverBgColor = theme.value.backgroundColorHover
+  const activeBgColor = theme.value.backgroundColorActive
   return { color, bgColor, subColor, hoverBgColor, activeBgColor }
 })
 </script>
@@ -42,7 +41,7 @@ const styleVars = computed(() => {
   <div
     class="h-nav-item px-4 py-0.5 mx-0 my-0.5 h-7 rounded-md select-none cursor-pointer flex items-center"
   >
-    <span class="w-4 inline-block" v-for="i in indents"> </span>
+    <span class="w-4 inline-block" v-for="i in indents"></span>
     <HIcon class="mr-3 text-lg" :style="{ color }" :name="icon" />
     <span class="text text-sm" :class="{ uppercase }">
       {{ text }}

@@ -1,21 +1,16 @@
 import { createApp } from "vue"
 import App from "./App.vue"
 import themes from "~/themes"
+import theme from "~/plugins/theme"
 import notification from "~/plugins/notification"
-import dayjs from "dayjs"
-import relativeTime from "dayjs/plugin/relativeTime"
-import localizedFormat from "dayjs/plugin/localizedFormat"
-import "dayjs/locale/zh-cn"
-import { router } from "./router"
 import dialog from "~/plugins/dialog"
-
-dayjs.extend(relativeTime)
-dayjs.extend(localizedFormat)
-dayjs.locale("zh-cn")
+import "~/plugins/dayjs"
+import { router } from "./router"
 
 createApp(App)
   .use(router)
   .use(themes)
+  .use(theme)
   .use(notification)
   .use(dialog)
   .mount("#app")

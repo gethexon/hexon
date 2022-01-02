@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue"
-import { HIcon, HIconName } from "../../icon"
+import { createClassNames } from "~/utils/create-classnames"
+import { HIcon, HIconName } from "@/ui/icon"
 const props = defineProps<{
   checked: boolean
 }>()
@@ -27,9 +28,11 @@ const icon = computed(() =>
 const toggle = () => {
   internalValue.value = !internalValue.value
 }
+const { classNames } = createClassNames("h-checkbox")
 </script>
 <template>
   <label
+    :class="classNames"
     @click="toggle"
     class="cursor-pointer select-none"
     style="line-height: 30px"

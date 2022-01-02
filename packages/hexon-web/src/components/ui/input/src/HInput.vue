@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed, toRefs, InputHTMLAttributes } from "vue"
-import { useTheme } from "@winwin/vue-global-theming"
-import { HTheme } from "~/themes"
-import { HIcon, HIconName } from "../../icon"
+import type { InputHTMLAttributes } from "vue"
+import { computed } from "vue"
+import { createClassNames } from "~/utils/create-classnames"
+import { useTheme } from "@/ui/theme"
+import { HIcon, HIconName } from "@/ui/icon"
 
 const props = withDefaults(
   defineProps<{
@@ -17,32 +18,39 @@ const props = withDefaults(
 )
 const emit = defineEmits<{ (e: "update:modelValue", value: string): void }>()
 
-const { modelValue, placeholder, clearable, type, attrType } = toRefs(props)
-const showSuffix = computed(() => clearable.value && modelValue.value)
-
+//#region logic
 const requestChange = (value: string) => emit("update:modelValue", value)
 const onInput = (e: Event) =>
   requestChange((e.target as HTMLInputElement)?.value)
 const onClear = () => requestChange("")
+//#endregion
 
-const theme = useTheme<HTheme>()!
+//#region display
+const theme = useTheme("Input")
+const showSuffix = computed(() => props.clearable && props.modelValue)
+const { classNames } = createClassNames("h-input")
 const styleVars = computed(() => {
-  let color = theme.value.color.foreground.main
-  let plshdColor = theme.value.color.foreground.sub
-  let bgColor = theme.value.color.background.base1
-  let outline = theme.value.color.foreground.transparent
-  if (type.value === "secondary") {
-    bgColor = theme.value.color.background.secondInput
+  const o = {
+    color: theme.value.textColorPrimary,
+    placeholder: theme.value.textColorSecondary,
+    outline: theme.value.colorTransparent,
   }
-  if (props.error) {
-    outline = theme.value.color.error.n
+  if (props.type === "primary") {
+    return { ...o, backgroundColor: theme.value.backgroundColorPrimary }
+  } else {
+    return {
+      ...o,
+      outline: theme.value.colorTransparent,
+      backgroundColor: theme.value.backgroundColorTertiary,
+    }
   }
-  return { color, bgColor, plshdColor, outline }
 })
+//#endregion
 </script>
 <template>
   <label
-    class="h-input text-sm h-8 border-none rounded-2xl px-3 py-0 overflow-hidden flex cursor-text items-center w-full"
+    class="text-sm h-8 border-none rounded-2xl px-3 py-0 overflow-hidden flex cursor-text items-center w-full"
+    :class="classNames"
     :style="{ outline: `1px solid ${styleVars.outline}` }"
   >
     <div class="prefix mr-1">
@@ -50,9 +58,9 @@ const styleVars = computed(() => {
     </div>
     <input
       class="border-none outline-none flex-1 rounded-none leading-full bg-transparent mx-1"
-      :value="modelValue"
-      :placeholder="placeholder"
-      :type="attrType"
+      :value="props.modelValue"
+      :placeholder="props.placeholder"
+      :type="props.attrType"
       @input="onInput"
     />
     <div class="suffix ml-1" v-if="showSuffix" @click="onClear">
@@ -61,8 +69,8 @@ const styleVars = computed(() => {
   </label>
   <div
     class="h-input-hint"
-    :style="{ color: theme.color.error.n }"
-    v-if="error !== void 0"
+    :style="{ color: theme.colorError }"
+    v-if="props.error !== void 0"
   >
     {{ error }}&nbsp;
   </div>
@@ -71,7 +79,7 @@ const styleVars = computed(() => {
 @import "~/styles/mixins.less";
 .h-input {
   color: v-bind("styleVars.color");
-  background-color: v-bind("styleVars.bgColor");
+  background-color: v-bind("styleVars.backgroundColor");
   .prefix,
   .suffix {
     @apply flex items-center h-full text-sm;
@@ -84,7 +92,7 @@ const styleVars = computed(() => {
     &::placeholder {
       transform: translateY(-1px);
       @apply text-sm;
-      color: v-bind("styleVars.plshdColor");
+      color: v-bind("styleVars.placeholder");
     }
   }
 }
