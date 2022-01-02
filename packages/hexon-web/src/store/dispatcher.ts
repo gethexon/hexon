@@ -89,6 +89,10 @@ export const useDispatcher = defineStore("dispatcher", {
         }
       })
     },
+    clearArticle() {
+      const detailStore = useDetailStore()
+      detailStore.clearArticle()
+    },
     goHome() {
       this.router.push({ name: "home" })
     },

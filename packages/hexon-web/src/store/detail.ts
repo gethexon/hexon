@@ -18,7 +18,7 @@ export const useDetailStore = defineStore("detail", {
   }),
   getters: {
     loading(): boolean {
-      return !this.error && (this._loading || !this.article)
+      return !this.error && this._loading
     },
   },
   actions: {
@@ -54,6 +54,9 @@ export const useDetailStore = defineStore("detail", {
       } finally {
         this.saving = false
       }
+    },
+    clearArticle() {
+      this.$reset()
     },
   },
 })

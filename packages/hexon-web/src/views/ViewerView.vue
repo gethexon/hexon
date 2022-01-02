@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, watch } from "vue"
+import { computed, onBeforeUnmount, watch } from "vue"
 import { useRoute } from "vue-router"
 import { useDetailStore } from "~/store/detail"
 import { HButton } from "@/ui/button"
@@ -38,6 +38,9 @@ watch(
     immediate: true,
   }
 )
+onBeforeUnmount(() => {
+  dispatcher.clearArticle()
+})
 //#endregion
 
 //#region data
@@ -70,7 +73,7 @@ const onAction = (payload: HViewerToolbarActionPayload) => {
 <template>
   <HLoading :loading="detailStore.loading">
     <ErroredView v-if="detailStore.error">
-      <HButton @click="load"> 重试 </HButton>
+      <HButton @click="load">重试</HButton>
     </ErroredView>
     <div class="w-full h-full flex flex-col" v-else>
       <HViewerToolbar @on-action="onAction" />

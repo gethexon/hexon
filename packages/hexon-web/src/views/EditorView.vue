@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from "vue"
+import { computed, onBeforeUnmount, ref, watch } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { stringify } from "hexo-front-matter"
 import { useDetailStore } from "~/store/detail"
@@ -58,6 +58,9 @@ function load() {
     dispatcher.goHome()
   }
 }
+onBeforeUnmount(() => {
+  dispatcher.clearArticle()
+})
 watch(
   () => route.fullPath,
   () => {
@@ -101,8 +104,8 @@ const updateContent = (_content: string = "") => {
   <HLoading :loading="detailStore.loading">
     <ErroredView v-if="detailStore.error">
       <div>
-        <HButton inverted @click="onHome"> 回主页 </HButton>
-        <HButton class="ml-2" @click="load"> 重试 </HButton>
+        <HButton inverted @click="onHome">回主页</HButton>
+        <HButton class="ml-2" @click="load">重试</HButton>
       </div>
     </ErroredView>
     <div class="flex h-full w-full" v-else>
