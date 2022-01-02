@@ -82,7 +82,7 @@ interface IHexoCli {
   create(
     title: string,
     options?: ICreateOptions
-  ): Promise<WithCategoriesTagsBriefArticleList<Post>>;
+  ): Promise<WithCategoriesTagsBriefArticleList<Post | Page>>;
   update(
     source: string,
     raw: string,
@@ -174,6 +174,19 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
       .toArray()
       .find((item) => item.full_source === fullSource)!;
     return this.getPostBySource(post.source);
+  }
+
+  private getPostOrPageByFullSource(fullSource: string) {
+    const post = this._hexo.locals
+      .get("posts")
+      .toArray()
+      .find((item) => item.full_source === fullSource)!;
+    if (post) return this.getPostBySource(post.source);
+    const page = this._hexo.locals
+      .get("pages")
+      .toArray()
+      .find((item) => item.full_source === fullSource)!;
+    return this.getPageBySource(page.source);
   }
 
   private writeFile(fullPath: string, content: string) {
@@ -378,7 +391,7 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
     const info = await run("hexo", args, { cwd: this._base_dir });
     await this.reload();
     const fullSource = expandHomeDir(info.split("Created: ")[1].trim());
-    const article = await this.getPostByFullSource(fullSource);
+    const article = await this.getPostOrPageByFullSource(fullSource);
     return this.WithCategoriesTagsBriefArticleList(article);
   }
 

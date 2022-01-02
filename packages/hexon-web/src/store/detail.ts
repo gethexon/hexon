@@ -25,7 +25,7 @@ export const useDetailStore = defineStore("detail", {
     async getArticle(type: PostOrPage, source: string) {
       const token = setTimeout(() => {
         this._loading = true
-      }, 200)
+      }, 500)
       this.error = false
       try {
         const res = await api.getArticle(type, source)

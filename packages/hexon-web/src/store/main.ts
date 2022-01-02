@@ -1,6 +1,6 @@
 import { defineStore } from "pinia"
 import { list2Tree, TreeNode } from "~/lib/list2tree"
-import { api, BriefPage, BriefPost, Category, Tag } from "~/api"
+import { api, BriefPage, BriefPost, Category, ICreateOptions, Tag } from "~/api"
 import { list2object, object2list } from "~/utils"
 import { PostOrPage } from "~/interface"
 
@@ -43,6 +43,21 @@ export const useMainStore = defineStore("main", {
       this.pages = list2object(pages, "source")
       this.tags = list2object(tags, "slug")
       this.categories = list2object(categories, "slug")
+    },
+    async createArticle(title: string, options: ICreateOptions = {}) {
+      const data = await api.createArticle(title, options)
+      // TODO 用 type 区分 post 还是 page
+      if ("post" in data) {
+        this.router.push({
+          name: "edit",
+          params: { type: "post", source: data.post.source },
+        })
+      } else {
+        this.router.push({
+          name: "edit",
+          params: { type: "page", source: data.page.source },
+        })
+      }
     },
   },
   getters: {

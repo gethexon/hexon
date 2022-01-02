@@ -1,5 +1,6 @@
 import { defineStore } from "pinia"
 import { defineAsyncComponent } from "vue"
+import { ICreateOptions } from "~/api"
 import { IArticleIdentifier } from "~/interface"
 import { useDetailStore } from "./detail"
 import { useMainStore } from "./main"
@@ -13,6 +14,15 @@ export const useDispatcher = defineStore("dispatcher", {
   actions: {
     showCreateArticleModal() {
       this.modal.create(HCreateArticleModal)
+    },
+    createArticle(title: string, options: ICreateOptions) {
+      const mainStore = useMainStore()
+      mainStore.createArticle(title, options).then(() => {
+        this.notification.notify({
+          type: "success",
+          title: "新建成功",
+        })
+      })
     },
     deleteArticle(id: IArticleIdentifier) {
       const mainStore = useMainStore()

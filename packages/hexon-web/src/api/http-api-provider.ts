@@ -1,5 +1,6 @@
 import account from "~/plugins/account"
 import {
+  ICreateOptions,
   ZBriefPage,
   ZBriefPost,
   ZCategory,
@@ -146,5 +147,34 @@ export class HttpApiProvider implements IApiProvider {
       categories: categories.map(dashIdToId),
     })
     return data
+  }
+
+  async createArticle(
+    title: string,
+    options: ICreateOptions = {}
+  ): Promise<IPostWithAllData | IPageWithAllData> {
+    const res = await account.access.post("/hexo/create", { title, ...options })
+    const { article, posts, pages, tags, categories } = res.data
+    if (article.__post) {
+      const { article: post, posts, pages, tags, categories } = res.data
+      const data: IPostWithAllData = ZIPostWithAllData.parse({
+        post: dashIdToId(post),
+        posts: posts.map(dashIdToId),
+        pages: pages.map(dashIdToId),
+        tags: tags.map(dashIdToId),
+        categories: categories.map(dashIdToId),
+      })
+      return data
+    } else {
+      const { article: page, posts, pages, tags, categories } = res.data
+      const data: IPageWithAllData = ZIPageWithAllData.parse({
+        page: dashIdToId(page),
+        posts: posts.map(dashIdToId),
+        pages: pages.map(dashIdToId),
+        tags: tags.map(dashIdToId),
+        categories: categories.map(dashIdToId),
+      })
+      return data
+    }
   }
 }

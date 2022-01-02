@@ -10,6 +10,13 @@ import {
   IPageWithAllData,
 } from "./entities"
 
+export interface ICreateOptions {
+  layout?: string
+  path?: string
+  slug?: string
+  replace?: boolean
+}
+
 export interface IApiProvider {
   getAllData(): Promise<IWithAllData>
   getPosts(): Promise<BriefPost[]>
@@ -37,4 +44,8 @@ export interface IApiProvider {
   deleteArticle(type: "post", source: string): Promise<IWithAllData>
   deleteArticle(type: "page", source: string): Promise<IWithAllData>
   deleteArticle(type: "post" | "page", source: string): Promise<IWithAllData>
+  createArticle(
+    title: string,
+    options?: ICreateOptions
+  ): Promise<IPostWithAllData | IPageWithAllData>
 }

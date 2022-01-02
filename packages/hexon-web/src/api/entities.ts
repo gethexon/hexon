@@ -51,7 +51,7 @@ export const ZBriefPost = z
   .merge(ZIPost)
 export type BriefPost = z.infer<typeof ZBriefPost>
 
-export const ZPage = z.object({}).merge(ZIArticle).merge(ZIPost).merge(ZIDetail)
+export const ZPage = z.object({}).merge(ZIArticle).merge(ZIPage).merge(ZIDetail)
 export type Page = z.infer<typeof ZPage>
 
 export const ZPost = z.object({}).merge(ZIArticle).merge(ZIPost).merge(ZIDetail)
