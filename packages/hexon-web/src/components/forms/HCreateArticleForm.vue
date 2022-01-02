@@ -50,7 +50,7 @@ const replace = ref(false)
 const page = computed(() => layout.value === "page")
 const draft = computed(() => layout.value === "draft")
 const disabled = computed(() => !title.value)
-const width = "80px"
+const width = computed(() => (advanced.value ? "70px" : "40px"))
 const onCreate = () => {
   if (!title.value) return
   emits("on-create", {
@@ -114,14 +114,16 @@ onMounted(() => {
             <div>
               <HCheckbox
                 :checked="page"
-                @update:checked="(v) => v && (layout = 'page')"
+                @update:checked="(v) => (v ? (layout = 'page') : (layout = ''))"
                 class="mr-4"
               >
                 页面
               </HCheckbox>
               <HCheckbox
                 :checked="draft"
-                @update:checked="(v) => v && (layout = 'draft')"
+                @update:checked="
+                  (v) => (v ? (layout = 'draft') : (layout = ''))
+                "
                 class="mr-4"
               >
                 草稿

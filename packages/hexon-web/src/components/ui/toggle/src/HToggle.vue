@@ -2,6 +2,7 @@
 import { useTheme } from "@winwin/vue-global-theming"
 import { computed, ref, toRefs, watch } from "vue"
 import { HTheme } from "~/themes"
+import { createClassNames } from "~/utils/create-classnames"
 const props = defineProps<{
   active: boolean
 }>()
@@ -22,37 +23,37 @@ watch(
     emits("update:active", value)
   }
 )
-const toggle = () => {
-  internalValue.value = !internalValue.value
-}
-const classes = computed(() =>
-  internalValue.value ? "justify-end" : "justify-start"
-)
+const { classNames } = createClassNames("h-toggle")
 const theme = useTheme<HTheme>()!
 const bgColor = computed(() =>
   active.value ? theme.value.color.primary.n : theme.value.color.foreground.main
 )
 </script>
 <template>
-  <div class="inline-flex flex-col justify-center" style="height: 30px">
+  <label
+    :class="classNames"
+    class="inline-flex flex-col justify-center"
+    style="height: 30px"
+  >
     <TransitionGroup
       tag="div"
       name="toggle"
-      @click="toggle"
-      class="cursor-pointer select-none rounded-full relative flex items-center"
+      class="cursor-pointer select-none rounded-full relative flex items-center h-5 w-10"
       :class="{ 'justify-end': internalValue, 'justify-start': !internalValue }"
-      style="height: 1em; width: 2em; border: 1px solid; padding-left: 1px"
-      :style="{ borderColor: bgColor }"
+      style="padding: 0 3px"
+      :style="{
+        backgroundColor: theme.color.background.base3,
+      }"
     >
       <div
         key="dot"
-        class="absolute rounded-full"
+        class="absolute rounded-full h-3.5 w-3.5"
         :class="{ 'opacity-50': !active }"
-        style="height: 0.8em; width: 0.8em; margin: 0 0.1em"
         :style="{ backgroundColor: bgColor }"
       ></div>
     </TransitionGroup>
-  </div>
+    <input v-model="internalValue" type="checkbox" class="absolute w-0 h-0" />
+  </label>
 </template>
 <style>
 .toggle-move {

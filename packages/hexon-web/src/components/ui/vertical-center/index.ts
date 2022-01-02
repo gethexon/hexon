@@ -1,1 +1,1 @@
-export { default as default } from "./src/HVerticalCenter.vue"
+export { default as HVerticalCenter } from "./src/HVerticalCenter.vue"

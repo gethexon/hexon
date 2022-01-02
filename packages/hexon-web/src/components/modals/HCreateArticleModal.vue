@@ -26,7 +26,7 @@ const theme = useTheme("unknown")
 <template>
   <HBaseModal :persistent="advanced" @on-close="props.close">
     <div
-      class="bg-base-1 p-2 rounded-md"
+      class="bg-base-1 py-2 px-4 rounded-md"
       :style="{
         backgroundColor: theme.backgroundColorPrimary,
       }"

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { createClassNames } from "~/utils/create-classnames"
-import HVerticalCenter from "@/ui/vertical-center"
+import { HVerticalCenter } from "@/ui/vertical-center"
 import { HIconName } from "./interface"
 
 const props = withDefaults(
