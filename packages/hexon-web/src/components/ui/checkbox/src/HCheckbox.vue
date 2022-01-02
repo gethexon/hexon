@@ -25,19 +25,17 @@ watch(
 const icon = computed(() =>
   internalValue.value ? HIconName.CheckboxComposite : HIconName.Checkbox
 )
-const toggle = () => {
-  internalValue.value = !internalValue.value
-}
 const { classNames } = createClassNames("h-checkbox")
 </script>
 <template>
   <label
     :class="classNames"
-    @click="toggle"
     class="cursor-pointer select-none"
     style="line-height: 30px"
   >
+    <input type="checkbox" class="absolute w-0 h-0" v-model="internalValue" />
     <HIcon :name="icon" class="mr-2" />
     <slot></slot>
   </label>
 </template>
+<style></style>

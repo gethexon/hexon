@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { computed, ref, watch } from "vue"
+import type { HInputRef } from "@/ui/input"
+import { computed, nextTick, onMounted, ref, watch } from "vue"
 import { HCheckbox } from "@/ui/checkbox"
 import { HInput } from "@/ui/input"
-import { HButton } from "../ui/button"
-import { HToggle } from "../ui/toggle"
+import { HButton } from "@/ui/button"
+import { HToggle } from "@/ui/toggle"
 
 const props = withDefaults(
   defineProps<{
@@ -68,6 +69,10 @@ const text = computed(() => {
   if (draft.value) return "草稿"
   return "文章"
 })
+const titleInputRef = ref<HInputRef | null>(null)
+onMounted(() => {
+  titleInputRef.value?.focus()
+})
 </script>
 <template>
   <div class="h-create-article-form w-96 select-none">
@@ -87,7 +92,12 @@ const text = computed(() => {
           标题
         </div>
         <div style="grid-column: controls">
-          <HInput v-model="title" type="secondary" :error="''" />
+          <HInput
+            v-model="title"
+            type="secondary"
+            :error="''"
+            ref="titleInputRef"
+          />
         </div>
       </div>
       <template v-if="!advanced">

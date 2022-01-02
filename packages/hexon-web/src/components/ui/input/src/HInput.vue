@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { InputHTMLAttributes } from "vue"
+import { InputHTMLAttributes, ref } from "vue"
 import { computed } from "vue"
 import { createClassNames } from "~/utils/create-classnames"
 import { useTheme } from "@/ui/theme"
@@ -19,6 +19,13 @@ const props = withDefaults(
 const emit = defineEmits<{ (e: "update:modelValue", value: string): void }>()
 
 //#region logic
+const inputRef = ref<HTMLElement | null>(null)
+const focus = () => inputRef.value?.focus()
+const blur = () => inputRef.value?.blur()
+defineExpose({
+  focus,
+  blur,
+})
 const requestChange = (value: string) => emit("update:modelValue", value)
 const onInput = (e: Event) =>
   requestChange((e.target as HTMLInputElement)?.value)
@@ -62,6 +69,7 @@ const styleVars = computed(() => {
       :placeholder="props.placeholder"
       :type="props.attrType"
       @input="onInput"
+      ref="inputRef"
     />
     <div class="suffix ml-1" v-if="showSuffix" @click="onClear">
       <HIcon :name="HIconName.Cancel" />

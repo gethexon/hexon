@@ -6,7 +6,6 @@ const { modals } = useModal()
 <template>
   <Teleport to="body">
     <FadeScaleTransitionGroupVue>
-      <div key="123">123</div>
       <Component
         v-for="item in modals"
         :key="item.id"
