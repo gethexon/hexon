@@ -70,7 +70,7 @@ const text = computed(() => {
 })
 </script>
 <template>
-  <div class="h-create-article-form w-96">
+  <div class="h-create-article-form w-96 select-none">
     <h2 class="mt-2 mb-8 text-xl font-bold text-main text-center">
       新建{{ text }}
     </h2>

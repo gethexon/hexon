@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useDialog } from "."
+import FadeTransitionGroup from "@/transitions/FadeScaleTransitionGroup.vue"
 import ClassProvider from "~/ClassProvider.vue"
-import FadeTransitionGroup from "./FadeTransitionGroup.vue"
+import { useDialog } from "."
 const { dialogs } = useDialog()
 </script>
 <template>
@@ -9,7 +9,7 @@ const { dialogs } = useDialog()
     <ClassProvider>
       <FadeTransitionGroup>
         <div v-for="item in dialogs" :key="item.id">
-          <slot :data="item"> </slot>
+          <slot :data="item"></slot>
         </div>
       </FadeTransitionGroup>
     </ClassProvider>

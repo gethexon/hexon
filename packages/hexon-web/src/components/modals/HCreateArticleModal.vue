@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import { ref } from "vue"
-import HCreateArticleForm from "@/forms/HCreateArticleForm.vue"
-import { HModal } from "@/ui/modal"
 import notification from "~/plugins/notification"
+import HCreateArticleForm from "@/forms/HCreateArticleForm.vue"
+import { useTheme } from "@/ui/theme"
+import { HBaseModal } from "@/ui/modal"
 
 const props = defineProps<{
-  show: boolean
-}>()
-const emits = defineEmits<{
-  (e: "update:show", value: boolean): void
+  close: () => void
 }>()
 const advanced = ref(false)
 const onCreate = (value: {
@@ -26,20 +24,23 @@ const onCreate = (value: {
     actions: [],
     desc: JSON.stringify(value, null, " "),
   })
-  emits("update:show", false)
+  props.close()
 }
+const theme = useTheme("unknown")
 </script>
 <template>
-  <HModal
-    :show="show"
-    @update:show="(v) => emits('update:show', v)"
-    :persistent="advanced"
-  >
-    <div class="bg-base-1 p-2 rounded-md">
+  <HBaseModal :persistent="advanced" @on-close="props.close">
+    <div
+      class="bg-base-1 p-2 rounded-md"
+      :style="{
+        backgroundColor: theme.backgroundColorPrimary,
+      }"
+    >
       <HCreateArticleForm
         @on-create="onCreate"
-        @on-cancel="emits('update:show', false)"
+        @on-cancel="props.close"
+        v-model:advanced="advanced"
       />
     </div>
-  </HModal>
+  </HBaseModal>
 </template>

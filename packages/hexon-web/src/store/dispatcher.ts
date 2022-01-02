@@ -1,11 +1,19 @@
 import { defineStore } from "pinia"
+import { defineAsyncComponent } from "vue"
 import { IArticleIdentifier } from "~/interface"
 import { useDetailStore } from "./detail"
 import { useMainStore } from "./main"
 
+const HCreateArticleModal = defineAsyncComponent(
+  () => import("~/components/modals/HCreateArticleModal.vue")
+)
+
 export const useDispatcher = defineStore("dispatcher", {
   state: () => ({}),
   actions: {
+    showCreateArticleModal() {
+      this.modal.create(HCreateArticleModal)
+    },
     deleteArticle(id: IArticleIdentifier) {
       const mainStore = useMainStore()
       this.dialog.create({

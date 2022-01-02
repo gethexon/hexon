@@ -1,6 +1,7 @@
 import "pinia"
 import { Router } from "vue-router"
 import { Dialog } from "./lib/dialog"
+import { ModalController } from "./lib/modal"
 import { Notification } from "./lib/notification"
 
 declare module "pinia" {
@@ -8,5 +9,6 @@ declare module "pinia" {
     dialog: Dialog
     router: Router
     notification: Notification
+    modal: ModalController
   }
 }

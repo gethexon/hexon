@@ -9,6 +9,7 @@ import HNotificationItem from "~/components/others/HNotificationItem.vue"
 import { useRoute } from "vue-router"
 import { DialogContainer } from "./lib/dialog"
 import HDialog from "@/others/HDialog.vue"
+import ModalContainer from "./lib/modal/src/ModalContainer.vue"
 
 const route = useRoute()
 const styles = computed(() => {
@@ -45,6 +46,7 @@ watch(
           <HDialog :data="slotProps.data" />
         </template>
       </DialogContainer>
+      <ModalContainer />
     </ClassProvider>
   </div>
 </template>

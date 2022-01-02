@@ -4,6 +4,7 @@ import themes from "./themes"
 import theme from "./plugins/theme"
 import account from "./plugins/account"
 import router from "./plugins/router"
+import modal from "./plugins/modal"
 import notification from "./plugins/notification"
 import dialog from "./plugins/dialog"
 import pinia from "./plugins/pinia"
@@ -14,6 +15,7 @@ createApp(App)
   .use(router)
   .use(themes)
   .use(theme)
+  .use(modal)
   .use(notification)
   .use(dialog)
   .use(account)

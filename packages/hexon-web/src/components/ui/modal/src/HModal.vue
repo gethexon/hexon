@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import anime from "animejs"
 import { ref, watch } from "vue"
 import ClassProvider from "~/ClassProvider.vue"
-import ModalFadeTransition from "./ModalFadeTransition.vue"
+import FadeScaleTransitionGroup from "@/transitions/FadeScaleTransitionGroup.vue"
+import HBaseModal from "./HBaseModal.vue"
 const props = withDefaults(
   defineProps<{ show?: boolean; persistent?: boolean }>(),
   { show: false, persistent: false }
@@ -24,42 +24,19 @@ watch(
 const hide = () => {
   internalShow.value = false
 }
-const contentRef = ref<HTMLElement | null>(null)
-const clickOutside = () => {
-  if (!props.persistent) hide()
-  else
-    anime({
-      targets: contentRef.value,
-      keyframes: [{ scale: 1.05 }, { scale: 1 }],
-      duration: 200,
-      easing: "easeInOutSine",
-    })
-}
 </script>
 <template>
-  <teleport to="body">
-    <ModalFadeTransition>
-      <div
+  <Teleport to="body">
+    <FadeScaleTransitionGroup>
+      <HBaseModal
         v-if="internalShow"
-        style="
-          background-color: #00000088;
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        "
-        @click="clickOutside"
+        :persistent="props.persistent"
+        @on-close="hide"
       >
         <ClassProvider>
-          <div ref="contentRef" @click.stop>
-            <slot :hide="hide" />
-          </div>
+          <slot :hide="hide" />
         </ClassProvider>
-      </div>
-    </ModalFadeTransition>
-  </teleport>
+      </HBaseModal>
+    </FadeScaleTransitionGroup>
+  </Teleport>
 </template>
