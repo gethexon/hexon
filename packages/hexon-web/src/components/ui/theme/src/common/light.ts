@@ -14,6 +14,7 @@ const base = {
   backgroundColorTransparent: "transparent",
   textColorPrimary: "#484848",
   textColorSecondary: "#757575",
+  textColorBack: "#ffffff",
 }
 
 const commonTheme = {
