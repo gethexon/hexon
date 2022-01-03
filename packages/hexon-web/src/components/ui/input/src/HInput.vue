@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { InputHTMLAttributes, ref } from "vue"
+import { InputHTMLAttributes, ref, useSlots } from "vue"
 import { computed } from "vue"
 import { createClassNames } from "~/utils/create-classnames"
 import { useTheme } from "@/ui/theme"
@@ -53,34 +53,44 @@ const styleVars = computed(() => {
   }
 })
 //#endregion
+const slots = useSlots()
 </script>
 <template>
-  <label
-    class="text-sm h-8 border-none rounded-2xl px-3 py-0 overflow-hidden flex cursor-text items-center w-full"
-    :class="classNames"
-    :style="{ outline: `1px solid ${styleVars.outline}` }"
-  >
-    <div class="prefix mr-1">
-      <slot name="prefix"></slot>
+  <div>
+    <label
+      class="text-sm h-8 border-none rounded-2xl px-3 py-0 overflow-hidden flex cursor-text items-center w-full"
+      :class="classNames"
+      :style="{ outline: `1px solid ${styleVars.outline}` }"
+    >
+      <div class="prefix mr-1" v-if="slots.prefix">
+        <slot name="prefix"></slot>
+      </div>
+      <input
+        class="border-none outline-none flex-1 rounded-none leading-full bg-transparent mx-1"
+        :value="props.modelValue"
+        :placeholder="props.placeholder"
+        :type="props.attrType"
+        @input="onInput"
+        ref="inputRef"
+      />
+      <div class="suffix ml-1" v-if="showSuffix" @click="onClear">
+        <HIcon :name="HIconName.Cancel" />
+      </div>
+      <div
+        class="suffix"
+        :class="{ 'ml-1': !showSuffix, 'ml-2': showSuffix }"
+        v-if="slots.suffix"
+      >
+        <slot name="suffix"></slot>
+      </div>
+    </label>
+    <div
+      class="h-input-hint"
+      :style="{ color: theme.colorError }"
+      v-if="props.error !== void 0"
+    >
+      {{ error }}&nbsp;
     </div>
-    <input
-      class="border-none outline-none flex-1 rounded-none leading-full bg-transparent mx-1"
-      :value="props.modelValue"
-      :placeholder="props.placeholder"
-      :type="props.attrType"
-      @input="onInput"
-      ref="inputRef"
-    />
-    <div class="suffix ml-1" v-if="showSuffix" @click="onClear">
-      <HIcon :name="HIconName.Cancel" />
-    </div>
-  </label>
-  <div
-    class="h-input-hint"
-    :style="{ color: theme.colorError }"
-    v-if="props.error !== void 0"
-  >
-    {{ error }}&nbsp;
   </div>
 </template>
 <style scoped lang="less">

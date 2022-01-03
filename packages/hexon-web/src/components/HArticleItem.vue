@@ -1,25 +1,25 @@
 <script setup lang="ts">
-import { useTheme } from "@winwin/vue-global-theming";
-import { computed, toRefs } from "vue";
-import { HTheme } from "~/themes";
-import HBadge from "./HBadge.vue";
-import dayjs from "dayjs";
+import { useTheme } from "@winwin/vue-global-theming"
+import { computed, toRefs } from "vue"
+import { HTheme } from "~/themes"
+import { HBadge } from "@/ui/badge"
+import dayjs from "dayjs"
 
 const props = withDefaults(
   defineProps<{
-    title: string;
-    brief?: string;
-    tags?: string[];
-    date: string;
-    selected?: boolean;
+    title: string
+    brief?: string
+    tags?: string[]
+    date: string
+    selected?: boolean
   }>(),
   { selected: false }
-);
-const { title, brief, tags, date, selected } = toRefs(props);
+)
+const { title, brief, tags, date, selected } = toRefs(props)
 const formatedDate = computed(() => {
-  return dayjs(date.value).fromNow();
-});
-const theme = useTheme<HTheme>()!;
+  return dayjs(date.value).fromNow()
+})
+const theme = useTheme<HTheme>()!
 const styleVars = computed(() => {
   return {
     bgColor: selected.value
@@ -29,8 +29,8 @@ const styleVars = computed(() => {
     activeBgColor: theme.value.color.background.active,
     titleColor: theme.value.color.foreground.main,
     briefColor: theme.value.color.foreground.sub,
-  };
-});
+  }
+})
 </script>
 <template>
   <div class="h-article-item px-4 py-2 select-none text-sm rounded-md mb-1">

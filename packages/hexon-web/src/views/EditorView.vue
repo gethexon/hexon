@@ -3,16 +3,20 @@ import { computed, onBeforeUnmount, ref, watch } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { stringify } from "hexo-front-matter"
 import { useDetailStore } from "~/store/detail"
+import { useDispatcher } from "~/store/dispatcher"
 import { parseHfm } from "~/utils/hfm"
+import { useAsyncComponentWithLoading } from "~/utils"
+import { PostOrPage } from "~/interface"
 import { HButton } from "@/ui/button"
 import { HLoading } from "@/ui/loading"
+import { useThemeVars } from "@/ui/theme"
 import HHeaderEditor from "@/Editors/HHeaderEditor.vue"
+import HTagEditor from "@/Editors/HTagEditor.vue"
+import HToolbar from "@/HToolbar.vue"
 import HEditorToolbar from "@/HEditorToolbar.vue"
 import { HEditorToolbarActionPayload } from "@/types"
 import ErroredView from "./ErroredView.vue"
-import { useAsyncComponentWithLoading } from "~/utils"
-import { useDispatcher } from "~/store/dispatcher"
-import { PostOrPage } from "~/interface"
+import { useMainStore } from "~/store/main"
 
 const [HMonacoEditor, monacoLoading] = useAsyncComponentWithLoading(
   () => import("@/Editors/HMonacoEditor.vue")
@@ -23,6 +27,7 @@ const route = useRoute()
 const router = useRouter()
 const dispatcher = useDispatcher()
 const detailStore = useDetailStore()
+const mainStore = useMainStore()
 //#endregion
 
 //#region handlers
@@ -79,13 +84,17 @@ watch(
   (v) => (internal_raw.value = v)
 )
 const data = computed(() => {
-  const { _content, title = detailStore.article?.title } = parseHfm(
-    internal_raw.value
-  )
-  return { _content, title }
+  const {
+    _content,
+    title = detailStore.article?.title ?? "",
+    tags = [],
+  } = parseHfm(internal_raw.value)
+  return { _content, title, tags }
 })
-const title = computed(() => (data.value.title as string | undefined) ?? "")
+const title = computed(() => data.value.title as string)
 const content = computed(() => data.value._content)
+const tags = computed(() => data.value.tags as string[])
+const availableTags = computed(() => mainStore.tagNamesList)
 //#endregion
 
 //#region update
@@ -98,6 +107,13 @@ const updateTitle = (title: string = "") => {
 const updateContent = (_content: string = "") => {
   updateFromObj({ _content })
 }
+const updateTags = (tags: string[] = []) => {
+  updateFromObj({ tags })
+}
+//#endregion
+
+//#region style
+const vars = useThemeVars()
 //#endregion
 </script>
 <template>
@@ -125,7 +141,25 @@ const updateContent = (_content: string = "") => {
           </div>
         </div>
       </div>
-      <div class="side bg-base-3 w-72 h-full"></div>
+      <div class="side bg-base-3 w-72 h-full flex flex-col">
+        <HToolbar>
+          <div
+            class="px-5 text-xl"
+            :style="{ color: vars.textColorPrimary }"
+            style="letter-spacing: 0.05rem; font-weight: 600"
+          >
+            Frontmatters
+          </div>
+        </HToolbar>
+        <div class="flex-1 h-0 overflow-auto">
+          <HTagEditor
+            :available-tags="availableTags"
+            :tags="tags"
+            @update:tags="updateTags"
+          />
+          <div style="height: 3000px">Editors</div>
+        </div>
+      </div>
     </div>
   </HLoading>
 </template>
