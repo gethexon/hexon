@@ -1,19 +1,21 @@
 <script setup lang="ts">
 import { computed, ComputedRef } from "vue"
-import { HNavList, NavListItem } from "@/ui/nav-list"
-import HTitle from "@/HTitle.vue"
-import HNavSetting from "@/HNavSetting.vue"
-import { useTheme } from "@winwin/vue-global-theming"
 import { HTheme } from "~/themes"
 import { HIconName } from "~/components/ui/icon"
 import { useMainStore } from "~/store/main"
 import { useArticleListStore } from "~/store/articleList"
+import { useDispatcher } from "~/store/dispatcher"
 import { TreeNode } from "~/lib/list2tree"
 import { Category } from "~/api"
+import { HNavList, NavListItem } from "@/ui/nav-list"
+import HTitle from "@/HTitle.vue"
+import HNavSetting from "@/HNavSetting.vue"
+import { useTheme } from "@winwin/vue-global-theming"
 
 //#region hooks
 const mainStore = useMainStore()
 const articleListStore = useArticleListStore()
+const dispatcher = useDispatcher()
 //#endregion
 
 const t = useTheme<HTheme>()!
@@ -158,15 +160,16 @@ const onSelect = (key: string) => {
   if (key.slice(0, 2) === "c-")
     articleListStore.setFilter({ type: "category", slug: key.slice(2) })
 }
+const onSettings = () => dispatcher.showSettingsModal()
 </script>
 <template>
   <div class="bg-base-3 w-full h-full flex flex-col">
     <HTitle />
     <div style="flex: 1 0 0; overflow-y: auto">
-      <div class="py-0 pl-4 pr-2">
+      <div class="pb-2 pl-4 pr-2">
         <HNavList :model="model" @on-select="onSelect" />
       </div>
     </div>
-    <HNavSetting />
+    <HNavSetting @click="onSettings" />
   </div>
 </template>

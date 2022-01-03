@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import anime from "animejs"
 import { ref } from "vue"
-const props = defineProps<{
-  persistent: boolean
-}>()
+const props = withDefaults(
+  defineProps<{
+    persistent?: boolean
+  }>(),
+  { persistent: false }
+)
 const emits = defineEmits<{
   (e: "on-close"): void
 }>()

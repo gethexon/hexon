@@ -8,13 +8,21 @@ import { useMainStore } from "./main"
 const HCreateArticleModal = defineAsyncComponent(
   () => import("~/components/modals/HCreateArticleModal.vue")
 )
+const HSettingsModal = defineAsyncComponent(
+  () => import("~/components/modals/HSettingsModal.vue")
+)
 
 export const useDispatcher = defineStore("dispatcher", {
   state: () => ({}),
   actions: {
+    //#region modals
     showCreateArticleModal() {
       this.modal.create(HCreateArticleModal)
     },
+    showSettingsModal() {
+      this.modal.create(HSettingsModal)
+    },
+    //#endregion
     createArticle(title: string, options: ICreateOptions) {
       const mainStore = useMainStore()
       mainStore.createArticle(title, options).then(() => {
