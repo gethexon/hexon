@@ -4,8 +4,8 @@ import { useRoute, useRouter } from "vue-router"
 import { stringify } from "hexo-front-matter"
 import { useDetailStore } from "~/store/detail"
 import { useDispatcher } from "~/store/dispatcher"
-import { parseHfm } from "~/utils/hfm"
-import { useAsyncComponentWithLoading } from "~/utils"
+import { parseHfm, updateStringByObj } from "~/utils/hfm"
+import { categories2Array2d, useAsyncComponentWithLoading } from "~/utils"
 import { PostOrPage } from "~/interface"
 import { HButton } from "@/ui/button"
 import { HLoading } from "@/ui/loading"
@@ -17,6 +17,7 @@ import HEditorToolbar from "@/HEditorToolbar.vue"
 import { HEditorToolbarActionPayload } from "@/types"
 import ErroredView from "./ErroredView.vue"
 import { useMainStore } from "~/store/main"
+import HCategoriesEditor from "~/components/Editors/HCategoriesEditor.vue"
 
 const [HMonacoEditor, monacoLoading] = useAsyncComponentWithLoading(
   () => import("@/Editors/HMonacoEditor.vue")
@@ -79,27 +80,20 @@ watch(
 )
 const raw = computed(() => detailStore.article?.raw ?? "")
 const internal_raw = ref(raw.value)
-watch(
-  () => raw.value,
-  (v) => (internal_raw.value = v)
-)
-const data = computed(() => {
-  const {
-    _content,
-    title = detailStore.article?.title ?? "",
-    tags = [],
-  } = parseHfm(internal_raw.value)
-  return { _content, title, tags }
-})
-const title = computed(() => data.value.title as string)
+watch(raw, (v) => (internal_raw.value = v))
+const data = computed(() => parseHfm(internal_raw.value))
+const title = computed(() => data.value.title)
 const content = computed(() => data.value._content)
-const tags = computed(() => data.value.tags as string[])
+const tags = computed(() => data.value.tags)
+const categories = computed(() => data.value.categories)
 const availableTags = computed(() => mainStore.tagNamesList)
+const availableCats = computed(() => mainStore.catNamesList)
 //#endregion
 
 //#region update
+
 const updateFromObj = (obj: any) => {
-  internal_raw.value = stringify({ ...parseHfm(internal_raw.value), ...obj })
+  internal_raw.value = updateStringByObj(internal_raw.value, obj)
 }
 const updateTitle = (title: string = "") => {
   updateFromObj({ title })
@@ -109,6 +103,10 @@ const updateContent = (_content: string = "") => {
 }
 const updateTags = (tags: string[] = []) => {
   updateFromObj({ tags })
+}
+const updateCategories = (categories: string[] = []) => {
+  console.log("update categories:", categories)
+  updateFromObj({ categories })
 }
 //#endregion
 
@@ -157,7 +155,12 @@ const vars = useThemeVars()
             :tags="tags"
             @update:tags="updateTags"
           />
-          <div style="height: 3000px">Editors</div>
+          <HCategoriesEditor
+            :availableCats="availableCats"
+            :categories="categories"
+            @update:categories="updateCategories"
+            class="mt-2"
+          />
         </div>
       </div>
     </div>

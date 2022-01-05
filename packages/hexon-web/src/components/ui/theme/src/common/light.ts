@@ -12,6 +12,7 @@ const base = {
   backgroundColorSecondary: "#f8f8f8",
   backgroundColorTertiary: "#eeeeee",
   backgroundColorTransparent: "transparent",
+  backgroundColorHover: "#00000015",
   textColorPrimary: "#484848",
   textColorSecondary: "#757575",
   textColorBack: "#ffffff",

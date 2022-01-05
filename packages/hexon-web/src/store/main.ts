@@ -94,5 +94,8 @@ export const useMainStore = defineStore("main", {
     tagNamesList(): string[] {
       return object2list(this.tags, "slug").map((item) => item.name)
     },
+    catNamesList(): string[] {
+      return this.categoriesList.map((cat) => cat.name)
+    },
   },
 })

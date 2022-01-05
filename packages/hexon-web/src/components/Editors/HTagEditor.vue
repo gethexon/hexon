@@ -20,12 +20,18 @@ watch(
   () => props.tags,
   (ts) => {
     tags.value = ts
+  },
+  {
+    deep: true,
   }
 )
 watch(
   () => tags.value,
   (ts) => {
     emits("update:tags", ts)
+  },
+  {
+    deep: true,
   }
 )
 const allTags = computed(() => {
@@ -52,12 +58,13 @@ const onAddTag = () => {
 </script>
 <template>
   <div class="px-3">
-    <div class="select-none text-sm">
+    <div class="py-4 select-none text-sm">
       <HIcon :name="HIconName.Tag" class="mr-2" />
       <span>标签</span>
     </div>
-    <div class="mt-1" v-if="allTags.length">
+    <div class="mb-2 text-xs" v-if="allTags.length">
       <HBadge
+        class="mr-1 mb-0.5"
         v-for="tag in allTags"
         :color="color(tag)"
         :bg-color="backgroundColor(tag)"

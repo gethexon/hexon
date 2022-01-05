@@ -14,6 +14,7 @@ const props = withDefaults(
   { title: "", raw: "" }
 )
 const { title, raw } = toRefs(props)
+// TODO 用 hfm.ts 中的
 const all = computed(() => parse(raw.value))
 const fm = computed(() => {
   const { _content, categories, tags, date, updated, title, ...rest } =
@@ -28,6 +29,7 @@ const fm = computed(() => {
     rest,
   }
 })
+// FIXME date 和 updated 用 hexo 解析的值
 const date = computed(() =>
   fm.value.date ? dayjs(fm.value.date as number).format("lll") : ""
 )
