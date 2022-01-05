@@ -57,11 +57,7 @@ const onAddTag = () => {
 }
 </script>
 <template>
-  <div class="px-3">
-    <div class="py-4 select-none text-sm">
-      <HIcon :name="HIconName.Tag" class="mr-2" />
-      <span>标签</span>
-    </div>
+  <div class="px-4">
     <div class="mb-2 text-xs" v-if="allTags.length">
       <HBadge
         class="mr-1 mb-0.5"

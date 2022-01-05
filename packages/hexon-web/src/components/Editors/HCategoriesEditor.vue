@@ -54,11 +54,7 @@ const onRemoveCat = (idx: number) => {
 const vars = useThemeVars()
 </script>
 <template>
-  <div class="px-3">
-    <div class="py-4 select-none text-sm">
-      <HIcon :name="HIconName.Folder" class="mr-2" />
-      <span>分类</span>
-    </div>
+  <div class="px-4">
     <div class="mb-2 text-xs">
       <template v-for="(item, idx) in categories">
         <HIcon class="mb-0.5" :name="HIconName.ChevronRight" v-if="idx" />

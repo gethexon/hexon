@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, watch } from "vue"
 import { useRoute, useRouter } from "vue-router"
-import { stringify } from "hexo-front-matter"
+
 import { useDetailStore } from "~/store/detail"
 import { useDispatcher } from "~/store/dispatcher"
 import { parseHfm, updateStringByObj } from "~/utils/hfm"
-import { categories2Array2d, useAsyncComponentWithLoading } from "~/utils"
+import { useAsyncComponentWithLoading } from "~/utils"
 import { PostOrPage } from "~/interface"
 import { HButton } from "@/ui/button"
 import { HLoading } from "@/ui/loading"
@@ -17,7 +17,9 @@ import HEditorToolbar from "@/HEditorToolbar.vue"
 import { HEditorToolbarActionPayload } from "@/types"
 import ErroredView from "./ErroredView.vue"
 import { useMainStore } from "~/store/main"
-import HCategoriesEditor from "~/components/Editors/HCategoriesEditor.vue"
+import HCategoriesEditor from "@/Editors/HCategoriesEditor.vue"
+import HNavTitle from "@/ui/nav-list/src/HNavTitle.vue"
+import { HIcon, HIconName } from "@/ui/icon"
 
 const [HMonacoEditor, monacoLoading] = useAsyncComponentWithLoading(
   () => import("@/Editors/HMonacoEditor.vue")
@@ -150,11 +152,19 @@ const vars = useThemeVars()
           </div>
         </HToolbar>
         <div class="flex-1 h-0 overflow-auto">
+          <HNavTitle>
+            <HIcon :name="HIconName.Tag" class="mr-1" />
+            标签
+          </HNavTitle>
           <HTagEditor
             :available-tags="availableTags"
             :tags="tags"
             @update:tags="updateTags"
           />
+          <HNavTitle>
+            <HIcon :name="HIconName.Folder" class="mr-2" />
+            分类
+          </HNavTitle>
           <HCategoriesEditor
             :availableCats="availableCats"
             :categories="categories"
