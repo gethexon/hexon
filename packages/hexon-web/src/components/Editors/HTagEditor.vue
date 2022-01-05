@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue"
+import { uniq } from "lodash-es"
 import { HInput } from "@/ui/input"
 import { HIcon, HIconName } from "@/ui/icon"
 import { HBadge } from "@/ui/badge"
-import { uniq } from "lodash-es"
-import { useThemeVars } from "../ui/theme"
+import { useThemeVars } from "@/ui/theme"
 const props = defineProps<{
   availableTags: string[]
   tags: string[]
@@ -72,12 +72,7 @@ const onAddTag = () => {
       </HBadge>
       &nbsp;
     </div>
-    <HInput
-      class="mt-2"
-      v-model="newTag"
-      placeholder="新标签"
-      @keydown.enter="onAddTag"
-    >
+    <HInput v-model="newTag" placeholder="新标签" @keydown.enter="onAddTag">
       <template #suffix>
         <HIcon :name="HIconName.Add" clickable @click="onAddTag" />
       </template>

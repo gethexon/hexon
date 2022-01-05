@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, watch } from "vue"
 import { useRoute, useRouter } from "vue-router"
-
 import { useDetailStore } from "~/store/detail"
 import { useDispatcher } from "~/store/dispatcher"
 import { parseHfm, updateStringByObj } from "~/utils/hfm"
@@ -20,6 +19,7 @@ import { useMainStore } from "~/store/main"
 import HCategoriesEditor from "@/Editors/HCategoriesEditor.vue"
 import HNavTitle from "@/ui/nav-list/src/HNavTitle.vue"
 import { HIcon, HIconName } from "@/ui/icon"
+import HLayoutEditor from "~/components/editors/HLayoutEditor.vue"
 
 const [HMonacoEditor, monacoLoading] = useAsyncComponentWithLoading(
   () => import("@/Editors/HMonacoEditor.vue")
@@ -84,8 +84,9 @@ const raw = computed(() => detailStore.article?.raw ?? "")
 const internal_raw = ref(raw.value)
 watch(raw, (v) => (internal_raw.value = v))
 const data = computed(() => parseHfm(internal_raw.value))
-const title = computed(() => data.value.title)
 const content = computed(() => data.value._content)
+const title = computed(() => data.value.title)
+const layout = computed(() => data.value.layout)
 const tags = computed(() => data.value.tags)
 const categories = computed(() => data.value.categories)
 const availableTags = computed(() => mainStore.tagNamesList)
@@ -100,15 +101,17 @@ const updateFromObj = (obj: any) => {
 const updateTitle = (title: string = "") => {
   updateFromObj({ title })
 }
-const updateContent = (_content: string = "") => {
+const updateContent = (_content: string) => {
   updateFromObj({ _content })
 }
 const updateTags = (tags: string[] = []) => {
   updateFromObj({ tags })
 }
 const updateCategories = (categories: string[] = []) => {
-  console.log("update categories:", categories)
   updateFromObj({ categories })
+}
+const updateLayout = (layout: string = "") => {
+  updateFromObj({ layout })
 }
 //#endregion
 
@@ -152,7 +155,7 @@ const vars = useThemeVars()
           </div>
         </HToolbar>
         <div class="flex-1 h-0 overflow-auto">
-          <HNavTitle>
+          <HNavTitle class="mt-2">
             <HIcon :name="HIconName.Tag" class="mr-1" />
             标签
           </HNavTitle>
@@ -161,7 +164,7 @@ const vars = useThemeVars()
             :tags="tags"
             @update:tags="updateTags"
           />
-          <HNavTitle>
+          <HNavTitle class="mt-2">
             <HIcon :name="HIconName.Folder" class="mr-2" />
             分类
           </HNavTitle>
@@ -171,6 +174,11 @@ const vars = useThemeVars()
             @update:categories="updateCategories"
             class="mt-2"
           />
+          <HNavTitle class="mt-2">
+            <HIcon :name="HIconName.Type" class="mr-2" />
+            Layout
+          </HNavTitle>
+          <HLayoutEditor :layout="layout" @update:layout="updateLayout" />
         </div>
       </div>
     </div>

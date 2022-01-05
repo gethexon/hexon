@@ -20,8 +20,9 @@ type FrontMatterRequired = {
 
 type FrontMatterPart = {
   title: string
-  date: string | undefined
-  updated: string | undefined
+  date: string
+  updated: string
+  layout: string
   tags: string[]
   categories: string[]
   [key: string]: unknown
@@ -35,6 +36,7 @@ export const parseHfm = (str: string = ""): FrontMatterResult => {
     title: dtitle,
     date: ddate,
     updated: dupdated,
+    layout: dlayout,
     tags: dtags,
     categories: dcategories,
     ...rest
@@ -52,24 +54,22 @@ export const parseHfm = (str: string = ""): FrontMatterResult => {
       Array.isArray(v) ? parseStringArray(v) : parseString(v)
     )
   }
-  const parseStringOrUndefined = (val: unknown): string | undefined => {
-    if (typeof val === "undefined") return val
-    return parseString(val)
-  }
   const _content = parseString(d_content)
   const title = parseString(dtitle)
   const tags = parseStringArray(dtags)
-  const date = parseStringOrUndefined(ddate)
-  const updated = parseStringOrUndefined(dupdated)
+  const date = parseString(ddate)
+  const updated = parseString(dupdated)
+  const layout = parseString(dlayout)
   const categories =
     categories2Array2d(parseStringOrArray(dcategories))[0] ?? []
   return {
     _content,
     title,
-    tags,
-    categories,
     date,
     updated,
+    layout,
+    tags,
+    categories,
     ...rest,
   }
 }
@@ -77,16 +77,25 @@ export const parseHfm = (str: string = ""): FrontMatterResult => {
 export const stringifyHfm = ({
   _content: d_content,
   title: dtitle,
+  date: ddate,
+  updated: dupdated,
+  layout: dlayout,
   tags: dtags,
   categories: dcategories,
   ...rest
 }: FrontMatterInput) => {
   const _content = d_content
   const title = dtitle || undefined
+  const date = ddate || undefined
+  const updated = dupdated || undefined
+  const layout = dlayout || undefined
   const tags = dtags?.length ? dtags : undefined
   const categories = dcategories?.length ? dcategories : undefined
   let o: FrontMatterInput = { _content, ...rest }
   title && (o = { ...o, title })
+  date && (o = { ...o, date })
+  updated && (o = { ...o, updated })
+  layout && (o = { ...o, layout })
   tags && (o = { ...o, tags })
   categories && (o = { ...o, categories })
   return hfm.stringify(o)
