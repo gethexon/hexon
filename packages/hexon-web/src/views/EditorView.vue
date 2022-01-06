@@ -20,6 +20,8 @@ import HToolbar from "@/HToolbar.vue"
 import HLayoutEditor from "@/editors/HLayoutEditor.vue"
 import HNavTitle from "@/ui/nav-list/src/HNavTitle.vue"
 import ErroredView from "./ErroredView.vue"
+import dayjs from "dayjs"
+import HDatePicker from "~/components/ui/date-picker/src/HDatePicker.vue"
 
 const [HMonacoEditor, monacoLoading] = useAsyncComponentWithLoading(
   () => import("@/Editors/HMonacoEditor.vue")
@@ -156,6 +158,10 @@ const vars = useThemeVars()
         </HToolbar>
         <div class="flex-1 h-0 overflow-auto">
           <HNavTitle class="mt-2">
+            <HIcon :name="HIconName.DateTime" class="mr-1" />
+            发布和更新
+          </HNavTitle>
+          <HNavTitle class="mt-2">
             <HIcon :name="HIconName.Tag" class="mr-1" />
             标签
           </HNavTitle>
@@ -172,7 +178,6 @@ const vars = useThemeVars()
             :availableCats="availableCats"
             :categories="categories"
             @update:categories="updateCategories"
-            class="mt-2"
           />
           <HNavTitle class="mt-2">
             <HIcon :name="HIconName.Type" class="mr-2" />
