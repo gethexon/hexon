@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import HToolbar from "./HToolbar.vue"
-import { HButton } from "./ui/button"
-import { HIcon } from "./ui/icon"
-import { HIconName } from "./ui/icon"
+import { HButton } from "@/ui/button"
+import { HIconName } from "@/ui/icon"
+import { HIcon } from "@/ui/icon"
 import { HViewerToolbarActionPayload } from "./types"
+import HToolbar from "./HToolbar.vue"
 const emits = defineEmits<{
   (e: "on-action", payload: HViewerToolbarActionPayload): void
 }>()

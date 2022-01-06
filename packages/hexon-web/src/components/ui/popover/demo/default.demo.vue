@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { HPopover } from ".."
-import { HButton } from "~/components/ui/button"
 import { useTheme } from "@winwin/vue-global-theming"
 import { HTheme } from "~/themes"
+import { HButton } from "@/ui/button"
+import { HPopover } from ".."
 
 const theme = useTheme<HTheme>()!
 </script>

@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import { useTheme } from "@winwin/vue-global-theming"
+import { useAccount } from "@winwin/vue-simple-account"
 import { computed } from "vue"
 import { useRouter } from "vue-router"
-import { useAccount } from "@winwin/vue-simple-account"
-import HLoginForm from "~/components/forms/HLoginForm.vue"
-import { useTheme } from "@winwin/vue-global-theming"
 import { HTheme } from "~/themes"
+import HLoginForm from "@/forms/HLoginForm.vue"
 const router = useRouter()
 const account = useAccount()
 const footer = computed(() => {

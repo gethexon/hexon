@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { toRefs } from "vue"
+import { HButton } from "@/ui/button"
+import { HIconName } from "@/ui/icon"
+import { HIcon } from "@/ui/icon"
+import { HInput } from "@/ui/input"
 import HToolbar from "./HToolbar.vue"
-import { HInput } from "./ui/input"
-import { HButton } from "./ui/button"
-import { HIcon } from "./ui/icon"
-import { HIconName } from "./ui/icon"
 
 const props = defineProps<{
   modelValue: string

@@ -6,10 +6,10 @@ import { useDetailStore } from "./detail"
 import { useMainStore } from "./main"
 
 const HCreateArticleModal = defineAsyncComponent(
-  () => import("~/components/modals/HCreateArticleModal.vue")
+  () => import("@/modals/HCreateArticleModal.vue")
 )
 const HSettingsModal = defineAsyncComponent(
-  () => import("~/components/modals/HSettingsModal.vue")
+  () => import("@/modals/HSettingsModal.vue")
 )
 
 export const useDispatcher = defineStore("dispatcher", {

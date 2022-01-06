@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref } from "vue"
-import { useDialog } from ".."
-import { HInput } from "@/ui/input"
 import { HButton } from "@/ui/button"
-import HToggle from "~/components/ui/toggle/src/HToggle.vue"
+import { HInput } from "@/ui/input"
+import HToggle from "@/ui/toggle/src/HToggle.vue"
+import { useDialog } from ".."
 
 const dialog = useDialog()
 const fire = () => {
@@ -53,6 +53,7 @@ const persistent = ref(false)
   <HInput type="secondary" v-model="title" />
   content
   <HInput type="secondary" v-model="content" />
-  persistent <HToggle v-model:active="persistent" />
+  persistent
+  <HToggle v-model:active="persistent" />
   <HButton @click="fire">fire</HButton>
 </template>

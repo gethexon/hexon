@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { toRefs, computed } from "vue"
-import HToolbar from "./HToolbar.vue"
-import { HIcon } from "./ui/icon"
-import { HIconName } from "./ui/icon"
 import { useTheme } from "@winwin/vue-global-theming"
+import { computed, toRefs } from "vue"
 import { HTheme } from "~/themes"
+import { HIconName } from "@/ui/icon"
+import { HIcon } from "@/ui/icon"
+import HToolbar from "./HToolbar.vue"
 
 const props = withDefaults(
   defineProps<{
@@ -22,16 +22,7 @@ const theme = useTheme<HTheme>()!
 <template>
   <HToolbar class="h-nav-setting text-main px-4 cursor-pointer">
     <div
-      class="
-        avatar
-        w-8
-        h-8
-        rounded-full
-        text-xl
-        flex
-        items-center
-        justify-center
-      "
+      class="avatar w-8 h-8 rounded-full text-xl flex items-center justify-center"
       :style="{
         background: theme.color.primary.n,
         color: theme.color.foreground.min,

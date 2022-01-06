@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { computed, ComputedRef } from "vue"
-import { HTheme } from "~/themes"
-import { HIconName } from "~/components/ui/icon"
-import { useMainStore } from "~/store/main"
+import { useTheme } from "@winwin/vue-global-theming"
+import { ComputedRef, computed } from "vue"
+import { Category } from "~/api"
+import { TreeNode } from "~/lib/list2tree"
 import { useArticleListStore } from "~/store/articleList"
 import { useDispatcher } from "~/store/dispatcher"
-import { TreeNode } from "~/lib/list2tree"
-import { Category } from "~/api"
+import { useMainStore } from "~/store/main"
+import { HTheme } from "~/themes"
+import { HIconName } from "@/ui/icon"
 import { HNavList, NavListItem } from "@/ui/nav-list"
-import HTitle from "@/HTitle.vue"
 import HNavSetting from "@/HNavSetting.vue"
-import { useTheme } from "@winwin/vue-global-theming"
+import HTitle from "@/HTitle.vue"
 
 //#region hooks
 const mainStore = useMainStore()

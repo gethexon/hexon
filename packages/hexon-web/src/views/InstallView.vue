@@ -2,12 +2,12 @@
 import { useTheme } from "@winwin/vue-global-theming"
 import { ref } from "vue"
 import { install } from "~/api"
-import HInstallForm from "~/components/forms/HInstallForm.vue"
-import { IFormData } from "~/components/types"
 import { HTheme } from "~/themes"
 import { forceReloadWindow } from "~/utils"
-import { HIcon } from "~/components/ui/icon"
-import { HIconName } from "~/components/ui/icon/src/interface"
+import { IFormData } from "@/types"
+import { HIcon } from "@/ui/icon"
+import { HIconName } from "@/ui/icon/src/interface"
+import HInstallForm from "@/forms/HInstallForm.vue"
 const props = defineProps<{
   prev: () => void
 }>()
@@ -38,19 +38,7 @@ const theme = useTheme<HTheme>()!
   <div class="w-full h-full relative flex flex-col items-center justify-center">
     <HInstallForm @on-submit="onSubmit" @on-back="prev" />
     <div
-      class="
-        absolute
-        top-0
-        left-0
-        bottom-0
-        right-0
-        transition-opacity
-        z-10
-        flex
-        items-center
-        justify-center
-        text-4xl
-      "
+      class="absolute top-0 left-0 bottom-0 right-0 transition-opacity z-10 flex items-center justify-center text-4xl"
       :style="{
         backgroundColor: theme.color.primary.n,
         opacity: installing ? 0.9 : 0,

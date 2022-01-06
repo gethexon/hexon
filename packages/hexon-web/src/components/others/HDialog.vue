@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { useTheme } from "@winwin/vue-global-theming"
-import anime from "animejs"
 import { ref } from "vue"
+import anime from "animejs"
 import { DialogActionType, IDialog } from "~/lib/dialog"
 import { HTheme } from "~/themes"
-import HButton from "../ui/button/src/HButton.vue"
-import { HButtonType } from "../ui/button/src/interface"
+import { HButtonType } from "@/ui/button/src/interface"
+import HButton from "@/ui/button/src/HButton.vue"
 const props = defineProps<{ data: IDialog }>()
 function transformType(type: DialogActionType): HButtonType {
   switch (type) {

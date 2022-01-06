@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { computed, toRefs } from "vue"
 import { parse } from "hexo-front-matter"
-import { categories2Array2d, isMultiCategories } from "~/utils"
-import { HIcon } from "./ui/icon"
-import { HIconName } from "./ui/icon"
+import { computed, toRefs } from "vue"
 import dayjs from "dayjs"
+import { categories2Array2d, isMultiCategories } from "~/utils"
+import { HIconName } from "@/ui/icon"
+import { HIcon } from "@/ui/icon"
 
 const props = withDefaults(
   defineProps<{

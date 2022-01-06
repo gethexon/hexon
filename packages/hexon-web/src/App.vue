@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { computed } from "@vue/reactivity"
-import { Notifications } from "./lib/notification"
-import ClassProvider from "./ClassProvider.vue"
 import { useDark } from "@vueuse/core"
 import { useThemeController } from "@winwin/vue-global-theming"
 import { watch } from "vue"
-import HNotificationItem from "~/components/others/HNotificationItem.vue"
 import { useRoute } from "vue-router"
-import { DialogContainer } from "./lib/dialog"
 import HDialog from "@/others/HDialog.vue"
+import HNotificationItem from "@/others/HNotificationItem.vue"
+import { DialogContainer } from "./lib/dialog"
+import { Notifications } from "./lib/notification"
+import ClassProvider from "./ClassProvider.vue"
 import ModalContainer from "./lib/modal/src/ModalContainer.vue"
 
 const route = useRoute()

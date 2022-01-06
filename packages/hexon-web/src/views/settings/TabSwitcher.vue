@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import type { Component } from "vue"
-import { computed, watch } from "vue"
-import { ref } from "vue"
-import TranslateUpDownTransitionGroup from "~/components/transitions/TranslateUpDownTransitionGroup.vue"
+import { ref, computed, watch } from "vue"
+import TranslateUpDownTransitionGroup from "@/transitions/TranslateUpDownTransitionGroup.vue"
 
 const props = defineProps<{
   current: string

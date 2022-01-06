@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import HToolbar from "~/components/HToolbar.vue"
-import { useThemeVars } from "~/components/ui/theme"
 import { HIcon, HIconName } from "@/ui/icon"
+import { useThemeVars } from "@/ui/theme"
+import HToolbar from "@/HToolbar.vue"
 const vars = useThemeVars()
 </script>
 <template>

@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { ref } from "vue"
 import { useTheme } from "@winwin/vue-global-theming"
-import logo from "~/assets/logo.svg"
+import { ref } from "vue"
 import { HTheme } from "~/themes"
+import logo from "~/assets/logo.svg"
+import { HButton } from "@/ui/button"
+import { HIconName } from "@/ui/icon"
+import { HIcon } from "@/ui/icon"
+import { HInput } from "@/ui/input"
 import HImage from "@/HImage.vue"
-import { HInput } from "~/components/ui/input"
-import { HIcon } from "~/components/ui/icon"
-import { HButton } from "~/components/ui/button"
-import { HIconName } from "~/components/ui/icon"
 
 const emits = defineEmits<{
   (e: "on-submit", payload: { username: string; password: string }): void
