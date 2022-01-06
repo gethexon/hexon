@@ -126,7 +126,7 @@ const styleVars = computed(() => {
     @apply w-8;
   }
   &-round&-small {
-    @apply w-7;
+    @apply w-7 px-0;
   }
 }
 </style>
