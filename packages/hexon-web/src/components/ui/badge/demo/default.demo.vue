@@ -67,3 +67,8 @@ const vars = useThemeVars()
   <HBadge rounded>HBadge</HBadge>
   <HBadge rounded clickable><HIcon :name="HIconName.Search" /></HBadge>
 </template>
+<style>
+.h-badge {
+  @apply mr-1;
+}
+</style>

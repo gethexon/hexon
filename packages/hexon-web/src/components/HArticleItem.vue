@@ -38,7 +38,7 @@ const styleVars = computed(() => {
     <div class="brief text-xs mt-1" v-if="brief">{{ brief }}</div>
     <div v-if="tags && tags.length" class="mt-0.5">
       <HBadge
-        class="text-xs mr-1 mb-0.5"
+        class="mr-1 mb-0.5"
         :color="theme.color.foreground.main"
         :bg-color="theme.color.background.badge"
         v-for="tag in tags"

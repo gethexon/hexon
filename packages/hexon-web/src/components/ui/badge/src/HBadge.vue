@@ -25,7 +25,7 @@ const { classNames } = createClassNames("h-badge", (add, m) => {
 </script>
 <template>
   <span
-    class="px-1 py-0.5 select-none inline-block"
+    class="px-1 py-0.5 text-xs select-none inline-block"
     :class="classNames"
     :style="styles"
   >
