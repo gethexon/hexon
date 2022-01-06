@@ -26,6 +26,7 @@ const props = withDefaults(
     persistent?: boolean
     trigger?: TriggerType
     raw?: boolean
+    duration?: number
   }>(),
   {
     show: false,
@@ -118,7 +119,7 @@ const theme = useTheme<HTheme>()!
 <template>
   <teleport to="body">
     <ClassProvider>
-      <FadeTransition>
+      <FadeTransition :duration="props.duration">
         <div
           v-if="show"
           class="popover"
@@ -126,7 +127,7 @@ const theme = useTheme<HTheme>()!
           :style="style.outer"
         >
           <div :style="style.inner">
-            <slot v-if="raw"> </slot>
+            <slot v-if="raw"></slot>
             <div
               class="p-1 rounded-md"
               :style="{

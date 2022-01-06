@@ -58,15 +58,16 @@ const slots = useSlots()
 <template>
   <div>
     <label
-      class="text-sm h-8 border-none rounded-2xl px-3 py-0 overflow-hidden flex cursor-text items-center w-full"
+      class="text-sm h-8 border-none rounded-2xl px-3 py-0 flex cursor-text items-center w-full"
       :class="classNames"
       :style="{ outline: `1px solid ${styleVars.outline}` }"
     >
       <div class="prefix mr-1" v-if="slots.prefix">
         <slot name="prefix"></slot>
       </div>
+      <!-- input min-w-0 make input can shrink in flexbox -->
       <input
-        class="border-none outline-none flex-1 rounded-none leading-full bg-transparent mx-1"
+        class="border-none outline-none flex-1 flex-shrink rounded-none leading-full bg-transparent mx-1 min-w-0"
         :value="props.modelValue"
         :placeholder="props.placeholder"
         :type="props.attrType"
