@@ -56,9 +56,9 @@ export const useDispatcher = defineStore("dispatcher", {
         ],
       })
     },
-    saveArticle(raw: string) {
+    async saveArticle(raw: string) {
       const detailStore = useDetailStore()
-      detailStore.saveArticle(raw).then(
+      await detailStore.saveArticle(raw).then(
         () => {
           this.notification.notify({
             title: "保存成功",
@@ -73,6 +73,7 @@ export const useDispatcher = defineStore("dispatcher", {
             type: "error",
             duration: 5000,
           })
+          throw err
         }
       )
     },

@@ -1,12 +1,19 @@
 <script setup lang="ts">
+import { HBadge } from "@/ui/badge"
 import { HButton } from "@/ui/button"
-import { HIconName } from "@/ui/icon"
 import { HIcon } from "@/ui/icon"
-import HToolbar from "./HToolbar.vue"
+import { HIconName } from "@/ui/icon"
+import { useThemeVars } from "@/ui/theme"
 import { HEditorToolbarActionPayload } from "./types"
+import HToolbar from "./HToolbar.vue"
+const props = defineProps<{
+  saving?: boolean
+  changed?: boolean
+}>()
 const emits = defineEmits<{
   (e: "on-action", payload: HEditorToolbarActionPayload): void
 }>()
+const vars = useThemeVars()
 </script>
 <template>
   <HToolbar class="px-2">
@@ -14,6 +21,17 @@ const emits = defineEmits<{
       返回
     </HButton>
     <div class="flex-1"></div>
+    <HBadge class="mr-2" v-if="props.saving" rounded>保存中...</HBadge>
+    <template v-else>
+      <HBadge
+        class="mr-2"
+        :bg-color="vars.colorCommon"
+        v-if="props.changed"
+        rounded
+      >
+        未保存
+      </HBadge>
+    </template>
     <HButton
       class="mr-2"
       type="primary"

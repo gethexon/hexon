@@ -5,7 +5,7 @@ import { PostOrPage } from "~/interface"
 import { useDetailStore } from "~/store/detail"
 import { useDispatcher } from "~/store/dispatcher"
 import { useMainStore } from "~/store/main"
-import { useAsyncComponentWithLoading } from "~/utils"
+import { noop, useAsyncComponentWithLoading } from "~/utils"
 import { parseHfm, updateStringByObj } from "~/utils/hfm"
 import { HEditorToolbarActionPayload } from "@/types"
 import { HButton } from "@/ui/button"
@@ -47,7 +47,7 @@ const onAction = (payload: HEditorToolbarActionPayload) => {
       dispatcher.viewArticle({ type, source })
       break
     case "save":
-      dispatcher.saveArticle(internal_raw.value)
+      dispatcher.saveArticle(internal_raw.value).then(setUnchanged, noop)
       break
     case "delete":
       dispatcher.deleteArticle({ type, source })
@@ -96,9 +96,12 @@ const availableCats = computed(() => mainStore.catNamesList)
 //#endregion
 
 //#region update
-
+const changed = ref(false)
+const setChanged = () => (changed.value = true)
+const setUnchanged = () => (changed.value = false)
 const updateFromObj = (obj: any) => {
   internal_raw.value = updateStringByObj(internal_raw.value, obj)
+  setChanged()
 }
 const updateTitle = (title: string = "") => {
   updateFromObj({ title })
@@ -131,7 +134,11 @@ const vars = useThemeVars()
     </ErroredView>
     <div class="flex h-full w-full" v-else>
       <div class="main bg-base-1 flex-1 min-w-0 flex flex-col h-full">
-        <HEditorToolbar @on-action="onAction" />
+        <HEditorToolbar
+          :saving="detailStore.saving"
+          :changed="changed"
+          @on-action="onAction"
+        />
         <div class="flex flex-col flex-1 w-full min-h-0 max-w-2xl mx-auto">
           <HHeaderEditor :value="title" @update:value="updateTitle" />
           <div class="flex-1 w-full relative">
