@@ -9,6 +9,7 @@ import { HIcon } from "@/ui/icon"
 import { HPopover } from "@/ui/popover"
 import { useThemeVars } from "@/ui/theme"
 import { getDataByDate } from "./utils"
+import HSlider from "../../slider/src/HSlider.vue"
 const props = defineProps<{
   date: Dayjs | null
 }>()
@@ -67,6 +68,24 @@ watch(
     internal.value = props.date
   }
 )
+const hour = computed<number>({
+  get() {
+    return (internal.value?.hour() ?? 0) - 0
+  },
+  set(v) {
+    if (!internal.value) return
+    internal.value = internal.value.set("hour", v)
+  },
+})
+const minute = computed<number>({
+  get() {
+    return (internal.value?.minute() ?? 0) - 0
+  },
+  set(v) {
+    if (!internal.value) return
+    internal.value = internal.value.set("minute", v)
+  },
+})
 </script>
 <template>
   <HPopover position="bottom-right" raw v-model:show="show">
@@ -116,6 +135,13 @@ watch(
           </HButton>
         </template>
       </div>
+      <HDivider class="my-2" />
+      <HSlider style="height: 20px" :min="0" :max="23" v-model:value="hour">
+        {{ `${hour} 时` }}
+      </HSlider>
+      <HSlider style="height: 20px" :min="0" :max="59" v-model:value="minute">
+        {{ `${minute} 分` }}
+      </HSlider>
       <HDivider class="my-2" />
       <div class="flex justify-end">
         <HButton size="small" type="error" inverted @click="onClear">
