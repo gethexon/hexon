@@ -1,10 +1,14 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios"
 import CryptoJS from "crypto-js"
 import JSEncrypt from "jsencrypt"
-import { HTMLAttributes } from "vue"
 
 interface IHttpSecureOption {
   onDisable?(): void
+}
+
+interface IRawData {
+  url: string
+  data: any
 }
 
 export default function createHttpSecureAxios(
@@ -12,9 +16,9 @@ export default function createHttpSecureAxios(
   option: IHttpSecureOption = {}
 ) {
   let id = 1
-  const urlMap = new Map<number, string>()
 
-  // TODO log response data if secure enabled
+  const rawMap = new Map<number, IRawData>()
+
   const onDisable = option.onDisable ?? (() => {})
   const instance = axios.create(config)
 
@@ -47,7 +51,7 @@ export default function createHttpSecureAxios(
 
     //#region save url
     config.httpSecureId = id
-    urlMap.set(id, config.url || "")
+    rawMap.set(id, { url: config.url || "", data: config.data })
     id++
     //#endregion
 
@@ -89,8 +93,11 @@ export default function createHttpSecureAxios(
 
       //#region restore url
       if (res.config.httpSecureId !== void 0) {
-        res.config.url = urlMap.get(res.config.httpSecureId) || ""
-        urlMap.delete(res.config.httpSecureId)
+        const { url = "", data = {} } =
+          rawMap.get(res.config.httpSecureId) || {}
+        res.config.url = url
+        res.config.data = data
+        rawMap.delete(res.config.httpSecureId)
       }
       //#endregion
 
@@ -116,8 +123,11 @@ export default function createHttpSecureAxios(
         const res = err.response as AxiosResponse
         //#region restore url
         if (res.config.httpSecureId !== void 0) {
-          res.config.url = urlMap.get(res.config.httpSecureId) || ""
-          urlMap.delete(res.config.httpSecureId)
+          const { url = "", data = {} } =
+            rawMap.get(res.config.httpSecureId) || {}
+          res.config.url = url
+          res.config.data = data
+          rawMap.delete(res.config.httpSecureId)
         }
         //#endregion
 
