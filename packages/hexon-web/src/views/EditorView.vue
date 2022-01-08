@@ -12,9 +12,9 @@ import { HButton } from "@/ui/button"
 import { HIcon, HIconName } from "@/ui/icon"
 import { HLoading } from "@/ui/loading"
 import { useThemeVars } from "@/ui/theme"
-import HCategoriesEditor from "@/Editors/HCategoriesEditor.vue"
-import HHeaderEditor from "@/Editors/HHeaderEditor.vue"
-import HTagEditor from "@/Editors/HTagEditor.vue"
+import HCategoriesEditor from "@/editors/HCategoriesEditor.vue"
+import HHeaderEditor from "@/editors/HHeaderEditor.vue"
+import HTagEditor from "@/editors/HTagEditor.vue"
 import HEditorToolbar from "@/HEditorToolbar.vue"
 import HToolbar from "@/HToolbar.vue"
 import HLayoutEditor from "@/editors/HLayoutEditor.vue"
@@ -24,7 +24,7 @@ import dayjs from "dayjs"
 import HDatePicker from "~/components/ui/date-picker/src/HDatePicker.vue"
 
 const [HMonacoEditor, monacoLoading] = useAsyncComponentWithLoading(
-  () => import("@/Editors/HMonacoEditor.vue")
+  () => import("@/editors/HMonacoEditor.vue")
 )
 
 //#region hooks
