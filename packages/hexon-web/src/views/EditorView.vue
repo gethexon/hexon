@@ -20,6 +20,8 @@ import HToolbar from "@/HToolbar.vue"
 import HLayoutEditor from "@/editors/HLayoutEditor.vue"
 import HNavTitle from "@/ui/nav-list/src/HNavTitle.vue"
 import ErroredView from "./ErroredView.vue"
+import HDateEditor from "~/components/editors/HDateEditor.vue"
+import dayjs, { Dayjs } from "dayjs"
 
 const [HMonacoEditor, monacoLoading] = useAsyncComponentWithLoading(
   () => import("@/editors/HMonacoEditor.vue")
@@ -89,6 +91,16 @@ const title = computed(() => data.value.title)
 const layout = computed(() => data.value.layout)
 const tags = computed(() => data.value.tags)
 const categories = computed(() => data.value.categories)
+const date = computed(() => {
+  const res = dayjs(data.value.date)
+  if (res.format("") === "Invalid Date") return null
+  return res
+})
+const updated = computed(() => {
+  const res = dayjs(data.value.updated)
+  if (res.format("") === "Invalid Date") return null
+  return res
+})
 const availableTags = computed(() => mainStore.tagNamesList)
 const availableCats = computed(() => mainStore.catNamesList)
 //#endregion
@@ -102,24 +114,25 @@ const updateFromObj = (obj: any) => {
   setChanged()
 }
 const updateTitle = (title: string = "") => {
-  console.log("updateTitle")
   updateFromObj({ title })
 }
 const updateContent = (_content: string) => {
-  console.log("updateContent")
   updateFromObj({ _content })
 }
 const updateTags = (tags: string[] = []) => {
-  console.log("updateTags")
   updateFromObj({ tags })
 }
 const updateCategories = (categories: string[] = []) => {
-  console.log("updateCategories")
   updateFromObj({ categories })
 }
 const updateLayout = (layout: string = "") => {
-  console.log("updateLayout")
   updateFromObj({ layout })
+}
+const updateDate = (date: Dayjs | null) => {
+  updateFromObj({ date: date?.format("YYYY-MM-DD hh:mm:ss") })
+}
+const updateUpdated = (updated: Dayjs | null) => {
+  updateFromObj({ updated: updated?.format("YYYY-MM-DD hh:mm:ss") })
 }
 //#endregion
 
@@ -168,9 +181,15 @@ const vars = useThemeVars()
         </HToolbar>
         <div class="flex-1 h-0 overflow-auto">
           <HNavTitle class="mt-2">
-            <HIcon :name="HIconName.DateTime" class="mr-1" />
-            发布和更新
+            <HIcon :name="HIconName.Globe" class="mr-1" />
+            发布于
           </HNavTitle>
+          <HDateEditor :date="date" @update:date="updateDate" />
+          <HNavTitle class="mt-2">
+            <HIcon :name="HIconName.DevUpdate" class="mr-1" />
+            更新于
+          </HNavTitle>
+          <HDateEditor :date="updated" @update:date="updateUpdated" />
           <HNavTitle class="mt-2">
             <HIcon :name="HIconName.Tag" class="mr-1" />
             标签

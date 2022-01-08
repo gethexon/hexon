@@ -86,11 +86,20 @@ const minute = computed<number>({
     internal.value = internal.value.set("minute", v)
   },
 })
+const second = computed<number>({
+  get() {
+    return (internal.value?.second() ?? 0) - 0
+  },
+  set(v) {
+    if (!internal.value) return
+    internal.value = internal.value.set("second", v)
+  },
+})
 </script>
 <template>
   <HPopover position="bottom-right" raw v-model:show="show">
     <div
-      class="shadow rounded-md p-2"
+      class="shadow-2xl rounded-md p-2"
       :style="{ backgroundColor: vars.backgroundColorPrimary }"
     >
       <div class="grid grid-cols-7 grid-rows-2 -mx-0.5">
@@ -141,6 +150,9 @@ const minute = computed<number>({
       </HSlider>
       <HSlider style="height: 20px" :min="0" :max="59" v-model:value="minute">
         {{ `${minute} 分` }}
+      </HSlider>
+      <HSlider style="height: 20px" :min="0" :max="59" v-model:value="second">
+        {{ `${second} 秒` }}
       </HSlider>
       <HDivider class="my-2" />
       <div class="flex justify-end">
