@@ -23,7 +23,7 @@ import {
   Post,
   Tag,
 } from "./entities"
-import { IApiProvider } from "./interface"
+import { IApiProvider, IDeployOptions, IGenerateOptions } from "./interface"
 
 const dashIdToId = ({ _id: id, ...rest }: any) => ({ id, ...rest })
 
@@ -185,5 +185,14 @@ export class HttpApiProvider implements IApiProvider {
     })
     const { article } = res.data
     return ZPost.parse(dashIdToId(article))
+  }
+  async deploy(options: IDeployOptions = {}): Promise<void> {
+    return account.access.post("/hexo/deploy", options)
+  }
+  async generate(options: IGenerateOptions = {}): Promise<void> {
+    return account.access.post("/hexo/generate", options)
+  }
+  async clean(): Promise<void> {
+    return account.access.post("/hexo/clean")
   }
 }

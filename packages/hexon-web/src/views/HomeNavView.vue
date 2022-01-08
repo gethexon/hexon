@@ -11,10 +11,12 @@ import { HIconName } from "@/ui/icon"
 import { HNavList, NavListItem } from "@/ui/nav-list"
 import HNavSetting from "@/HNavSetting.vue"
 import HTitle from "@/HTitle.vue"
+import { useActionsStore } from "~/store/actions"
 
 //#region hooks
 const mainStore = useMainStore()
 const articleListStore = useArticleListStore()
+const actionsStore = useActionsStore()
 const dispatcher = useDispatcher()
 //#endregion
 
@@ -159,6 +161,9 @@ const onSelect = (key: string) => {
   key === "draft" && articleListStore.setFilter({ type: "draft" })
   if (key.slice(0, 2) === "c-")
     articleListStore.setFilter({ type: "category", slug: key.slice(2) })
+  key === "deploy" && actionsStore.deploy()
+  key === "generate" && actionsStore.generate()
+  key === "clean" && actionsStore.clean()
 }
 const onSettings = () => dispatcher.showSettingsModal()
 </script>

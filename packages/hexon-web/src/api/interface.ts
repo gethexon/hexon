@@ -16,7 +16,16 @@ export interface ICreateOptions {
   slug?: string
   replace?: boolean
 }
-
+export interface IDeployOptions {
+  generate?: boolean
+}
+export interface IGenerateOptions {
+  deploy?: boolean
+  watch?: boolean
+  bail?: boolean
+  force?: boolean
+  concurrency?: boolean
+}
 export interface IApiProvider {
   getAllData(): Promise<IWithAllData>
   getPosts(): Promise<BriefPost[]>
@@ -49,4 +58,7 @@ export interface IApiProvider {
     options?: ICreateOptions
   ): Promise<IPostWithAllData | IPageWithAllData>
   publishArticle(source: string): Promise<Post>
+  deploy(options?: IDeployOptions): Promise<void>
+  generate(options?: IGenerateOptions): Promise<void>
+  clean(): Promise<void>
 }
