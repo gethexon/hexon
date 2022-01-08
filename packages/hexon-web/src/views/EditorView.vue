@@ -1,27 +1,27 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, watch } from "vue"
 import { useRoute, useRouter } from "vue-router"
+import dayjs, { Dayjs } from "dayjs"
 import { PostOrPage } from "~/interface"
 import { useDetailStore } from "~/store/detail"
 import { useDispatcher } from "~/store/dispatcher"
 import { useMainStore } from "~/store/main"
 import { noop, useAsyncComponentWithLoading } from "~/utils"
 import { parseHfm, updateStringByObj } from "~/utils/hfm"
+import HDateEditor from "~/components/editors/HDateEditor.vue"
 import { HEditorToolbarActionPayload } from "@/types"
 import { HButton } from "@/ui/button"
 import { HIcon, HIconName } from "@/ui/icon"
 import { HLoading } from "@/ui/loading"
 import { useThemeVars } from "@/ui/theme"
-import HCategoriesEditor from "@/editors/HCategoriesEditor.vue"
-import HHeaderEditor from "@/editors/HHeaderEditor.vue"
-import HTagEditor from "@/editors/HTagEditor.vue"
 import HEditorToolbar from "@/HEditorToolbar.vue"
 import HToolbar from "@/HToolbar.vue"
+import HCategoriesEditor from "@/editors/HCategoriesEditor.vue"
+import HHeaderEditor from "@/editors/HHeaderEditor.vue"
 import HLayoutEditor from "@/editors/HLayoutEditor.vue"
+import HTagEditor from "@/editors/HTagEditor.vue"
 import HNavTitle from "@/ui/nav-list/src/HNavTitle.vue"
 import ErroredView from "./ErroredView.vue"
-import HDateEditor from "~/components/editors/HDateEditor.vue"
-import dayjs, { Dayjs } from "dayjs"
 
 const [HMonacoEditor, monacoLoading] = useAsyncComponentWithLoading(
   () => import("@/editors/HMonacoEditor.vue")
@@ -51,6 +51,9 @@ const onAction = (payload: HEditorToolbarActionPayload) => {
       break
     case "delete":
       dispatcher.deleteArticle({ type, source })
+      break
+    case "publish":
+      dispatcher.publishArticle(source)
       break
     default:
       break

@@ -16,7 +16,6 @@ export type IBrief = z.infer<typeof ZIBrief>
 
 export const ZIPage = z.object({
   __page: z.boolean().refine((v) => v, { message: "__page must be true" }),
-  __post: z.undefined(),
 })
 export type IPage = z.infer<typeof ZIPage>
 
@@ -26,7 +25,6 @@ export const ZIPost = z.object({
   categories: z.string().array(),
   tags: z.string().array(),
   __post: z.boolean().refine((v) => v, { message: "__post must be true" }),
-  __page: z.undefined(),
 })
 export type IPost = z.infer<typeof ZIPost>
 

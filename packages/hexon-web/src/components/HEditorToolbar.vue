@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useDetailStore } from "~/store/detail"
 import { HBadge } from "@/ui/badge"
 import { HButton } from "@/ui/button"
 import { HIcon } from "@/ui/icon"
@@ -14,6 +15,7 @@ const emits = defineEmits<{
   (e: "on-action", payload: HEditorToolbarActionPayload): void
 }>()
 const vars = useThemeVars()
+const detailStore = useDetailStore()
 </script>
 <template>
   <HToolbar class="px-2">
@@ -56,6 +58,7 @@ const vars = useThemeVars()
       round
       inverted
       @click="emits('on-action', { type: 'publish' })"
+      v-if="detailStore.isDraft"
     >
       <HIcon :name="HIconName.Upload" />
     </HButton>

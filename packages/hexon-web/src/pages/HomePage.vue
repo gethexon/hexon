@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import { computed, ref, onMounted } from "vue"
-import { RouterView, useRouter, useRoute } from "vue-router"
-import SplitView from "~/lib/splitview"
-import { useMainStore } from "~/store/main"
+import { computed, onMounted, ref } from "vue"
+import { RouterView, useRoute, useRouter } from "vue-router"
+import { BriefPost } from "~/api"
 import { useArticleListStore } from "~/store/articleList"
 import { useDispatcher } from "~/store/dispatcher"
+import { useMainStore } from "~/store/main"
+import { isPost } from "~/utils/article"
+import SplitView from "~/lib/splitview"
 import HomeNavView from "~/views/HomeNavView.vue"
-import HSearchBar from "@/HSearchBar.vue"
 import HArticleList from "@/HArticleList.vue"
+import HSearchBar from "@/HSearchBar.vue"
 
 //#region hooks
 const mainStore = useMainStore()
@@ -50,10 +52,12 @@ const articleListData = computed(() =>
       brief: article.brief,
       date: article.date,
       source: article.source,
-      type: article.__post ? "post" : "page",
+      type: isPost(article) ? "post" : "page",
     }
-    if (article.__post) {
-      res.tags = article.tags.map((tag) => mainStore.tags[tag].name)
+    if (isPost(article)) {
+      res.tags = (article as BriefPost).tags.map(
+        (tag) => mainStore.tags[tag].name
+      )
     }
     return res
   })

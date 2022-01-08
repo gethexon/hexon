@@ -1,5 +1,6 @@
 import { defineStore } from "pinia"
 import { BriefPage, BriefPost } from "~/api"
+import { isDraft, isPage, isPost } from "~/utils/article"
 
 type AllFilter = {
   type: "all"
@@ -47,21 +48,19 @@ export const useArticleListStore = defineStore("article-list", {
           case "all":
             return articles
           case "page":
-            return articles.filter((article) => article.__page)
+            return articles.filter(isPage)
           case "post":
-            return articles.filter((article) => article.__post)
+            return articles.filter(isPost)
           case "draft":
-            return articles.filter(
-              (article) => article.__post && !article.published
-            )
+            return articles.filter(isDraft)
           case "category":
-            return (
-              articles.filter((article) => article.__post) as BriefPost[]
-            ).filter((post) => post.categories?.includes(filter.slug))
+            return (articles.filter(isPost) as BriefPost[]).filter((post) =>
+              post.categories?.includes(filter.slug)
+            )
           case "tag":
-            return (
-              articles.filter((article) => article.__post) as BriefPost[]
-            ).filter((post) => post.tags?.includes(filter.slug))
+            return (articles.filter(isPost) as BriefPost[]).filter((post) =>
+              post.tags?.includes(filter.slug)
+            )
           default:
             return [] as never[]
         }

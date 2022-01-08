@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, watch } from "vue"
 import { useRoute } from "vue-router"
+import { PostOrPage } from "~/interface"
 import { useDetailStore } from "~/store/detail"
+import { useDispatcher } from "~/store/dispatcher"
+import { HViewerToolbarActionPayload } from "@/types"
 import { HButton } from "@/ui/button"
 import { HLoading } from "@/ui/loading"
-import HViewerToolbar from "@/HViewerToolbar.vue"
 import HViewerContent from "@/HViewerContent.vue"
 import HViewerHeader from "@/HViewerHeader.vue"
-import { HViewerToolbarActionPayload } from "@/types"
+import HViewerToolbar from "@/HViewerToolbar.vue"
 import ErroredView from "./ErroredView.vue"
-import { useDispatcher } from "~/store/dispatcher"
-import { PostOrPage } from "~/interface"
 
 //#region hooks
 const route = useRoute()
@@ -63,6 +63,7 @@ const onAction = (payload: HViewerToolbarActionPayload) => {
       dispatcher.deleteArticle({ type, source })
       break
     case "publish":
+      dispatcher.publishArticle(source)
       break
     default:
       break

@@ -1,6 +1,7 @@
 import { defineStore } from "pinia"
-import { api, Page, Post } from "~/api"
+import { Page, Post, api } from "~/api"
 import { PostOrPage } from "~/interface"
+import { isDraft, isPage, isPost } from "~/utils/article"
 
 interface IState {
   article: Post | Page | null
@@ -19,6 +20,15 @@ export const useDetailStore = defineStore("detail", {
   getters: {
     loading(): boolean {
       return !this.error && this._loading
+    },
+    isDraft(): boolean {
+      return isDraft(this.article)
+    },
+    isPost(): boolean {
+      return isPost(this.article)
+    },
+    isPage(): boolean {
+      return isPage(this.article)
     },
   },
   actions: {
@@ -44,7 +54,7 @@ export const useDetailStore = defineStore("detail", {
       this.saving = true
       try {
         await api.saveArticle(
-          this.article.__post ? "post" : "page",
+          isPost(this.article) ? "post" : "page",
           this.article.source,
           raw
         )

@@ -1,3 +1,4 @@
+import { isPost } from "~/utils/article"
 import account from "~/plugins/account"
 import {
   ICreateOptions,
@@ -154,8 +155,8 @@ export class HttpApiProvider implements IApiProvider {
     options: ICreateOptions = {}
   ): Promise<IPostWithAllData | IPageWithAllData> {
     const res = await account.access.post("/hexo/create", { title, ...options })
-    const { article, posts, pages, tags, categories } = res.data
-    if (article.__post) {
+    const { article } = res.data
+    if (isPost(article)) {
       const { article: post, posts, pages, tags, categories } = res.data
       const data: IPostWithAllData = ZIPostWithAllData.parse({
         post: dashIdToId(post),
@@ -176,5 +177,13 @@ export class HttpApiProvider implements IApiProvider {
       })
       return data
     }
+  }
+  async publishArticle(filename: string, layout?: string): Promise<Post> {
+    const res = await account.access.post("/hexo/publish", {
+      filename,
+      layout,
+    })
+    const { article } = res.data
+    return ZPost.parse(dashIdToId(article))
   }
 }

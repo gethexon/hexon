@@ -2,6 +2,7 @@ import { defineStore } from "pinia"
 import { defineAsyncComponent } from "vue"
 import { ICreateOptions } from "~/api"
 import { IArticleIdentifier } from "~/interface"
+import { isPost } from "~/utils/article"
 import { useDetailStore } from "./detail"
 import { useMainStore } from "./main"
 
@@ -101,6 +102,58 @@ export const useDispatcher = defineStore("dispatcher", {
     clearArticle() {
       const detailStore = useDetailStore()
       detailStore.clearArticle()
+    },
+    async publishArticle(source: string) {
+      this.dialog.create({
+        type: "warning",
+        title: "发布确认",
+        content: "发布后需手动恢复",
+        actions: [
+          { type: "common", label: "取消" },
+          {
+            type: "info",
+            label: "发布",
+            run: () => {
+              this.doPublishArticle(source)
+            },
+          },
+        ],
+      })
+    },
+    async doPublishArticle(source: string) {
+      const prefix = "_drafts/"
+      if (!source.startsWith(prefix)) return
+      const removePrefixAndExt = (source: string) => {
+        return source.slice(prefix.length, -3)
+      }
+      const mainStore = useMainStore()
+      await mainStore.publishArticle(removePrefixAndExt(source)).then(
+        (article) => {
+          this.notification.notify({
+            title: "发布成功",
+            type: "success",
+          })
+          const detailStore = useDetailStore()
+          if (
+            detailStore.article &&
+            isPost(detailStore.article) &&
+            detailStore.article.source === source
+          ) {
+            this.router.push({
+              name: "view",
+              params: { source: article.source },
+            })
+          }
+        },
+        (err) => {
+          this.notification.notify({
+            title: "文章发布失败",
+            desc: (err as Error).message,
+            type: "error",
+            duration: 5000,
+          })
+        }
+      )
     },
     goHome() {
       this.router.push({ name: "home" })

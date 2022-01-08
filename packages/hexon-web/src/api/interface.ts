@@ -1,13 +1,13 @@
 import {
-  IWithAllData,
-  BriefPost,
   BriefPage,
-  Tag,
+  BriefPost,
   Category,
-  Post,
-  Page,
-  IPostWithAllData,
   IPageWithAllData,
+  IPostWithAllData,
+  IWithAllData,
+  Page,
+  Post,
+  Tag,
 } from "./entities"
 
 export interface ICreateOptions {
@@ -48,4 +48,5 @@ export interface IApiProvider {
     title: string,
     options?: ICreateOptions
   ): Promise<IPostWithAllData | IPageWithAllData>
+  publishArticle(source: string): Promise<Post>
 }

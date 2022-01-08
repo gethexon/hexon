@@ -59,6 +59,11 @@ export const useMainStore = defineStore("main", {
         })
       }
     },
+    async publishArticle(filename: string) {
+      const article = await api.publishArticle(filename)
+      await this.getBlogData()
+      return article
+    },
   },
   getters: {
     articles(state): (BriefPost | BriefPage)[] {

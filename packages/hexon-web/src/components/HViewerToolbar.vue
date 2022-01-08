@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useDetailStore } from "~/store/detail"
 import { HButton } from "@/ui/button"
 import { HIconName } from "@/ui/icon"
 import { HIcon } from "@/ui/icon"
@@ -7,6 +8,7 @@ import HToolbar from "./HToolbar.vue"
 const emits = defineEmits<{
   (e: "on-action", payload: HViewerToolbarActionPayload): void
 }>()
+const detailStore = useDetailStore()
 </script>
 <template>
   <HToolbar>
@@ -35,6 +37,7 @@ const emits = defineEmits<{
       round
       inverted
       @click="emits('on-action', { type: 'publish' })"
+      v-if="detailStore.isDraft"
     >
       <HIcon :name="HIconName.Upload" />
     </HButton>
