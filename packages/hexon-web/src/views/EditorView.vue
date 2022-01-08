@@ -20,8 +20,6 @@ import HToolbar from "@/HToolbar.vue"
 import HLayoutEditor from "@/editors/HLayoutEditor.vue"
 import HNavTitle from "@/ui/nav-list/src/HNavTitle.vue"
 import ErroredView from "./ErroredView.vue"
-import dayjs from "dayjs"
-import HDatePicker from "~/components/ui/date-picker/src/HDatePicker.vue"
 
 const [HMonacoEditor, monacoLoading] = useAsyncComponentWithLoading(
   () => import("@/editors/HMonacoEditor.vue")
@@ -104,18 +102,23 @@ const updateFromObj = (obj: any) => {
   setChanged()
 }
 const updateTitle = (title: string = "") => {
+  console.log("updateTitle")
   updateFromObj({ title })
 }
 const updateContent = (_content: string) => {
+  console.log("updateContent")
   updateFromObj({ _content })
 }
 const updateTags = (tags: string[] = []) => {
+  console.log("updateTags")
   updateFromObj({ tags })
 }
 const updateCategories = (categories: string[] = []) => {
+  console.log("updateCategories")
   updateFromObj({ categories })
 }
 const updateLayout = (layout: string = "") => {
+  console.log("updateLayout")
   updateFromObj({ layout })
 }
 //#endregion

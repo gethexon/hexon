@@ -5,6 +5,7 @@ import { HInput } from "@/ui/input"
 import { HIcon, HIconName } from "@/ui/icon"
 import { HBadge } from "@/ui/badge"
 import { useThemeVars } from "@/ui/theme"
+
 const props = defineProps<{
   availableTags: string[]
   tags: string[]
@@ -17,21 +18,15 @@ const newTag = ref("")
 
 const tags = ref<string[]>(props.tags)
 watch(
-  () => props.tags,
-  (ts) => {
-    tags.value = ts
-  },
-  {
-    deep: true,
+  () => [...props.tags],
+  (ts, old) => {
+    if (ts.join("") !== old.join("")) tags.value = ts
   }
 )
 watch(
-  () => tags.value,
-  (ts) => {
-    emits("update:tags", ts)
-  },
-  {
-    deep: true,
+  () => [...tags.value],
+  (ts, old) => {
+    if (ts.join("") !== old.join("")) emits("update:tags", ts)
   }
 )
 const allTags = computed(() => {

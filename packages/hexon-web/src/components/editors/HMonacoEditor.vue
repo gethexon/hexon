@@ -30,7 +30,8 @@ onMounted(() => {
 
   resetModal()
   instance.onDidChangeModelContent(() => {
-    emits("update:value", instance.getValue())
+    const newValue = instance.getValue()
+    if (newValue !== props.value) emits("update:value", newValue)
   })
 
   setTimeout(() => {

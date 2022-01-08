@@ -5,6 +5,7 @@ import { HBadge } from "@/ui/badge"
 import { HInput } from "@/ui/input"
 import { useThemeVars } from "@/ui/theme"
 import { uniq } from "lodash-es"
+import { stringArrayEqual } from "~/utils/string"
 const props = defineProps<{
   availableCats: string[]
   categories: string[]
@@ -18,29 +19,19 @@ const allCategories = computed(() => {
   return uniq(categories.value.concat(props.availableCats)).sort()
 })
 watch(
-  () => props.categories,
-  (v) => {
-    categories.value = v
-  },
-  {
-    deep: true,
+  () => [...props.categories],
+  (v, old) => {
+    if (!stringArrayEqual(v, old)) categories.value = v
   }
 )
 watch(
-  () => categories.value,
-  (v) => {
-    emits("update:categories", v)
-  },
-  {
-    deep: true,
+  () => [...categories.value],
+  (v, old) => {
+    if (!stringArrayEqual(v, old)) emits("update:categories", v)
   }
 )
-// setTimeout(() => {
-//   categories.value.push("1")
-// }, 1000)
 const onNewCat = () => {
   if (newCat.value) {
-    // categories.value = [newCat.value]
     categories.value.push(newCat.value)
     newCat.value = ""
   }
