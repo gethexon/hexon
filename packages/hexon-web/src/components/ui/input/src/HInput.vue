@@ -56,7 +56,7 @@ const styleVars = computed(() => {
 const slots = useSlots()
 </script>
 <template>
-  <div>
+  <div class="w-full">
     <label
       class="text-sm h-8 border-none rounded-2xl px-3 py-0 flex cursor-text items-center w-full"
       :class="classNames"
@@ -86,7 +86,7 @@ const slots = useSlots()
       </div>
     </label>
     <div
-      class="h-input-hint"
+      class="h-input-hint w-full"
       :style="{ color: theme.colorError }"
       v-if="props.error !== void 0"
     >
