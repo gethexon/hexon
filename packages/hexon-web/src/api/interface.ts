@@ -61,4 +61,6 @@ export interface IApiProvider {
   deploy(options?: IDeployOptions): Promise<void>
   generate(options?: IGenerateOptions): Promise<void>
   clean(): Promise<void>
+  gitSync(): Promise<void>
+  gitSave(): Promise<void>
 }

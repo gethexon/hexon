@@ -195,4 +195,10 @@ export class HttpApiProvider implements IApiProvider {
   async clean(): Promise<void> {
     return account.access.post("/hexo/clean")
   }
+  async gitSync(): Promise<void> {
+    return account.access.post("/git/sync")
+  }
+  async gitSave(): Promise<void> {
+    return account.access.post("/git/save")
+  }
 }

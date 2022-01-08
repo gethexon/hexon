@@ -164,6 +164,8 @@ const onSelect = (key: string) => {
   key === "deploy" && actionsStore.deploy()
   key === "generate" && actionsStore.generate()
   key === "clean" && actionsStore.clean()
+  key === "gitsync" && actionsStore.gitSync()
+  key === "gitsave" && actionsStore.gitSave()
 }
 const onSettings = () => dispatcher.showSettingsModal()
 </script>
