@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import crypto from "crypto";
 import CryptoJS from "crypto-js";
 import { Context, Next } from "koa";
@@ -45,6 +46,7 @@ function secure(enable = () => true) {
       return;
     }
     if (isGetPublicKeyRoute(ctx)) {
+      console.log(chalk.white("GET"), chalk.white.dim("/publickey"));
       ctx.body = publicKey;
       return;
     }
@@ -53,11 +55,17 @@ function secure(enable = () => true) {
     const secured = ctx.path.startsWith(prefix);
 
     if (secured) {
-      const decoded = JSON.parse(decryptRSA(enced) || "");
+      const res = decryptRSA(enced);
+      if (!res) {
+        ctx.status = 403;
+        ctx.body = { code: "EHTTPSECURE" };
+        return;
+      }
+      const decoded = JSON.parse(res);
       ctx.path = decoded.url;
       const key = decoded.key;
       ctx.originalUrl = "[secure]" + ctx.path;
-      const { content } = ctx.request.body;
+      const { content } = ctx.request.body as { content?: string };
       if (content)
         ctx.request.body = JSON.parse(
           decryptAES(ctx.request.body.content, key)

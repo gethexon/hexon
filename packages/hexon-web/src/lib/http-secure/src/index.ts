@@ -11,6 +11,11 @@ interface IRawData {
   data: any
 }
 
+function parse(data?: string) {
+  const str = data ? data : "{}"
+  return JSON.parse(str)
+}
+
 export default function createHttpSecureAxios(
   config?: AxiosRequestConfig,
   option: IHttpSecureOption = {}
@@ -44,6 +49,22 @@ export default function createHttpSecureAxios(
     const res = o.encrypt(data)
     return res
   }
+  async function fetchPublicKey(config: AxiosRequestConfig) {
+    const res = await axios
+      .get("/publickey", { baseURL: config.baseURL })
+      .catch(async (err) => {
+        if (err.response) {
+          if ((err.response as AxiosResponse).status === 404) {
+            console.log("server not support, http-secure has been disabled")
+            config.httpSecureDisabled = true
+            await onDisable()
+            return undefined
+          }
+        }
+        throw err
+      })
+    storage.serverPublicKey = res?.data
+  }
 
   const prefix = "/secure/"
   instance.interceptors.request.use(async (config) => {
@@ -57,21 +78,8 @@ export default function createHttpSecureAxios(
 
     //#region get server public key
     if (!storage.serverPublicKey) {
-      const res = await axios
-        .get("/publickey", { baseURL: config.baseURL })
-        .catch(async (err) => {
-          if (err.response) {
-            if ((err.response as AxiosResponse).status === 404) {
-              console.log("server not support, http-secure has been disabled")
-              config.httpSecureDisabled = true
-              await onDisable()
-              return undefined
-            }
-          }
-          throw err
-        })
-      if (!res) return config
-      storage.serverPublicKey = res.data
+      await fetchPublicKey(config)
+      if (!storage.serverPublicKey) return config
     }
     //#endregion
 
@@ -102,8 +110,8 @@ export default function createHttpSecureAxios(
       //#endregion
 
       //#region decrypt
-      const { content } = res.data
-      res.data = JSON.parse(decryptAES(content))
+      const { content } = res.data as { content?: string }
+      res.data = parse(decryptAES(content || ""))
       //#endregion
 
       //#region log because devtools network won't work
@@ -118,7 +126,7 @@ export default function createHttpSecureAxios(
       //#endregion
       return res
     },
-    (err) => {
+    async (err) => {
       if (err.response) {
         const res = err.response as AxiosResponse
         //#region restore url
@@ -131,8 +139,19 @@ export default function createHttpSecureAxios(
         }
         //#endregion
 
+        //#region invalid publicKey
+        if (res.status === 403 && res.data.code === "EHTTPSECURE") {
+          await fetchPublicKey(res.config)
+          return instance(res.config)
+        }
+        //#endregion
+
+        //#region decrypt
+        const { content } = res.data as { content?: string }
+        res.data = parse(decryptAES(content || ""))
+        //#endregion
+
         //#region log because devtools network won't work
-        // TODO better log
         const style = "color: red"
         console.groupCollapsed(
           `%c[${res.status}][${res.config.method?.toUpperCase()}]${
