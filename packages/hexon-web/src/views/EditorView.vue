@@ -22,6 +22,7 @@ import HLayoutEditor from "@/editors/HLayoutEditor.vue"
 import HTagEditor from "@/editors/HTagEditor.vue"
 import HNavTitle from "@/ui/nav-list/src/HNavTitle.vue"
 import ErroredView from "./ErroredView.vue"
+import HFrontmatterEditor from "~/components/editors/HFrontmatterEditor.vue"
 
 const [HMonacoEditor, monacoLoading] = useAsyncComponentWithLoading(
   () => import("@/editors/HMonacoEditor.vue")
@@ -104,6 +105,7 @@ const updated = computed(() => {
   if (res.format("") === "Invalid Date") return null
   return res
 })
+const fm = computed(() => data.value.fm)
 const availableTags = computed(() => mainStore.tagNamesList)
 const availableCats = computed(() => mainStore.catNamesList)
 //#endregion
@@ -136,6 +138,9 @@ const updateDate = (date: Dayjs | null) => {
 }
 const updateUpdated = (updated: Dayjs | null) => {
   updateFromObj({ updated: updated?.format("YYYY-MM-DD hh:mm:ss") })
+}
+const updateFm = (fm: { [key: string]: unknown }) => {
+  updateFromObj({ fm })
 }
 //#endregion
 
@@ -216,6 +221,11 @@ const vars = useThemeVars()
             Layout
           </HNavTitle>
           <HLayoutEditor :layout="layout" @update:layout="updateLayout" />
+          <HNavTitle class="mt-2">
+            <HIcon :name="HIconName.HolePunchLandscapeTop" class="mr-2" />
+            Frontmatters
+          </HNavTitle>
+          <HFrontmatterEditor :fm="fm" @update:fm="updateFm" />
         </div>
       </div>
     </div>

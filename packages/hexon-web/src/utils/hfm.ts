@@ -25,7 +25,9 @@ type FrontMatterPart = {
   layout: string
   tags: string[]
   categories: string[]
-  [key: string]: unknown
+  fm: {
+    [key: string]: unknown
+  }
 }
 type FrontMatterResult = FrontMatterRequired & FrontMatterPart
 type FrontMatterInput = FrontMatterRequired & Partial<FrontMatterPart>
@@ -70,7 +72,7 @@ export const parseHfm = (str: string = ""): FrontMatterResult => {
     layout,
     tags,
     categories,
-    ...rest,
+    fm: rest,
   }
 }
 
@@ -82,7 +84,7 @@ export const stringifyHfm = ({
   layout: dlayout,
   tags: dtags,
   categories: dcategories,
-  ...rest
+  fm,
 }: FrontMatterInput) => {
   const _content = d_content
   const title = dtitle || undefined
@@ -91,7 +93,7 @@ export const stringifyHfm = ({
   const layout = dlayout || undefined
   const tags = dtags?.length ? dtags : undefined
   const categories = dcategories?.length ? dcategories : undefined
-  let o: FrontMatterInput = { _content, ...rest }
+  let o: FrontMatterInput = { _content, ...fm }
   title && (o = { ...o, title })
   date && (o = { ...o, date })
   updated && (o = { ...o, updated })
