@@ -14,7 +14,9 @@ watch(
     internal.value = v
   }
 )
-watch(internal, (v) => emits("update:layout", v))
+watch(internal, (v) => {
+  props.layout !== v && emits("update:layout", v)
+})
 </script>
 <template>
   <div class="px-4">
