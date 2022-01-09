@@ -151,7 +151,7 @@ const vars = useThemeVars()
         <HButton class="ml-2" @click="load">重试</HButton>
       </div>
     </ErroredView>
-    <div class="flex h-full w-full" v-else>
+    <div class="flex h-full w-full overflow-hidden" v-else>
       <div class="main bg-base-1 flex-1 min-w-0 flex flex-col h-full">
         <HEditorToolbar
           :saving="detailStore.saving"
@@ -182,8 +182,8 @@ const vars = useThemeVars()
             Frontmatters
           </div>
         </HToolbar>
-        <div class="flex-1 h-0 overflow-auto">
-          <HNavTitle class="mt-2">
+        <div class="flex-1 h-0 overflow-auto pt-2 pb-4">
+          <HNavTitle>
             <HIcon :name="HIconName.Globe" class="mr-1" />
             发布于
           </HNavTitle>
