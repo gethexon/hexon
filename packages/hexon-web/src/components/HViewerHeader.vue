@@ -1,47 +1,22 @@
 <script setup lang="ts">
-import { parse } from "hexo-front-matter"
-import { computed, toRefs } from "vue"
-import dayjs from "dayjs"
-import { categories2Array2d, isMultiCategories } from "~/utils"
+import { computed } from "vue"
 import { HIconName } from "@/ui/icon"
 import { HIcon } from "@/ui/icon"
+import { IParsedArticleMeta } from "~/utils/article"
+import { DATE_FORMAT } from "~/constants"
 
-const props = withDefaults(
-  defineProps<{
-    title: string
-    raw: string
-  }>(),
-  { title: "", raw: "" }
-)
-const { title, raw } = toRefs(props)
-// TODO 用 hfm.ts 中的
-const all = computed(() => parse(raw.value))
-const fm = computed(() => {
-  const { _content, categories, tags, date, updated, title, ...rest } =
-    all.value
-  return {
-    _content,
-    categories: categories || [],
-    tags: tags || [],
-    date,
-    updated,
-    title,
-    rest,
-  }
-})
-// FIXME date 和 updated 用 hexo 解析的值
+const props = defineProps<{
+  article: IParsedArticleMeta
+}>()
 const date = computed(() =>
-  fm.value.date ? dayjs(fm.value.date as number).format("lll") : ""
+  props.article.date ? props.article.date.format(DATE_FORMAT) : ""
 )
 const updated = computed(() =>
-  fm.value.updated ? dayjs(fm.value.updated as number).format("lll") : ""
+  props.article.updated ? props.article.updated.format(DATE_FORMAT) : ""
 )
-const categories2d = computed(() =>
-  categories2Array2d(fm.value.categories as string[] | (string | string[])[])
-)
-const tags = computed(() => fm.value.tags as string[])
 const rest = computed(() => {
-  const data = fm.value.rest
+  // FIXME
+  const data = props.article.fm
   if (JSON.stringify(data) === JSON.stringify({})) return ""
   return Object.entries(data)
     .map(([key, value]) => `${key}: ${value}`)
@@ -50,7 +25,9 @@ const rest = computed(() => {
 </script>
 <template>
   <div class="h-viewer-header text-base px-5 mx-auto" style="max-width: 768px">
-    <h1 class="text-4xl text-main my-5" v-if="title">{{ title }}</h1>
+    <h1 class="text-4xl text-main my-5" v-if="article.title">
+      {{ article.title }}
+    </h1>
     <div class="updated text-sub" v-if="updated">
       <HIcon
         class="mr-1"
@@ -67,18 +44,19 @@ const rest = computed(() => {
       />
       <span>{{ date }}</span>
     </div>
-    <template v-for="categories in categories2d" :key="categories">
-      <div class="categories mt-1 text-sm text-sub">
-        <HIcon class="mr-1" :name="HIconName.Folder" />
-        <template v-for="(category, index) in categories" :key="index">
-          <HIcon class="ml-0.5" :name="HIconName.ChevronRight" v-if="index" />
-          <span class="ml-0.5">{{ category }}</span>
-        </template>
-      </div>
-    </template>
-    <div class="tags text-sm text-sub mt-1" v-if="tags.length">
+    <div
+      class="categories mt-1 text-sm text-sub"
+      v-if="article.categories.length"
+    >
+      <HIcon class="mr-1" :name="HIconName.Folder" />
+      <template v-for="(category, index) in article.categories" :key="index">
+        <HIcon class="ml-0.5" :name="HIconName.ChevronRight" v-if="index" />
+        <span class="ml-0.5">{{ category }}</span>
+      </template>
+    </div>
+    <div class="tags text-sm text-sub mt-1" v-if="article.tags.length">
       <HIcon class="mr-1" :name="HIconName.Tag" />
-      <template v-for="(tag, index) in tags" :key="index">
+      <template v-for="(tag, index) in article.tags" :key="index">
         <span v-if="index">,</span>
         <span class="ml-0.5">{{ tag }}</span>
       </template>

@@ -11,6 +11,7 @@ import HViewerContent from "@/HViewerContent.vue"
 import HViewerHeader from "@/HViewerHeader.vue"
 import HViewerToolbar from "@/HViewerToolbar.vue"
 import ErroredView from "./ErroredView.vue"
+import { parseArticleData } from "~/utils/article"
 
 //#region hooks
 const route = useRoute()
@@ -45,8 +46,7 @@ onBeforeUnmount(() => {
 
 //#region data
 const content = computed(() => detailStore.article?.content || "")
-const title = computed(() => detailStore.article?.title || "")
-const raw = computed(() => detailStore.article?.raw || "")
+const article = computed(() => parseArticleData(detailStore.article))
 //#endregion
 
 //#region handlers
@@ -79,7 +79,7 @@ const onAction = (payload: HViewerToolbarActionPayload) => {
     <div class="w-full h-full flex flex-col" v-else>
       <HViewerToolbar @on-action="onAction" />
       <div class="overflow-auto flex-1">
-        <HViewerHeader :title="title" :raw="raw" />
+        <HViewerHeader :article="article" />
         <HViewerContent :content="content" />
       </div>
     </div>
