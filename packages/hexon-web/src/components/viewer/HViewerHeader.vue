@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { computed } from "vue"
-import { HIconName } from "@/ui/icon"
-import { HIcon } from "@/ui/icon"
-import { IParsedArticleMeta } from "~/utils/article"
 import { DATE_FORMAT } from "~/constants"
+import { IParsedArticleMeta } from "~/utils/article"
+import { HIcon, HIconName } from "@/ui/icon"
 
 const props = defineProps<{
   article: IParsedArticleMeta

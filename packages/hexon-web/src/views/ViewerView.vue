@@ -4,14 +4,14 @@ import { useRoute } from "vue-router"
 import { PostOrPage } from "~/interface"
 import { useDetailStore } from "~/store/detail"
 import { useDispatcher } from "~/store/dispatcher"
+import { parseArticleData } from "~/utils/article"
+import HViewerContent from "~/components/viewer/HViewerContent.vue"
+import HViewerHeader from "~/components/viewer/HViewerHeader.vue"
+import HViewerToolbar from "~/components/viewer/HViewerToolbar.vue"
 import { HViewerToolbarActionPayload } from "@/types"
 import { HButton } from "@/ui/button"
 import { HLoading } from "@/ui/loading"
-import HViewerContent from "@/HViewerContent.vue"
-import HViewerHeader from "@/HViewerHeader.vue"
-import HViewerToolbar from "@/HViewerToolbar.vue"
 import ErroredView from "./ErroredView.vue"
-import { parseArticleData } from "~/utils/article"
 
 //#region hooks
 const route = useRoute()

@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { useDetailStore } from "~/store/detail"
+import { HViewerToolbarActionPayload } from "@/types"
 import { HButton } from "@/ui/button"
-import { HIconName } from "@/ui/icon"
-import { HIcon } from "@/ui/icon"
-import { HViewerToolbarActionPayload } from "./types"
-import HToolbar from "./HToolbar.vue"
+import { HIcon, HIconName } from "@/ui/icon"
+import HToolbar from "@/HToolbar.vue"
 const emits = defineEmits<{
   (e: "on-action", payload: HViewerToolbarActionPayload): void
 }>()
