@@ -4,8 +4,11 @@ import { computed, toRefs } from "vue"
 import dayjs from "dayjs"
 import { HTheme } from "~/themes"
 import { HBadge } from "@/ui/badge"
+import { HIcon, HIconName } from "@/ui/icon"
+import { useThemeVars } from "@/ui/theme"
 import { IHArticleListData, IShowMenuPaylod } from "./interface"
 
+const vars = useThemeVars()
 const props = withDefaults(
   defineProps<{
     article: IHArticleListData
@@ -44,7 +47,23 @@ const onContextMenu = (e: MouseEvent) => {
     class="h-article-item px-4 py-2 select-none text-sm rounded-md mb-1"
     @contextmenu.prevent="onContextMenu"
   >
-    <div class="title font-bold">{{ article.title }}</div>
+    <div class="title mb-3" :style="{ color: vars.textColorPrimary }">
+      <HIcon
+        class="mr-1"
+        :name="HIconName.Page"
+        :style="{ color: vars.colorPage }"
+        v-if="article.type === 'page'"
+      />
+      <HIcon
+        class="mr-1"
+        :name="HIconName.Read"
+        :style="{ color: vars.colorDraft }"
+        v-if="article.isDraft"
+      />
+      <span class="font-bold">
+        {{ article.title }}
+      </span>
+    </div>
     <div class="brief text-xs mt-1" v-if="article.brief">
       {{ article.brief }}
     </div>
