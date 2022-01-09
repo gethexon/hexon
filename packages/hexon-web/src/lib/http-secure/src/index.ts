@@ -10,9 +10,19 @@ interface IRawData {
   url: string
   data: any
 }
+interface IData {
+  /**
+   * real data passed to axios config.data
+   */
+  data: any
+}
 
-function parse(data?: string) {
-  const str = data ? data : "{}"
+function stringifyData(data: IData): string {
+  return JSON.stringify(data)
+}
+
+function parseData(data: string): IData {
+  const str = data
   return JSON.parse(str)
 }
 
@@ -89,7 +99,7 @@ export default function createHttpSecureAxios(
     config.url =
       prefix +
       encodeURIComponent(encryptRSA(JSON.stringify({ key, url })) ?? "")
-    const content = encryptAES(JSON.stringify(config.data ?? ""))
+    const content = encryptAES(stringifyData({ data: config.data }))
     config.data = { content }
     //#endregion
     return config
@@ -110,8 +120,10 @@ export default function createHttpSecureAxios(
       //#endregion
 
       //#region decrypt
-      const { content } = res.data as { content?: string }
-      res.data = parse(decryptAES(content || ""))
+      if (res.data.content) {
+        const { content } = res.data as { content: string }
+        res.data = parseData(decryptAES(content)).data
+      }
       //#endregion
 
       //#region log because devtools network won't work
@@ -147,8 +159,10 @@ export default function createHttpSecureAxios(
         //#endregion
 
         //#region decrypt
-        const { content } = res.data as { content?: string }
-        res.data = parse(decryptAES(content || ""))
+        if (res.data.content) {
+          const { content } = res.data as { content: string }
+          res.data = parseData(decryptAES(content)).data
+        }
         //#endregion
 
         //#region log because devtools network won't work

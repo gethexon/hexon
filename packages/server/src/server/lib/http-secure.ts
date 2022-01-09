@@ -40,6 +40,23 @@ function secure(enable = () => true) {
       ctx.request.path.startsWith("/publickey") && ctx.request.method === "GET"
     );
   }
+
+  interface IData {
+    /**
+     * real data passed to axios config.data
+     */
+    data: any;
+  }
+
+  function stringifyData(data: IData): string {
+    return JSON.stringify(data);
+  }
+
+  function parseData(data: string): IData {
+    const str = data;
+    return JSON.parse(str);
+  }
+
   return async (ctx: Context, next: Next) => {
     if (typeof enable === "function" ? !enable() : !enable) {
       await next();
@@ -65,16 +82,13 @@ function secure(enable = () => true) {
       ctx.path = decoded.url;
       const key = decoded.key;
       ctx.originalUrl = "[secure]" + ctx.path;
-      const { content } = ctx.request.body as { content?: string };
-      if (content)
-        ctx.request.body = JSON.parse(
-          decryptAES(ctx.request.body.content, key)
-        );
+
+      ctx.request.body =
+        ctx.request.method !== "GET" &&
+        parseData(decryptAES(ctx.request.body.content, key)).data;
       await next();
-      if (ctx.body) {
-        const content = encryptAES(JSON.stringify(ctx.body), key);
-        ctx.body = { content };
-      }
+      const content = encryptAES(stringifyData({ data: ctx.body }), key);
+      ctx.body = { content };
     } else {
       await next();
       return;
