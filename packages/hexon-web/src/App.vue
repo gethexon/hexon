@@ -33,7 +33,7 @@ watch(
 </script>
 
 <template>
-  <div :style="styles">
+  <div :style="styles" @contextmenu.prevent>
     <ClassProvider>
       <router-view></router-view>
       <Notifications>

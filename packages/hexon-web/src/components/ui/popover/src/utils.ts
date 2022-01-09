@@ -1,4 +1,6 @@
 import { onBeforeUnmount, ref, Ref, unref, watch } from "vue"
+import { getScrollParent } from "~/utils/parent"
+import { useOnParentScroll } from "~/utils/scroll"
 import { IRect } from "./interface"
 
 export function useRect(elRef: Ref<HTMLElement | null>): Ref<IRect> {
@@ -26,42 +28,9 @@ function useInit(elRef: Ref<HTMLElement | null>, rect: Ref<IRect>) {
 }
 
 function useScroll(elRef: Ref<HTMLElement | null>, rect: Ref<IRect>) {
-  const removeEventListenerFnMap: Map<() => void, () => void> = new Map()
-  const removeAllEventListener = () => {
-    for (const [, fn] of removeEventListenerFnMap) {
-      fn()
-    }
-    removeEventListenerFnMap.clear()
-  }
-  watch(
-    () => unref(elRef.value),
-    (el) => {
-      removeAllEventListener()
-      if (!el) return
-      const scrollableNodesSet: Set<Element | Document> = new Set()
-      let cursor: Element | Document | null = el
-      while (true) {
-        cursor = getScrollParent(cursor)
-        if (cursor === null) break
-        scrollableNodesSet.add(cursor)
-      }
-      for (const node of scrollableNodesSet) {
-        const onScroll = () => {
-          if (!elRef.value) return
-          rect.value = getRect(elRef.value)
-        }
-        node.addEventListener("scroll", onScroll)
-        removeEventListenerFnMap.set(onScroll, () => {
-          node.removeEventListener("scroll", onScroll)
-        })
-      }
-    },
-    {
-      immediate: true,
-    }
-  )
-  onBeforeUnmount(() => {
-    removeAllEventListener()
+  useOnParentScroll(elRef, () => {
+    if (!elRef.value) return
+    rect.value = getRect(elRef.value)
   })
 }
 
@@ -103,54 +72,6 @@ function useResize(elRef: Ref<HTMLElement | null>, rect: Ref<IRect>) {
   onBeforeUnmount(() => {
     removeAllEventListener()
   })
-}
-
-/**
- * @see https://github.com/07akioni/vueuc/blob/b3a59ae8f0/src/binder/src/utils.ts
- * @param node
- * @returns
- */
-export function getParentNode(node: Node): Node | null {
-  // document type
-  if (node.nodeType === 9) {
-    return null
-  }
-  return node.parentNode
-}
-
-/**
- * @see https://github.com/07akioni/vueuc/blob/b3a59ae8f0/src/binder/src/utils.ts
- * @param node
- * @returns
- */
-export function getScrollParent(
-  node: Node | null
-): HTMLElement | Document | null {
-  if (node === null) return null
-
-  const parentNode = getParentNode(node)
-
-  if (parentNode === null) {
-    return null
-  }
-
-  // Document
-  if (parentNode.nodeType === 9) {
-    return document
-  }
-
-  // Element
-  if (parentNode.nodeType === 1) {
-    // Firefox want us to check `-x` and `-y` variations as well
-    const { overflow, overflowX, overflowY } = getComputedStyle(
-      parentNode as HTMLElement
-    )
-    if (/(auto|scroll|overlay)/.test(overflow + overflowY + overflowX)) {
-      return parentNode as HTMLElement
-    }
-  }
-
-  return getScrollParent(parentNode)
 }
 
 export function getRect(el: HTMLElement): IRect {

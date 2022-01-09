@@ -50,6 +50,7 @@ export const useDispatcher = defineStore("dispatcher", {
                   type: "success",
                   title: "删除成功",
                 })
+                // FIXME 不是每次都要跳转
                 this.router.push({ name: "home" })
               })
             },

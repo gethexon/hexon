@@ -1,23 +1,24 @@
 <script setup lang="ts">
 import { useTheme } from "@winwin/vue-global-theming"
 import { computed, toRefs } from "vue"
+import dayjs from "dayjs"
 import { HTheme } from "~/themes"
 import { HBadge } from "@/ui/badge"
-import dayjs from "dayjs"
+import { IHArticleListData, IShowMenuPaylod } from "./interface"
 
 const props = withDefaults(
   defineProps<{
-    title: string
-    brief?: string
-    tags?: string[]
-    date: string
+    article: IHArticleListData
     selected?: boolean
   }>(),
   { selected: false }
 )
-const { title, brief, tags, date, selected } = toRefs(props)
+const emits = defineEmits<{
+  (e: "show-menu", payload: IShowMenuPaylod): void
+}>()
+const { selected } = toRefs(props)
 const formatedDate = computed(() => {
-  return dayjs(date.value).fromNow()
+  return dayjs(props.article.date).fromNow()
 })
 const theme = useTheme<HTheme>()!
 const styleVars = computed(() => {
@@ -31,17 +32,28 @@ const styleVars = computed(() => {
     briefColor: theme.value.color.foreground.sub,
   }
 })
+const onContextMenu = (e: MouseEvent) => {
+  emits("show-menu", {
+    article: props.article,
+    e,
+  })
+}
 </script>
 <template>
-  <div class="h-article-item px-4 py-2 select-none text-sm rounded-md mb-1">
-    <div class="title font-bold">{{ title }}</div>
-    <div class="brief text-xs mt-1" v-if="brief">{{ brief }}</div>
-    <div v-if="tags && tags.length" class="mt-0.5">
+  <div
+    class="h-article-item px-4 py-2 select-none text-sm rounded-md mb-1"
+    @contextmenu.prevent="onContextMenu"
+  >
+    <div class="title font-bold">{{ article.title }}</div>
+    <div class="brief text-xs mt-1" v-if="article.brief">
+      {{ article.brief }}
+    </div>
+    <div v-if="article.tags.length" class="mt-0.5">
       <HBadge
         class="mr-1 mb-0.5"
         :color="theme.color.foreground.main"
         :bg-color="theme.color.background.badge"
-        v-for="tag in tags"
+        v-for="tag in article.tags"
         :key="tag"
       >
         {{ tag }}

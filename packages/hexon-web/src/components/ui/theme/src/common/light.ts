@@ -16,6 +16,11 @@ const base = {
   textColorPrimary: "#484848",
   textColorSecondary: "#757575",
   textColorBack: "#ffffff",
+  colorFolder: "#f3c04f",
+  colorAll: "#27ae60",
+  colorPost: "#3883c7",
+  colorPage: "#52bad1",
+  colorDraft: "#f1c40f",
 }
 
 const commonTheme = {

@@ -3,6 +3,7 @@ import { list2Tree, TreeNode } from "~/lib/list2tree"
 import { api, BriefPage, BriefPost, Category, ICreateOptions, Tag } from "~/api"
 import { list2object, object2list } from "~/utils"
 import { PostOrPage } from "~/interface"
+import { useDispatcher } from "./dispatcher"
 
 export interface IState {
   posts: {
@@ -46,17 +47,11 @@ export const useMainStore = defineStore("main", {
     },
     async createArticle(title: string, options: ICreateOptions = {}) {
       const data = await api.createArticle(title, options)
-      // TODO 用 type 区分 post 还是 page
+      const dispatcher = useDispatcher()
       if ("post" in data) {
-        this.router.push({
-          name: "edit",
-          params: { type: "post", source: data.post.source },
-        })
+        dispatcher.editArticle({ type: "post", source: data.post.source })
       } else {
-        this.router.push({
-          name: "edit",
-          params: { type: "page", source: data.page.source },
-        })
+        dispatcher.editArticle({ type: "page", source: data.page.source })
       }
     },
     async publishArticle(filename: string) {
