@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.9.0-beta.2](https://github.com/gethexon/hexon/compare/v0.9.0-beta.1...v0.9.0-beta.2) (2022-01-10)
+
+
+### Bug Fixes
+
+* bump vue@3.2.26 ([e490d3b](https://github.com/gethexon/hexon/commit/e490d3bf55d67141467b05655c16d0f9ab7af355))
+
+
+
+
+
 # [0.9.0-beta.0](https://github.com/gethexon/hexon/compare/v0.8.0-beta.5...v0.9.0-beta.0) (2022-01-10)
 
 
