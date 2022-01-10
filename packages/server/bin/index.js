@@ -1,21 +1,21 @@
 'use strict';
 
-var commander = require('commander');
 require('reflect-metadata');
-var tsyringe = require('tsyringe');
-var fs = require('fs');
+var commander = require('commander');
 var path = require('path');
-var JSONdb = require('simple-json-db');
 var chalk = require('chalk');
 var inquirer = require('inquirer');
+var tsyringe = require('tsyringe');
+var fs = require('fs');
+var JSONdb = require('simple-json-db');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-var fs__default = /*#__PURE__*/_interopDefaultLegacy(fs);
 var path__default = /*#__PURE__*/_interopDefaultLegacy(path);
-var JSONdb__default = /*#__PURE__*/_interopDefaultLegacy(JSONdb);
 var chalk__default = /*#__PURE__*/_interopDefaultLegacy(chalk);
 var inquirer__default = /*#__PURE__*/_interopDefaultLegacy(inquirer);
+var fs__default = /*#__PURE__*/_interopDefaultLegacy(fs);
+var JSONdb__default = /*#__PURE__*/_interopDefaultLegacy(JSONdb);
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -58,7 +58,7 @@ let StorageService = class StorageService {
         return this._db.get(key);
     }
     set(key, value) {
-        return this._db.set(key, value);
+        this._db.set(key, value);
     }
     delete(key) {
         return this._db.delete(key);
@@ -68,18 +68,6 @@ StorageService = __decorate([
     tsyringe.singleton(),
     __metadata("design:paramtypes", [])
 ], StorageService);
-const StorageServiceIdentifier = "StorageService";
-
-/**
- * setup polyfill
- */
-/**
- * setup di
- * @see https://github.com/microsoft/tsyringe
- */
-tsyringe.container.register(StorageServiceIdentifier, {
-    useClass: StorageService,
-});
 
 function isBlog(cwd) {
     let file;

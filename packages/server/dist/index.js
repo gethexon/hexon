@@ -1,8 +1,8 @@
 'use strict';
 
-var http = require('http');
 require('reflect-metadata');
 var tsyringe = require('tsyringe');
+var http = require('http');
 var fs = require('fs');
 var path = require('path');
 var JSONdb = require('simple-json-db');
@@ -18,7 +18,11 @@ var chalk = require('chalk');
 var HexoCore = require('hexo');
 var Debug = require('debug');
 var execa = require('execa');
+var NodeGit = require('nodegit');
 var serve = require('koa-static');
+var crypto = require('crypto');
+var CryptoJS = require('crypto-js');
+var JSEncrypt = require('node-jsencrypt');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -37,7 +41,18 @@ var chalk__default = /*#__PURE__*/_interopDefaultLegacy(chalk);
 var HexoCore__default = /*#__PURE__*/_interopDefaultLegacy(HexoCore);
 var Debug__default = /*#__PURE__*/_interopDefaultLegacy(Debug);
 var execa__default = /*#__PURE__*/_interopDefaultLegacy(execa);
+var NodeGit__default = /*#__PURE__*/_interopDefaultLegacy(NodeGit);
 var serve__default = /*#__PURE__*/_interopDefaultLegacy(serve);
+var crypto__default = /*#__PURE__*/_interopDefaultLegacy(crypto);
+var CryptoJS__default = /*#__PURE__*/_interopDefaultLegacy(CryptoJS);
+var JSEncrypt__default = /*#__PURE__*/_interopDefaultLegacy(JSEncrypt);
+
+const HEXO_BASE_DIR_KEY = "hexo-basedir";
+const HEXO_OPTIONS_KEY = "hexo-options";
+const BRIEF_LENGTH = 500;
+const HEXON_PORT_KEY = "hexon-port";
+const HEXON_DEFAULT_PORT = 5777;
+const HEXON_ISINSTALL_KEY = "hexon-installed";
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -84,7 +99,7 @@ let StorageService = class StorageService {
         return this._db.get(key);
     }
     set(key, value) {
-        return this._db.set(key, value);
+        this._db.set(key, value);
     }
     delete(key) {
         return this._db.delete(key);
@@ -94,32 +109,14 @@ StorageService = __decorate([
     tsyringe.singleton(),
     __metadata("design:paramtypes", [])
 ], StorageService);
-const StorageServiceIdentifier = "StorageService";
-
-/**
- * setup polyfill
- */
-/**
- * setup di
- * @see https://github.com/microsoft/tsyringe
- */
-tsyringe.container.register(StorageServiceIdentifier, {
-    useClass: StorageService,
-});
 
 const account = koaSimpleAccount.createSimpleAccount({
     path: path__default["default"].resolve(process.cwd(), "data/account.db"),
     secret: "secret",
     expiresIn: "10min",
     refreshableIn: "7d",
+    storage: tsyringe.container.resolve(StorageService),
 });
-
-const HEXO_BASE_DIR_KEY = "hexo-basedir";
-const HEXO_OPTIONS_KEY = "hexo-options";
-const BRIEF_LENGTH = 500;
-const HEXON_PORT_KEY = "hexon-port";
-const HEXON_DEFAULT_PORT = 5777;
-const HEXON_ISINSTALL_KEY = "hexon-installed";
 
 let InstallService = class InstallService {
     _storage;
@@ -141,12 +138,12 @@ let InstallService = class InstallService {
 InstallService = __decorate([
     tsyringe.injectable(),
     tsyringe.singleton(),
-    __param(0, tsyringe.inject(StorageServiceIdentifier)),
+    __param(0, tsyringe.inject(StorageService)),
     __metadata("design:paramtypes", [Object])
 ], InstallService);
 
-const app$3 = new Koa__default["default"]();
-const router$2 = new Router__default["default"]();
+const app$4 = new Koa__default["default"]();
+const router$3 = new Router__default["default"]();
 const checkInstall = () => async (ctx, next) => {
     const service = tsyringe.container.resolve(InstallService);
     if (!service.isInstalled()) {
@@ -156,7 +153,7 @@ const checkInstall = () => async (ctx, next) => {
     else
         await next();
 };
-router$2.get("/", (ctx) => {
+router$3.get("/", (ctx) => {
     const service = tsyringe.container.resolve(InstallService);
     if (service.isInstalled()) {
         ctx.status = 404;
@@ -166,7 +163,7 @@ router$2.get("/", (ctx) => {
         ctx.body = "Waiting For Install";
     }
 });
-router$2.post("/", async (ctx) => {
+router$3.post("/", async (ctx) => {
     const service = tsyringe.container.resolve(InstallService);
     if (service.isInstalled()) {
         ctx.status = 404;
@@ -186,16 +183,16 @@ router$2.post("/", async (ctx) => {
         ctx.status = 200;
     }
 });
-app$3.use(router$2.routes());
-app$3.use(router$2.allowedMethods());
+app$4.use(router$3.routes());
+app$4.use(router$3.allowedMethods());
 
-const router$1 = new Router__default["default"]();
-router$1.get("/", (ctx) => {
+const router$2 = new Router__default["default"]();
+router$2.get("/", (ctx) => {
     ctx.status = 200;
 });
-const app$2 = new Koa__default["default"]();
-app$2.use(router$1.routes());
-app$2.use(router$1.allowedMethods());
+const app$3 = new Koa__default["default"]();
+app$3.use(router$2.routes());
+app$3.use(router$2.allowedMethods());
 
 const DEV = process.env.NODE_ENV !== "production";
 function createDebug(scope) {
@@ -316,6 +313,19 @@ let Hexo = class Hexo {
             .find((item) => item.full_source === fullSource);
         return this.getPostBySource(post.source);
     }
+    getPostOrPageByFullSource(fullSource) {
+        const post = this._hexo.locals
+            .get("posts")
+            .toArray()
+            .find((item) => item.full_source === fullSource);
+        if (post)
+            return this.getPostBySource(post.source);
+        const page = this._hexo.locals
+            .get("pages")
+            .toArray()
+            .find((item) => item.full_source === fullSource);
+        return this.getPageBySource(page.source);
+    }
     writeFile(fullPath, content) {
         try {
             fs__default["default"].writeFileSync(fullPath, content);
@@ -350,10 +360,12 @@ let Hexo = class Hexo {
                 .toArray()
                 .find((item) => item.source === source).full_source;
     }
-    async withCategoriesTags(article) {
+    async WithCategoriesTagsBriefArticleList(article) {
         const categories = await this.listCategory();
         const tags = await this.listTag();
-        return { article, categories, tags };
+        const pages = await this.listPage();
+        const posts = await this.listPost();
+        return { article, categories, tags, pages, posts };
     }
     //#endregion
     async init() {
@@ -377,9 +389,7 @@ let Hexo = class Hexo {
         }
         catch (err) {
             debug("hexo init fail");
-            this._hexo = bak.base_dir
-                ? new HexoCore__default["default"](bak.base_dir, bak.options)
-                : null;
+            this._hexo = bak.base_dir ? new HexoCore__default["default"](bak.base_dir, bak.options) : null;
             this._base_dir = bak.base_dir;
             this._options = bak.options;
             if (this._base_dir)
@@ -490,7 +500,7 @@ let Hexo = class Hexo {
         await this.reload();
         const fullSource = expandHomeDir(info.split("Published: ")[1].trim());
         const article = await this.getPostByFullSource(fullSource);
-        return this.withCategoriesTags(article);
+        return this.WithCategoriesTagsBriefArticleList(article);
     }
     async create(title, options) {
         const args = ["new"];
@@ -511,8 +521,8 @@ let Hexo = class Hexo {
         const info = await run("hexo", args, { cwd: this._base_dir });
         await this.reload();
         const fullSource = expandHomeDir(info.split("Created: ")[1].trim());
-        const article = await this.getPostByFullSource(fullSource);
-        return this.withCategoriesTags(article);
+        const article = await this.getPostOrPageByFullSource(fullSource);
+        return this.WithCategoriesTagsBriefArticleList(article);
     }
     async update(source, raw, type) {
         if (type === "post") {
@@ -522,7 +532,7 @@ let Hexo = class Hexo {
             this.writeFile(fullPath, raw);
             await this.reload();
             const article = await this.getPostBySource(source);
-            return this.withCategoriesTags(article);
+            return this.WithCategoriesTagsBriefArticleList(article);
         }
         else {
             const fullPath = this.getFullPathBySource(source, "page");
@@ -531,7 +541,7 @@ let Hexo = class Hexo {
             this.writeFile(fullPath, raw);
             await this.reload();
             const article = await this.getPageBySource(source);
-            return this.withCategoriesTags(article);
+            return this.WithCategoriesTagsBriefArticleList(article);
         }
     }
     async delete(source, type) {
@@ -541,7 +551,7 @@ let Hexo = class Hexo {
                 throw new Error("not found");
             this.deleteFile(fullPath);
             await this.reload();
-            return this.withCategoriesTags(null);
+            return this.WithCategoriesTagsBriefArticleList(null);
         }
         else {
             const fullPath = this.getFullPathBySource(source, "page");
@@ -549,20 +559,20 @@ let Hexo = class Hexo {
                 throw new Error("not found");
             this.deleteFile(fullPath);
             await this.reload();
-            return this.withCategoriesTags(null);
+            return this.WithCategoriesTagsBriefArticleList(null);
         }
     }
 };
 Hexo = __decorate([
     tsyringe.injectable(),
     tsyringe.singleton(),
-    __param(0, tsyringe.inject(StorageServiceIdentifier)),
+    __param(0, tsyringe.inject(StorageService)),
     __metadata("design:paramtypes", [Object])
 ], Hexo);
 var Hexo$1 = Hexo;
 
-const router = new Router__default["default"]();
-router.use(async (ctx, next) => {
+const router$1 = new Router__default["default"]();
+router$1.use(async (ctx, next) => {
     try {
         await next();
     }
@@ -574,11 +584,11 @@ router.use(async (ctx, next) => {
             throw err;
     }
 });
-router.get("/posts", async (ctx) => {
+router$1.get("/posts", async (ctx) => {
     const hexo = tsyringe.container.resolve(Hexo$1);
     ctx.body = await hexo.listPost();
 });
-router.get("/post/:source", async (ctx) => {
+router$1.get("/post/:source", async (ctx) => {
     const hexo = tsyringe.container.resolve(Hexo$1);
     const { source } = ctx.params;
     if (!source) {
@@ -587,11 +597,11 @@ router.get("/post/:source", async (ctx) => {
     }
     ctx.body = await hexo.getPostBySource(decodeURIComponent(source));
 });
-router.get("/pages", async (ctx) => {
+router$1.get("/pages", async (ctx) => {
     const hexo = tsyringe.container.resolve(Hexo$1);
     ctx.body = await hexo.listPage();
 });
-router.get("/page/:source", async (ctx) => {
+router$1.get("/page/:source", async (ctx) => {
     const hexo = tsyringe.container.resolve(Hexo$1);
     const { source } = ctx.params;
     if (!source) {
@@ -600,30 +610,30 @@ router.get("/page/:source", async (ctx) => {
     }
     ctx.body = await hexo.getPageBySource(decodeURIComponent(source));
 });
-router.get("/tags", async (ctx) => {
+router$1.get("/tags", async (ctx) => {
     const hexo = tsyringe.container.resolve(Hexo$1);
     ctx.body = await hexo.listTag();
 });
-router.get("/categories", async (ctx) => {
+router$1.get("/categories", async (ctx) => {
     const hexo = tsyringe.container.resolve(Hexo$1);
     ctx.body = await hexo.listCategory();
 });
-router.post("/deploy", async (ctx) => {
+router$1.post("/deploy", async (ctx) => {
     const hexo = tsyringe.container.resolve(Hexo$1);
     await hexo.deploy(ctx.request.body);
     ctx.status = 200;
 });
-router.post("/generate", async (ctx) => {
+router$1.post("/generate", async (ctx) => {
     const hexo = tsyringe.container.resolve(Hexo$1);
     await hexo.generate(ctx.request.body);
     ctx.status = 200;
 });
-router.post("/clean", async (ctx) => {
+router$1.post("/clean", async (ctx) => {
     const hexo = tsyringe.container.resolve(Hexo$1);
     await hexo.clean();
     ctx.status = 200;
 });
-router.post("/publish", async (ctx) => {
+router$1.post("/publish", async (ctx) => {
     const hexo = tsyringe.container.resolve(Hexo$1);
     const { filename, layout } = ctx.request.body;
     if (!filename) {
@@ -633,7 +643,7 @@ router.post("/publish", async (ctx) => {
     }
     ctx.body = await hexo.publish(filename, layout);
 });
-router.post("/create", async (ctx) => {
+router$1.post("/create", async (ctx) => {
     const hexo = tsyringe.container.resolve(Hexo$1);
     const { title, layout, path, slug, replace } = ctx.request.body;
     if (!title) {
@@ -643,7 +653,7 @@ router.post("/create", async (ctx) => {
     }
     ctx.body = await hexo.create(title, { layout, path, slug, replace });
 });
-router.put("/post/:source", async (ctx) => {
+router$1.put("/post/:source", async (ctx) => {
     const hexo = tsyringe.container.resolve(Hexo$1);
     const { source } = ctx.params;
     const { raw } = ctx.request.body;
@@ -654,7 +664,7 @@ router.put("/post/:source", async (ctx) => {
     }
     ctx.body = await hexo.update(source, raw, "post");
 });
-router.put("/page/:source", async (ctx) => {
+router$1.put("/page/:source", async (ctx) => {
     const hexo = tsyringe.container.resolve(Hexo$1);
     const { source } = ctx.params;
     const { raw } = ctx.request.body;
@@ -665,7 +675,7 @@ router.put("/page/:source", async (ctx) => {
     }
     ctx.body = await hexo.update(source, raw, "page");
 });
-router.delete("/post/:source", async (ctx) => {
+router$1.delete("/post/:source", async (ctx) => {
     const hexo = tsyringe.container.resolve(Hexo$1);
     const { source } = ctx.params;
     if (!source) {
@@ -675,7 +685,7 @@ router.delete("/post/:source", async (ctx) => {
     }
     ctx.body = await hexo.delete(source, "post");
 });
-router.delete("/page/:source", async (ctx) => {
+router$1.delete("/page/:source", async (ctx) => {
     const hexo = tsyringe.container.resolve(Hexo$1);
     const { source } = ctx.params;
     if (!source) {
@@ -699,6 +709,127 @@ if (storage$1.get(HEXO_BASE_DIR_KEY))
         console.log(chalk__default["default"].red(err.message));
         process.exit(1);
     });
+const app$2 = new Koa__default["default"]();
+app$2.use(account.auth());
+app$2.use(router$1.routes());
+app$2.use(router$1.allowedMethods());
+
+class ResetHardError extends Error {
+    name = "ResetHardError";
+}
+class PullError extends Error {
+    name = "PullError";
+}
+class AddAllError extends Error {
+    name = "AddAllError";
+}
+class CreateCommitError extends Error {
+    name = "CreateCommitError";
+}
+class PushError extends Error {
+    name = "PushError";
+}
+
+async function openRepo(repoPath) {
+    return await NodeGit__default["default"].Repository.open(repoPath);
+}
+async function isClean(cwd) {
+    const repo = await openRepo(cwd);
+    const status = await repo.getStatus();
+    return !status.length;
+}
+async function hasRepo(repoPath) {
+    return !!(await openRepo(repoPath).catch((err) => null));
+}
+async function hasRemtoe(repoPath) {
+    const repo = await openRepo(repoPath);
+    const remotes = await Promise.all((await NodeGit__default["default"].Remote.list(repo)).map((name) => {
+        return NodeGit__default["default"].Remote.lookup(repo, name);
+    }));
+    return !!remotes.length;
+}
+let GitService = class GitService {
+    storage;
+    constructor(storage) {
+        this.storage = storage;
+    }
+    async sync() {
+        const base = this.storage.get(HEXO_BASE_DIR_KEY);
+        const cwd = toRealPath(base);
+        if (!(await hasRepo(cwd)))
+            return;
+        await run("git", ["reset", "--hard"], { cwd }).catch((err) => {
+            console.error(err);
+            throw new ResetHardError();
+        });
+        if (await hasRemtoe(cwd)) {
+            await run("git", ["pull"], { cwd }).catch((err) => {
+                console.error(err);
+                throw new PullError();
+            });
+        }
+    }
+    async save() {
+        const base = this.storage.get(HEXO_BASE_DIR_KEY);
+        const cwd = toRealPath(base);
+        if (!(await hasRepo(cwd)))
+            return;
+        if (await isClean(cwd))
+            return;
+        await run("git", ["add", ".", "--all"], { cwd }).catch((err) => {
+            console.error(err);
+            throw new AddAllError();
+        });
+        await run("git", ["commit", "-m", `server update ${new Date().toString()}`], { cwd }).catch((err) => {
+            console.error(err);
+            throw new CreateCommitError();
+        });
+        if (await hasRemtoe(cwd))
+            await run("git", ["push"], { cwd }).catch((err) => {
+                console.error(err);
+                throw new PushError();
+            });
+    }
+};
+GitService = __decorate([
+    tsyringe.injectable(),
+    tsyringe.singleton(),
+    __param(0, tsyringe.inject(StorageService)),
+    __metadata("design:paramtypes", [StorageService])
+], GitService);
+
+const router = new Router__default["default"]();
+router.use(async (ctx, next) => {
+    try {
+        await next();
+    }
+    catch (err) {
+        if ([
+            "RepoOpenError",
+            "ResetHardError",
+            "PullError",
+            "AddAllError",
+            "CreateCommitError",
+            "PushError",
+        ].includes(err)) {
+            ctx.status = 500;
+            ctx.body = err.name;
+            return;
+        }
+        throw err;
+    }
+});
+router.post("/sync", async (ctx) => {
+    const git = tsyringe.container.resolve(GitService);
+    await git.sync();
+    ctx.status = 200;
+});
+router.post("/save", async (ctx) => {
+    const git = tsyringe.container.resolve(GitService);
+    await git.save();
+    ctx.status = 200;
+});
+
 const app$1 = new Koa__default["default"]();
 app$1.use(account.auth());
 app$1.use(router.routes());
@@ -708,10 +839,11 @@ app$1.use(router.allowedMethods());
  * config app entrance
  */
 var apps = compose__default["default"]([
-    mount__default["default"]("/install", app$3),
+    mount__default["default"]("/install", app$4),
     checkInstall(),
-    mount__default["default"]("/health", app$2),
-    mount__default["default"]("/hexo", app$1),
+    mount__default["default"]("/health", app$3),
+    mount__default["default"]("/hexo", app$2),
+    mount__default["default"]("/git", app$1),
 ]);
 
 function statics(root) {
@@ -725,6 +857,80 @@ function statics(root) {
                     ctx.set("Cache-Control", "max-age=31536000");
             },
         })(ctx, next);
+    };
+}
+
+function secure(enable = () => true) {
+    const { publicKey, privateKey } = crypto__default["default"].generateKeyPairSync("rsa", {
+        // The standard secure default length for RSA keys is 2048 bits
+        modulusLength: 2048,
+        publicKeyEncoding: {
+            type: "spki",
+            format: "pem",
+        },
+        privateKeyEncoding: {
+            type: "pkcs1",
+            format: "pem",
+        },
+    });
+    function decryptRSA(data) {
+        const o = new JSEncrypt__default["default"]();
+        o.setPrivateKey(privateKey);
+        const res = o.decrypt(data);
+        return res;
+    }
+    function decryptAES(data, key) {
+        return CryptoJS__default["default"].AES.decrypt(data, key).toString(CryptoJS__default["default"].enc.Utf8);
+    }
+    function encryptAES(data, key) {
+        return CryptoJS__default["default"].AES.encrypt(data, key).toString();
+    }
+    CryptoJS__default["default"].AES.encrypt('"hi"', "123").toString();
+    function isGetPublicKeyRoute(ctx) {
+        return (ctx.request.path.startsWith("/publickey") && ctx.request.method === "GET");
+    }
+    function stringifyData(data) {
+        return JSON.stringify(data);
+    }
+    function parseData(data) {
+        const str = data;
+        return JSON.parse(str);
+    }
+    return async (ctx, next) => {
+        if (typeof enable === "function" ? !enable() : !enable) {
+            await next();
+            return;
+        }
+        if (isGetPublicKeyRoute(ctx)) {
+            console.log(chalk__default["default"].white("GET"), chalk__default["default"].white.dim("/publickey"));
+            ctx.body = publicKey;
+            return;
+        }
+        const prefix = "/secure/";
+        const enced = decodeURIComponent(ctx.path.slice(prefix.length));
+        const secured = ctx.path.startsWith(prefix);
+        if (secured) {
+            const res = decryptRSA(enced);
+            if (!res) {
+                ctx.status = 403;
+                ctx.body = { code: "EHTTPSECURE" };
+                return;
+            }
+            const decoded = JSON.parse(res);
+            ctx.path = decoded.url;
+            const key = decoded.key;
+            ctx.originalUrl = "[secure]" + ctx.path;
+            ctx.request.body =
+                ctx.request.method !== "GET" &&
+                    parseData(decryptAES(ctx.request.body.content, key)).data;
+            await next();
+            const content = encryptAES(stringifyData({ data: ctx.body }), key);
+            ctx.body = { content };
+        }
+        else {
+            await next();
+            return;
+        }
     };
 }
 
@@ -744,10 +950,11 @@ app.use(async (ctx, next) => {
             ctx.body = { message: err.message };
     }
 });
-app.use(logger__default["default"]());
 app.use(bodyParser__default["default"]({
     enableTypes: ["json", "form", "text"],
 }));
+app.use(secure());
+app.use(logger__default["default"]());
 app.use(mount__default["default"]("/", statics(path__default["default"].resolve(process.cwd(), "../hexon-web/dist"))));
 app.use(account.middleware);
 app.use(apps);
