@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.9.0-beta.1](https://github.com/gethexon/hexon/compare/v0.9.0-beta.0...v0.9.0-beta.1) (2022-01-10)
+
+
+### Bug Fixes
+
+* remove nodegit ([70ef9be](https://github.com/gethexon/hexon/commit/70ef9be7f3f786f98e832db21cdce74fb3b508e3))
+
+
+
+
+
 # [0.9.0-beta.0](https://github.com/gethexon/hexon/compare/v0.8.0-beta.5...v0.9.0-beta.0) (2022-01-10)
 
 
