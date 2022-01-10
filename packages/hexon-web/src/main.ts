@@ -1,16 +1,18 @@
 import { createApp } from "vue"
 import App from "./App.vue"
-import themes from "./themes"
-import theme from "./plugins/theme"
 import account from "./plugins/account"
-import router from "./plugins/router"
+import dialog from "./plugins/dialog"
+import loading from "./plugins/loading"
 import modal from "./plugins/modal"
 import notification from "./plugins/notification"
-import dialog from "./plugins/dialog"
 import pinia from "./plugins/pinia"
+import router from "./plugins/router"
+import theme from "./plugins/theme"
+import themes from "./themes"
 import "./plugins/dayjs"
 
 createApp(App)
+  .use(loading)
   .use(pinia)
   .use(router)
   .use(themes)

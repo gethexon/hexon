@@ -5,6 +5,7 @@ const self = (common: CommonTheme) => {
   return {
     ...common,
     backgroundColorIcon: alpha(common.colorPrimary, 0.8),
+    background: alpha(common.backgroundColorPrimary, 0.2),
   }
 }
 export type LoadingVars = ReturnType<typeof self>

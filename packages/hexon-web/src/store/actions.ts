@@ -5,6 +5,7 @@ import { useDispatcher } from "./dispatcher"
 export const useActionsStore = defineStore("actions", {
   actions: {
     async deploy() {
+      this.loading.start()
       await api.deploy().then(
         () => {
           this.notification.notify({
@@ -22,8 +23,10 @@ export const useActionsStore = defineStore("actions", {
           throw err
         }
       )
+      this.loading.stop()
     },
     async generate() {
+      this.loading.start()
       await api.generate().then(
         () => {
           this.notification.notify({
@@ -41,8 +44,10 @@ export const useActionsStore = defineStore("actions", {
           })
         }
       )
+      this.loading.stop()
     },
     async clean() {
+      this.loading.start()
       await api.clean().then(
         () => {
           this.notification.notify({
@@ -60,8 +65,10 @@ export const useActionsStore = defineStore("actions", {
           })
         }
       )
+      this.loading.stop()
     },
     async gitSync() {
+      this.loading.start()
       await api.gitSync().then(
         () => {
           this.notification.notify({
@@ -80,8 +87,10 @@ export const useActionsStore = defineStore("actions", {
           })
         }
       )
+      this.loading.stop()
     },
     async gitSave() {
+      this.loading.start()
       await api.gitSave().then(
         () => {
           this.notification.notify({
@@ -100,6 +109,7 @@ export const useActionsStore = defineStore("actions", {
           })
         }
       )
+      this.loading.stop()
     },
   },
 })

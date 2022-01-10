@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useTheme } from "@/ui/theme"
+import FadeTransition from "~/components/transitions/FadeTransition.vue"
 
 const props = withDefaults(
   defineProps<{
@@ -14,13 +15,14 @@ const props = withDefaults(
 const theme = useTheme("Loading")
 
 // TODO 加上提示语
-// TODO loading 切换动画
 </script>
 <template>
   <slot v-if="overlay || !loading"></slot>
-  <div v-if="loading" class="h-loading">
-    <div class="icon"></div>
-  </div>
+  <FadeTransition>
+    <div v-if="loading" class="h-loading">
+      <div class="icon"></div>
+    </div>
+  </FadeTransition>
 </template>
 <style lang="less">
 .h-loading {
@@ -32,6 +34,7 @@ const theme = useTheme("Loading")
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: v-bind("theme.background");
   .icon {
     animation: loading 0.5s linear infinite;
     border-width: 2px;

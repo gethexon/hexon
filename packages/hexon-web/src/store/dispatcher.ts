@@ -59,6 +59,7 @@ export const useDispatcher = defineStore("dispatcher", {
       })
     },
     async saveArticle(raw: string) {
+      this.loading.start()
       const detailStore = useDetailStore()
       await detailStore.saveArticle(raw).then(
         () => {
@@ -78,6 +79,7 @@ export const useDispatcher = defineStore("dispatcher", {
           throw err
         }
       )
+      this.loading.stop()
     },
     editArticle(id: IArticleIdentifier) {
       this.router.push({ name: "edit", params: { ...id } })
