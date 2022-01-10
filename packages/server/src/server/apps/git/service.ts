@@ -45,12 +45,12 @@ export class GitService {
   async sync() {
     const base = this.storage.get<string>(HEXO_BASE_DIR_KEY)
     const cwd = toRealPath(base)
-    if (!hasRepo(cwd)) return
+    if (!(await hasRepo(cwd))) return
     await run("git", ["reset", "--hard"], { cwd }).catch((err) => {
       console.error(err)
       throw new ResetHardError()
     })
-    if (hasRemtoe(cwd)) {
+    if (await hasRemtoe(cwd)) {
       await run("git", ["pull"], { cwd }).catch((err) => {
         console.error(err)
         throw new PullError()
@@ -60,7 +60,7 @@ export class GitService {
   async save() {
     const base = this.storage.get<string>(HEXO_BASE_DIR_KEY)
     const cwd = toRealPath(base)
-    if (!hasRepo(cwd)) return
+    if (!(await hasRepo(cwd))) return
     if (await isClean(cwd)) return
     await run("git", ["add", ".", "--all"], { cwd }).catch((err) => {
       console.error(err)
@@ -74,7 +74,7 @@ export class GitService {
       console.error(err)
       throw new CreateCommitError()
     })
-    if (hasRemtoe(cwd))
+    if (await hasRemtoe(cwd))
       await run("git", ["push"], { cwd }).catch((err) => {
         console.error(err)
         throw new PushError()
