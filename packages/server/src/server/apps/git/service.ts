@@ -1,5 +1,4 @@
 import { inject, injectable, singleton } from "tsyringe"
-import NodeGit from "nodegit"
 import { HEXO_BASE_DIR_KEY } from "~/shared/constants"
 import { StorageService } from "~/shared/storage-service"
 import { toRealPath } from "~/shared/utils"
@@ -12,30 +11,21 @@ import {
   PushError,
 } from "./errors"
 
-async function openRepo(repoPath: string) {
-  return await NodeGit.Repository.open(repoPath)
-}
-
-async function isClean(cwd: string) {
-  const repo = await openRepo(cwd)
-  const status = await repo.getStatus()
-  return !status.length
+async function isClean(repoPath: string) {
+  return !(await run("git", ["status", "-s"], { cwd: repoPath }))
 }
 
 async function hasRepo(repoPath: string) {
-  return !!(await openRepo(repoPath).catch((err) => null))
+  return run("git", ["rev-parse", "--is-inside-work-tree"], {
+    cwd: repoPath,
+  }).then(
+    () => true,
+    () => false
+  )
 }
 
 async function hasRemtoe(repoPath: string) {
-  const repo = await openRepo(repoPath)
-  const remotes = await Promise.all(
-    (
-      await NodeGit.Remote.list(repo)
-    ).map((name) => {
-      return NodeGit.Remote.lookup(repo, name)
-    })
-  )
-  return !!remotes.length
+  return !!(await run("git", ["remote", "-v"], { cwd: repoPath }))
 }
 
 @injectable()
