@@ -119,7 +119,7 @@ const theme = useTheme<HTheme>()!
 <template>
   <teleport to="body">
     <ClassProvider>
-      <FadeTransition :duration="props.duration">
+      <FadeTransition :duration="duration">
         <div
           v-if="show"
           class="popover"
