@@ -46,8 +46,7 @@ export function parseArticleData(
       source: "",
       fm: {},
     }
-  const { _content, title, date, updated, layout, tags, categories, ...rest } =
-    parseHfm(article.raw)
+  const { tags, categories, fm } = parseHfm(article.raw)
   return {
     type: isPage(article) ? "page" : "post",
     isDraft: isDraft(article),
@@ -57,6 +56,6 @@ export function parseArticleData(
     date: dateFromString(article.date),
     updated: dateFromString(article.updated),
     source: article.source,
-    fm: rest,
+    fm,
   }
 }

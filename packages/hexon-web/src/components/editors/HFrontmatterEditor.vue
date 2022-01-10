@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref, watch } from "vue"
+import { nextTick, ref, watch } from "vue"
 import HTextarea from "../ui/textarea/src/HTextarea.vue"
 import yaml from "js-yaml"
 import { useThemeVars } from "../ui/theme"
 import { debouncedWatch, throttledWatch } from "@vueuse/core"
+import { cloneDeep } from "lodash-es"
 const props = defineProps<{
   fm: {
     [key: string]: unknown
@@ -19,18 +20,23 @@ const emtis = defineEmits<{
 }>()
 const internal = ref("")
 watch(
-  () => props.fm,
+  () => cloneDeep(props.fm),
   (v) => {
     try {
       // Trick {} => ' {}' to {} => ''
       const str = yaml.dump(v, {})
       internal.value = str.trim() === "{}" ? "" : str
-      error.value = ""
+      nextTick(() => {
+        error.value = ""
+      })
     } catch (err) {
-      error.value = (err as Error).message
+      nextTick(() => {
+        error.value = (err as Error).message
+      })
     }
   },
   {
+    immediate: true,
     deep: true,
   }
 )

@@ -26,7 +26,6 @@ describe("date", () => {
     const date = dayjs("2007-6-30")
     const monday = getLastMonday(date)
     const res = lastMondayInCurrentMonth(date, monday)
-    console.log(getDataByDate(dayjs()))
     expect(res).toBe(false)
   })
   it("should be am", () => {
