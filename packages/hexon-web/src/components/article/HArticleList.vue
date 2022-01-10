@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref, toRefs } from "vue"
+import { computed, ref, toRefs } from "vue"
 import { IHArticleListData, IShowMenuPaylod } from "./interface"
 import HArticleItem from "./HArticleItem.vue"
 import HArticleMenu from "./HArticleMenu.vue"
+import { sortArticleByTime } from "./utils"
 
 const props = defineProps<{
   articles: IHArticleListData[]
@@ -11,7 +12,8 @@ const props = defineProps<{
 const emits = defineEmits<{
   (e: "on-click", payload: { source: string; type: "post" | "page" }): void
 }>()
-const { articles, selected } = toRefs(props)
+const { selected } = toRefs(props)
+const articles = computed(() => sortArticleByTime(props.articles))
 const position = ref({ x: 0, y: 0 })
 const show = ref(false)
 const article = ref<IHArticleListData | null>(null)
