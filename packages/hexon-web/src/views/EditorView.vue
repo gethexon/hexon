@@ -23,6 +23,8 @@ import HTagEditor from "@/editors/HTagEditor.vue"
 import HNavTitle from "@/ui/nav-list/src/HNavTitle.vue"
 import ErroredView from "./ErroredView.vue"
 import HFrontmatterEditor from "~/components/editors/HFrontmatterEditor.vue"
+import { useDialog } from "~/lib/dialog"
+import { useEventListener } from "@vueuse/core"
 
 const [HMonacoEditor, monacoLoading] = useAsyncComponentWithLoading(
   () => import("@/editors/HMonacoEditor.vue")
@@ -34,6 +36,7 @@ const router = useRouter()
 const dispatcher = useDispatcher()
 const detailStore = useDetailStore()
 const mainStore = useMainStore()
+const dialog = useDialog()
 //#endregion
 
 //#region handlers
@@ -45,7 +48,23 @@ const onAction = (payload: HEditorToolbarActionPayload) => {
   const source = route.params.source as string
   switch (payload.type) {
     case "back":
-      dispatcher.viewArticle({ type, source })
+      changed.value
+        ? dialog.create({
+            type: "warning",
+            title: "有未保存的更改",
+            content: "确定要离开么？",
+            actions: [
+              { label: "再想想", type: "common" },
+              {
+                label: "是的",
+                type: "error",
+                run: () => {
+                  dispatcher.viewArticle({ type, source })
+                },
+              },
+            ],
+          })
+        : dispatcher.viewArticle({ type, source })
       break
     case "save":
       dispatcher.saveArticle(internal_raw.value).then(setUnchanged, noop)
@@ -60,6 +79,13 @@ const onAction = (payload: HEditorToolbarActionPayload) => {
       break
   }
 }
+useEventListener("beforeunload", (e) => {
+  if (!changed.value) return
+  if (!confirm("确定离开？你所做的更改可能未保存。")) {
+    e.preventDefault()
+    e.returnValue = ""
+  }
+})
 //#endregion
 
 //#region data
