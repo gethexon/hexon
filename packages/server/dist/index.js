@@ -18,7 +18,6 @@ var chalk = require('chalk');
 var HexoCore = require('hexo');
 var Debug = require('debug');
 var execa = require('execa');
-var NodeGit = require('nodegit');
 var serve = require('koa-static');
 var crypto = require('crypto');
 var CryptoJS = require('crypto-js');
@@ -41,7 +40,6 @@ var chalk__default = /*#__PURE__*/_interopDefaultLegacy(chalk);
 var HexoCore__default = /*#__PURE__*/_interopDefaultLegacy(HexoCore);
 var Debug__default = /*#__PURE__*/_interopDefaultLegacy(Debug);
 var execa__default = /*#__PURE__*/_interopDefaultLegacy(execa);
-var NodeGit__default = /*#__PURE__*/_interopDefaultLegacy(NodeGit);
 var serve__default = /*#__PURE__*/_interopDefaultLegacy(serve);
 var crypto__default = /*#__PURE__*/_interopDefaultLegacy(crypto);
 var CryptoJS__default = /*#__PURE__*/_interopDefaultLegacy(CryptoJS);
@@ -730,23 +728,16 @@ class PushError extends Error {
     name = "PushError";
 }
 
-async function openRepo(repoPath) {
-    return await NodeGit__default["default"].Repository.open(repoPath);
-}
-async function isClean(cwd) {
-    const repo = await openRepo(cwd);
-    const status = await repo.getStatus();
-    return !status.length;
+async function isClean(repoPath) {
+    return !(await run("git", ["status", "-s"], { cwd: repoPath }));
 }
 async function hasRepo(repoPath) {
-    return !!(await openRepo(repoPath).catch((err) => null));
+    return run("git", ["rev-parse", "--is-inside-work-tree"], {
+        cwd: repoPath,
+    }).then(() => true, () => false);
 }
 async function hasRemtoe(repoPath) {
-    const repo = await openRepo(repoPath);
-    const remotes = await Promise.all((await NodeGit__default["default"].Remote.list(repo)).map((name) => {
-        return NodeGit__default["default"].Remote.lookup(repo, name);
-    }));
-    return !!remotes.length;
+    return !!(await run("git", ["remote", "-v"], { cwd: repoPath }));
 }
 let GitService = class GitService {
     storage;
