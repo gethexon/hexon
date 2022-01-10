@@ -1,16 +1,16 @@
-import http from "http";
-import "./bootstrap.ts";
-import { container } from "tsyringe";
-import app from "./app";
-import { StorageService } from "~/shared/storage-service";
-import { HEXON_PORT_KEY, HEXON_DEFAULT_PORT } from "~/shared/constants";
+import "reflect-metadata"
+import { container } from "tsyringe"
+import http from "http"
+import { HEXON_DEFAULT_PORT, HEXON_PORT_KEY } from "~/shared/constants"
+import { StorageService } from "~/shared/storage-service"
+import app from "./app"
 
-const storage = container.resolve(StorageService);
-const server = http.createServer(app.callback());
+const storage = container.resolve<StorageService>(StorageService)
+const server = http.createServer(app.callback())
 server.on("listening", () => {
-  const addr = server.address();
+  const addr = server.address()
   const bind =
-    typeof addr === "string" ? "pipe " + addr : "http://localhost:" + addr.port;
-  console.log("Server running on " + bind);
-});
-server.listen(storage.get(HEXON_PORT_KEY) || HEXON_DEFAULT_PORT);
+    typeof addr === "string" ? "pipe " + addr : "http://localhost:" + addr.port
+  console.log("Server running on " + bind)
+})
+server.listen(storage.get(HEXON_PORT_KEY) || HEXON_DEFAULT_PORT)
