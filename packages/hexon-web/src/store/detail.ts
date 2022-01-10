@@ -19,7 +19,7 @@ export const useDetailStore = defineStore("detail", {
   }),
   getters: {
     loading(): boolean {
-      return !this.error && this._loading
+      return (!this.error && this._loading) || !this.article
     },
     isDraft(): boolean {
       return isDraft(this.article)

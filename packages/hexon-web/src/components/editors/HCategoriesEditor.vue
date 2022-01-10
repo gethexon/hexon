@@ -20,14 +20,14 @@ const allCategories = computed(() => {
 })
 watch(
   () => [...props.categories],
-  (v, old) => {
-    if (!stringArrayEqual(v, old)) categories.value = v
+  (v) => {
+    categories.value = v
   }
 )
 watch(
   () => [...categories.value],
-  (v, old) => {
-    if (!stringArrayEqual(v, old)) emits("update:categories", v)
+  (v) => {
+    emits("update:categories", v)
   }
 )
 const onNewCat = () => {

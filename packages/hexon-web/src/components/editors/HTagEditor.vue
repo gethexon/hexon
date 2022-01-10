@@ -19,14 +19,14 @@ const newTag = ref("")
 const tags = ref<string[]>(props.tags)
 watch(
   () => [...props.tags],
-  (ts, old) => {
-    if (ts.join("") !== old.join("")) tags.value = ts
+  (ts) => {
+    tags.value = ts
   }
 )
 watch(
   () => [...tags.value],
-  (ts, old) => {
-    if (ts.join("") !== old.join("")) emits("update:tags", ts)
+  (ts) => {
+    emits("update:tags", ts)
   }
 )
 const allTags = computed(() => {
