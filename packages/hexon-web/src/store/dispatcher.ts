@@ -24,14 +24,16 @@ export const useDispatcher = defineStore("dispatcher", {
       this.modal.create(HSettingsModal)
     },
     //#endregion
-    createArticle(title: string, options: ICreateOptions) {
+    async createArticle(title: string, options: ICreateOptions) {
       const mainStore = useMainStore()
-      mainStore.createArticle(title, options).then(() => {
+      this.loading.start()
+      await mainStore.createArticle(title, options).then(() => {
         this.notification.notify({
           type: "success",
           title: "新建成功",
         })
       })
+      this.loading.stop()
     },
     deleteArticle(id: IArticleIdentifier) {
       const mainStore = useMainStore()
