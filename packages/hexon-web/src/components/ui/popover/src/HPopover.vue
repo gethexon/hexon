@@ -58,8 +58,8 @@ watch(
 
 //#region refs
 const instance = getCurrentInstance()
-const containerElRef = ref<HTMLElement | null>(null)
-const contentElRef = ref<HTMLElement | null>(null)
+const containerElRef: Ref<HTMLElement | null> = ref(null)
+const contentElRef: Ref<HTMLElement | null> = ref(null)
 onMounted(() => {
   containerElRef.value = instance?.proxy?.$el.parentNode as HTMLElement
 })

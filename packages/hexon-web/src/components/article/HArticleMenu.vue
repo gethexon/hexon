@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onClickOutside } from "@vueuse/core"
-import { StyleValue, computed, ref } from "vue"
+import { StyleValue, computed, ref, Ref } from "vue"
 import { createClassNames } from "~/utils/create-classnames"
 import { useOnParentScroll } from "~/utils/scroll"
 import { HBadge } from "@/ui/badge"
@@ -27,8 +27,8 @@ const props = defineProps<{
 const emtis = defineEmits<{
   (e: "update:show", v: boolean): void
 }>()
-const containerRef = ref<HTMLElement | null>(null)
-const anchorRef = ref<HTMLElement | null>(null)
+const containerRef: Ref<HTMLElement | null> = ref(null)
+const anchorRef: Ref<HTMLElement | null> = ref(null)
 onClickOutside(containerRef, () => {
   emtis("update:show", false)
 })

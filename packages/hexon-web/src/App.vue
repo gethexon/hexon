@@ -2,7 +2,7 @@
 import { computed } from "@vue/reactivity"
 import { useDark } from "@vueuse/core"
 import { useThemeController } from "@winwin/vue-global-theming"
-import { watch } from "vue"
+import { StyleValue, watch } from "vue"
 import HDialog from "@/others/HDialog.vue"
 import HNotificationItem from "@/others/HNotificationItem.vue"
 import { DialogContainer } from "./lib/dialog"
@@ -13,12 +13,6 @@ import HLoading from "./components/ui/loading/src/HLoading.vue"
 import ModalContainer from "./lib/modal/src/ModalContainer.vue"
 
 const loading = useLoading()
-const styles = computed(() => {
-  return {
-    width: "100vw",
-    height: "100vh",
-  }
-})
 const isDarkRef = useDark()
 const controller = useThemeController()!
 watch(
@@ -34,7 +28,7 @@ watch(
 </script>
 
 <template>
-  <div :style="styles" @contextmenu.prevent>
+  <div style="width: 100vw; height: 100vh" @contextmenu.prevent>
     <HLoading :loading="loading.loading.value" overlay>
       <ClassProvider>
         <router-view></router-view>
