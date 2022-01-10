@@ -14,7 +14,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * badge style ([a60a8fc](https://github.com/gethexon/hexon/commit/a60a8fcd10bcd66b8d41f5fb11ce959e4128d5eb))
 * build bug ([8793939](https://github.com/gethexon/hexon/commit/87939394e6c2d5cab3ebee8660f0edfeb343c7b4))
 * can not run install process ([ea27b93](https://github.com/gethexon/hexon/commit/ea27b9338069d7d7467eaa59bf2826c7b71ca20b))
-* chalk ([ea2ff6f](https://github.com/gethexon/hexon/commit/ea2ff6f5dd5d07c39a4852ec6eee051774e147eb))
 * color classes ([671d942](https://github.com/gethexon/hexon/commit/671d942f0b4a497cda3c2acb5467e771af50a4b3))
 * css class name ([2d6a601](https://github.com/gethexon/hexon/commit/2d6a601cc73782bcfc9842489a37e56c94f1f35f))
 * data unexpected marked changed ([6c01f60](https://github.com/gethexon/hexon/commit/6c01f606c50f6a71478a66b5a996724635839f57))
@@ -31,7 +30,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * fm parse and display ([22c13ab](https://github.com/gethexon/hexon/commit/22c13abd87aac7d01b93049a704828e72eb05b36))
 * form style ([6454be7](https://github.com/gethexon/hexon/commit/6454be71e3f507d2607f201b2db75843c1fbb61b))
 * form submit bug ([33f363f](https://github.com/gethexon/hexon/commit/33f363fb986c2ff9edec2c1c3fbbcab50bdc8aba))
-* git remote ([ac49d60](https://github.com/gethexon/hexon/commit/ac49d60d9e87e1dbb30bdb5fd1d77f081f815e3f))
 * h-button shrink ([7a40720](https://github.com/gethexon/hexon/commit/7a40720a6bc62fcfc03776b663c5a743a4b16642))
 * h-nav-list ([9e71621](https://github.com/gethexon/hexon/commit/9e716212cfdd051b0bb0a49759d3ea3f99a29b2a))
 * h-nav-list count ([6b8c8ab](https://github.com/gethexon/hexon/commit/6b8c8ab7afc125654ff03c530cb7fba6b6df2256))
@@ -44,9 +42,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * notification animation ([e16076c](https://github.com/gethexon/hexon/commit/e16076cf22ad2f9f87893a19719c185dd4995eea))
 * path name ([92b1733](https://github.com/gethexon/hexon/commit/92b1733ab5e3cb594a76b36aa75de39a9cb2fbfe))
 * post attr ([9790198](https://github.com/gethexon/hexon/commit/9790198530446b708ae1ecb6ab498404d72ca843))
-* remove unused error type ([ca4bc37](https://github.com/gethexon/hexon/commit/ca4bc37e5f5877125ce1f468346c6badb4efca18))
 * show viewer by hexo ([c8b6616](https://github.com/gethexon/hexon/commit/c8b6616498922b0af96f0763b2a81dbb14f719f2))
-* slug 缺失 ([6df9f32](https://github.com/gethexon/hexon/commit/6df9f32ca3ee07717fcdde15fdc36d918ee071e1))
 * small round button style ([63e4f54](https://github.com/gethexon/hexon/commit/63e4f5447d3187e5137a3d555c68319dff15fed3))
 * source uri component ([c9eab46](https://github.com/gethexon/hexon/commit/c9eab460c52241b4ec49e760eca27c061af9bd6b))
 * statics ([5d86937](https://github.com/gethexon/hexon/commit/5d869376f1830353db5be33a9fc6768332008d7d))
@@ -59,15 +55,12 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * vitepress doc and css ([1d01597](https://github.com/gethexon/hexon/commit/1d01597d9fef8bc0ceabe02c3e168bb31e8a518e))
 * vitepress 路由 ([f6a2ceb](https://github.com/gethexon/hexon/commit/f6a2cebadf46d178cc39917dc285c4153adce9fa))
 * vue-demi ([27b3248](https://github.com/gethexon/hexon/commit/27b32482d974a394693fb8551090f730a3b6fc3c))
-* 不显示草稿 ([3cccfa8](https://github.com/gethexon/hexon/commit/3cccfa8b4b64c75cf9ca865428d04e76cdbe5e08))
 * 关闭 viewer 后没有清空数据 ([b3c2fa2](https://github.com/gethexon/hexon/commit/b3c2fa2a7504da88e9b612bf399659b860e0ee2e))
 * 整理 viewer 样式 ([7188a97](https://github.com/gethexon/hexon/commit/7188a97a090a0d085bbedbc6f8d451d4ed41145e))
 * 文章查看页面跳转数据重新加载 ([de09412](https://github.com/gethexon/hexon/commit/de09412a407dc76d279417e833d22e9defdc18bf))
 * 查看器样式 ([cd0874e](https://github.com/gethexon/hexon/commit/cd0874e7849130e7cef18c352cef994a40c4a021))
 * 第一次打开页面不加载文章 ([301f6ce](https://github.com/gethexon/hexon/commit/301f6ce5d3dbffe9fe34ce74bd78973b6ea8aeb2))
 * 统一颜色，使用语义颜色 ([687f37c](https://github.com/gethexon/hexon/commit/687f37cde7b5be05045b8d9f0bc52d8bdff2c46d))
-* **server:** build ([2b617ea](https://github.com/gethexon/hexon/commit/2b617eaef6695167887ff371225a5ec6c99a2684))
-* **server:** route block ([cc7d583](https://github.com/gethexon/hexon/commit/cc7d583928942b8cd9e3f3c561d3e601f2680e7c))
 * **vue:** reset less ([f36b564](https://github.com/gethexon/hexon/commit/f36b564cfe8b856a3b5481048f385f7b6b7b450f))
 * **web:** doc alias ([39f2212](https://github.com/gethexon/hexon/commit/39f2212bf7b2dafcb2647219b14d472aa12f1164))
 * **web:** fix style cat parent and load onmounted ([fce21ec](https://github.com/gethexon/hexon/commit/fce21ec93cdc0f1e44858558cda8b503c21c99c5))
@@ -86,7 +79,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * better http secure ([0f38524](https://github.com/gethexon/hexon/commit/0f38524bea729876927bdb726d505045c42b1187))
 * button size ([8c3736a](https://github.com/gethexon/hexon/commit/8c3736a635b715869446f92d39f93a3d23c3a5d2))
 * categories editor ([ded8aa9](https://github.com/gethexon/hexon/commit/ded8aa9f849f75392b3cf7b547c8eb97e09bef75))
-* create api ([5584f0f](https://github.com/gethexon/hexon/commit/5584f0f20e8d51ded8b6a10fa4c23dc9940b6a6f))
 * create article ([748de06](https://github.com/gethexon/hexon/commit/748de06f81dca66cfb434d39f21d26e4a199a7d4))
 * create article modal ([ef579f1](https://github.com/gethexon/hexon/commit/ef579f13baec967730c1c0213f5f0a8cbcdb684e))
 * dark mode ([e26b029](https://github.com/gethexon/hexon/commit/e26b029086ea5158deb9eb0ad1ed4efd17612d74))
@@ -134,11 +126,8 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * new theme system ([a2f1fcf](https://github.com/gethexon/hexon/commit/a2f1fcfb4a8a98922b882427dc5c8eb54e9e9323))
 * notification actions ([a1ac24d](https://github.com/gethexon/hexon/commit/a1ac24d92253db120f6ba782d7820feef6d8c2ba))
 * notification system ([c26cfda](https://github.com/gethexon/hexon/commit/c26cfda07514bd29bc10214c3c51f9dc42f9b6aa))
-* password encode ([2bf84fd](https://github.com/gethexon/hexon/commit/2bf84fdd6c3ebe4c09f7122808e3c5eb435e6a81))
 * popover ([baa6f39](https://github.com/gethexon/hexon/commit/baa6f39fb9798e698eb87d2444b61106a475a133))
 * popover ([78164d3](https://github.com/gethexon/hexon/commit/78164d33cf7e36fdf4e48418176975c2e7464442))
-* post and page delete api ([6d08b14](https://github.com/gethexon/hexon/commit/6d08b14f92ace29494bc560e2e24748c02c62796))
-* post and page update api ([82919de](https://github.com/gethexon/hexon/commit/82919deb91b5712b899ec683df65da8d70dde8cd))
 * prettier markdown formatter ([592b646](https://github.com/gethexon/hexon/commit/592b6461e04e6f93c149c64a33272f4936d0e3b1))
 * publish api ([c76849a](https://github.com/gethexon/hexon/commit/c76849a2d113dfd957460a9c5ca6d57b380a05df))
 * save article ([c812fe9](https://github.com/gethexon/hexon/commit/c812fe91af8d85f65852ed68af1625ea2d20431e))
@@ -153,97 +142,31 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * viewer view router ([531008c](https://github.com/gethexon/hexon/commit/531008c998895bcdb03ac9f76db9c44c5fa50492))
 * viewerview action ([e4be40b](https://github.com/gethexon/hexon/commit/e4be40b3a020880a784be5ffcb114a28e2e62fb8))
 * web publish ([b99c830](https://github.com/gethexon/hexon/commit/b99c8303849294c5ace89b8486b98cff0be2a734))
-* 更改数据后返回可能的更新 ([40e8097](https://github.com/gethexon/hexon/commit/40e8097017c17e5ed9a9228967472f37a25c40f0))
-* 添加 brief 字段到 listxxx api ([8d30450](https://github.com/gethexon/hexon/commit/8d30450e368bf453ac45979ecc7465301050eb2d))
-* **server:** change to brief to save bandwidth ([bb07249](https://github.com/gethexon/hexon/commit/bb072495c7fae68873135a0dc733664072082aa5))
-* **server:** 接入 koa-account ([7c502f2](https://github.com/gethexon/hexon/commit/7c502f2e2ee0f1c00c96065f16e1d14f8796eaa3))
+* 支持显示错误 ([a77f049](https://github.com/gethexon/hexon/commit/a77f049948304b75a6c7379473ae6af07ee78c9f))
 * **server:** 支持修改用户名和密码 ([f55578c](https://github.com/gethexon/hexon/commit/f55578cf1bf587902f4ebb8c28ced8e11735ff4a))
 * **vue:** h-modal ([3f1ab96](https://github.com/gethexon/hexon/commit/3f1ab960c4e51820754f82d5ba58d3abec10a322))
 * **vue:** h-nav-list ([530e45e](https://github.com/gethexon/hexon/commit/530e45e221b3bdcbd7049392b11a54755d461c8c))
-* **vue:** h-toolbar h-title ([e18bb11](https://github.com/gethexon/hexon/commit/e18bb119cf75c65e7720744f64c74f6c63e3f624))
 * **vue:** login form ([3895838](https://github.com/gethexon/hexon/commit/389583854999b8dbeecca93dd83636842231b052))
 * **vue:** signin page ([b651b15](https://github.com/gethexon/hexon/commit/b651b15cd95d75a396cccdcfd37dec00447d8ca1))
-* **vue:** split-view ([9ea7115](https://github.com/gethexon/hexon/commit/9ea711557afd7dd10eeba1cf5fe8446cc3fd0035))
-* **vue:** 重写 account 为 vue 插件 ([380d90f](https://github.com/gethexon/hexon/commit/380d90f964a242a82f2e1b5fa838ff1bcaf987f9))
 * **vue:** 重写主题为 vue 插件 ([3b0b8be](https://github.com/gethexon/hexon/commit/3b0b8be3d0cc06e948421ecacd4d6e58d47ced10))
 * **web:** ellipsis support ([4b2bf6f](https://github.com/gethexon/hexon/commit/4b2bf6fd0d6e62fdc88fe02fdbeb838572c2bcc4))
 * **web:** h-badge ([1cbbe3d](https://github.com/gethexon/hexon/commit/1cbbe3d9f2ef9b8de4aebf83ad8cacd0ec525126))
 * **web:** h-button ([54dfe3a](https://github.com/gethexon/hexon/commit/54dfe3adcbad1003f52a6db99738d7330ddc89d0))
 * **web:** h-button block ([7ef674b](https://github.com/gethexon/hexon/commit/7ef674bddea94095c5d25d2e9a7055c7dec2e815))
 * **web:** h-icon ([5b815f9](https://github.com/gethexon/hexon/commit/5b815f97cdc742c010277f60b648ac4128cd5d22))
-* **web:** h-icon clickable ([cdf6ee1](https://github.com/gethexon/hexon/commit/cdf6ee11f6ffba2c0de6c1d6af86714a968f0d66))
 * **web:** h-input ([3c2ebf8](https://github.com/gethexon/hexon/commit/3c2ebf8ed11e6eda8786b59b053e7f098dd0ac24))
 * **web:** h-input-clearable ([ff05faf](https://github.com/gethexon/hexon/commit/ff05faf2b1b1495f47c4c2eb22aec9227a5f2356))
-* **web:** h-input-type ([875b4d6](https://github.com/gethexon/hexon/commit/875b4d6f6a53ce96393c8baea55aa693670416ea))
 * **web:** install tailwind css ([9a84356](https://github.com/gethexon/hexon/commit/9a843560271bb3927d5f1ad6590d0bd527d2f866))
 * 使用 slug  当作 id ([6802ebc](https://github.com/gethexon/hexon/commit/6802ebc002ad1b33eb5d0ecbf3b6b98c60a9e7c1))
 * 添加 slug 编解码支持 ([9c6cffe](https://github.com/gethexon/hexon/commit/9c6cffe6cac3b160ddb7f5411d04258f4346f44d))
+* **vue:** h-toolbar h-title ([e18bb11](https://github.com/gethexon/hexon/commit/e18bb119cf75c65e7720744f64c74f6c63e3f624))
+* **vue:** split-view ([9ea7115](https://github.com/gethexon/hexon/commit/9ea711557afd7dd10eeba1cf5fe8446cc3fd0035))
+* **vue:** 重写 account 为 vue 插件 ([380d90f](https://github.com/gethexon/hexon/commit/380d90f964a242a82f2e1b5fa838ff1bcaf987f9))
+* **web:** h-icon clickable ([cdf6ee1](https://github.com/gethexon/hexon/commit/cdf6ee11f6ffba2c0de6c1d6af86714a968f0d66))
+* **web:** h-input-type ([875b4d6](https://github.com/gethexon/hexon/commit/875b4d6f6a53ce96393c8baea55aa693670416ea))
 * **web:** init and account ([b1792e6](https://github.com/gethexon/hexon/commit/b1792e61a4e84a7d0b1d37257d43c3498fb06a75))
 * **web:** 使用 fluent icon font ([5c344e1](https://github.com/gethexon/hexon/commit/5c344e1e7cd8987fec174218529f97ef08bdf33b))
 * **web:** 添加 storybook 和主题 ([b204aba](https://github.com/gethexon/hexon/commit/b204abafdf712fd20c3dcdf1ec242e96e1a8662f))
 * **web:** 添加 vuex 和博客内容加载 ([073ea86](https://github.com/gethexon/hexon/commit/073ea86a7c04d2a46044548240363a3d1d3db51a))
 * **web:** 添加颜色类型 ([54f6fee](https://github.com/gethexon/hexon/commit/54f6fee1c2f3b7947fd26da6ce3dbc69757d3c78))
 * **web:** 登出时清理 store 数据 ([2998964](https://github.com/gethexon/hexon/commit/29989647ae354e16a6214558a553ae9c7f23e66b))
-* base command ([71db15e](https://github.com/gethexon/hexon/commit/71db15e23dad870d6da7c62c80a0669d2e654a47))
-* hexo list ([b9d9b8d](https://github.com/gethexon/hexon/commit/b9d9b8d2cfc2c4c87d1dfb89e1b8fb3edd261bce))
-* 支持显示错误 ([a77f049](https://github.com/gethexon/hexon/commit/a77f049948304b75a6c7379473ae6af07ee78c9f))
-* 重构基础 支持 ts ([4cb26a3](https://github.com/gethexon/hexon/commit/4cb26a3bb94f8c09a7dbda6cadb20923acc4e3b1))
-
-
-
-
-
-# [0.8.0-beta.5](https://github.com/gethexon/hexon/compare/v0.8.0-beta.4...v0.8.0-beta.5) (2021-11-03)
-
-
-### Bug Fixes
-
-* path 为空时新建文章崩溃 ([bcc2ee9](https://github.com/gethexon/hexon/commit/bcc2ee9189b0d1e3785e9937f70ef39d9ffdc3f3))
-* prd script 路径错误 ([21e2cfb](https://github.com/gethexon/hexon/commit/21e2cfb61fb32b0562740123e3c258a99bc64749))
-
-
-
-
-
-# [0.8.0-beta.4](https://github.com/gethexon/hexon/compare/v0.8.0-beta.3...v0.8.0-beta.4) (2021-10-21)
-
-
-### Bug Fixes
-
-* show 500 instead of 404 when error ([208f9eb](https://github.com/gethexon/hexon/commit/208f9ebca656a48d39c56728c1a02d582c3d3595))
-
-
-
-
-
-# [0.8.0-beta.3](https://github.com/gethexon/hexon/compare/v0.8.0-beta.2...v0.8.0-beta.3) (2021-10-21)
-
-
-### Bug Fixes
-
-* 转换反斜杠为正斜杠 ([44d8844](https://github.com/gethexon/hexon/commit/44d88441cd63db296a99bbcff728a97a5ae913a4))
-
-
-
-
-
-# [0.8.0-beta.2](https://github.com/gethexon/hexon/compare/v0.8.0-beta.1...v0.8.0-beta.2) (2021-04-23)
-
-
-### Features
-
-* 正则搜索文章 ([b180b88](https://github.com/gethexon/hexon/commit/b180b88e7c705623e6c0a89652bce91a7e6f87a2))
-
-
-
-
-
-# [0.8.0-beta.1](https://github.com/gethexon/hexon/compare/v0.8.0-beta.0...v0.8.0-beta.1) (2021-04-16)
-
-
-### Features
-
-* 添加 MonacoEditor 黑暗模式支持 ([3fe02f7](https://github.com/gethexon/hexon/commit/3fe02f71d50f18cb9eba121a055a641ee6fe4a1f))
-* 添加 pwa 刷新和返回按钮 ([532bb36](https://github.com/gethexon/hexon/commit/532bb3644cb8e43addbc7efe790450d3090c781d))
-* 重置密码 ([dea9fc5](https://github.com/gethexon/hexon/commit/dea9fc51db8af9236a4ccc53e2a6a76179a22ef3))
-* 自动 prerelease ([67d72ec](https://github.com/gethexon/hexon/commit/67d72eca56727e9815aaa5bc308c2caa9e4122ca))
