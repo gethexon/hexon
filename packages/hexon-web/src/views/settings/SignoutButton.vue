@@ -2,10 +2,17 @@
 import { HIcon, HIconName } from "@/ui/icon"
 import { useThemeVars } from "@/ui/theme"
 import HToolbar from "@/HToolbar.vue"
+import { useAccount } from "@winwin/vue-simple-account"
+import { forceReloadWindow } from "~/utils"
 const vars = useThemeVars()
+const account = useAccount()
+const signOut = async () => {
+  await account.signout()
+  forceReloadWindow()
+}
 </script>
 <template>
-  <HToolbar class="signout-button cursor-pointer px-5">
+  <HToolbar class="signout-button cursor-pointer px-5" @click="signOut">
     <span class="text-sm font-bold">退出登录</span>
     <div class="flex-1"></div>
     <HIcon :name="HIconName.PowerButton" />

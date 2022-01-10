@@ -5,8 +5,10 @@ import { computed } from "vue"
 import { useRouter } from "vue-router"
 import { HTheme } from "~/themes"
 import HLoginForm from "@/forms/HLoginForm.vue"
+import { useNotification } from "~/lib/notification"
 const router = useRouter()
 const account = useAccount()
+const notification = useNotification()
 const footer = computed(() => {
   return `©️ 2019 ~ ${new Date().getFullYear()} winwin_2011`
 })
@@ -18,11 +20,13 @@ const onSignIn = async ({
   password: string
 }) => {
   try {
-    await account?.signin(username, password)
+    await account.signin(username, password)
     router.push("/home")
   } catch (e) {
-    // TODO 登录失败弹窗
-    console.log("fail to signin")
+    notification.notify({
+      title: "登陆失败",
+      type: "error",
+    })
   }
 }
 const theme = useTheme<HTheme>()!
