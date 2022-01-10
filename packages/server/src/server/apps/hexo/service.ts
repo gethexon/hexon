@@ -2,7 +2,7 @@ import path from "path"
 import { default as HexoCore } from "hexo"
 import { inject, injectable, singleton } from "tsyringe"
 import fs from "fs"
-import { createDebug, DEV, expandHomeDir } from "~/server/utils"
+import { DEV, expandHomeDir } from "~/server/utils"
 import { IStorageService, StorageService } from "~/shared/storage-service"
 import {
   HEXO_BASE_DIR_KEY,
@@ -27,8 +27,6 @@ declare module "hexo" {
     drafts?: boolean
   }
 }
-
-const debug = createDebug("hexo")
 
 interface IHexoAPI {
   listPost(): Promise<BriefPost[]>
@@ -231,6 +229,7 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
   //#endregion
 
   public async init() {
+    // FIXME 完善启动流程
     const bak = { base_dir: this._base_dir, options: this._options }
     const base = this._storage.get<string>(HEXO_BASE_DIR_KEY)
     this._base_dir = path.resolve(__dirname, toRealPath(base))
@@ -251,20 +250,21 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
       await this._hexo.init()
       await this._hexo.watch()
       this._ready = true
-      debug("ready to go")
+      console.log("ready to go")
     } catch (err) {
-      debug("hexo init fail")
+      console.log("hexo init fail")
+      console.error(err)
       this._hexo = bak.base_dir ? new HexoCore(bak.base_dir, bak.options) : null
       this._base_dir = bak.base_dir
       this._options = bak.options
-      if (this._base_dir) debug(`using old base dir: ${this._base_dir}`)
+      if (this._base_dir) console.log(`using old base dir: ${this._base_dir}`)
       try {
         await this._hexo.init()
       } catch (e) {
-        debug("fail to reset HexoCore")
+        console.error("fail to reset HexoCore")
+        console.error(err)
         throw e
       }
-      throw err
     }
   }
   //#endregion
