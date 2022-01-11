@@ -70,10 +70,11 @@ interface IAccount {
   signin(username: string, password: string): Promise<void>
   info(): Promise<IUserInfo>
   signout(): Promise<void>
-  changeInfo(
+  changePassword(
     oldPassword: string,
     info?: Partial<IUserInfo & IPassword>
   ): Promise<void>
+  changeUsername(username: string): Promise<void>
   install(app: App): void
 }
 
@@ -157,15 +158,14 @@ export function createAccount(config: IConfig): IAccount {
     })
     storage.destory()
   }
-  async function changeInfo(
-    oldPassword: string,
-    { username, password }: Partial<IUserInfo & IPassword> = {}
-  ) {
-    await access.put("/info", {
+  async function changePassword(oldPassword: string, { password }: IPassword) {
+    await access.put("/info/password", {
       oldPassword,
-      username,
       password,
     })
+  }
+  async function changeUsername(username: string) {
+    await access.put("/info/username", { username })
   }
   //#endregion
   return {
@@ -182,7 +182,8 @@ export function createAccount(config: IConfig): IAccount {
     signin,
     info,
     signout,
-    changeInfo,
+    changePassword,
+    changeUsername,
     install(app: App) {
       const account = this
       app.provide(injectionKey, account)

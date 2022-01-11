@@ -35,16 +35,22 @@ export default function createRouter(
   })
 
   router.put(
-    "/info",
+    "/info/username",
+    auth.createMiddleware("access"),
+    (ctx: Context) => {
+      const { username }: { username?: string } = ctx.request.body
+      if (username) storage.changeUsername(username)
+      logger(`update info`)
+      ctx.status = 200
+    }
+  )
+
+  router.put(
+    "/info/password",
     auth.createMiddleware("access"),
     auth.createPasswordCheck(),
     (ctx: Context) => {
-      const {
-        username,
-        password,
-      }: { oldpassword: string; username?: string; password?: string } =
-        ctx.request.body
-      if (username) storage.changeUsername(username)
+      const { password }: { password?: string } = ctx.request.body
       if (password) storage.changePassword(password)
       logger(`update info`)
       ctx.status = 200

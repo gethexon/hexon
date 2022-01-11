@@ -7,7 +7,7 @@ const account = useAccount()
 const notification = useNotification()
 const onChangePassword = (payload: IChangePasswordFormPayload) => {
   account
-    .changeInfo(payload.oldPassword, { password: payload.newPassword })
+    .changePassword(payload.oldPassword, { password: payload.newPassword })
     .then(
       () => {
         notification.notify({ type: "success", title: "密码修改成功" })
