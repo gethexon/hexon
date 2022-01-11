@@ -1,55 +1,28 @@
 <script setup lang="ts">
-import type { Ref } from "vue"
-import { ref, computed, watch } from "vue"
-import TranslateUpDownTransitionGroup from "@/transitions/TranslateUpDownTransitionGroup.vue"
+import type { ComputedRef } from "vue"
+import type { ISlideViewItem } from "~/components/ui/slide-view/src/interface"
+import type { ISettingsTab } from "./interface"
+import { computed } from "vue"
+import HSlideView from "~/components/ui/slide-view/src/HSlideView.vue"
 import SettingsTabContainer from "./SettingsTabContainer.vue"
-import { ISettingsTab } from "./interface"
 
 const props = defineProps<{
   current: string
   model: ISettingsTab[]
 }>()
-const model = computed(() => {
-  return props.model.map((item, idx) => ({ ...item, idx }))
-})
-const up = ref(false)
-const tabs: Ref<ISettingsTab[]> = ref([])
-watch(
-  () => props.current,
-  (v, old) => {
-    const nextItem = model.value.find((item) => item.key === v)
-    if (!nextItem) return
-    if (old) {
-      const currentItem = model.value.find((item) => item.key === old)!
-      if (!currentItem) return
-      const next = nextItem.idx
-      const current = currentItem.idx
-      up.value = next > current
-    }
-    const { key, title, comp } = nextItem
-    tabs.value = [
-      {
-        key,
-        title,
-        comp,
-      },
-    ]
-  },
-  {
-    immediate: true,
-  }
+const newModel: ComputedRef<ISlideViewItem[]> = computed(() =>
+  props.model.map((item) => ({
+    key: item.key,
+    component: item.comp,
+  }))
 )
 </script>
 <template>
-  <TranslateUpDownTransitionGroup :up="up" :duration="200">
-    <div
-      class="absolute w-full h-full overflow-hidden"
-      :key="t.key"
-      v-for="t in tabs"
-    >
-      <SettingsTabContainer :title="t.title">
-        <Component :is="t.comp" />
+  <HSlideView :model="newModel" :current="current">
+    <template #default="slotProps">
+      <SettingsTabContainer :title="model[slotProps.idx].title">
+        <Component :is="slotProps.component" />
       </SettingsTabContainer>
-    </div>
-  </TranslateUpDownTransitionGroup>
+    </template>
+  </HSlideView>
 </template>

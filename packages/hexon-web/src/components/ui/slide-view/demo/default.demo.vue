@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import type { ISlideViewItem } from "../src/interface"
 import { defineComponent, h, ref } from "vue"
 import HSlideView from "../src/HSlideView.vue"
-import { ISlideViewItem } from "../src/interface"
 const model: ISlideViewItem[] = new Array(5).fill(0).map((i, idx) => {
   const key = `Tab${idx}`
   return {

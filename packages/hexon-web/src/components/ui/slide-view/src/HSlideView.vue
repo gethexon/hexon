@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { Ref } from "vue"
-import { ref, computed, watch } from "vue"
+import type { ISlideViewItem } from "./interface"
+import { computed, ref, watch } from "vue"
 import TranslateUpDownTransitionGroup from "@/transitions/TranslateUpDownTransitionGroup.vue"
-import { ISlideViewItem } from "./interface"
 
 const props = defineProps<{
   current: string
@@ -44,11 +44,11 @@ watch(
     <TranslateUpDownTransitionGroup :up="up" :duration="200">
       <div
         class="absolute w-full h-full overflow-hidden"
-        :key="t.key"
-        v-for="t in tabs"
+        :key="item.key"
+        v-for="(item, idx) in tabs"
       >
-        <slot :key="t.key" :component="t.component">
-          <Component :is="t.component" />
+        <slot :key="item.key" :component="item.component" :idx="idx">
+          <Component :is="item.component" />
         </slot>
       </div>
     </TranslateUpDownTransitionGroup>
