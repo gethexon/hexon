@@ -33,14 +33,13 @@ watch(
     const item = model.value[v]
     if (!item) return
     tabs.value = [item]
-    if (old) pre.value = v < old
+    if (old !== void 0) pre.value = v > old
   },
   {
     immediate: true,
   }
 )
 const setCurrent = (next: number) => {
-  console.log({ next })
   emits("update:current", next)
 }
 const realPre = computed(() => (props.reverted ? !pre.value : pre.value))

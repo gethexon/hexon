@@ -6,7 +6,8 @@ import { HTheme } from "~/themes"
 import { HIcon } from "@/ui/icon"
 import { HIconName } from "@/ui/icon/src/interface"
 const props = defineProps<{
-  next: () => void
+  idx: number
+  setCurrent(next: number): void
 }>()
 const theme = useTheme<HTheme>()!
 const styleVars = computed(() => {
@@ -82,6 +83,10 @@ onMounted(() => {
   animate.start()
 })
 const opacity = ref(0)
+
+const onNext = () => {
+  props.setCurrent(props.idx + 1)
+}
 </script>
 <template>
   <div
@@ -96,7 +101,7 @@ const opacity = ref(0)
     <button
       class="mt-11 transition-opacity"
       :style="`opacity: ${opacity}`"
-      @click="props.next"
+      @click="onNext"
     >
       现在开始
       <HIcon :name="HIconName.ChevronRight" />
