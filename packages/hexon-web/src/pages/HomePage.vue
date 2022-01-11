@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue"
+import { nextTick, onMounted, ref } from "vue"
 import { RouterView, useRoute } from "vue-router"
 import { useArticleListStore } from "~/store/articleList"
 import { useDispatcher } from "~/store/dispatcher"
@@ -8,6 +8,7 @@ import SplitView from "~/lib/splitview"
 import HomeNavView from "~/views/HomeNavView.vue"
 import HSearchBar from "@/HSearchBar.vue"
 import ArticleListView from "~/views/ArticleListView.vue"
+import preLoadAll from "~/utils/preload"
 
 //#region hooks
 const dispatcher = useDispatcher()
@@ -32,6 +33,12 @@ const config = {
 const search = ref("")
 
 const onAdd = () => dispatcher.showCreateArticleModal()
+
+onMounted(() => {
+  nextTick(() => {
+    preLoadAll()
+  })
+})
 </script>
 <template>
   <SplitView

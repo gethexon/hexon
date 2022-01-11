@@ -1,17 +1,16 @@
 <script setup lang="ts">
-import { computed } from "@vue/reactivity"
 import { useDark } from "@vueuse/core"
 import { useThemeController } from "@winwin/vue-global-theming"
-import { onMounted, StyleValue, watch } from "vue"
+import { onMounted, watch } from "vue"
 import HDialog from "@/others/HDialog.vue"
 import HNotificationItem from "@/others/HNotificationItem.vue"
 import { DialogContainer } from "./lib/dialog"
 import { useLoading } from "./lib/loading"
 import { Notifications } from "./lib/notification"
+import { useDispatcher } from "./store/dispatcher"
 import ClassProvider from "./ClassProvider.vue"
 import HLoading from "./components/ui/loading/src/HLoading.vue"
 import ModalContainer from "./lib/modal/src/ModalContainer.vue"
-import { useDispatcher } from "./store/dispatcher"
 
 const dispatcher = useDispatcher()
 const loading = useLoading()
