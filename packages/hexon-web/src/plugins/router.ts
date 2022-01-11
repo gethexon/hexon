@@ -23,7 +23,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: "/edit/:type/:source",
-    component: () => import("../views/EditorView.vue"),
+    component: () => import("../pages/EditorPage.vue"),
     name: "edit",
   },
   {
