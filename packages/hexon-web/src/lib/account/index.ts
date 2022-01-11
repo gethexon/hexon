@@ -68,7 +68,7 @@ interface IAccount {
   refresh: AxiosInstance
   user: ComputedRef<IUserInfo | undefined>
   signin(username: string, password: string): Promise<void>
-  info(): Promise<void>
+  info(): Promise<IUserInfo>
   signout(): Promise<void>
   changeInfo(
     oldPassword: string,

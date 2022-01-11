@@ -16,6 +16,10 @@ const HSettingsModal = defineAsyncComponent(
 export const useDispatcher = defineStore("dispatcher", {
   state: () => ({}),
   actions: {
+    init() {
+      const mainStore = useMainStore()
+      mainStore.loadUsername()
+    },
     //#region modals
     showCreateArticleModal() {
       this.modal.create(HCreateArticleModal)

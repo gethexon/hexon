@@ -2,7 +2,7 @@
 import { computed } from "@vue/reactivity"
 import { useDark } from "@vueuse/core"
 import { useThemeController } from "@winwin/vue-global-theming"
-import { StyleValue, watch } from "vue"
+import { onMounted, StyleValue, watch } from "vue"
 import HDialog from "@/others/HDialog.vue"
 import HNotificationItem from "@/others/HNotificationItem.vue"
 import { DialogContainer } from "./lib/dialog"
@@ -11,7 +11,9 @@ import { Notifications } from "./lib/notification"
 import ClassProvider from "./ClassProvider.vue"
 import HLoading from "./components/ui/loading/src/HLoading.vue"
 import ModalContainer from "./lib/modal/src/ModalContainer.vue"
+import { useDispatcher } from "./store/dispatcher"
 
+const dispatcher = useDispatcher()
 const loading = useLoading()
 const isDarkRef = useDark()
 const controller = useThemeController()!
@@ -25,6 +27,9 @@ watch(
     immediate: true,
   }
 )
+onMounted(() => {
+  dispatcher.init()
+})
 </script>
 
 <template>

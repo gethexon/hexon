@@ -177,6 +177,6 @@ const onSettings = () => dispatcher.showSettingsModal()
         <HNavList :model="model" @on-select="onSelect" />
       </div>
     </div>
-    <HNavSetting @click="onSettings" />
+    <HNavSetting @click="onSettings" :name="mainStore.username" />
   </div>
 </template>

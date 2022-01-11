@@ -6,6 +6,7 @@ import { PostOrPage } from "~/interface"
 import { useDispatcher } from "./dispatcher"
 
 export interface IState {
+  username: string
   posts: {
     [key: string]: BriefPost
   }
@@ -22,12 +23,20 @@ export interface IState {
 
 export const useMainStore = defineStore("main", {
   state: (): IState => ({
+    username: "",
     posts: {},
     pages: {},
     categories: {},
     tags: {},
   }),
   actions: {
+    setUsername(name: string) {
+      this.username = name
+      localStorage.setItem("username", name)
+    },
+    loadUsername() {
+      this.username = localStorage.getItem("username") || ""
+    },
     async getBlogData() {
       const { posts, pages, tags, categories } = await api.getAllData()
       this.posts = list2object(posts, "source")

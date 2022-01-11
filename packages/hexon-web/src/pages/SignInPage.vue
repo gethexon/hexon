@@ -6,8 +6,10 @@ import { useRouter } from "vue-router"
 import { HTheme } from "~/themes"
 import HLoginForm from "@/forms/HLoginForm.vue"
 import { useNotification } from "~/lib/notification"
+import { useMainStore } from "~/store/main"
 const router = useRouter()
 const account = useAccount()
+const mainStore = useMainStore()
 const notification = useNotification()
 const footer = computed(() => {
   return `©️ 2019 ~ ${new Date().getFullYear()} winwin_2011`
@@ -21,6 +23,8 @@ const onSignIn = async ({
 }) => {
   try {
     await account.signin(username, password)
+    const { username: name } = await account.info()
+    mainStore.setUsername(name)
     router.push("/home")
   } catch (e) {
     notification.notify({
