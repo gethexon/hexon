@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.9.0-beta.3](https://github.com/gethexon/hexon/compare/v0.9.0-beta.2...v0.9.0-beta.3) (2022-01-11)
+
+
+### Features
+
+* better slide view ([dcf9e3f](https://github.com/gethexon/hexon/commit/dcf9e3f13fefa325673beccee1ec74d413a9db7f))
+* change password ([f5c23e9](https://github.com/gethexon/hexon/commit/f5c23e9520e5d3804d238be453d1c7e4849f5215))
+* change username ([96afd10](https://github.com/gethexon/hexon/commit/96afd10fd3dbbcc39a7b18e0191559454216a825))
+* show loading when creating article ([f5b060d](https://github.com/gethexon/hexon/commit/f5b060d5bde84d722e2507193934771dc21e0d4e))
+* signin and signout ([29bb349](https://github.com/gethexon/hexon/commit/29bb349313f12348a3a1ee52f1a84236cc120ff4))
+* slide view ([021f4e1](https://github.com/gethexon/hexon/commit/021f4e16144bf88724f1217454c951ad8c0a41d2))
+* username ([181c4a7](https://github.com/gethexon/hexon/commit/181c4a76ea04f93994960fb5604bb3db97d2649d))
+
+
+
+
+
 # [0.9.0-beta.2](https://github.com/gethexon/hexon/compare/v0.9.0-beta.1...v0.9.0-beta.2) (2022-01-10)
 
 
