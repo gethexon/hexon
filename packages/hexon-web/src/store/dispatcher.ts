@@ -1,6 +1,7 @@
 import { defineStore } from "pinia"
 import { defineAsyncComponent } from "vue"
 import { ICreateOptions } from "~/api"
+import { IChangePasswordFormPayload } from "~/components/forms/interface"
 import { IArticleIdentifier } from "~/interface"
 import { isPost } from "~/utils/article"
 import { useDetailStore } from "./detail"
@@ -20,6 +21,64 @@ export const useDispatcher = defineStore("dispatcher", {
       const mainStore = useMainStore()
       mainStore.loadUsername()
     },
+    //#region user
+    async getUsername() {
+      const mainStore = useMainStore()
+      const { username } = await this.account.info()
+      mainStore.setUsername(username)
+    },
+    async signIn({
+      username,
+      password,
+    }: {
+      username: string
+      password: string
+    }) {
+      try {
+        await this.account.signin(username, password)
+        this.getUsername()
+        this.router.push("/home")
+      } catch (e) {
+        this.notification.notify({
+          title: "登陆失败",
+          type: "error",
+        })
+      }
+    },
+    async changePassword(payload: IChangePasswordFormPayload) {
+      return this.account
+        .changePassword(payload.oldPassword, { password: payload.newPassword })
+        .then(
+          () => {
+            this.notification.notify({ type: "success", title: "密码修改成功" })
+          },
+          (err) => {
+            this.notification.notify({
+              title: "密码修改失败",
+              desc: (err as Error).message,
+              type: "error",
+              duration: 5000,
+            })
+          }
+        )
+    },
+    async changeUsername(username: string) {
+      return this.account.changeUsername(username).then(
+        () => {
+          this.notification.notify({ type: "success", title: "用户名修改成功" })
+          return this.getUsername()
+        },
+        (err) => {
+          this.notification.notify({
+            title: "用户名修改失败",
+            desc: (err as Error).message,
+            type: "error",
+            duration: 5000,
+          })
+        }
+      )
+    },
+    //#endregion
     //#region modals
     showCreateArticleModal() {
       this.modal.create(HCreateArticleModal)

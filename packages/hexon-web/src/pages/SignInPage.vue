@@ -1,38 +1,15 @@
 <script setup lang="ts">
 import { useTheme } from "@winwin/vue-global-theming"
-import { useAccount } from "~/lib/account"
 import { computed } from "vue"
-import { useRouter } from "vue-router"
+import { useDispatcher } from "~/store/dispatcher"
 import { HTheme } from "~/themes"
 import HLoginForm from "@/forms/HLoginForm.vue"
-import { useNotification } from "~/lib/notification"
-import { useMainStore } from "~/store/main"
-const router = useRouter()
-const account = useAccount()
-const mainStore = useMainStore()
-const notification = useNotification()
+const dispatcher = useDispatcher()
 const footer = computed(() => {
   return `©️ 2019 ~ ${new Date().getFullYear()} winwin_2011`
 })
-const onSignIn = async ({
-  username,
-  password,
-}: {
-  username: string
-  password: string
-}) => {
-  try {
-    await account.signin(username, password)
-    const { username: name } = await account.info()
-    mainStore.setUsername(name)
-    router.push("/home")
-  } catch (e) {
-    notification.notify({
-      title: "登陆失败",
-      type: "error",
-    })
-  }
-}
+const onSignIn = (payload: { username: string; password: string }) =>
+  dispatcher.signIn(payload)
 const theme = useTheme<HTheme>()!
 </script>
 <template>

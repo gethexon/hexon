@@ -55,7 +55,7 @@ class AccountStorage {
     return this.getAccessToken() && this.getRefreshToken()
   }
 }
-interface IAccount {
+export interface IAccount {
   readonly defaults: {
     baseURL: string
     headers: {

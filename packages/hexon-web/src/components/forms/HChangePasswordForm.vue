@@ -3,8 +3,8 @@ import { computed, ref } from "vue"
 import { HButton } from "@/ui/button/"
 import { HIcon, HIconName } from "@/ui/icon"
 import { HInput } from "@/ui/input"
+import { HPopover } from "@/ui/popover"
 import { IChangePasswordFormPayload } from "./interface"
-import HPopover from "../ui/popover/src/HPopover.vue"
 
 const emits = defineEmits<{
   (e: "change-password", payload: IChangePasswordFormPayload): void
