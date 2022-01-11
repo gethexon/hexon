@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useTheme } from "@winwin/vue-global-theming"
-import { useAccount } from "@winwin/vue-simple-account"
+import { useAccount } from "~/lib/account"
 import { computed } from "vue"
 import { useRouter } from "vue-router"
 import { HTheme } from "~/themes"

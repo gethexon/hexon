@@ -1,4 +1,4 @@
-import { createAccount } from "@winwin/vue-simple-account"
+import { createAccount } from "~/lib/account"
 import createHttpSecureAxios from "~/lib/http-secure/src"
 import { forceReloadWindow } from "../utils"
 

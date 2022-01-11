@@ -1,5 +1,5 @@
 import "reflect-metadata"
-import { createSimpleAccount } from "@winwin/koa-simple-account"
+import { createSimpleAccount } from "./lib/account"
 import { container } from "tsyringe"
 import path from "path"
 import { StorageService } from "~/shared/storage-service"

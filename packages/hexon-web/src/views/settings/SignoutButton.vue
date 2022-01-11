@@ -2,7 +2,7 @@
 import { HIcon, HIconName } from "@/ui/icon"
 import { useThemeVars } from "@/ui/theme"
 import HToolbar from "@/HToolbar.vue"
-import { useAccount } from "@winwin/vue-simple-account"
+import { useAccount } from "~/lib/account"
 import { forceReloadWindow } from "~/utils"
 const vars = useThemeVars()
 const account = useAccount()

@@ -64,7 +64,7 @@ const onSelect = (key: string) => {
   }
 }
 const tabs2 = computed(() => {
-  return config.value.map(({ key, comp }) => ({ key, comp }))
+  return config.value.map(({ key, text, comp }) => ({ key, title: text, comp }))
 })
 </script>
 <template>

@@ -1,25 +1,19 @@
 <script setup lang="ts">
-import type { Component } from "vue"
+import type { Ref } from "vue"
 import { ref, computed, watch } from "vue"
 import TranslateUpDownTransitionGroup from "@/transitions/TranslateUpDownTransitionGroup.vue"
+import SettingsTabContainer from "./SettingsTabContainer.vue"
+import { ISettingsTab } from "./interface"
 
 const props = defineProps<{
   current: string
-  model: {
-    key: string
-    comp: Component
-  }[]
+  model: ISettingsTab[]
 }>()
 const model = computed(() => {
   return props.model.map((item, idx) => ({ ...item, idx }))
 })
 const up = ref(false)
-const tabs = ref<
-  {
-    key: string
-    comp: Component
-  }[]
->([])
+const tabs: Ref<ISettingsTab[]> = ref([])
 watch(
   () => props.current,
   (v, old) => {
@@ -32,10 +26,11 @@ watch(
       const current = currentItem.idx
       up.value = next > current
     }
-    const { key, comp } = nextItem
+    const { key, title, comp } = nextItem
     tabs.value = [
       {
         key,
+        title,
         comp,
       },
     ]
@@ -47,6 +42,14 @@ watch(
 </script>
 <template>
   <TranslateUpDownTransitionGroup :up="up" :duration="200">
-    <Component :is="t.comp" :key="t.key" v-for="t in tabs" />
+    <div
+      class="absolute w-full h-full overflow-hidden"
+      :key="t.key"
+      v-for="t in tabs"
+    >
+      <SettingsTabContainer :title="t.title">
+        <Component :is="t.comp" />
+      </SettingsTabContainer>
+    </div>
   </TranslateUpDownTransitionGroup>
 </template>

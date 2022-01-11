@@ -49,7 +49,7 @@ const theme = useTheme<HTheme>()!
       clearable
     >
       <template v-slot:prefix>
-        <HIcon :name="HIconName.Lock" />
+        <HIcon :name="HIconName.Keyboard12Key" />
       </template>
     </HInput>
     <HButton class="mt-4" block>登录</HButton>
