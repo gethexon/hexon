@@ -13,14 +13,14 @@ var cors = require('@koa/cors');
 var compose = require('koa-compose');
 var mount = require('koa-mount');
 var Router = require('@koa/router');
-var koaSimpleAccount = require('@winwin/koa-simple-account');
+var jwt = require('jsonwebtoken');
+var CryptoJS = require('crypto-js');
+var Debug = require('debug');
 var chalk = require('chalk');
 var HexoCore = require('hexo');
-var Debug = require('debug');
 var execa = require('execa');
 var serve = require('koa-static');
 var crypto = require('crypto');
-var CryptoJS = require('crypto-js');
 var JSEncrypt = require('node-jsencrypt');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
@@ -36,13 +36,14 @@ var cors__default = /*#__PURE__*/_interopDefaultLegacy(cors);
 var compose__default = /*#__PURE__*/_interopDefaultLegacy(compose);
 var mount__default = /*#__PURE__*/_interopDefaultLegacy(mount);
 var Router__default = /*#__PURE__*/_interopDefaultLegacy(Router);
+var jwt__default = /*#__PURE__*/_interopDefaultLegacy(jwt);
+var CryptoJS__default = /*#__PURE__*/_interopDefaultLegacy(CryptoJS);
+var Debug__default = /*#__PURE__*/_interopDefaultLegacy(Debug);
 var chalk__default = /*#__PURE__*/_interopDefaultLegacy(chalk);
 var HexoCore__default = /*#__PURE__*/_interopDefaultLegacy(HexoCore);
-var Debug__default = /*#__PURE__*/_interopDefaultLegacy(Debug);
 var execa__default = /*#__PURE__*/_interopDefaultLegacy(execa);
 var serve__default = /*#__PURE__*/_interopDefaultLegacy(serve);
 var crypto__default = /*#__PURE__*/_interopDefaultLegacy(crypto);
-var CryptoJS__default = /*#__PURE__*/_interopDefaultLegacy(CryptoJS);
 var JSEncrypt__default = /*#__PURE__*/_interopDefaultLegacy(JSEncrypt);
 
 const HEXO_BASE_DIR_KEY = "hexo-basedir";
@@ -84,7 +85,7 @@ function __metadata(metadataKey, metadataValue) {
 
 const defaultRoot = path.resolve(process.cwd(), "data");
 const defaultFilename = "common.db";
-let StorageService = class StorageService {
+let StorageService$1 = class StorageService {
     _db;
     _root = defaultRoot;
     _filename = defaultFilename;
@@ -103,17 +104,398 @@ let StorageService = class StorageService {
         return this._db.delete(key);
     }
 };
-StorageService = __decorate([
+StorageService$1 = __decorate([
     tsyringe.singleton(),
     __metadata("design:paramtypes", [])
-], StorageService);
+], StorageService$1);
 
-const account = koaSimpleAccount.createSimpleAccount({
+class EmptyAuthticationHeaderError extends Error {
+    constructor() {
+        super();
+        Error.captureStackTrace(this, this.constructor);
+        this.name = "EmptyAuthticationHeaderError";
+    }
+}
+class InvalidAuthticationHeaderError extends Error {
+    constructor() {
+        super();
+        Error.captureStackTrace(this, this.constructor);
+        this.name = "InvalidAuthticationHeaderError";
+    }
+}
+class TokenBlockedError extends Error {
+    constructor() {
+        super();
+        Error.captureStackTrace(this, this.constructor);
+        this.name = "TokenBlockedError";
+    }
+}
+class InvalidTokenError extends Error {
+    constructor() {
+        super();
+        Error.captureStackTrace(this, this.constructor);
+        this.name = "InvalidTokenError";
+    }
+}
+class TokenTypeError extends Error {
+    expectedType;
+    constructor(expectedType) {
+        super();
+        this.expectedType = expectedType;
+        Error.captureStackTrace(this, this.constructor);
+        this.name = "TokenTypeError";
+    }
+}
+class TokenDecodeError extends Error {
+    constructor() {
+        super();
+        Error.captureStackTrace(this, this.constructor);
+        this.name = "TokenDecodeError";
+    }
+}
+class NotBasicAuthError extends Error {
+    constructor() {
+        super();
+        Error.captureStackTrace(this, this.constructor);
+        this.name = "NotBasicAuthError";
+    }
+}
+class BasicAuthError extends Error {
+    constructor() {
+        super();
+        Error.captureStackTrace(this, this.constructor);
+        this.name = "BasicAuthError";
+    }
+}
+class PassworCheckError extends Error {
+    constructor() {
+        super();
+        Error.captureStackTrace(this, this.constructor);
+        this.name = "PassworCheckError";
+    }
+}
+
+function encrypt(raw) {
+    return CryptoJS.SHA1(raw).toString();
+}
+const debug = Debug__default["default"]("koa-simple-account");
+
+class AuthService {
+    storage;
+    constructor(storage) {
+        this.storage = storage;
+    }
+    resolveBasicAuth(ctx) {
+        const user = ctx.request.body;
+        if (!user || !("username" in user) || !("password" in user)) {
+            throw new NotBasicAuthError();
+        }
+        else {
+            return user;
+        }
+    }
+    resolveAuthorizationHeader(ctx) {
+        if (!ctx.header || !ctx.header.authorization) {
+            throw new EmptyAuthticationHeaderError();
+        }
+        const parts = ctx.header.authorization.split(" ");
+        if (parts.length === 2) {
+            const scheme = parts[0];
+            const credentials = parts[1];
+            if (/^Bearer$/i.test(scheme)) {
+                return credentials;
+            }
+        }
+        throw new InvalidAuthticationHeaderError();
+    }
+    createMiddleware(type = "access") {
+        return async (ctx, next) => {
+            const token = this.resolveAuthorizationHeader(ctx);
+            if (this.storage.isBlocked(token)) {
+                debug("token has been blocked");
+                throw new TokenBlockedError();
+            }
+            try {
+                jwt__default["default"].verify(token, this.storage.getAuthInfo().secret);
+            }
+            catch (err) {
+                if (err instanceof Error &&
+                    ["JsonWebTokenError", "TokenExpiredError"].includes(err.name)) {
+                    debug(`fail to verify token`);
+                    throw new InvalidTokenError();
+                }
+                else
+                    throw err;
+            }
+            const user = jwt__default["default"].decode(token);
+            if (user &&
+                typeof user !== "string" &&
+                typeof user.username === "string" &&
+                typeof user.type === "string" &&
+                (user.type === "access" || user.type === "refresh")) {
+                if (user.type !== type) {
+                    debug(`wrong token type: ${type} is required but found ${user.type}`);
+                    throw new TokenTypeError(type);
+                }
+                else {
+                    ctx.state.user = { username: user.username, type: user.type };
+                    await next();
+                }
+            }
+            else {
+                debug(`fail to decode token: `, user);
+                throw new TokenDecodeError();
+            }
+        };
+    }
+    sign(user) {
+        debug(`sign for ${user.username}`);
+        const authInfo = this.storage.getAuthInfo();
+        const accessToken = jwt__default["default"].sign({ username: user.username, type: "access" }, authInfo.secret, {
+            expiresIn: authInfo.expiresIn,
+        });
+        const refreshToken = jwt__default["default"].sign({ username: user.username, type: "refresh" }, authInfo.secret, {
+            expiresIn: authInfo.refreshableIn,
+        });
+        return { accessToken, refreshToken };
+    }
+    createBasicAuth() {
+        const auth = this;
+        return async function basicAuth(ctx, next) {
+            const user = auth.resolveBasicAuth(ctx);
+            if (!user) {
+                debug("basic auth required");
+                throw new NotBasicAuthError();
+            }
+            const target = auth.storage.getUserInfo();
+            if (user.username !== target.username ||
+                encrypt(user.password) !== target.password) {
+                debug("basic auth failed");
+                throw new BasicAuthError();
+            }
+            await next();
+        };
+    }
+    createPasswordCheck() {
+        const auth = this;
+        return async function passwordCheck(ctx, next) {
+            const target = auth.storage.getUserInfo();
+            if (encrypt(ctx.request.body.oldPassword) !== target.password) {
+                debug("password check failed");
+                throw new PassworCheckError();
+            }
+            await next();
+        };
+    }
+}
+
+const defaultUserInfo = {
+    username: "admin",
+    password: "admin",
+};
+
+class StorageService {
+    storageService;
+    constructor(storageService) {
+        this.storageService = storageService;
+    }
+    installed() {
+        return this.storageService.get("install")?.installed ?? false;
+    }
+    getAuthInfo() {
+        return (this.storageService.get("authinfo") ?? {
+            secret: "secret",
+            expiresIn: "1h",
+            refreshableIn: "7d",
+        });
+    }
+    setAuthInfo(authInfo) {
+        this.storageService.set("authinfo", authInfo);
+    }
+    setInstalled() {
+        this.storageService.set("install", {
+            installed: true,
+            time: new Date().valueOf(),
+        });
+    }
+    changeUsername(username) {
+        const info = this.getUserInfo();
+        info.username = username;
+        this.setEncryptedUserInfo(info);
+    }
+    changePassword(password) {
+        const info = this.getUserInfo();
+        info.password = password;
+        this.setUserInfo(info);
+    }
+    getUserInfo() {
+        return (this.storageService.get("userinfo") ?? {
+            username: "admin",
+            password: "admin",
+        });
+    }
+    /**
+     * set unencrypted userinfo
+     * @param userInfo
+     */
+    setUserInfo(userInfo) {
+        this.setEncryptedUserInfo({
+            username: userInfo.username,
+            password: encrypt(userInfo.password),
+        });
+    }
+    setEncryptedUserInfo(userInfo) {
+        this.storageService.set("userinfo", userInfo);
+    }
+    getblocklist() {
+        return this.storageService.get("blocklist") ?? [];
+    }
+    setblocklist(blocklist) {
+        return this.storageService.set("blocklist", blocklist);
+    }
+    isBlocked(token) {
+        const blocklist = this.getblocklist();
+        return blocklist.includes(token);
+    }
+    block(tokens) {
+        if (!Array.isArray(tokens))
+            tokens = [tokens];
+        const blocklist = this.getblocklist();
+        tokens.forEach((token) => blocklist.push(token));
+        this.setblocklist(blocklist);
+    }
+}
+
+function createRouter(storage, auth, logger) {
+    const router = new Router__default["default"]();
+    router.post("/signin", auth.createBasicAuth(), (ctx) => {
+        const user = auth.resolveBasicAuth(ctx);
+        debug(`${user.username} signin`);
+        logger(`${user.username} signin`);
+        ctx.body = auth.sign(user);
+    });
+    router.post("/refresh", auth.createMiddleware("refresh"), (ctx) => {
+        const target = storage.getUserInfo();
+        debug(`${target.username} refresh`);
+        logger(`${target.username} signin`);
+        ctx.body = auth.sign(target);
+    });
+    router.post("/signout", auth.createMiddleware("refresh"), (ctx) => {
+        const refreshToken = auth.resolveAuthorizationHeader(ctx);
+        if (refreshToken)
+            storage.block(refreshToken);
+        const accessToken = ctx.request.body.access;
+        if (accessToken)
+            storage.block(accessToken);
+        logger(`signout`);
+        ctx.status = 200;
+    });
+    router.put("/info/username", auth.createMiddleware("access"), (ctx) => {
+        const { username } = ctx.request.body;
+        if (username)
+            storage.changeUsername(username);
+        logger(`update info`);
+        ctx.status = 200;
+    });
+    router.put("/info/password", auth.createMiddleware("access"), auth.createPasswordCheck(), (ctx) => {
+        const { password } = ctx.request.body;
+        if (password)
+            storage.changePassword(password);
+        logger(`update info`);
+        ctx.status = 200;
+    });
+    router.get("/info", auth.createMiddleware("access"), (ctx) => {
+        ctx.body = { username: storage.getUserInfo().username };
+    });
+    router.use(async (ctx, next) => {
+        await next();
+    });
+    return router;
+}
+
+const initialize = (config) => {
+    //#region options
+    const authInfo = {
+        secret: config.secret,
+        expiresIn: config.expiresIn,
+        refreshableIn: config.refreshableIn,
+    };
+    const logger = config.logger ?? (() => { });
+    //#endregion
+    //#region services
+    const dirname = path__default["default"].dirname(config.path); // db file
+    if (!fs__default["default"].existsSync(dirname)) {
+        fs__default["default"].mkdirSync(dirname);
+        debug(`create database: ${dirname}`);
+    }
+    const storage = new StorageService(config.storage);
+    const auth = new AuthService(storage);
+    //#endregion
+    //#region auth info
+    if (!storage.installed()) {
+        storage.setUserInfo(defaultUserInfo);
+        storage.setAuthInfo(authInfo);
+        storage.setInstalled();
+        debug(`first install: set defualt userinfo`);
+    }
+    //#endregion
+    //#region helpers
+    const setAuthInfo = (newInfo = {}) => {
+        storage.setAuthInfo({ ...storage.getAuthInfo(), ...newInfo });
+    };
+    const setUserInfo = ({ username, password, } = {}) => {
+        username && storage.changeUsername(username);
+        password && storage.changePassword(password);
+    };
+    //#endregion
+    //#region router
+    const router = createRouter(storage, auth, logger);
+    router.prefix(config.base || "");
+    //#endregion
+    const errorHandler = async (ctx, next) => {
+        try {
+            await next();
+        }
+        catch (err) {
+            if (err instanceof EmptyAuthticationHeaderError ||
+                err instanceof InvalidAuthticationHeaderError ||
+                err instanceof TokenBlockedError ||
+                err instanceof InvalidTokenError ||
+                err instanceof TokenTypeError ||
+                err instanceof TokenDecodeError ||
+                err instanceof NotBasicAuthError ||
+                err instanceof BasicAuthError) {
+                ctx.body = err.name;
+                ctx.status = 401;
+                logger(err.name);
+            }
+            else
+                throw err;
+        }
+    };
+    return { router, auth, setAuthInfo, setUserInfo, errorHandler };
+};
+function createSimpleAccount(config) {
+    const { router, auth, setAuthInfo, setUserInfo, errorHandler } = initialize(config);
+    const middleware = compose__default["default"]([
+        errorHandler,
+        router.routes(),
+        router.allowedMethods(),
+    ]);
+    return {
+        middleware,
+        auth: auth.createMiddleware.bind(auth),
+        setAuthInfo,
+        setUserInfo,
+    };
+}
+
+const account = createSimpleAccount({
     path: path__default["default"].resolve(process.cwd(), "data/account.db"),
     secret: "secret",
     expiresIn: "10min",
     refreshableIn: "7d",
-    storage: tsyringe.container.resolve(StorageService),
+    storage: tsyringe.container.resolve(StorageService$1),
 });
 
 let InstallService = class InstallService {
@@ -136,7 +518,7 @@ let InstallService = class InstallService {
 InstallService = __decorate([
     tsyringe.injectable(),
     tsyringe.singleton(),
-    __param(0, tsyringe.inject(StorageService)),
+    __param(0, tsyringe.inject(StorageService$1)),
     __metadata("design:paramtypes", [Object])
 ], InstallService);
 
@@ -193,9 +575,6 @@ app$3.use(router$2.routes());
 app$3.use(router$2.allowedMethods());
 
 const DEV = process.env.NODE_ENV !== "production";
-function createDebug(scope) {
-    return Debug__default["default"](`hexon-server:${scope}`);
-}
 function expandHomeDir(fullpath) {
     const homedir = process.env[process.platform == "win32" ? "USERPROFILE" : "HOME"];
     if (!fullpath)
@@ -242,7 +621,6 @@ async function run(command, args, opt) {
     return (await execa__default["default"](command, args, { ...opt, stdio: "pipe" })).stdout;
 }
 
-const debug = createDebug("hexo");
 function transformPost(doc) {
     return {
         ...doc,
@@ -367,6 +745,7 @@ let Hexo = class Hexo {
     }
     //#endregion
     async init() {
+        // FIXME 完善启动流程
         const bak = { base_dir: this._base_dir, options: this._options };
         const base = this._storage.get(HEXO_BASE_DIR_KEY);
         this._base_dir = path__default["default"].resolve(__dirname, toRealPath(base));
@@ -383,23 +762,24 @@ let Hexo = class Hexo {
             await this._hexo.init();
             await this._hexo.watch();
             this._ready = true;
-            debug("ready to go");
+            console.log("ready to go");
         }
         catch (err) {
-            debug("hexo init fail");
+            console.log("hexo init fail");
+            console.error(err);
             this._hexo = bak.base_dir ? new HexoCore__default["default"](bak.base_dir, bak.options) : null;
             this._base_dir = bak.base_dir;
             this._options = bak.options;
             if (this._base_dir)
-                debug(`using old base dir: ${this._base_dir}`);
+                console.log(`using old base dir: ${this._base_dir}`);
             try {
                 await this._hexo.init();
             }
             catch (e) {
-                debug("fail to reset HexoCore");
+                console.error("fail to reset HexoCore");
+                console.error(err);
                 throw e;
             }
-            throw err;
         }
     }
     //#endregion
@@ -564,7 +944,7 @@ let Hexo = class Hexo {
 Hexo = __decorate([
     tsyringe.injectable(),
     tsyringe.singleton(),
-    __param(0, tsyringe.inject(StorageService)),
+    __param(0, tsyringe.inject(StorageService$1)),
     __metadata("design:paramtypes", [Object])
 ], Hexo);
 var Hexo$1 = Hexo;
@@ -694,7 +1074,7 @@ router$1.delete("/page/:source", async (ctx) => {
     ctx.body = await hexo.delete(source, "page");
 });
 
-const storage$1 = tsyringe.container.resolve(StorageService);
+const storage$1 = tsyringe.container.resolve(StorageService$1);
 const hexo = tsyringe.container.resolve(Hexo$1);
 if (storage$1.get(HEXO_BASE_DIR_KEY))
     hexo
@@ -785,8 +1165,8 @@ let GitService = class GitService {
 GitService = __decorate([
     tsyringe.injectable(),
     tsyringe.singleton(),
-    __param(0, tsyringe.inject(StorageService)),
-    __metadata("design:paramtypes", [StorageService])
+    __param(0, tsyringe.inject(StorageService$1)),
+    __metadata("design:paramtypes", [StorageService$1])
 ], GitService);
 
 const router = new Router__default["default"]();
@@ -950,7 +1330,7 @@ app.use(mount__default["default"]("/", statics(path__default["default"].resolve(
 app.use(account.middleware);
 app.use(apps);
 
-const storage = tsyringe.container.resolve(StorageService);
+const storage = tsyringe.container.resolve(StorageService$1);
 const server = http__default["default"].createServer(app.callback());
 server.on("listening", () => {
     const addr = server.address();
