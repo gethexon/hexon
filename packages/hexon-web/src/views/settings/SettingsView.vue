@@ -1,16 +1,14 @@
 <script setup lang="ts">
-import type { Component } from "vue"
-import { computed, ref, watch } from "vue"
+import type { Ref } from "vue"
+import { computed, ref } from "vue"
 import { useThemeVars } from "@/ui/theme"
 import { HNavList, NavListItem } from "@/ui/nav-list"
 import SignoutButton from "./SignoutButton.vue"
 import { useNavConfig } from "./nav-config"
-import { SettingsTab } from "./interface"
 import TabSwitcher from "./TabSwitcher.vue"
 
 const vars = useThemeVars()
-const activeNav = ref<SettingsTab>("user")
-const up = ref(false)
+const activeNavIdx: Ref<number> = ref(0)
 const { config, getConfig } = useNavConfig()
 const model = computed(() => {
   return [
@@ -19,34 +17,18 @@ const model = computed(() => {
       label: "设置",
     } as NavListItem,
     ...config.value.map(
-      ({ type, text, icon, color, key }): NavListItem => ({
+      ({ type, text, icon, color, key }, idx): NavListItem => ({
         type,
         text,
         icon,
         color,
         key,
-        selected: key === activeNav.value,
+        selected: activeNavIdx.value === idx,
       })
     ),
   ]
 })
 
-const tabs = ref<
-  {
-    key: SettingsTab
-    comp: Component
-  }[]
->([])
-watch(
-  () => activeNav.value,
-  (v) => {
-    const { key, comp } = getConfig(v)
-    tabs.value = [{ key, comp }]
-  },
-  {
-    immediate: true,
-  }
-)
 const onSelect = (key: string) => {
   switch (key) {
     case "user":
@@ -55,9 +37,7 @@ const onSelect = (key: string) => {
     case "about":
     case "help":
       const next = getConfig(key).idx
-      const current = getConfig(activeNav.value).idx
-      up.value = next > current
-      activeNav.value = key
+      activeNavIdx.value = next
       break
     default:
       break
@@ -84,7 +64,7 @@ const tabs2 = computed(() => {
       class="flex-1 overflow-hidden relative"
       :style="{ backgroundColor: vars.backgroundColorPrimary }"
     >
-      <TabSwitcher :current="activeNav" :model="tabs2" />
+      <TabSwitcher :current="activeNavIdx" :model="tabs2" />
     </div>
   </div>
 </template>

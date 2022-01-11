@@ -1,56 +1,79 @@
 <script setup lang="ts">
-import type { Ref } from "vue"
+import type { ComputedRef, Ref } from "vue"
 import type { ISlideViewItem } from "./interface"
 import { computed, ref, watch } from "vue"
-import TranslateUpDownTransitionGroup from "@/transitions/TranslateUpDownTransitionGroup.vue"
+import TranslateTransitionGroup from "@/transitions/TranslateTransitionGroup.vue"
+import { TranslateTransitionDirection } from "~/components/transitions/interface"
 
-const props = defineProps<{
-  current: string
-  model: ISlideViewItem[]
+const props = withDefaults(
+  defineProps<{
+    current: number
+    model: ISlideViewItem[]
+    horizontal?: boolean
+    reverted?: boolean
+  }>(),
+  {
+    horizontal: false,
+    reverted: false,
+  }
+)
+const emits = defineEmits<{
+  (e: "update:current", value: number): void
 }>()
-const model = computed(() => {
-  return props.model.map((item, idx) => ({ ...item, idx }))
-})
-const up = ref(false)
-const tabs: Ref<ISlideViewItem[]> = ref([])
+const model: ComputedRef<(ISlideViewItem & { idx: number })[]> = computed(
+  () => {
+    return props.model.map((item, idx) => ({ ...item, idx }))
+  }
+)
+const pre = ref(false)
+const tabs: Ref<(ISlideViewItem & { idx: number })[]> = ref([])
 watch(
   () => props.current,
   (v, old) => {
-    const nextItem = model.value.find((item) => item.key === v)
-    if (!nextItem) return
-    if (old) {
-      const currentItem = model.value.find((item) => item.key === old)!
-      if (!currentItem) return
-      const next = nextItem.idx
-      const current = currentItem.idx
-      up.value = next > current
-    }
-    const { key, component } = nextItem
-    tabs.value = [
-      {
-        key,
-
-        component,
-      },
-    ]
+    const item = model.value[v]
+    if (!item) return
+    tabs.value = [item]
+    if (old) pre.value = v < old
   },
   {
     immediate: true,
   }
 )
+const setCurrent = (next: number) => {
+  console.log({ next })
+  emits("update:current", next)
+}
+const realPre = computed(() => (props.reverted ? !pre.value : pre.value))
+const direction: ComputedRef<TranslateTransitionDirection> = computed(() =>
+  props.horizontal
+    ? realPre.value
+      ? "left"
+      : "right"
+    : realPre.value
+    ? "up"
+    : "down"
+)
 </script>
 <template>
   <div class="relative w-full h-full overflow-hidden">
-    <TranslateUpDownTransitionGroup :up="up" :duration="200">
+    <TranslateTransitionGroup :direction="direction" :duration="200">
       <div
         class="absolute w-full h-full overflow-hidden"
-        :key="item.key"
-        v-for="(item, idx) in tabs"
+        :key="item.idx"
+        v-for="item in tabs"
       >
-        <slot :key="item.key" :component="item.component" :idx="idx">
-          <Component :is="item.component" />
+        <slot
+          :component="item.component"
+          :idx="item.idx"
+          :setCurrent="setCurrent"
+        >
+          <Component
+            :idx="item.idx"
+            :is="item.component"
+            :setCurrent="setCurrent"
+          />
         </slot>
       </div>
-    </TranslateUpDownTransitionGroup>
+    </TranslateTransitionGroup>
   </div>
 </template>

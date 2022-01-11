@@ -7,7 +7,7 @@ import HSlideView from "~/components/ui/slide-view/src/HSlideView.vue"
 import SettingsTabContainer from "./SettingsTabContainer.vue"
 
 const props = defineProps<{
-  current: string
+  current: number
   model: ISettingsTab[]
 }>()
 const newModel: ComputedRef<ISlideViewItem[]> = computed(() =>
