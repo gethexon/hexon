@@ -8,6 +8,7 @@ var inquirer = require('inquirer');
 var tsyringe = require('tsyringe');
 var fs = require('fs');
 var JSONdb = require('simple-json-db');
+var cryptoJs = require('crypto-js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -37,6 +38,10 @@ function __decorate(decorators, target, key, desc) {
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
+}
+
+function __param(paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
 }
 
 function __metadata(metadataKey, metadataValue) {
@@ -203,6 +208,73 @@ function install () {
     });
 }
 
+var AccountService_1;
+class BasicAuthError extends Error {
+    name = "BasicAuthError";
+}
+let AccountService = AccountService_1 = class AccountService {
+    _storage;
+    static KEY = "userinfo";
+    constructor(_storage) {
+        this._storage = _storage;
+    }
+    _encrypt(raw) {
+        return cryptoJs.SHA1(raw).toString();
+    }
+    _toStorage(info) {
+        this._storage.set(AccountService_1.KEY, info);
+    }
+    _fromStorage() {
+        const { username = "", password = "" } = this._storage.get(AccountService_1.KEY) || {};
+        return { username, password };
+    }
+    setUserInfo(username, password) {
+        this._storage.set(AccountService_1.KEY, {
+            username,
+            password: this._encrypt(password),
+        });
+    }
+    getUsername() {
+        return this._fromStorage().username;
+    }
+    setUsername(username) {
+        const info = this._fromStorage();
+        info.username = username;
+        this._toStorage(info);
+    }
+    setPassword(password) {
+        const info = this._fromStorage();
+        info.password = this._encrypt(password);
+        this._toStorage(info);
+    }
+    setEncrptedPassword(password) {
+        const info = this._fromStorage();
+        info.password = password;
+        this._toStorage(info);
+    }
+    verify(username, password) {
+        const info = this._fromStorage();
+        if (username !== info.username) {
+            throw new BasicAuthError();
+        }
+        if (this._encrypt(password) !== info.password) {
+            throw new BasicAuthError();
+        }
+    }
+};
+AccountService = AccountService_1 = __decorate([
+    tsyringe.injectable(),
+    tsyringe.singleton(),
+    __param(0, tsyringe.inject(StorageService)),
+    __metadata("design:paramtypes", [StorageService])
+], AccountService);
+
+async function resetPassword() {
+    const account = tsyringe.container.resolve(AccountService);
+    account.setPassword("admin");
+}
+
 const program = new commander.Command("npx .");
 program.command("install").description("install hexon").action(install);
+program.command("resetpwd").description("reset password").action(resetPassword);
 program.parse();
