@@ -189,6 +189,7 @@ export const useDispatcher = defineStore("dispatcher", {
       })
     },
     async doPublishArticle(source: string) {
+      this.loading.start()
       const prefix = "_drafts/"
       if (!source.startsWith(prefix)) return
       const removePrefixAndExt = (source: string) => {
@@ -222,6 +223,7 @@ export const useDispatcher = defineStore("dispatcher", {
           })
         }
       )
+      this.loading.stop()
     },
     goHome() {
       this.router.push({ name: "home" })
