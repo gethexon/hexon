@@ -1,7 +1,7 @@
 import { inject, injectable, singleton } from "tsyringe"
-import account from "~/server/account"
-import { HEXON_ISINSTALL_KEY } from "~/shared/constants"
+import { AccountService } from "~/shared/account-storage-service"
 import { IStorageService, StorageService } from "~/shared/storage-service"
+import { AuthStorageService } from "../account/auth-storage-service"
 
 export interface IInstallOption {
   username: string
@@ -17,17 +17,22 @@ export interface IInstallService {
 @injectable()
 @singleton()
 export class InstallService implements IInstallService {
-  constructor(@inject(StorageService) private _storage: IStorageService) {
-    if (!this._storage.get<boolean>(HEXON_ISINSTALL_KEY))
-      this._storage.set<boolean>(HEXON_ISINSTALL_KEY, false)
+  public static KEY = "hexon-installed"
+  constructor(
+    @inject(StorageService) private _storage: IStorageService,
+    @inject(AccountService) private _account: AccountService,
+    @inject(AuthStorageService) private _auth: AuthStorageService
+  ) {
+    if (!this._storage.get<boolean>(InstallService.KEY))
+      this._storage.set<boolean>(InstallService.KEY, false)
   }
   isInstalled() {
-    return this._storage.get<boolean>(HEXON_ISINSTALL_KEY)
+    return this._storage.get<boolean>(InstallService.KEY)
   }
   async install(options: IInstallOption) {
     const { username, password, ...auth } = options
-    account.setUserInfo({ username, password })
-    account.setAuthInfo(auth)
-    this._storage.set<boolean>(HEXON_ISINSTALL_KEY, true)
+    this._account.setUserInfo(username, password)
+    this._auth.setAuthInfo(auth)
+    this._storage.set<boolean>(InstallService.KEY, true)
   }
 }

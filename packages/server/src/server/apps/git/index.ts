@@ -1,11 +1,11 @@
-import Koa from "koa";
-import account from "~/server/account";
-import router from "./router";
+import Koa from "koa"
+import { createTokenAuthMiddleWare } from "../account"
+import router from "./router"
 
-const app = new Koa();
+const app = new Koa()
 
-app.use(account.auth());
-app.use(router.routes());
-app.use(router.allowedMethods());
+app.use(createTokenAuthMiddleWare())
+app.use(router.routes())
+app.use(router.allowedMethods())
 
-export default app;
+export default app
