@@ -1,6 +1,8 @@
 import { App, InjectionKey, inject, ref, computed, ComputedRef } from "vue"
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios"
 
+type OnFulfilled<V, T = V> = (value: V) => T | Promise<T>
+type OnRejected = (error: any) => any
 interface IConfig {
   baseURL: string
   authBaseURL?: string
@@ -8,6 +10,16 @@ interface IConfig {
   prefix?: string
   getAxiosInstance?: (config?: AxiosRequestConfig) => AxiosInstance
   injectionKey?: string
+  finalInterceptors?: {
+    request?: {
+      onFulfilled: OnFulfilled<any>
+      onRejected: OnRejected
+    }
+    response?: {
+      onFulfilled: OnFulfilled<any>
+      onRejected: OnRejected
+    }
+  }
 }
 interface IUserInfo {
   username: string
@@ -167,6 +179,22 @@ export function createAccount(config: IConfig): IAccount {
   async function changeUsername(username: string) {
     await access.put("/info/username", { username })
   }
+  //#endregion
+
+  //#region final intercepters
+  const req = config.finalInterceptors?.request
+  if (req) {
+    origin.interceptors.request.use(req.onFulfilled, req.onRejected)
+    access.interceptors.request.use(req.onFulfilled, req.onRejected)
+    refresh.interceptors.request.use(req.onFulfilled, req.onRejected)
+  }
+  const res = config.finalInterceptors?.response
+  if (res) {
+    origin.interceptors.response.use(res.onFulfilled, res.onRejected)
+    access.interceptors.response.use(res.onFulfilled, res.onRejected)
+    refresh.interceptors.response.use(res.onFulfilled, res.onRejected)
+  }
+
   //#endregion
   return {
     get defaults() {

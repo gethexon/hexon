@@ -1,0 +1,29 @@
+{
+  "name": "hexon-typedef",
+  "version": "0.9.0-beta.4",
+  "description": "> TODO: description",
+  "author": "winwin2011 <yjh2011@live.com>",
+  "homepage": "https://github.com/gethexon/hexon#readme",
+  "license": "MIT",
+  "main": "src/index.ts",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gethexon/hexon.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/gethexon/hexon/issues"
+  },
+  "devDependencies": {
+    "typescript": "^4.5.4"
+  }
+}

@@ -31,6 +31,7 @@
     "pinia": "^2.0.0-rc.14",
     "prettier": "^2.5.1",
     "string-similarity": "^4.0.4",
+    "hexon-typedef": "^0.9.0-beta.4",
     "uuid": "^8.3.2",
     "vue": "^3.2.26",
     "vue-router": "4",

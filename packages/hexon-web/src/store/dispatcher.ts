@@ -1,7 +1,9 @@
+import { ERROR_CODE } from "hexon-typedef"
 import { defineStore } from "pinia"
 import { defineAsyncComponent } from "vue"
 import { ICreateOptions } from "~/api"
 import { IChangePasswordFormPayload } from "~/components/forms/interface"
+import { getErrorMessage } from "~/errors"
 import { IArticleIdentifier } from "~/interface"
 import { isPost } from "~/utils/article"
 import { useDetailStore } from "./detail"
@@ -155,12 +157,12 @@ export const useDispatcher = defineStore("dispatcher", {
     getArticle(id: IArticleIdentifier) {
       const detailStore = useDetailStore()
       detailStore.getArticle(id.type, id.source).catch((err) => {
-        if (err?.response?.status === 404) {
+        if (err?.code === ERROR_CODE.E_NOT_FOUND) {
           this.goHome()
         } else {
           this.notification.notify({
             title: "文章载入失败",
-            desc: (err as Error).message,
+            desc: getErrorMessage(err),
             type: "error",
             duration: 5000,
           })
@@ -253,8 +255,7 @@ export const useDispatcher = defineStore("dispatcher", {
           title: `博客数据载入失败`,
           desc: (err as Error).message,
           type: "error",
-          permanent: true,
-          // TODO 支持 action
+          duration: 5000,
         })
       })
     },
