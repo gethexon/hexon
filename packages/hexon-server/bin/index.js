@@ -155,6 +155,9 @@ const logo = (() => {
 })();
 const version = readJsonFile("./package.json").version;
 
+/**
+ * @deprecated
+ */
 const HEXO_BASE_DIR_KEY = "hexo-basedir";
 const HEXON_PORT_KEY = "hexon-port";
 const HEXON_DEFAULT_PORT = 5777;
@@ -210,11 +213,12 @@ function install () {
 
 var AccountService_1;
 class BasicAuthError extends Error {
-    name = "BasicAuthError";
+    constructor() {
+        super(...arguments);
+        this.name = "BasicAuthError";
+    }
 }
 let AccountService = AccountService_1 = class AccountService {
-    _storage;
-    static KEY = "userinfo";
     constructor(_storage) {
         this._storage = _storage;
     }
@@ -262,6 +266,7 @@ let AccountService = AccountService_1 = class AccountService {
         }
     }
 };
+AccountService.KEY = "userinfo";
 AccountService = AccountService_1 = __decorate([
     tsyringe.injectable(),
     tsyringe.singleton(),
@@ -269,9 +274,11 @@ AccountService = AccountService_1 = __decorate([
     __metadata("design:paramtypes", [StorageService])
 ], AccountService);
 
-async function resetPassword() {
-    const account = tsyringe.container.resolve(AccountService);
-    account.setPassword("admin");
+function resetPassword() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const account = tsyringe.container.resolve(AccountService);
+        account.setPassword("admin");
+    });
 }
 
 const program = new commander.Command("npx .");
