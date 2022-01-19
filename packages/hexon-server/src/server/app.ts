@@ -5,7 +5,6 @@ import bodyParser from "koa-bodyparser"
 import cors from "@koa/cors"
 
 import apps from "./apps/index"
-import account from "./account"
 import statics from "./lib/statics"
 import httpSecure from "./lib/http-secure"
 import { DEV } from "./utils"
