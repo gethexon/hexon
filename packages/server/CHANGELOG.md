@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.9.0-beta.4](https://github.com/gethexon/hexon/compare/v0.9.0-beta.2...v0.9.0-beta.4) (2022-01-19)
+
+
+### Bug Fixes
+
+* question dot operation fail ([b6afde8](https://github.com/gethexon/hexon/commit/b6afde857ef8af7123fcd8a838252b66eda2ecd0))
+
+
+### Features
+
+* change password ([f5c23e9](https://github.com/gethexon/hexon/commit/f5c23e9520e5d3804d238be453d1c7e4849f5215))
+
+
+
+
+
 # [0.9.0-beta.3](https://github.com/gethexon/hexon/compare/v0.9.0-beta.2...v0.9.0-beta.3) (2022-01-11)
 
 
