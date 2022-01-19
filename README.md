@@ -18,7 +18,6 @@ Make sure your `git`, `hexo` and `Node.js` workflow is fine. Hexon only provide 
 
 ```bash
 git clone https://github.com/gethexon/hexon
-cd hexon/packages/server
 yarn
 yarn setup
 ```
@@ -26,8 +25,15 @@ yarn setup
 ### Uninstall
 
 ```bash
-rm -rf hexo
+rm -rf hexon
 # just remove the folder you just cloned
+```
+
+### Start
+
+```bash
+yarn start # for plain nodejs
+yarn prd # for pm2
 ```
 
 ### prerelease version
@@ -36,7 +42,7 @@ Just chekout `prerelease` branch. If there's no prerelease branch, there's no ac
 
 ### develop version
 
-Same as prerelease verion, but use branch `next`.
+Same as prerelease verion, but use branch `develop`.
 
 ## Want to know more?
 
