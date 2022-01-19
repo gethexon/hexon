@@ -5,7 +5,9 @@
   "author": "winwin2011 <yjh2011@live.com>",
   "homepage": "https://github.com/gethexon/hexon#readme",
   "license": "MIT",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "module": "src/index.ts",
   "directories": {
     "lib": "lib",
     "test": "__tests__"
@@ -18,12 +20,16 @@
     "url": "git+https://github.com/gethexon/hexon.git"
   },
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "build": "rollup -c"
   },
   "bugs": {
     "url": "https://github.com/gethexon/hexon/issues"
   },
   "devDependencies": {
+    "rollup-plugin-auto-external": "^2.0.0",
+    "rollup-plugin-clear": "^2.0.7",
+    "rollup-plugin-filesize": "^9.1.2",
+    "rollup-plugin-typescript2": "^0.31.1",
     "typescript": "^4.5.4"
   }
 }
