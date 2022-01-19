@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.9.0-beta.5](https://github.com/gethexon/hexon/compare/v0.9.0-beta.4...v0.9.0-beta.5) (2022-01-19)
+
+
+### Bug Fixes
+
+* **web:** loading not hide ([2a74dc8](https://github.com/gethexon/hexon/commit/2a74dc8866e0e0b56c81f7cb31d65b5eb3054824))
+
+
+### Features
+
+* reset password ([3c1fa1b](https://github.com/gethexon/hexon/commit/3c1fa1b88df8489150c57f7d805e8552a1baa119))
+* retry and show errors when fail to init hexo ([4c4206b](https://github.com/gethexon/hexon/commit/4c4206bde5c7f75380a1eb58a21a9a70265d0e15))
+
+
+
+
+
 # [0.9.0-beta.4](https://github.com/gethexon/hexon/compare/v0.9.0-beta.2...v0.9.0-beta.4) (2022-01-19)
 
 
