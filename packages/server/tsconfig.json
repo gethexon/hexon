@@ -5,7 +5,7 @@
     "declaration": false,
     "noImplicitAny": true,
     "allowJs": true,
-    "target": "ESNext",
+    "target": "es2015",
     "outDir": "dist",
     "esModuleInterop": true,
     "moduleResolution": "node",
