@@ -92,13 +92,17 @@ export const useDispatcher = defineStore("dispatcher", {
     async createArticle(title: string, options: ICreateOptions) {
       const mainStore = useMainStore()
       this.loading.start()
-      await mainStore.createArticle(title, options).then(() => {
-        this.notification.notify({
-          type: "success",
-          title: "新建成功",
+      try {
+        await mainStore.createArticle(title, options).then(() => {
+          this.notification.notify({
+            type: "success",
+            title: "新建成功",
+          })
         })
-      })
-      this.loading.stop()
+      } catch (err) {
+      } finally {
+        this.loading.stop()
+      }
     },
     deleteArticle(id: IArticleIdentifier) {
       const mainStore = useMainStore()
@@ -127,26 +131,30 @@ export const useDispatcher = defineStore("dispatcher", {
     },
     async saveArticle(raw: string) {
       this.loading.start()
-      const detailStore = useDetailStore()
-      await detailStore.saveArticle(raw).then(
-        () => {
-          this.notification.notify({
-            title: "保存成功",
-            type: "success",
-          })
-          this.reloadBlogData()
-        },
-        (err) => {
-          this.notification.notify({
-            title: "文章保存失败",
-            desc: (err as Error).message,
-            type: "error",
-            duration: 5000,
-          })
-          throw err
-        }
-      )
-      this.loading.stop()
+      try {
+        const detailStore = useDetailStore()
+        await detailStore.saveArticle(raw).then(
+          () => {
+            this.notification.notify({
+              title: "保存成功",
+              type: "success",
+            })
+            this.reloadBlogData()
+          },
+          (err) => {
+            this.notification.notify({
+              title: "文章保存失败",
+              desc: (err as Error).message,
+              type: "error",
+              duration: 5000,
+            })
+            throw err
+          }
+        )
+      } catch (err) {
+      } finally {
+        this.loading.stop()
+      }
     },
     editArticle(id: IArticleIdentifier) {
       this.router.push({ name: "edit", params: { ...id } })
@@ -191,41 +199,45 @@ export const useDispatcher = defineStore("dispatcher", {
       })
     },
     async doPublishArticle(source: string) {
-      this.loading.start()
       const prefix = "_drafts/"
       if (!source.startsWith(prefix)) return
-      const removePrefixAndExt = (source: string) => {
-        return source.slice(prefix.length, -3)
-      }
-      const mainStore = useMainStore()
-      await mainStore.publishArticle(removePrefixAndExt(source)).then(
-        (article) => {
-          this.notification.notify({
-            title: "发布成功",
-            type: "success",
-          })
-          const detailStore = useDetailStore()
-          if (
-            detailStore.article &&
-            isPost(detailStore.article) &&
-            detailStore.article.source === source
-          ) {
-            this.router.push({
-              name: "view",
-              params: { source: article.source },
+      this.loading.start()
+      try {
+        const removePrefixAndExt = (source: string) => {
+          return source.slice(prefix.length, -3)
+        }
+        const mainStore = useMainStore()
+        await mainStore.publishArticle(removePrefixAndExt(source)).then(
+          (article) => {
+            this.notification.notify({
+              title: "发布成功",
+              type: "success",
+            })
+            const detailStore = useDetailStore()
+            if (
+              detailStore.article &&
+              isPost(detailStore.article) &&
+              detailStore.article.source === source
+            ) {
+              this.router.push({
+                name: "view",
+                params: { source: article.source },
+              })
+            }
+          },
+          (err) => {
+            this.notification.notify({
+              title: "文章发布失败",
+              desc: (err as Error).message,
+              type: "error",
+              duration: 5000,
             })
           }
-        },
-        (err) => {
-          this.notification.notify({
-            title: "文章发布失败",
-            desc: (err as Error).message,
-            type: "error",
-            duration: 5000,
-          })
-        }
-      )
-      this.loading.stop()
+        )
+      } catch (err) {
+      } finally {
+        this.loading.stop()
+      }
     },
     goHome() {
       this.router.push({ name: "home" })
