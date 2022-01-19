@@ -43,13 +43,22 @@ function __metadata(metadataKey, metadataValue) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
 }
 
+function __awaiter(thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+}
+
 const defaultRoot = path.resolve(process.cwd(), "data");
 const defaultFilename = "common.db";
 let StorageService = class StorageService {
-    _db;
-    _root = defaultRoot;
-    _filename = defaultFilename;
     constructor() {
+        this._root = defaultRoot;
+        this._filename = defaultFilename;
         if (!fs.existsSync(this._root))
             fs.mkdirSync(this._root);
         this._db = new JSONdb__default["default"](path.resolve(this._root, this._filename));
@@ -70,6 +79,7 @@ StorageService = __decorate([
 ], StorageService);
 
 function isBlog(cwd) {
+    var _a;
     let file;
     try {
         // 检查是否有对应文件
@@ -86,7 +96,7 @@ function isBlog(cwd) {
     }
     // 检查是否有hexo依赖
     const packageJSON = JSON.parse(file);
-    if (!packageJSON?.dependencies?.hexo)
+    if (!((_a = packageJSON === null || packageJSON === void 0 ? void 0 : packageJSON.dependencies) === null || _a === void 0 ? void 0 : _a.hexo))
         return false;
     return true;
 }
@@ -144,51 +154,53 @@ const HEXO_BASE_DIR_KEY = "hexo-basedir";
 const HEXON_PORT_KEY = "hexon-port";
 const HEXON_DEFAULT_PORT = 5777;
 
-async function install () {
-    console.clear();
-    console.log(chalk__default["default"].blue(logo));
-    printer.section("Check version");
-    printer.info(`Current Version: ${version}`);
-    if (version.indexOf("-") >= 0) {
-        printer.warn("This is a preview version!");
-    }
-    printer.section("Configuation");
-    const portPrompt = {
-        name: "port",
-        message: "Which port do you like Hexon running at?",
-        default: HEXON_DEFAULT_PORT,
-        validate(v) {
-            return !isNaN(v) || `number is required ${typeof v} given`;
-        },
-        prefix: chalk__default["default"].blue("?"),
-    };
-    const rootPrompt = {
-        name: "root",
-        message: `Your hexo blog path? ${chalk__default["default"].grey("Absolute or relative path to hexon.")}`,
-        validate(v) {
-            const truePath = toRealPath(v);
-            try {
-                return (isBlog(truePath) ||
-                    chalk__default["default"].red.bold(truePath) + chalk__default["default"].red(" is not a valid hexo blog."));
-            }
-            catch (e) {
-                console.error(e);
-                return chalk__default["default"].red("Fail to check path " + chalk__default["default"].bold(truePath));
-            }
-        },
-    };
-    const answer = await inquirer__default["default"].prompt([portPrompt, rootPrompt]);
-    const storage = tsyringe.container.resolve(StorageService);
-    storage.set(HEXO_BASE_DIR_KEY, answer.root);
-    storage.set(HEXON_PORT_KEY, answer.port);
-    printer.section("Install");
-    const base = path__default["default"].resolve(__dirname, "../../..");
-    printer.success(`Hexon has been installed to \`${base}\``);
-    printer.log(`Run \`yarn start\` to start`);
-    printer.log(`Run \`yarn prd\` to start with pm2`);
-    printer.log(`Run \`yarn stop\` to stop with pm2`);
-    printer.log(`Run \`yarn restart\` to restart with pm2`);
-    printer.log(chalk__default["default"].grey(`To uninstall, remove the following foler: ${base}`));
+function install () {
+    return __awaiter(this, void 0, void 0, function* () {
+        console.clear();
+        console.log(chalk__default["default"].blue(logo));
+        printer.section("Check version");
+        printer.info(`Current Version: ${version}`);
+        if (version.indexOf("-") >= 0) {
+            printer.warn("This is a preview version!");
+        }
+        printer.section("Configuation");
+        const portPrompt = {
+            name: "port",
+            message: "Which port do you like Hexon running at?",
+            default: HEXON_DEFAULT_PORT,
+            validate(v) {
+                return !isNaN(v) || `number is required ${typeof v} given`;
+            },
+            prefix: chalk__default["default"].blue("?"),
+        };
+        const rootPrompt = {
+            name: "root",
+            message: `Your hexo blog path? ${chalk__default["default"].grey("Absolute or relative path to hexon.")}`,
+            validate(v) {
+                const truePath = toRealPath(v);
+                try {
+                    return (isBlog(truePath) ||
+                        chalk__default["default"].red.bold(truePath) + chalk__default["default"].red(" is not a valid hexo blog."));
+                }
+                catch (e) {
+                    console.error(e);
+                    return chalk__default["default"].red("Fail to check path " + chalk__default["default"].bold(truePath));
+                }
+            },
+        };
+        const answer = yield inquirer__default["default"].prompt([portPrompt, rootPrompt]);
+        const storage = tsyringe.container.resolve(StorageService);
+        storage.set(HEXO_BASE_DIR_KEY, answer.root);
+        storage.set(HEXON_PORT_KEY, answer.port);
+        printer.section("Install");
+        const base = path__default["default"].resolve(__dirname, "../../..");
+        printer.success(`Hexon has been installed to \`${base}\``);
+        printer.log(`Run \`yarn start\` to start`);
+        printer.log(`Run \`yarn prd\` to start with pm2`);
+        printer.log(`Run \`yarn stop\` to stop with pm2`);
+        printer.log(`Run \`yarn restart\` to restart with pm2`);
+        printer.log(chalk__default["default"].grey(`To uninstall, remove the following foler: ${base}`));
+    });
 }
 
 const program = new commander.Command("npx .");
