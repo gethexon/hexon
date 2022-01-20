@@ -7,8 +7,6 @@
   "scripts": {
     "setup": "node ./bin/index.js install",
     "start": "export DEBUG=null && export NODE_ENV=production && node dist/index.js",
-    "stop": "pm2 stop hexon",
-    "restart": "pm2 restart hexon",
     "prd": "pm2 start dist/index.js --name hexon -o log/pm2-log.log -e log/pm2-err.log",
     "dev": "export DEBUG=hexon-server:* &&  nodemon -e ts,js src/server/index.ts --exec ts-node",
     "build": "rollup --config",
