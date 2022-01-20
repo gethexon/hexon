@@ -12,6 +12,7 @@
   },
   "scripts": {
     "beta": "node ./scripts/prerelease.js",
+    "main": "node ./scripts/release.js",
     "build": "lerna run build",
     "setup": "cd ./packages/hexon-server && yarn setup",
     "start": "cd ./packages/hexon-server && yarn start",

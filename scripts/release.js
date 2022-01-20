@@ -1,6 +1,6 @@
 const chalk = require("chalk")
 const { reset } = require("./utils/git")
-const { DEV_BRANCH, PRERELEASE_BRANCH } = require("./utils/constants")
+const { DEV_BRANCH, MASTER_BRANCH } = require("./utils/constants")
 const {
   getCurrentBranch,
   checkout,
@@ -15,12 +15,9 @@ async function version() {
   await execaInherit("lerna", [
     "version",
     "--conventional-commits",
-    "--conventional-prerelease",
     "--no-push",
     "-m",
     "chore: release",
-    "--preid",
-    "beta",
   ])
 }
 
@@ -30,12 +27,12 @@ async function wrap() {
   await build()
   await addThenCommit("chore: build")
   const { commit } = (await listLog())[0]
-  if (currentBranch !== PRERELEASE_BRANCH) await checkout(PRERELEASE_BRANCH)
+  if (currentBranch !== MASTER_BRANCH) await checkout(MASTER_BRANCH)
   await reset(commit, true)
   await version()
   await checkout(DEV_BRANCH)
-  await reset(PRERELEASE_BRANCH, true)
-  console.log(chalk.green("Prerelease done. Remember to push to remote."))
+  await reset(MASTER_BRANCH, true)
+  console.log(chalk.green("Release done. Remember to push to remote."))
 }
 
 wrap()
