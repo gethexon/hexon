@@ -10,14 +10,7 @@ const styleVars = computed(() => ({
 </script>
 <template>
   <div
-    class="
-      h-errored-view h-full
-      w-full
-      flex flex-col
-      items-center
-      justify-center
-      select-none
-    "
+    class="h-errored-view h-full w-full flex flex-col items-center justify-center select-none"
   >
     <slot>
       <span class="text-xl">出错啦~</span>

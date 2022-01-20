@@ -1,5 +1,5 @@
-const { execaInherit } = require("./execa");
+const { execaInherit } = require("./execa")
 
-module.exports = async () =>{
-  await execaInherit("yarn", ["build"]);
+module.exports = async () => {
+  await execaInherit("yarn", ["build"])
 }

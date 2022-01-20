@@ -15,6 +15,6 @@ const loading = ref(false)
       position: relative;
     "
   >
-    <HLoading :loading="loading"> content </HLoading>
+    <HLoading :loading="loading">content</HLoading>
   </div>
 </template>

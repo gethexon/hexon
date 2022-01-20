@@ -1,9 +1,9 @@
-const chalk = require("chalk");
-const inquirer = require("inquirer");
+const chalk = require("chalk")
+const inquirer = require("inquirer")
 
 async function textConfirm(text, message) {
-  message = message || `Please type ${chalk.yellow.bold(text)} to continue`;
-  message += chalk.grey("\n Type q to exit.");
+  message = message || `Please type ${chalk.yellow.bold(text)} to continue`
+  message += chalk.grey("\n Type q to exit.")
   await inquirer.prompt([
     {
       name: "text",
@@ -11,15 +11,15 @@ async function textConfirm(text, message) {
       message: message,
       validate: (v) => {
         if (v === "q") {
-          console.log("\nexiting...");
-          process.exit(0);
+          console.log("\nexiting...")
+          process.exit(0)
         }
-        return v === text || "not match, try again";
+        return v === text || "not match, try again"
       },
     },
-  ]);
+  ])
 }
 
 module.exports = {
   textConfirm,
-};
+}

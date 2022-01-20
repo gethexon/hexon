@@ -1,4 +1,4 @@
-import { list2Tree } from ".";
+import { list2Tree } from "."
 
 it("should transform list to tree", () => {
   const list = [
@@ -7,7 +7,7 @@ it("should transform list to tree", () => {
     { id: "3", p: "1" },
     { id: "4", p: "1" },
     { id: "5", p: "4" },
-  ];
+  ]
   const correct = [
     {
       id: "1",
@@ -17,26 +17,26 @@ it("should transform list to tree", () => {
       ],
     },
     { id: "2" },
-  ];
+  ]
   const res = list2Tree(list, (item) => !item.p, {
     idKey: "id",
     parentKey: "p",
     childrenKey: "c",
-  });
-  expect(res).toEqual(correct);
-});
+  })
+  expect(res).toEqual(correct)
+})
 
 it("should work if no top node found", () => {
   const list = [
     { id: "3", p: "1" },
     { id: "4", p: "1" },
-  ];
+  ]
   const run = () => {
     list2Tree(list, (item) => !item.p, {
       idKey: "id",
       parentKey: "p",
       childrenKey: "c",
-    });
-  };
-  expect(run).not.toThrow();
-});
+    })
+  }
+  expect(run).not.toThrow()
+})

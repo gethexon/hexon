@@ -1,4 +1,4 @@
-import { watchEffect } from "vue";
+import { watchEffect } from "vue"
 
 const useEventListener = (
   ele: HTMLElement | Window,
@@ -6,11 +6,11 @@ const useEventListener = (
   listener: (evt: Event) => void
 ) => {
   watchEffect((onInvalidate) => {
-    ele.addEventListener(type, listener);
+    ele.addEventListener(type, listener)
     onInvalidate(() => {
-      ele.removeEventListener(type, listener);
-    });
-  });
-};
+      ele.removeEventListener(type, listener)
+    })
+  })
+}
 
-export default useEventListener;
+export default useEventListener

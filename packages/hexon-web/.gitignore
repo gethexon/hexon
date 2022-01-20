@@ -1,6 +1,0 @@
-node_modules
-.DS_Store
-dist-ssr
-*.local
-yarn-error.log
-stats.html

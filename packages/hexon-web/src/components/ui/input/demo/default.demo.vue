@@ -8,7 +8,7 @@ const value = ref("")
   <h2>基础</h2>
 
   <div class="bg-base-3 h-input-container">
-    <HInput v-model="value" placeholder="type something"> </HInput>
+    <HInput v-model="value" placeholder="type something"></HInput>
   </div>
 
   <h2>带前缀</h2>
@@ -24,7 +24,7 @@ const value = ref("")
   <h2>可清空</h2>
 
   <div class="bg-base-3 h-input-container">
-    <HInput v-model="value" placeholder="type something" clearable> </HInput>
+    <HInput v-model="value" placeholder="type something" clearable></HInput>
   </div>
 
   <h2>类型</h2>
@@ -37,8 +37,7 @@ const value = ref("")
       placeholder="type something"
       type="primary"
       clearable
-    >
-    </HInput>
+    ></HInput>
   </div>
 
   <h3>Secondary</h3>
@@ -49,8 +48,7 @@ const value = ref("")
       placeholder="type something"
       type="secondary"
       clearable
-    >
-    </HInput>
+    ></HInput>
   </div>
 
   <h2>错误</h2>
@@ -62,8 +60,7 @@ const value = ref("")
       type="primary"
       error="文字错误"
       clearable
-    >
-    </HInput>
+    ></HInput>
   </div>
 
   <div class="bg-base-1 h-input-container">
@@ -73,8 +70,7 @@ const value = ref("")
       type="secondary"
       error="文字错误"
       clearable
-    >
-    </HInput>
+    ></HInput>
   </div>
 
   <div class="bg-base-3 h-input-container">
@@ -96,8 +92,7 @@ const value = ref("")
       type="primary"
       error=""
       clearable
-    >
-    </HInput>
+    ></HInput>
   </div>
 
   <div class="bg-base-1 h-input-container">
@@ -107,8 +102,7 @@ const value = ref("")
       type="secondary"
       error=""
       clearable
-    >
-    </HInput>
+    ></HInput>
   </div>
 
   <h2>表单</h2>
@@ -120,16 +114,14 @@ const value = ref("")
       type="primary"
       :error="value"
       clearable
-    >
-    </HInput>
+    ></HInput>
     <HInput
       v-model="value"
       placeholder="type something"
       type="primary"
       :error="value"
       clearable
-    >
-    </HInput>
+    ></HInput>
   </div>
 
   <div class="bg-base-1 h-input-container">
@@ -139,16 +131,14 @@ const value = ref("")
       type="secondary"
       :error="value"
       clearable
-    >
-    </HInput>
+    ></HInput>
     <HInput
       v-model="value"
       placeholder="type something"
       type="secondary"
       :error="value"
       clearable
-    >
-    </HInput>
+    ></HInput>
   </div>
 </template>
 

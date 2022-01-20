@@ -1,4 +1,4 @@
-import faker from "faker";
+import faker from "faker"
 export function genArticle() {
   return {
     title: faker.lorem.sentence(10),
@@ -8,8 +8,8 @@ export function genArticle() {
       .map((i) => faker.lorem.word()),
     date: faker.datatype.datetime().toString(),
     slug: faker.lorem.sentence(10),
-  };
+  }
 }
 export function genArticles(count) {
-  return new Array(count).fill(0).map((i) => genArticle());
+  return new Array(count).fill(0).map((i) => genArticle())
 }
