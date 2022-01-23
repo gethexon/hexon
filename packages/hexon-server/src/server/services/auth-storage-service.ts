@@ -1,5 +1,5 @@
 import { inject, injectable, singleton } from "tsyringe"
-import { LogService } from "~/server/services/log-service"
+import { LogService } from "@/services/log-service"
 import { StorageService } from "~/shared/storage-service"
 
 interface IAuthInfo {

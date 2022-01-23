@@ -1,6 +1,6 @@
 import { container } from "tsyringe"
 import Router from "@koa/router"
-import { AuthService } from "~/server/services/auth-service"
+import { AuthService } from "@/services/auth-service"
 import { AccountService } from "~/shared/account-storage-service"
 import {
   createBasicAuthMiddleWare,

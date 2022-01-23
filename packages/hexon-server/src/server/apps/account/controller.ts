@@ -1,6 +1,6 @@
 import { Context, Next } from "koa"
 import { container } from "tsyringe"
-import { AuthService } from "~/server/services/auth-service"
+import { AuthService } from "@/services/auth-service"
 import { BasicAuthError } from "~/shared/account-storage-service"
 import {
   EmptyAuthticationHeaderError,

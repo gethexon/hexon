@@ -93,12 +93,22 @@ export const useDispatcher = defineStore("dispatcher", {
       const mainStore = useMainStore()
       this.loading.start()
       try {
-        await mainStore.createArticle(title, options).then(() => {
-          this.notification.notify({
-            type: "success",
-            title: "新建成功",
-          })
-        })
+        await mainStore.createArticle(title, options).then(
+          () => {
+            this.notification.notify({
+              type: "success",
+              title: "新建成功",
+            })
+          },
+          (err) => {
+            this.notification.notify({
+              title: "新建失败",
+              desc: (err as Error).message,
+              type: "error",
+              duration: 5000,
+            })
+          }
+        )
       } catch (err) {
       } finally {
         this.loading.stop()

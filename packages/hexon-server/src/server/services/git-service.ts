@@ -5,9 +5,9 @@ import {
   PullError,
   PushError,
   ResetHardError,
-} from "~/server/apps/git/errors"
-import { run } from "~/server/apps/hexo/utils"
-import { LogService } from "~/server/services/log-service"
+} from "@/apps/git/errors"
+import { run } from "@/apps/hexo/utils"
+import { LogService } from "@/services/log-service"
 import { HEXO_BASE_DIR_KEY } from "~/shared/constants"
 import { StorageService } from "~/shared/storage-service"
 import { toRealPath } from "~/shared/utils"

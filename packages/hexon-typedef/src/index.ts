@@ -3,6 +3,7 @@ export enum ERROR_CODE {
   E_INITIATING,
   E_UNKNOWN,
   E_NOT_FOUND,
+  E_INVALID_CREATE_OPTION_PATH,
 }
 
 export interface IErrorResponse {

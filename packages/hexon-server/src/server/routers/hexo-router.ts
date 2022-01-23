@@ -5,8 +5,8 @@ import Router from "@koa/router"
 import {
   HexoCoreInitError,
   HexoCoreInitiatingError,
-} from "~/server/services/hexo-instance-service"
-import Hexo from "../apps/hexo/service"
+} from "@/services/hexo-instance-service"
+import { HexoService, InvalidPathOptionError } from "@/services/hexo-service"
 
 const router = new Router()
 router.use(async (ctx, next) => {
@@ -14,7 +14,6 @@ router.use(async (ctx, next) => {
     await next()
   } catch (err) {
     if (err instanceof HexoCoreInitError) {
-      console.log("HexoCoreInitError")
       ctx.status = 500
       ctx.body = {
         code: ERROR_CODE.E_INIT,
@@ -24,6 +23,12 @@ router.use(async (ctx, next) => {
       ctx.status = 503
       ctx.body = {
         code: ERROR_CODE.E_INITIATING,
+        message: "hexo core initiating please wait for a second",
+      }
+    } else if (err instanceof InvalidPathOptionError) {
+      ctx.status = 400
+      ctx.body = {
+        code: ERROR_CODE.E_INVALID_CREATE_OPTION_PATH,
         message: "hexo core initiating please wait for a second",
       }
     } else if (err instanceof Error && err.message === "not found") {
@@ -36,11 +41,11 @@ router.use(async (ctx, next) => {
   }
 })
 router.get("/posts", async (ctx: Context) => {
-  const hexo = container.resolve(Hexo)
+  const hexo = container.resolve(HexoService)
   ctx.body = await hexo.listPost()
 })
 router.get("/post/:source", async (ctx: Context) => {
-  const hexo = container.resolve(Hexo)
+  const hexo = container.resolve(HexoService)
   const { source } = ctx.params
   if (!source) {
     ctx.status = 400
@@ -49,11 +54,11 @@ router.get("/post/:source", async (ctx: Context) => {
   ctx.body = await hexo.getPostBySource(decodeURIComponent(source))
 })
 router.get("/pages", async (ctx: Context) => {
-  const hexo = container.resolve(Hexo)
+  const hexo = container.resolve(HexoService)
   ctx.body = await hexo.listPage()
 })
 router.get("/page/:source", async (ctx: Context) => {
-  const hexo = container.resolve(Hexo)
+  const hexo = container.resolve(HexoService)
   const { source } = ctx.params
   if (!source) {
     ctx.status = 400
@@ -62,30 +67,30 @@ router.get("/page/:source", async (ctx: Context) => {
   ctx.body = await hexo.getPageBySource(decodeURIComponent(source))
 })
 router.get("/tags", async (ctx: Context) => {
-  const hexo = container.resolve(Hexo)
+  const hexo = container.resolve(HexoService)
   ctx.body = await hexo.listTag()
 })
 router.get("/categories", async (ctx: Context) => {
-  const hexo = container.resolve(Hexo)
+  const hexo = container.resolve(HexoService)
   ctx.body = await hexo.listCategory()
 })
 router.post("/deploy", async (ctx: Context) => {
-  const hexo = container.resolve(Hexo)
+  const hexo = container.resolve(HexoService)
   await hexo.deploy(ctx.request.body)
   ctx.status = 200
 })
 router.post("/generate", async (ctx: Context) => {
-  const hexo = container.resolve(Hexo)
+  const hexo = container.resolve(HexoService)
   await hexo.generate(ctx.request.body)
   ctx.status = 200
 })
 router.post("/clean", async (ctx: Context) => {
-  const hexo = container.resolve(Hexo)
+  const hexo = container.resolve(HexoService)
   await hexo.clean()
   ctx.status = 200
 })
 router.post("/publish", async (ctx: Context) => {
-  const hexo = container.resolve(Hexo)
+  const hexo = container.resolve(HexoService)
   const { filename, layout } = ctx.request.body
   if (!filename) {
     ctx.status = 400
@@ -95,7 +100,7 @@ router.post("/publish", async (ctx: Context) => {
   ctx.body = await hexo.publish(filename, layout)
 })
 router.post("/create", async (ctx: Context) => {
-  const hexo = container.resolve(Hexo)
+  const hexo = container.resolve(HexoService)
   const { title, layout, path, slug, replace } = ctx.request.body
   if (!title) {
     ctx.status = 400
@@ -105,7 +110,7 @@ router.post("/create", async (ctx: Context) => {
   ctx.body = await hexo.create(title, { layout, path, slug, replace })
 })
 router.put("/post/:source", async (ctx: Context) => {
-  const hexo = container.resolve(Hexo)
+  const hexo = container.resolve(HexoService)
   const { source } = ctx.params
   const { raw } = ctx.request.body
 
@@ -117,7 +122,7 @@ router.put("/post/:source", async (ctx: Context) => {
   ctx.body = await hexo.update(source, raw, "post")
 })
 router.put("/page/:source", async (ctx: Context) => {
-  const hexo = container.resolve(Hexo)
+  const hexo = container.resolve(HexoService)
   const { source } = ctx.params
   const { raw } = ctx.request.body
   if (!source || !raw) {
@@ -128,7 +133,7 @@ router.put("/page/:source", async (ctx: Context) => {
   ctx.body = await hexo.update(source, raw, "page")
 })
 router.delete("/post/:source", async (ctx: Context) => {
-  const hexo = container.resolve(Hexo)
+  const hexo = container.resolve(HexoService)
   const { source } = ctx.params
   if (!source) {
     ctx.status = 400
@@ -138,7 +143,7 @@ router.delete("/post/:source", async (ctx: Context) => {
   ctx.body = await hexo.delete(source, "post")
 })
 router.delete("/page/:source", async (ctx: Context) => {
-  const hexo = container.resolve(Hexo)
+  const hexo = container.resolve(HexoService)
   const { source } = ctx.params
   if (!source) {
     ctx.status = 400

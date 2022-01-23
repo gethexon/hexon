@@ -1,7 +1,7 @@
 import { inject, injectable, singleton } from "tsyringe"
 import HexoCore from "hexo"
 import path from "path"
-import { LogService } from "~/server/services/log-service"
+import { LogService } from "@/services/log-service"
 import { IStorageService, StorageService } from "~/shared/storage-service"
 import { isBlog, toRealPath } from "~/shared/utils"
 import { DEV } from "../utils"
@@ -167,20 +167,25 @@ export class HexoInstanceService {
     return { hexo, cleanup }
   }
 
-  async reload() {
-    HexoInstanceService.INITING = true
-    try {
+  async runBetweenReload<T>(fn: () => T | Promise<T>): Promise<T> {
+    const unload = async () => {
       HexoInstanceService.INIT_ERROR = null
       await this._hexo.unwatch()
-      await this._hexo.locals.invalidate()
-      await this._hexo.load()
+    }
+    const load = async () => {
       await this._hexo.watch()
       HexoInstanceService.INITING = false
-    } catch (err) {
+    }
+    const markHexoInitError = (err: any) => {
       this._ready = false
       HexoInstanceService.INIT_ERROR = new HexoCoreInitError(String(err))
       HexoInstanceService.INITING = false
       throw HexoInstanceService.INIT_ERROR
     }
+    HexoInstanceService.INITING = true
+    await unload().catch(markHexoInitError)
+    const res = await Promise.resolve(fn())
+    await load().catch(markHexoInitError)
+    return res
   }
 }

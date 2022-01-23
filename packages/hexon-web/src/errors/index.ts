@@ -22,6 +22,10 @@ export const ERROR_MAP: Partial<{ [key in ERROR_CODE]: IErrorDesc<key> }> = {
     code: ERROR_CODE.E_NOT_FOUND,
     message: "没找到，回主页看看？",
   },
+  [ERROR_CODE.E_INVALID_CREATE_OPTION_PATH]: {
+    code: ERROR_CODE.E_INVALID_CREATE_OPTION_PATH,
+    message: "非法的新文章路径",
+  },
 }
 
 export function getErrorMessage(err: any) {

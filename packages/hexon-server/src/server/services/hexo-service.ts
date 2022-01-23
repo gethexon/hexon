@@ -1,11 +1,16 @@
+import path from "path"
 import { inject, injectable, singleton } from "tsyringe"
 import fs from "fs"
 import HexoCore from "hexo"
-import { HexoInstanceService } from "~/server/services/hexo-instance-service"
-import { LogService } from "~/server/services/log-service"
-import { expandHomeDir } from "~/server/utils"
 import { BRIEF_LENGTH } from "~/shared/constants"
-import { BriefPage, BriefPost, Category, Page, Post, Tag } from "./types"
+import {
+  BriefPage,
+  BriefPost,
+  Category,
+  Page,
+  Post,
+  Tag,
+} from "@/apps/hexo/types"
 import {
   HexoPage,
   HexoPost,
@@ -14,13 +19,13 @@ import {
   toPage,
   toPost,
   toTag,
-} from "./utils"
+} from "@/apps/hexo/utils"
+import { HexoInstanceService } from "@/services/hexo-instance-service"
+import { LogService } from "@/services/log-service"
+import { expandHomeDir } from "@/utils"
 
-declare module "hexo" {
-  interface InstanceOptions {
-    draft?: boolean
-    drafts?: boolean
-  }
+export class InvalidPathOptionError extends Error {
+  name = "InvalidPathOptionError"
 }
 
 interface IHexoAPI {
@@ -128,18 +133,16 @@ function transformPageToBrief(doc: Page): BriefPage {
 
 @injectable()
 @singleton()
-class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
-  //#region init
+export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
   constructor(
+    @inject(LogService) private _logService: LogService,
     @inject(HexoInstanceService)
-    private _hexoInstanceService: HexoInstanceService,
-    @inject(LogService) private _logService: LogService
+    private _hexoInstanceService: HexoInstanceService
   ) {
     this._logService.setScope("hexo-service")
   }
 
   //#region helpers
-
   private async runWithoutModifiedOption(
     fn: (hexo: HexoCore) => Promise<void>
   ) {
@@ -238,7 +241,9 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
     const docs = hexo.locals.get("posts").toArray().map(toPost)
     const doc = docs.find((item) => item.source === source)
     if (!doc) throw new Error("not found")
-    return transformPost(doc)
+    const res = transformPost(doc)
+    this._logService.log("get post by source", source)
+    return res
   }
   async listPage() {
     const hexo = await this._hexoInstanceService.getInstance()
@@ -259,7 +264,9 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
     const docs = hexo.locals.get("pages").toArray().map(toPage)
     const doc = docs.find((item) => item.source === source)
     if (!doc) throw new Error("not found")
-    return transformPage(doc)
+    const res = transformPage(doc)
+    this._logService.log("get page by source", source)
+    return res
   }
   async listCategory(): Promise<Category[]> {
     const hexo = await this._hexoInstanceService.getInstance()
@@ -292,7 +299,7 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
       await hexo.call("deploy", { _: args })
       await hexo.exit()
     })
-    this._logService.log("deploy succeed")
+    this._logService.log(`run hexo deploy with args:`, args.join(" "))
   }
 
   async generate(options: IGenerateOptions = {}) {
@@ -313,7 +320,7 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
       await hexo.call("generate", { _: args })
       await hexo.exit()
     })
-    this._logService.log("generate succeed")
+    this._logService.log(`run hexo generate with args:`, args.join(" "))
   }
 
   async clean() {
@@ -321,7 +328,7 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
       await hexo.call("clean")
       await hexo.exit()
     })
-    this._logService.log("clean succeed")
+    this._logService.log("run hexo clean")
   }
   //#endregion
 
@@ -333,11 +340,10 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
     const info = await run("hexo", args, {
       cwd: await this._hexoInstanceService.getBaseDir(),
     })
-    await this._hexoInstanceService.reload()
     const fullSource = expandHomeDir(info.split("Published: ")[1].trim())
     const article = await this.getPostByFullSource(fullSource)
     const res = this.WithCategoriesTagsBriefArticleList(article)
-    this._logService.log("publish succeed", filename)
+    this._logService.log(`publish ${filename} with layout: ${layout}`)
     return res
   }
 
@@ -345,6 +351,17 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
     const args: string[] = ["new"]
     if (options.layout) args.push(options.layout)
     if (options.path) {
+      try {
+        const base = await this._hexoInstanceService.getBaseDir()
+        const fullPath = path.resolve(base, options.path)
+        const relative = path.relative(fullPath, base)
+        if (!relative.startsWith("..")) {
+          this._logService.error(`${fullPath} is not valid`)
+          throw new Error()
+        }
+      } catch (err) {
+        throw new InvalidPathOptionError((err as Error).message)
+      }
       args.push("--path")
       args.push(options.path)
     }
@@ -354,10 +371,11 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
       args.push(options.slug)
     }
     if (title) args.push(title)
-    const info = await run("hexo", args, {
-      cwd: await this._hexoInstanceService.getBaseDir(),
+    const info = await this._hexoInstanceService.runBetweenReload(async () => {
+      return await run("hexo", args, {
+        cwd: await this._hexoInstanceService.getBaseDir(),
+      })
     })
-    await this._hexoInstanceService.reload()
     const fullSource = expandHomeDir(info.split("Created: ")[1].trim())
     const article = await this.getPostOrPageByFullSource(fullSource)
     const res = this.WithCategoriesTagsBriefArticleList(article)
@@ -378,12 +396,11 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
   async update(source: string, raw: string, type: "post" | "page") {
     const fullPath = await this.getFullPathBySource(source, type)
     if (!fullPath) throw new Error("not found")
-    this.writeFile(fullPath, raw)
-    await this._hexoInstanceService.reload()
+    this._hexoInstanceService.runBetweenReload(() => {
+      this.writeFile(fullPath, raw)
+    })
     const article = await this.getPostBySource(source)
-    const res = this.WithCategoriesTagsBriefArticleList(article)
-    this._logService.log("update succeed", source)
-    return res
+    return this.WithCategoriesTagsBriefArticleList(article)
   }
 
   async delete(
@@ -392,13 +409,10 @@ class Hexo implements IHexoAPI, IHexoCommand, IHexoCli {
   ): Promise<WithCategoriesTagsBriefArticleList<void>> {
     const fullPath = await this.getFullPathBySource(source, type)
     if (!fullPath) throw new Error("not found")
-    this.deleteFile(fullPath)
-    await this._hexoInstanceService.reload()
-    const res = this.WithCategoriesTagsBriefArticleList(null)
-    this._logService.log("delete succeed", source)
-    return res
+    await this._hexoInstanceService.runBetweenReload(async () => {
+      await this.deleteFile(fullPath)
+    })
+    return this.WithCategoriesTagsBriefArticleList(null)
   }
   //#endregion
 }
-
-export default Hexo

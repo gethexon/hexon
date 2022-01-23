@@ -1,8 +1,8 @@
 import { inject, injectable, singleton } from "tsyringe"
 import { AccountService } from "~/shared/account-storage-service"
 import { IStorageService, StorageService } from "~/shared/storage-service"
-import { AuthStorageService } from "~/server/services/auth-storage-service"
-import { LogService } from "~/server/services/log-service"
+import { AuthStorageService } from "@/services/auth-storage-service"
+import { LogService } from "@/services/log-service"
 
 export interface IInstallOption {
   username: string

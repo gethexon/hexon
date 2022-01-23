@@ -9,11 +9,11 @@ import {
   TokenBlockedError,
   TokenDecodeError,
   TokenTypeError,
-} from "~/server/apps/account/errors"
-import { IUserInfo, TokenType } from "~/server/apps/account/interface"
-import { AuthStorageService } from "~/server/services/auth-storage-service"
-import { BlockService } from "~/server/services/block-service"
-import { LogService } from "~/server/services/log-service"
+} from "@/apps/account/errors"
+import { IUserInfo, TokenType } from "@/apps/account/interface"
+import { AuthStorageService } from "@/services/auth-storage-service"
+import { BlockService } from "@/services/block-service"
+import { LogService } from "@/services/log-service"
 import { AccountService } from "~/shared/account-storage-service"
 
 interface ITokenPayload {
