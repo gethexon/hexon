@@ -1,11 +1,11 @@
-import Router from "@koa/router"
 import { container } from "tsyringe"
+import Router from "@koa/router"
+import { AuthService } from "~/server/services/auth-service"
 import { AccountService } from "~/shared/account-storage-service"
 import {
   createBasicAuthMiddleWare,
   createTokenAuthMiddleWare,
 } from "./controller"
-import { AuthService } from "./auth-service"
 
 const router = new Router()
 

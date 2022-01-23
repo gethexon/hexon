@@ -1,6 +1,6 @@
 import { container } from "tsyringe"
 import Router from "@koa/router"
-import { GitService } from "./service"
+import { GitService } from "~/server/services/git-service"
 
 const router = new Router()
 

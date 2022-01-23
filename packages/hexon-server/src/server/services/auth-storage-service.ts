@@ -1,4 +1,5 @@
 import { inject, injectable, singleton } from "tsyringe"
+import { LogService } from "~/server/services/log-service"
 import { StorageService } from "~/shared/storage-service"
 
 interface IAuthInfo {
@@ -11,7 +12,12 @@ interface IAuthInfo {
 @singleton()
 export class AuthStorageService {
   public static KEY = "authinfo"
-  constructor(@inject(StorageService) private _storage: StorageService) {}
+  constructor(
+    @inject(StorageService) private _storage: StorageService,
+    @inject(LogService) private _logService: LogService
+  ) {
+    this._logService.setScope("auth-storage-service")
+  }
 
   private _toStorage(info: IAuthInfo) {
     this._storage.set(AuthStorageService.KEY, info)
@@ -28,13 +34,18 @@ export class AuthStorageService {
 
   public setAuthInfo(info: IAuthInfo) {
     this._toStorage(info)
+    this._logService.log(`set auth info`)
   }
 
   public getSecret() {
-    return this._fromStorage().secret
+    const s = this._fromStorage().secret
+    this._logService.log(`get secret`)
+    return s
   }
 
   public getAuthInfo(): IAuthInfo {
-    return this._fromStorage()
+    const s = this._fromStorage()
+    this._logService.log(`get auth info`)
+    return s
   }
 }

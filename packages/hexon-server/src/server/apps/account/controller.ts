@@ -1,16 +1,16 @@
 import { Context, Next } from "koa"
 import { container } from "tsyringe"
+import { AuthService } from "~/server/services/auth-service"
 import { BasicAuthError } from "~/shared/account-storage-service"
-import { AuthService } from "./auth-service"
 import {
   EmptyAuthticationHeaderError,
   InvalidAuthticationHeaderError,
-  TokenBlockedError,
   InvalidTokenError,
-  TokenTypeError,
-  TokenDecodeError,
   NotBasicAuthError,
   PassworCheckError,
+  TokenBlockedError,
+  TokenDecodeError,
+  TokenTypeError,
 } from "./errors"
 import { TokenType } from "./interface"
 

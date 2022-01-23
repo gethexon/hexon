@@ -1,10 +1,10 @@
-import { default as HexoCore } from "hexo"
 import { inject, injectable, singleton } from "tsyringe"
+import HexoCore from "hexo"
 import path from "path"
+import { LogService } from "~/server/services/log-service"
 import { IStorageService, StorageService } from "~/shared/storage-service"
 import { isBlog, toRealPath } from "~/shared/utils"
 import { DEV } from "../utils"
-import { LogService } from "./log-service"
 
 export class NotHexoBlogError extends Error {
   name = "NotHexoBlogError"

@@ -1,9 +1,6 @@
 import { Context } from "koa"
 import { inject, injectable, singleton } from "tsyringe"
 import jwt from "jsonwebtoken"
-import { AccountService } from "~/shared/account-storage-service"
-import { AuthStorageService } from "./auth-storage-service"
-import { BlockService } from "./block-service"
 import {
   EmptyAuthticationHeaderError,
   InvalidAuthticationHeaderError,
@@ -12,8 +9,12 @@ import {
   TokenBlockedError,
   TokenDecodeError,
   TokenTypeError,
-} from "./errors"
-import { IUserInfo, TokenType } from "./interface"
+} from "~/server/apps/account/errors"
+import { IUserInfo, TokenType } from "~/server/apps/account/interface"
+import { AuthStorageService } from "~/server/services/auth-storage-service"
+import { BlockService } from "~/server/services/block-service"
+import { LogService } from "~/server/services/log-service"
+import { AccountService } from "~/shared/account-storage-service"
 
 interface ITokenPayload {
   username: string
@@ -27,8 +28,11 @@ export class AuthService {
   constructor(
     @inject(AuthStorageService) private _auth: AuthStorageService,
     @inject(AccountService) private _account: AccountService,
-    @inject(BlockService) private _block: BlockService
-  ) {}
+    @inject(BlockService) private _block: BlockService,
+    @inject(LogService) private _logService: LogService
+  ) {
+    this._logService.setScope("auth-service")
+  }
 
   private _resolveBasicAuth(ctx: Context) {
     const user = ctx.request.body
@@ -95,18 +99,21 @@ export class AuthService {
   verityToken(ctx: Context, type: TokenType) {
     const token = this._resolveAuthorizationHeader(ctx)
     if (this._block.isBlocked(token)) {
+      this._logService.log("blocked token attempt", token)
       throw new TokenBlockedError()
     }
     this._verifyJwtToken(token)
     const user = this._decodeToken(token)
     this._verifyTokenType(user, type)
     ctx.state.user = { username: user.username, type: user.type }
+    this._logService.log(`token verified`, user.username)
   }
 
   verifyBasic(ctx: Context) {
     const user = this._resolveBasicAuth(ctx)
     this._account.verify(user.username, user.password)
     ctx.state.user = { username: user.username }
+    this._logService.log(`basic verified`, user.username)
   }
 
   sign(username: string) {
@@ -121,6 +128,7 @@ export class AuthService {
       secret,
       { expiresIn: refreshableIn }
     )
+    this._logService.log("token sign", username)
     return { accessToken, refreshToken }
   }
 
@@ -131,6 +139,7 @@ export class AuthService {
     const access = ctx.request.body.access
     if (access) toBlock.push(token)
     this._block.block(toBlock)
+    this._logService.log(`sign out`, ctx.state.user.username)
   }
 }
 
