@@ -80,54 +80,9 @@ const dateToString = (date: Dayjs | null) => {
         v-if="show && props.article"
         @contextmenu.prevent
       >
-        <div class="title mt-2 mb-4" :style="{ color: vars.textColorPrimary }">
-          <HIcon
-            class="mr-1"
-            :name="HIconName.Page"
-            :style="{ color: vars.colorPage }"
-            v-if="article!.type==='page'"
-          />
-          <HIcon
-            class="mr-1"
-            :name="HIconName.Read"
-            :style="{ color: vars.colorDraft }"
-            v-if="article!.isDraft"
-          />
-          <span class="font-bold">
-            {{ article!.title }}
-          </span>
-        </div>
-        <div class="mb-2">
-          <div class="text-md">
-            {{`发布于 ${dateToString(article!.date)}`}}
-          </div>
-          <div class="text-md">
-            {{`更新于 ${dateToString(article!.updated)}`}}
-          </div>
-        </div>
-        <template v-if="article!.categories?.length">
-          <HDivider class="my-0.5" />
-          <div class="text-sm">
-            <template v-for="(item, idx) in article!.categories">
-              <HIcon class="mb-0.5" :name="HIconName.ChevronRight" v-if="idx" />
-              <HBadge class="mb-0.5" rounded>
-                {{ item }}
-              </HBadge>
-            </template>
-          </div>
-        </template>
-        <template v-if="article!.tags?.length">
-          <HDivider class="my-0.5" />
-          <div class="text-sm">
-            <HBadge class="mr-1" v-for="tag in article!.tags">
-              {{ tag }}
-            </HBadge>
-          </div>
-        </template>
-        <HDivider class="mt-1 mb-2" />
-        <div class="flex justify-end">
+        <div class="flex justify-start">
           <HButton
-            class="ml-1"
+            class="mr-1"
             inverted
             size="small"
             round
@@ -136,7 +91,7 @@ const dateToString = (date: Dayjs | null) => {
             <HIcon :name="HIconName.Edit" />
           </HButton>
           <HButton
-            class="ml-1"
+            class="mr-1"
             type="error"
             inverted
             size="small"
@@ -146,7 +101,7 @@ const dateToString = (date: Dayjs | null) => {
             <HIcon :name="HIconName.Delete" />
           </HButton>
           <HButton
-            class="ml-1"
+            class="mr-1"
             type="success"
             inverted
             size="small"
@@ -157,6 +112,54 @@ const dateToString = (date: Dayjs | null) => {
             <HIcon :name="HIconName.Upload" />
           </HButton>
         </div>
+        <HDivider class="mt-1 mb-2" />
+        <div
+          class="title mt-2 mb-4 px-1"
+          :style="{ color: vars.textColorPrimary }"
+        >
+          <HIcon
+            class="mr-2"
+            :name="HIconName.Page"
+            :style="{ color: vars.colorPage }"
+            v-if="article!.type==='page'"
+          />
+          <HIcon
+            class="mr-2"
+            :name="HIconName.Read"
+            :style="{ color: vars.colorDraft }"
+            v-if="article!.isDraft"
+          />
+          <span class="font-bold">
+            {{ article!.title }}
+          </span>
+        </div>
+        <div class="mb-2">
+          <div class="text-sm">
+            {{`发布于 ${dateToString(article!.date)}`}}
+          </div>
+          <div class="text-sm">
+            {{`更新于 ${dateToString(article!.updated)}`}}
+          </div>
+        </div>
+        <template v-if="article!.categories?.length">
+          <HDivider class="my-2" />
+          <div class="text-sm">
+            <template v-for="(item, idx) in article!.categories">
+              <HIcon class="mb-0.5" :name="HIconName.ChevronRight" v-if="idx" />
+              <HBadge class="mb-0.5" rounded>
+                {{ item }}
+              </HBadge>
+            </template>
+          </div>
+        </template>
+        <template v-if="article!.tags?.length">
+          <HDivider class="my-2" />
+          <div class="text-sm">
+            <HBadge class="mr-1" v-for="tag in article!.tags">
+              {{ tag }}
+            </HBadge>
+          </div>
+        </template>
       </div>
     </FadeTransition>
   </Teleport>
