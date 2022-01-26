@@ -4,7 +4,7 @@
   "description": "> TODO: description",
   "author": "winwin2011 <yjh2011@live.com>",
   "homepage": "https://github.com/gethexon/hexon#readme",
-  "license": "MIT",
+  "license": "GPL-3.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "module": "src/index.ts",
