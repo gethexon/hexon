@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useEventListener, useMouse } from "@vueuse/core"
-import { throttle } from "lodash-es"
 import { computed, onMounted, ref, watch } from "vue"
 import { createClassNames } from "~/utils/create-classnames"
 import { HBadge } from "@/ui/badge"
@@ -48,7 +47,6 @@ useEventListener("mouseup", () => {
 })
 useEventListener("mousemove", () => {
   onDragging()
-  throttle(() => {}, 50)
 })
 const updateHalf = () => {
   const handlersEl = handlersRef.value!
@@ -111,7 +109,7 @@ const handlerStyle = computed(() => ({
         >
           <HBadge
             rounded
-            class="cursor-pointer px-3"
+            class="cursor-pointer px-3 whitespace-nowrap"
             @mousedown="onDraggingStart"
           >
             <slot>{{ internal }}</slot>
