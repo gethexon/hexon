@@ -14,8 +14,8 @@
     "beta": "node ./scripts/prerelease.js",
     "main": "node ./scripts/release.js",
     "build": "lerna run build",
-    "setup": "cd ./packages/hexon-server && yarn setup",
-    "start": "cd ./packages/hexon-server && yarn start",
-    "prd": "cd ./packages/hexon-server && yarn prd"
+    "setup": "cd ./packages/server && yarn setup",
+    "start": "cd ./packages/server && yarn start",
+    "prd": "cd ./packages/server && yarn prd"
   }
 }

@@ -1,0 +1,24 @@
+{
+  "include": ["src/**/*.ts", "src/**/*.d.ts"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "declaration": false,
+    "noImplicitAny": true,
+    "allowJs": true,
+    "target": "es2015",
+    "outDir": "dist",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "paths": {
+      "~/*": ["./src/*"],
+      "@/*": ["./src/server/*"],
+      "@hexon/*": ["../*/src/index"]
+    },
+    "typeRoots": ["src/types", "./node_modules/@types"]
+  },
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  }
+}
