@@ -1,6 +1,6 @@
 {
   "name": "@hexon/server",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "private": true,
   "author": "winwin_2011 <yjh2011@live.com>",
   "license": "GPL-3.0",
@@ -52,6 +52,7 @@
     "typescript": "^4.3.4"
   },
   "dependencies": {
+    "@hexon/typedef": "^0.9.1",
     "@koa/cors": "^3.1.0",
     "@koa/router": "^10.0.0",
     "@winwin/koa-simple-account": "^0.0.13",
@@ -63,7 +64,6 @@
     "debug": "^4.3.1",
     "execa": "^5.1.1",
     "hexo": "^5.4.0",
-    "@hexon/typedef": "^0.9.0",
     "http-errors": "^2.0.0",
     "inquirer": "^8.2.0",
     "jsencrypt": "^3.2.1",

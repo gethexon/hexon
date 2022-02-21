@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.9.1](https://bitbucket.org/winwin2011/hexon/compare/v0.9.0...v0.9.1) (2022-02-21)
+
+**Note:** Version bump only for package @hexon/server
+
+
+
+
+
 # [0.9.0-beta.5](https://github.com/gethexon/hexon/compare/v0.9.0-beta.4...v0.9.0-beta.5) (2022-01-19)
 
 

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.9.1](https://bitbucket.org/winwin2011/hexon/compare/v0.9.0...v0.9.1) (2022-02-21)
+
+
+### Bug Fixes
+
+* @winwin/vue-global-theming@0.1.5 security ([c51494e](https://bitbucket.org/winwin2011/hexon/commits/c51494ed79c84ea74e4a31aab1ae3ce46cb13f18)), closes [#8](https://bitbucket.org/winwin2011/hexon/issue/8)
+* slider word wrap ([ed39050](https://bitbucket.org/winwin2011/hexon/commits/ed39050909b0b3961ef7f1e46a7f443efaa6c0c3)), closes [#11](https://bitbucket.org/winwin2011/hexon/issue/11)
+
+
+### Features
+
+* hexo new path secure and hexo core auto init ([1edd7be](https://bitbucket.org/winwin2011/hexon/commits/1edd7beeca624c1e50c8e6d8148a56a36af8a921)), closes [#5](https://bitbucket.org/winwin2011/hexon/issue/5)
+
+
+
+
+
 # [0.9.0-beta.5](https://github.com/gethexon/hexon/compare/v0.9.0-beta.4...v0.9.0-beta.5) (2022-01-19)
 
 
