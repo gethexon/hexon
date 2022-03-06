@@ -9,6 +9,7 @@ import health from "./health"
 import hexo from "./hexo"
 import git from "./git"
 import account from "./account"
+import settingsRouter from "../routers/settings-router"
 
 export default compose([
   account,
@@ -17,4 +18,5 @@ export default compose([
   mount("/health", health),
   mount("/hexo", hexo),
   mount("/git", git),
+  settingsRouter.routes(),
 ])

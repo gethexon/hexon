@@ -8,10 +8,12 @@ import { useDialog } from "~/lib/dialog"
 import { useDetailStore } from "~/store/detail"
 import { useDispatcher } from "~/store/dispatcher"
 import { useMainStore } from "~/store/main"
+import { useSettingsStore } from "~/store/settings"
 import { noop, useAsyncComponentWithLoading } from "~/utils"
 import { parseHfm, updateStringByObj } from "~/utils/hfm"
 import HDateEditor from "~/components/editors/HDateEditor.vue"
 import HFrontmatterEditor from "~/components/editors/HFrontmatterEditor.vue"
+import ErroredView from "~/views/ErroredView.vue"
 import { HEditorToolbarActionPayload } from "@/types"
 import { HButton } from "@/ui/button"
 import { HIcon, HIconName } from "@/ui/icon"
@@ -24,7 +26,6 @@ import HHeaderEditor from "@/editors/HHeaderEditor.vue"
 import HLayoutEditor from "@/editors/HLayoutEditor.vue"
 import HTagEditor from "@/editors/HTagEditor.vue"
 import HNavTitle from "@/ui/nav-list/src/HNavTitle.vue"
-import ErroredView from "../views/ErroredView.vue"
 
 const [HMonacoEditor, monacoLoading] = useAsyncComponentWithLoading(
   () => import("@/editors/HMonacoEditor.vue")
@@ -37,6 +38,7 @@ const dispatcher = useDispatcher()
 const detailStore = useDetailStore()
 const mainStore = useMainStore()
 const dialog = useDialog()
+const settingsStore = useSettingsStore()
 //#endregion
 
 //#region handlers
@@ -196,6 +198,7 @@ const vars = useThemeVars()
               <HMonacoEditor
                 class="h-full w-full"
                 id="default"
+                :font-family="settingsStore.settings.ui.editor.fontFamily"
                 :value="content"
                 @update:value="updateContent"
               />

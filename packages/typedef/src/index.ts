@@ -14,3 +14,11 @@ export interface IErrorResponse {
 export function createErrorResponse(code: ERROR_CODE, message: string) {
   return { code, message }
 }
+
+export interface ISettings {
+  ui: {
+    editor: {
+      fontFamily: string
+    }
+  }
+}

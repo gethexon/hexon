@@ -8,6 +8,7 @@ import { IArticleIdentifier } from "~/interface"
 import { isPost } from "~/utils/article"
 import { useDetailStore } from "./detail"
 import { useMainStore } from "./main"
+import { useSettingsStore } from "./settings"
 
 const HCreateArticleModal = defineAsyncComponent(
   () => import("@/modals/HCreateArticleModal.vue")
@@ -21,7 +22,9 @@ export const useDispatcher = defineStore("dispatcher", {
   actions: {
     init() {
       const mainStore = useMainStore()
+      const settingsStore = useSettingsStore()
       mainStore.loadUsername()
+      settingsStore.load()
     },
     //#region user
     async getUsername() {

@@ -73,6 +73,7 @@ const slots = useSlots()
         :type="props.attrType"
         @input="onInput"
         ref="inputRef"
+        spellcheck="false"
       />
       <div class="suffix ml-1" v-if="showSuffix" @click="onClear">
         <HIcon :name="HIconName.Cancel" />

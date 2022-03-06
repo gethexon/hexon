@@ -10,6 +10,7 @@ import { useMonacoTheme } from "./theme"
 const props = defineProps<{
   value: string
   id: string
+  fontFamily?: string
 }>()
 const emits = defineEmits<{
   (e: "update:value", value: string): void
@@ -20,8 +21,11 @@ function resetModal() {
   const modal = monaco.editor.createModel(props.value, "markdown")
   instance.setModel(modal)
 }
-onMounted(() => {
-  instance = monaco.editor.create(dom.value!, editorOptions)
+function createInstance() {
+  instance = monaco.editor.create(dom.value!, {
+    ...editorOptions,
+    fontFamily: props.fontFamily ?? editorOptions.fontFamily,
+  })
   const mdExtension = new MonacoMarkdownExtension()
   mdExtension.activate(instance)
 
@@ -33,11 +37,17 @@ onMounted(() => {
     const newValue = instance.getValue()
     emits("update:value", newValue)
   })
-
-  setTimeout(() => {
-    instance.trigger("editor", "editor.action.formatDocument", null)
-  }, 3000)
+}
+onMounted(() => {
+  createInstance()
 })
+watch(
+  () => props.fontFamily,
+  () => {
+    instance.dispose()
+    createInstance()
+  }
+)
 onBeforeUnmount(() => {
   instance.dispose()
 })
