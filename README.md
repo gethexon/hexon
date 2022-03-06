@@ -46,7 +46,7 @@ Same as prerelease verion, but use branch `develop`.
 
 ## Want to know more?
 
-Raise a [issue](https://github.com/gethexon/hexon/issues) or join us via QQ group 590355610.
+Start a [discussion](https://github.com/gethexon/hexon/discussions) or join us via QQ group 590355610.
 
 ## Looking for old version?
 
