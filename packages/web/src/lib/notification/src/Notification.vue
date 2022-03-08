@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { computed } from "vue-demi"
-import { useNotification } from "."
+import { computed } from "vue"
+import { useNotification } from "./lib"
 import FadeTransitionGroup from "./FadeTransitionGroup.vue"
-const props = withDefaults(
+withDefaults(
   defineProps<{
     zIndex?: number
     type?: "absolute" | "fixed"
@@ -14,19 +14,23 @@ const list = computed(() =>
   notification.notificationList.value.filter((item) => item.show)
 )
 const position = computed(() => notification.position.value)
-const close = (id: string) => notification.close(id)
+const teleport = document.createElement("div")
+teleport.id = "notifications"
+document.body.appendChild(teleport)
 </script>
 <template>
-  <FadeTransitionGroup
-    tag="div"
-    class="h-notification flex"
-    :class="[type, position]"
-    :style="{ zIndex: zIndex }"
-  >
-    <div v-for="item in list" :key="item.id">
-      <slot :item="item"></slot>
-    </div>
-  </FadeTransitionGroup>
+  <Teleport to="#notifications">
+    <FadeTransitionGroup
+      tag="div"
+      class="h-notification flex"
+      :class="[type, position]"
+      :style="{ zIndex: zIndex }"
+    >
+      <div v-for="item in list" :key="item.id">
+        <slot :item="item"></slot>
+      </div>
+    </FadeTransitionGroup>
+  </Teleport>
 </template>
 <style lang="less" scoped>
 .top-left {

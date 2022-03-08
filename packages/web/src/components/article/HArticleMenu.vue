@@ -13,7 +13,6 @@ import { HButton } from "@/ui/button"
 import { useDispatcher } from "~/store/dispatcher"
 import { Dayjs } from "dayjs"
 import { DATE_FORMAT } from "~/constants"
-import { isDraft, isPage } from "~/utils/article"
 
 const dispatcher = useDispatcher()
 const props = defineProps<{

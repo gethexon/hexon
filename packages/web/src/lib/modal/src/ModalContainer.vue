@@ -2,9 +2,12 @@
 import FadeScaleTransitionGroupVue from "@/transitions/FadeScaleTransitionGroup.vue"
 import { useModal } from "."
 const { modals } = useModal()
+const teleport = document.createElement("div")
+teleport.id = "modal-container"
+document.body.appendChild(teleport)
 </script>
 <template>
-  <Teleport to="body">
+  <Teleport to="#modal-container">
     <FadeScaleTransitionGroupVue>
       <Component
         v-for="item in modals"

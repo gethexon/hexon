@@ -33,22 +33,22 @@ onMounted(() => {
 
 <template>
   <div style="width: 100vw; height: 100vh" @contextmenu.prevent>
-    <HLoading :loading="loading.loading.value" overlay>
-      <ClassProvider>
+    <ClassProvider>
+      <HLoading :loading="loading.loading.value" overlay>
         <router-view></router-view>
-        <Notifications>
-          <template #default="slotsProps">
-            <HNotificationItem :data="slotsProps.item" />
-          </template>
-        </Notifications>
+        <ModalContainer />
         <DialogContainer>
           <template #default="slotProps">
             <HDialog :data="slotProps.data" />
           </template>
         </DialogContainer>
-        <ModalContainer />
-      </ClassProvider>
-    </HLoading>
+        <Notifications>
+          <template #default="slotProps">
+            <HNotificationItem :data="slotProps.item" />
+          </template>
+        </Notifications>
+      </HLoading>
+    </ClassProvider>
   </div>
 </template>
 
