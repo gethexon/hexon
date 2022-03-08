@@ -25,16 +25,12 @@ async function version() {
 }
 
 async function wrap() {
-  const currentBranch = await getCurrentBranch()
-  if (currentBranch !== DEV_BRANCH) await checkout(DEV_BRANCH)
+  await checkout(DEV_BRANCH)
   await build()
   await addThenCommit("chore: build")
-  const { commit } = (await listLog())[0]
-  if (currentBranch !== PRERELEASE_BRANCH) await checkout(PRERELEASE_BRANCH)
-  await reset(commit, true)
   await version()
-  await checkout(DEV_BRANCH)
-  await reset(PRERELEASE_BRANCH, true)
+  await checkout(PRERELEASE_BRANCH)
+  await reset(DEV_BRANCH, true)
   console.log(chalk.green("Prerelease done. Remember to push to remote."))
 }
 

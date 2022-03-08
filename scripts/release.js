@@ -22,16 +22,12 @@ async function version() {
 }
 
 async function wrap() {
-  const currentBranch = await getCurrentBranch()
-  if (currentBranch !== DEV_BRANCH) await checkout(DEV_BRANCH)
+  await checkout(DEV_BRANCH)
   await build()
   await addThenCommit("chore: build")
-  const { commit } = (await listLog())[0]
-  if (currentBranch !== MASTER_BRANCH) await checkout(MASTER_BRANCH)
-  await reset(commit, true)
   await version()
-  await checkout(DEV_BRANCH)
-  await reset(MASTER_BRANCH, true)
+  await checkout(MASTER_BRANCH)
+  await reset(DEV_BRANCH, true)
   console.log(chalk.green("Release done. Remember to push to remote."))
 }
 
