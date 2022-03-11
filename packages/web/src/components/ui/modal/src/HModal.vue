@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, watch } from "vue"
-import ClassProvider from "~/ClassProvider.vue"
 import FadeScaleTransitionGroup from "@/transitions/FadeScaleTransitionGroup.vue"
 import HBaseModal from "./HBaseModal.vue"
 const props = withDefaults(
@@ -33,9 +32,7 @@ const hide = () => {
         :persistent="props.persistent"
         @on-close="hide"
       >
-        <ClassProvider>
-          <slot :hide="hide" />
-        </ClassProvider>
+        <slot :hide="hide" />
       </HBaseModal>
     </FadeScaleTransitionGroup>
   </Teleport>

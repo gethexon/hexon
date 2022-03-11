@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "vue"
-import ClassProvider from "~/ClassProvider.vue"
+import { computed } from "vue"
 import { Notifications } from "~/lib/notification"
 import HNotificationItem from "~/components/others/HNotificationItem.vue"
 import { DialogContainer } from "~/lib/dialog"
@@ -16,19 +15,17 @@ const styles = computed(() => {
 
 <template>
   <div :style="styles">
-    <ClassProvider>
-      <router-view></router-view>
-      <Notifications>
-        <template #default="slotsProps">
-          <HNotificationItem :data="slotsProps.item" />
-        </template>
-      </Notifications>
-      <DialogContainer>
-        <template #default="slotProps">
-          <HDialog :data="slotProps.data" />
-        </template>
-      </DialogContainer>
-    </ClassProvider>
+    <router-view></router-view>
+    <DialogContainer>
+      <template #default="slotProps">
+        <HDialog :data="slotProps.data" />
+      </template>
+    </DialogContainer>
+    <Notifications>
+      <template #default="slotsProps">
+        <HNotificationItem :data="slotsProps.item" />
+      </template>
+    </Notifications>
   </div>
 </template>
 

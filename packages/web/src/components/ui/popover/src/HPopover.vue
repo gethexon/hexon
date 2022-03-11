@@ -1,22 +1,20 @@
 <script setup lang="ts">
+import type { TriggerType } from "./interface"
+import { onClickOutside, useElementHover, useEventListener } from "@vueuse/core"
 import {
+  Ref,
   computed,
   getCurrentInstance,
   onMounted,
-  Ref,
   ref,
   toRefs,
   watch,
 } from "vue"
-import { onClickOutside, useElementHover, useEventListener } from "@vueuse/core"
-import { useRect } from "./utils"
-import { Position } from "./interface"
-import { getPlacement } from "./get-placement"
+import { useThemeVars } from "@/ui/theme"
 import FadeTransition from "@/transitions/FadeTransition.vue"
-import ClassProvider from "~/ClassProvider.vue"
-import { TriggerType } from ".."
-import { useTheme } from "@winwin/vue-global-theming"
-import { HTheme } from "~/themes"
+import { getPlacement } from "./get-placement"
+import { Position } from "./interface"
+import { useRect } from "./utils"
 
 //#region props and emits
 const props = withDefaults(
@@ -95,6 +93,7 @@ onClickOutside(contentElRef, () => {
 //#endregion
 
 //#region style
+const vars = useThemeVars()
 const style = computed(() => {
   // FIXME 如果元素位置发生了变化，且没有 resize 或 scroll 则 popover 位置不会更新
   const { x, y, margin } = getPlacement(
@@ -112,36 +111,27 @@ const style = computed(() => {
   }
 })
 //#endregion
-
-const theme = useTheme<HTheme>()!
 </script>
 
 <template>
   <teleport to="body">
-    <ClassProvider>
-      <FadeTransition :duration="duration">
-        <div
-          v-if="show"
-          class="popover"
-          ref="contentElRef"
-          :style="style.outer"
-        >
-          <div :style="style.inner">
-            <slot v-if="raw"></slot>
-            <div
-              class="p-1 rounded-md"
-              :style="{
-                backgroundColor: theme.color.common.d5,
-                color: theme.color.white,
-              }"
-              v-else
-            >
-              <slot></slot>
-            </div>
+    <FadeTransition :duration="duration">
+      <div v-if="show" class="popover" ref="contentElRef" :style="style.outer">
+        <div :style="style.inner">
+          <slot v-if="raw"></slot>
+          <div
+            class="p-1 rounded-md text-sm"
+            :style="{
+              backgroundColor: vars.backgroundColorPop,
+              color: vars.textColorPop,
+            }"
+            v-else
+          >
+            <slot></slot>
           </div>
         </div>
-      </FadeTransition>
-    </ClassProvider>
+      </div>
+    </FadeTransition>
   </teleport>
 </template>
 <style scoped>

@@ -37,12 +37,6 @@ const { classNames } = createClassNames("h-button", (add, m) => {
 const theme = useTheme("Button")
 
 const styleVars = computed(() => {
-  if (props.inverted && props.disabled) {
-    return {
-      color: theme.value[createKey("colorActiveInverted", props.type)],
-      backgroundColor: theme.value.colorWhite,
-    }
-  }
   if (props.inverted) {
     return {
       color: theme.value[createKey("color", props.type)],
@@ -53,13 +47,6 @@ const styleVars = computed(() => {
       colorActive: theme.value[createKey("color", props.type)],
       backgroundColorActive:
         theme.value[createKey("backgroundColorActiveInverted", props.type)],
-    }
-  }
-  if (props.disabled) {
-    return {
-      color: theme.value.colorWhite,
-      backgroundColor:
-        theme.value[createKey("backgroundColorActive", props.type)],
     }
   }
   return {
@@ -101,6 +88,7 @@ const styleVars = computed(() => {
   }
   &-disabled {
     cursor: not-allowed;
+    opacity: 0.5;
     &:hover {
       color: v-bind("styleVars.color");
       background-color: v-bind("styleVars.backgroundColor");

@@ -3,10 +3,11 @@ import { nextTick, onMounted, ref } from "vue"
 import { RouterView } from "vue-router"
 import { useDispatcher } from "~/store/dispatcher"
 import SplitView from "~/lib/splitview"
-import HomeNavView from "~/views/HomeNavView.vue"
-import HSearchBar from "@/HSearchBar.vue"
-import ArticleListView from "~/views/ArticleListView.vue"
 import preLoadAll from "~/utils/preload"
+import ArticleListView from "~/views/ArticleListView.vue"
+import HomeNavView from "~/views/HomeNavView.vue"
+import { useThemeVars } from "@/ui/theme"
+import HSearchBar from "@/HSearchBar.vue"
 
 //#region hooks
 const dispatcher = useDispatcher()
@@ -38,6 +39,8 @@ onMounted(() => {
     preLoadAll()
   })
 })
+const vars = useThemeVars()
+vars.value.backgroundColorTertiary
 </script>
 <template>
   <SplitView
@@ -51,7 +54,7 @@ onMounted(() => {
       <HomeNavView />
     </template>
     <template v-slot:second>
-      <div class="bg-base-2 flex flex-col w-full h-full">
+      <div class="home-list-view flex flex-col w-full h-full">
         <HSearchBar v-model="search" class="flex-shrink-0" @on-add="onAdd" />
         <div class="overflow-auto flex-1">
           <ArticleListView />
@@ -59,9 +62,17 @@ onMounted(() => {
       </div>
     </template>
     <template v-slot:third>
-      <div class="bg-base-1 w-full h-full">
+      <div class="home-viewer-view w-full h-full">
         <RouterView />
       </div>
     </template>
   </SplitView>
 </template>
+<style lang="less" scoped>
+.home-list-view {
+  background-color: v-bind("vars.backgroundColorSecondary");
+}
+.home-viewer-view {
+  background-color: v-bind("vars.backgroundColorPrimary");
+}
+</style>

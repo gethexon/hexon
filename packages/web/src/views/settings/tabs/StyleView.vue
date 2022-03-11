@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { computed, ref, watch } from "vue"
+import { ref, watch } from "vue"
 import { useSettingsStore } from "~/store/settings"
 import notification from "~/plugins/notification"
 import { HButton } from "@/ui/button/"
 import { HInput } from "@/ui/input"
+import { useThemeVars } from "@/ui/theme"
 
 const settingsStore = useSettingsStore()
 const fontFamily = ref(settingsStore.settings.ui.editor.fontFamily)
@@ -22,10 +23,13 @@ const save = () => {
     })
   })
 }
+const vars = useThemeVars()
 </script>
 <template>
   <div class="">
-    <div class="mb-2 text-sub">编辑器字体</div>
+    <div class="mb-2" :style="{ color: vars.textColorSecondary }">
+      编辑器字体
+    </div>
     <HInput
       class="w-full font-mono"
       type="secondary"

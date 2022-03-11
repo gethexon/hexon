@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { useTheme } from "@winwin/vue-global-theming"
 import { computed, ref, toRefs, watch } from "vue"
-import { HTheme } from "~/themes"
 import { createClassNames } from "~/utils/create-classnames"
+import { useThemeVars } from "@/ui/theme"
 const props = defineProps<{
   active: boolean
 }>()
@@ -24,10 +23,10 @@ watch(
   }
 )
 const { classNames } = createClassNames("h-toggle")
-const theme = useTheme<HTheme>()!
 const bgColor = computed(() =>
-  active.value ? theme.value.color.primary.n : theme.value.color.foreground.main
+  active.value ? vars.value.colorPrimary : vars.value.textColorSecondary
 )
+const vars = useThemeVars()
 </script>
 <template>
   <label
@@ -42,7 +41,7 @@ const bgColor = computed(() =>
       :class="{ 'justify-end': internalValue, 'justify-start': !internalValue }"
       style="padding: 0 3px"
       :style="{
-        backgroundColor: theme.color.background.base3,
+        backgroundColor: vars.backgroundColorPrimary,
       }"
     >
       <div

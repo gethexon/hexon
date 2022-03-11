@@ -69,7 +69,6 @@ const vars = useThemeVars()
       :placeholder="placeholder"
       :style="{
         backgroundColor: vars.backgroundColorPrimary,
-        color: vars.textColorPrimary,
       }"
       v-model="internal"
     ></textarea>

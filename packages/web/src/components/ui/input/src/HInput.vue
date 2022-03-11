@@ -38,7 +38,6 @@ const showSuffix = computed(() => props.clearable && props.modelValue)
 const { classNames } = createClassNames("h-input")
 const styleVars = computed(() => {
   const o = {
-    color: theme.value.textColorPrimary,
     placeholder: theme.value.textColorSecondary,
     outline: theme.value.colorTransparent,
   }
@@ -98,7 +97,6 @@ const slots = useSlots()
 <style scoped lang="less">
 @import "~/styles/mixins.less";
 .h-input {
-  color: v-bind("styleVars.color");
   background-color: v-bind("styleVars.backgroundColor");
   .prefix,
   .suffix {

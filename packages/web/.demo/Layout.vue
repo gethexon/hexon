@@ -1,10 +1,16 @@
 <script setup lang="ts">
 import { computed } from "vue"
 import { RouterView, useRoute, useRouter } from "vue-router"
-import HNavItem from "~/components/ui/nav-list/src/HNavItem.vue"
-import { HIconName } from "@/ui/icon/src/interface"
-import HNavTitle from "~/components/ui/nav-list/src/HNavTitle.vue"
+import { HNavItem } from "~/components/ui/nav-list"
+import { HNavTitle } from "~/components/ui/nav-list"
 import { getNameFromPath, modules } from "./utils"
+import { HIcon, HIconName } from "~/components/ui/icon"
+import {
+  darkTheme,
+  lightTheme,
+  useThemeController,
+  useThemeVars,
+} from "~/components/ui/theme"
 
 const links = Object.entries(modules).map(([path]) => ({
   to: `/${encodeURIComponent(path)}`,
@@ -16,12 +22,34 @@ const go = (path: string) => {
   router.push(path)
 }
 const name = computed(() => route.meta.name)
+const vars = useThemeVars()
+const controller = useThemeController()!
+const setTheme = (dark: boolean) => {
+  if (dark) controller.setTheme(darkTheme)
+  else controller.setTheme(lightTheme)
+}
 </script>
 <template>
   <div class="h-full flex">
     <div class="min-h-0 h-full overflow-auto pr-8">
       <div class="py-0 pl-4 pr-2">
-        <HNavTitle>Hexon UI Demo</HNavTitle>
+        <HNavTitle>
+          Hexon UI Demo
+          <span>
+            <HIcon
+              :name="HIconName.QuietHours"
+              v-if="vars.isDark"
+              clickable
+              @click="setTheme(false)"
+            />
+            <HIcon
+              :name="HIconName.Brightness"
+              v-else
+              clickable
+              @click="setTheme(true)"
+            />
+          </span>
+        </HNavTitle>
         <HNavItem
           @click="go(link.to)"
           :icon="HIconName.Folder"

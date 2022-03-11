@@ -3,7 +3,7 @@ import { NavListItem } from "./interface"
 import HNavTitle from "./HNavTitle.vue"
 import HNavItem from "./HNavItem.vue"
 
-const props = defineProps<{
+defineProps<{
   model: NavListItem[]
 }>()
 const emits = defineEmits<{

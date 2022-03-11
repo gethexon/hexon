@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { ref } from "vue"
-import { useTheme } from "@winwin/vue-global-theming"
 import logo from "~/assets/logo-invert.svg"
-import { HTheme } from "~/themes"
 import { HInput } from "@/ui/input"
 import { HIcon } from "@/ui/icon"
 import { HIconName } from "@/ui/icon"
 import { HButton } from "@/ui/button"
 import { randomString } from "~/utils"
 import { IFormData } from "../types"
+import { useThemeVars } from "../ui/theme"
 const formData = ref<IFormData>({
   username: "",
   password: "",
@@ -27,7 +26,7 @@ const validate = (): boolean => {
 const onSubmit = () => {
   if (validate()) emits("on-submit", formData.value)
 }
-const theme = useTheme<HTheme>()!
+const vars = useThemeVars()
 </script>
 <template>
   <form
@@ -37,7 +36,7 @@ const theme = useTheme<HTheme>()!
     <div class="flex mb-6">
       <div
         class="text-3xl font-light flex-1"
-        :style="{ color: theme.color.white }"
+        :style="{ color: vars.textColorWhite }"
       >
         欢迎使用 Hexon
       </div>

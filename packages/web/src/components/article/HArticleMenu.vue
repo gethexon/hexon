@@ -112,10 +112,7 @@ const dateToString = (date: Dayjs | null) => {
           </HButton>
         </div>
         <HDivider class="mt-1 mb-2" />
-        <div
-          class="title mt-2 mb-4 px-1"
-          :style="{ color: vars.textColorPrimary }"
-        >
+        <div class="title mt-2 mb-4 px-1">
           <HIcon
             class="mr-2"
             :name="HIconName.Page"

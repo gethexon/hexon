@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { HInputRef } from "@/ui/input"
-import { computed, nextTick, onMounted, ref, watch } from "vue"
+import { computed, onMounted, ref, watch } from "vue"
+import { HButton } from "@/ui/button"
 import { HCheckbox } from "@/ui/checkbox"
 import { HInput } from "@/ui/input"
-import { HButton } from "@/ui/button"
 import { HToggle } from "@/ui/toggle"
 
 const props = withDefaults(
@@ -76,9 +76,7 @@ onMounted(() => {
 </script>
 <template>
   <div class="h-create-article-form w-96 select-none">
-    <h2 class="mt-2 mb-8 text-xl font-bold text-main text-center">
-      新建{{ text }}
-    </h2>
+    <h2 class="mt-2 mb-8 text-xl font-bold text-center">新建{{ text }}</h2>
     <form @submit.prevent="onCreate">
       <div
         class="grid gap-4 grid-rows-1"
@@ -92,12 +90,7 @@ onMounted(() => {
           标题
         </div>
         <div style="grid-column: controls">
-          <HInput
-            v-model="title"
-            type="secondary"
-            :error="''"
-            ref="titleInputRef"
-          />
+          <HInput v-model="title" :error="''" ref="titleInputRef" />
         </div>
       </div>
       <template v-if="!advanced">
@@ -154,7 +147,7 @@ onMounted(() => {
             layout
           </div>
           <div style="grid-column: controls">
-            <HInput v-model="layout" type="secondary" :error="''" />
+            <HInput v-model="layout" :error="''" />
           </div>
         </div>
         <div
@@ -169,7 +162,7 @@ onMounted(() => {
             slug
           </div>
           <div style="grid-column: controls">
-            <HInput v-model="slug" type="secondary" :error="''" />
+            <HInput v-model="slug" :error="''" />
           </div>
         </div>
         <div
@@ -184,7 +177,7 @@ onMounted(() => {
             path
           </div>
           <div style="grid-column: controls">
-            <HInput v-model="path" type="secondary" :error="''" />
+            <HInput v-model="path" :error="''" />
           </div>
         </div>
         <div

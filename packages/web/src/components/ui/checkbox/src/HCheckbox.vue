@@ -39,9 +39,9 @@ const theme = useTheme("unknown")
     <input type="checkbox" class="absolute w-0 h-0" v-model="internalValue" />
     <HVerticalCenter class="mr-2">
       <div
-        class="h-5 w-5 inline-block rounded flex items-center justify-center pb-0.5"
+        class="h-5 w-5 rounded flex items-center justify-center pb-0.5"
         :style="{
-          backgroundColor: theme.backgroundColorTertiary,
+          backgroundColor: theme.backgroundColorPrimary,
         }"
       >
         <div

@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { useTheme } from "@winwin/vue-global-theming"
 import { computed } from "vue-demi"
-import { HTheme } from "~/themes"
+import { useThemeVars } from "~/components/ui/theme"
 
-const theme = useTheme<HTheme>()!
+const vars = useThemeVars()
 const styleVars = computed(() => ({
-  color: theme.value.color.foreground.main,
+  color: vars.value.textColorPrimary,
 }))
 </script>
 <template>

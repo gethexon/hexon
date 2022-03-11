@@ -18,7 +18,6 @@ import { HEditorToolbarActionPayload } from "@/types"
 import { HButton } from "@/ui/button"
 import { HIcon, HIconName } from "@/ui/icon"
 import { HLoading } from "@/ui/loading"
-import { useThemeVars } from "@/ui/theme"
 import HEditorToolbar from "@/HEditorToolbar.vue"
 import HToolbar from "@/HToolbar.vue"
 import HCategoriesEditor from "@/editors/HCategoriesEditor.vue"
@@ -26,6 +25,7 @@ import HHeaderEditor from "@/editors/HHeaderEditor.vue"
 import HLayoutEditor from "@/editors/HLayoutEditor.vue"
 import HTagEditor from "@/editors/HTagEditor.vue"
 import HNavTitle from "@/ui/nav-list/src/HNavTitle.vue"
+import { useThemeVars } from "~/components/ui/theme"
 
 const [HMonacoEditor, monacoLoading] = useAsyncComponentWithLoading(
   () => import("@/editors/HMonacoEditor.vue")
@@ -39,6 +39,7 @@ const detailStore = useDetailStore()
 const mainStore = useMainStore()
 const dialog = useDialog()
 const settingsStore = useSettingsStore()
+const vars = useThemeVars()
 //#endregion
 
 //#region handlers
@@ -171,10 +172,6 @@ const updateFm = (fm: { [key: string]: unknown }) => {
   updateFromObj({ fm })
 }
 //#endregion
-
-//#region style
-const vars = useThemeVars()
-//#endregion
 </script>
 <template>
   <HLoading :loading="detailStore.loading">
@@ -185,7 +182,10 @@ const vars = useThemeVars()
       </div>
     </ErroredView>
     <div class="flex h-full w-full overflow-hidden" v-else>
-      <div class="main bg-base-1 flex-1 min-w-0 flex flex-col h-full">
+      <div
+        class="main flex-1 min-w-0 flex flex-col h-full"
+        :style="{ backgroundColor: vars.backgroundColorPrimary }"
+      >
         <HEditorToolbar
           :saving="detailStore.saving"
           :changed="changed"
@@ -206,11 +206,13 @@ const vars = useThemeVars()
           </div>
         </div>
       </div>
-      <div class="side bg-base-3 w-72 h-full flex flex-col">
+      <div
+        class="side w-72 h-full flex flex-col"
+        :style="{ backgroundColor: vars.backgroundColorTertiary }"
+      >
         <HToolbar>
           <div
             class="px-5 text-xl"
-            :style="{ color: vars.textColorPrimary }"
             style="letter-spacing: 0.05rem; font-weight: 600"
           >
             Frontmatters

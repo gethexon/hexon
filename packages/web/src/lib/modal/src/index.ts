@@ -1,14 +1,6 @@
-import {
-  App,
-  Component,
-  inject,
-  InjectionKey,
-  markRaw,
-  provide,
-  Ref,
-  ref,
-} from "vue"
+import { App, Component, inject, InjectionKey, markRaw, Ref, ref } from "vue"
 import { v4 as uuid } from "uuid"
+export { default as ModalContainer } from "./ModalContainer.vue"
 const key: InjectionKey<ModalController> = Symbol("modal-controller")
 
 interface IModalItem {

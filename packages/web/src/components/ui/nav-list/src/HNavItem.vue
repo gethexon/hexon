@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { toRefs, computed } from "vue"
-import { useTheme } from "@/ui/theme"
+import { computed, toRefs } from "vue"
 import { HIcon, HIconName } from "@/ui/icon"
+import { useTheme } from "@/ui/theme"
 
 const props = withDefaults(
   defineProps<{
@@ -27,14 +27,13 @@ const indents = computed(() => {
 })
 const theme = useTheme("NavList")
 const styleVars = computed(() => {
-  const color = theme.value.textColorPrimary
   const bgColor = selected.value
     ? theme.value.backgroundColorSelected
     : theme.value.backgroundColorTransparent
   const subColor = theme.value.textColorSecondary
   const hoverBgColor = theme.value.backgroundColorHover
   const activeBgColor = theme.value.backgroundColorActive
-  return { color, bgColor, subColor, hoverBgColor, activeBgColor }
+  return { bgColor, subColor, hoverBgColor, activeBgColor }
 })
 </script>
 <template>
@@ -54,7 +53,6 @@ const styleVars = computed(() => {
 <style scoped lang="less">
 @import "~/styles/mixins.less";
 .h-nav-item {
-  color: v-bind("styleVars.color");
   background-color: v-bind("styleVars.bgColor");
   transition: all 0.2s ease;
 

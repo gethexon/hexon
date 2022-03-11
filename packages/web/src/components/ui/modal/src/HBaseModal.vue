@@ -26,7 +26,7 @@ const clickOutside = () => {
 <template>
   <div
     style="
-      background-color: #00000088;
+      background-color: #000000aa;
       position: fixed;
       top: 0;
       left: 0;

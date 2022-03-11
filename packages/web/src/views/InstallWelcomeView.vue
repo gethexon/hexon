@@ -1,19 +1,18 @@
 <script setup lang="ts">
-import { useTheme } from "@winwin/vue-global-theming"
 import { computed, onMounted, ref } from "vue"
 import { AsyncQueue } from "~/lib/async-queue"
-import { HTheme } from "~/themes"
 import { HIcon } from "@/ui/icon"
 import { HIconName } from "@/ui/icon/src/interface"
+import { useThemeVars } from "~/components/ui/theme"
 const props = defineProps<{
   idx: number
   setCurrent(next: number): void
 }>()
-const theme = useTheme<HTheme>()!
+const vars = useThemeVars()
 const styleVars = computed(() => {
   return {
-    bgColor: theme.value.color.primary.n,
-    color: theme.value.color.white,
+    bgColor: vars.value.colorPrimary,
+    color: vars.value.textColorWhite,
   }
 })
 const animate = new AsyncQueue()

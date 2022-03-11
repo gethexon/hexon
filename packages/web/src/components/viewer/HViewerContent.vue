@@ -1,19 +1,18 @@
 <script setup lang="ts">
-import { useTheme } from "@winwin/vue-global-theming"
 import { computed, toRefs } from "vue"
-import { HTheme } from "~/themes"
+import { useThemeVars } from "@/ui/theme"
 
 const props = defineProps<{
   content?: string
 }>()
-const theme = useTheme<HTheme>()!
 // TODO content 中的超链接改成 target="_blank"
 const { content } = toRefs(props)
+const vars = useThemeVars()
 const styleVars = computed(() => ({
-  primary: theme.value.color.primary.n,
-  mainColor: theme.value.color.foreground.main,
-  base3BgColor: theme.value.color.background.base3,
-  base2BgColor: theme.value.color.background.base2,
+  primary: vars.value.colorPrimary,
+  mainColor: vars.value.textColorPrimary,
+  base3BgColor: vars.value.backgroundColorTertiary,
+  base2BgColor: vars.value.backgroundColorSecondary,
 }))
 </script>
 <template>

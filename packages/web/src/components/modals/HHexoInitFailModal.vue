@@ -21,10 +21,7 @@ const vars = useThemeVars()
       backgroundColor: vars.backgroundColorPrimary,
     }"
   >
-    <div
-      :style="{ color: vars.textColorPrimary }"
-      class="text-md mb-4 font-bold flex items-center"
-    >
+    <div class="text-md mb-4 font-bold flex items-center">
       <HIcon :name="HIconName.Error" class="mr-2" />
       <span>你的 hexo 报错了</span>
     </div>

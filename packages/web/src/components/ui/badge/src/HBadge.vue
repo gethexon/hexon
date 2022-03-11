@@ -15,7 +15,7 @@ const props = withDefaults(
 const vars = useThemeVars()
 const { color, bgColor } = toRefs(props)
 const styles = computed(() => ({
-  color: color?.value ?? vars.value.textColorBack,
+  color: color?.value ?? vars.value.textColorWhite,
   backgroundColor: bgColor?.value ?? vars.value.colorPrimary,
 }))
 const { classNames } = createClassNames("h-badge", (add, m) => {

@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import type { IFormData } from "@/types"
-import { useTheme } from "@winwin/vue-global-theming"
 import { ref } from "vue"
 import { install } from "~/api"
 import { useDialog } from "~/lib/dialog"
-import { HTheme } from "~/themes"
 import { forceReloadWindow } from "~/utils"
 import { HIcon } from "@/ui/icon"
 import { HIconName } from "@/ui/icon/src/interface"
 import HInstallForm from "@/forms/HInstallForm.vue"
+import { useThemeVars } from "~/components/ui/theme"
 const props = defineProps<{
   idx: number
   setCurrent(next: number): void
@@ -54,7 +53,7 @@ const onSubmit = async (data: IFormData) => {
     })
   }
 }
-const theme = useTheme<HTheme>()!
+const vars = useThemeVars()
 const onPrev = () => {
   props.setCurrent(props.idx - 1)
 }
@@ -65,7 +64,7 @@ const onPrev = () => {
     <div
       class="absolute top-0 left-0 bottom-0 right-0 transition-opacity z-10 flex items-center justify-center text-4xl"
       :style="{
-        backgroundColor: theme.color.primary.n,
+        backgroundColor: vars.colorPrimary,
         opacity: installing ? 0.9 : 0,
         ...(!installing && {
           pointerEvents: 'none',

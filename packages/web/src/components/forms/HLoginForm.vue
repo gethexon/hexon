@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import { useTheme } from "@winwin/vue-global-theming"
 import { ref } from "vue"
-import { HTheme } from "~/themes"
 import logo from "~/assets/logo.svg"
 import { HButton } from "@/ui/button"
 import { HIconName } from "@/ui/icon"
 import { HIcon } from "@/ui/icon"
 import { HInput } from "@/ui/input"
 import HImage from "@/HImage.vue"
+import { useThemeVars } from "@/ui/theme"
 
 const emits = defineEmits<{
   (e: "on-submit", payload: { username: string; password: string }): void
@@ -25,17 +24,12 @@ const onForget = () => {
 const onHelp = () => {
   emits("on-help")
 }
-const theme = useTheme<HTheme>()!
+const vars = useThemeVars()
 </script>
 <template>
   <form @submit.prevent="onSubmit" class="flex flex-col items-center w-60">
     <HImage :src="logo" alt="" size="100px" />
-    <div
-      class="text-lg mt-4 select-none"
-      :style="{ color: theme.color.foreground.main }"
-    >
-      登录到 Hexon
-    </div>
+    <div class="text-lg mt-4 select-none">登录到 Hexon</div>
     <HInput placeholder="用户名" v-model="username" class="mt-4" clearable>
       <template v-slot:prefix>
         <HIcon :name="HIconName.Contact" />

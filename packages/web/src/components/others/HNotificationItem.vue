@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { computed } from "vue"
-import { useTheme } from "@winwin/vue-global-theming"
 import { INotificationItem, INotificationType } from "~/lib/notification"
 import { HIcon, HIconName } from "@/ui/icon"
 import { HButton, HButtonType } from "@/ui/button"
-import { HTheme } from "~/themes"
+import { useThemeVars } from "@/ui/theme"
 
 const props = defineProps<{
   data: INotificationItem
@@ -13,32 +12,31 @@ const transformType = (type: INotificationType): HButtonType => {
   if (type === "info") return "primary"
   return type
 }
-
+const vars = useThemeVars()
 const type = computed(() => transformType(props.data.type))
 const closeable = computed(
   () => props.data.permanent && !props.data.actions.length
 )
-const theme = useTheme<HTheme>()!
 const styleVars = computed(() => {
-  let main = theme.value.color.primary.n
+  let main = vars.value.colorPrimary
   switch (type.value) {
     case "success":
-      main = theme.value.color.success.n
+      main = vars.value.colorSuccess
       break
     case "warning":
-      main = theme.value.color.warning.n
+      main = vars.value.colorWarning
       break
     case "error":
-      main = theme.value.color.error.n
+      main = vars.value.colorError
       break
     default:
-      main = theme.value.color.primary.n
+      main = vars.value.colorPrimary
       break
   }
   return {
     bgColor: main,
-    color: theme.value.color.white,
-    subColor: theme.value.color.white,
+    color: vars.value.textColorWhite,
+    subColor: vars.value.textColorWhite,
   }
 })
 const onClose = () => props.data.close()

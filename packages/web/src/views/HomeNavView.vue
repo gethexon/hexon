@@ -1,36 +1,35 @@
 <script setup lang="ts">
-import { useTheme } from "@winwin/vue-global-theming"
 import { ComputedRef, computed } from "vue"
 import { Category } from "~/api"
 import { TreeNode } from "~/lib/list2tree"
+import { useActionsStore } from "~/store/actions"
 import { useArticleListStore } from "~/store/articleList"
 import { useDispatcher } from "~/store/dispatcher"
 import { useMainStore } from "~/store/main"
-import { HTheme } from "~/themes"
 import { HIconName } from "@/ui/icon"
 import { HNavList, NavListItem } from "@/ui/nav-list"
+import { useThemeVars } from "@/ui/theme"
 import HNavSetting from "@/HNavSetting.vue"
 import HTitle from "@/HTitle.vue"
-import { useActionsStore } from "~/store/actions"
 
 //#region hooks
 const mainStore = useMainStore()
 const articleListStore = useArticleListStore()
 const actionsStore = useActionsStore()
 const dispatcher = useDispatcher()
+const vars = useThemeVars()
 //#endregion
 
-const t = useTheme<HTheme>()!
 const colors = computed(() => ({
-  deploy: t.value.color.primary.n,
-  generate: t.value.color.primary.n,
-  clean: t.value.color.error.n,
-  gitsave: t.value.color.primary.n,
-  gitsync: t.value.color.error.n,
-  all: t.value.color.all,
-  post: t.value.color.post,
-  page: t.value.color.page,
-  draft: t.value.color.draft,
+  deploy: vars.value.colorPrimary,
+  generate: vars.value.colorPrimary,
+  clean: vars.value.colorError,
+  gitsave: vars.value.colorPrimary,
+  gitsync: vars.value.colorError,
+  all: vars.value.colorAll,
+  post: vars.value.colorPost,
+  page: vars.value.colorPage,
+  draft: vars.value.colorDraft,
 }))
 
 //#region action
@@ -134,7 +133,7 @@ const categoryItems: ComputedRef<NavListItem[]> = computed(() => {
       type: "item",
       text: c.name,
       icon: HIconName.Folder,
-      color: t?.value.color.folder,
+      color: vars.value.colorFolder,
       indent: i,
       sub: c.posts?.length,
       key: "c-" + c.slug,
@@ -170,7 +169,7 @@ const onSelect = (key: string) => {
 const onSettings = () => dispatcher.showSettingsModal()
 </script>
 <template>
-  <div class="bg-base-3 w-full h-full flex flex-col">
+  <div class="home-nav-view w-full h-full flex flex-col">
     <HTitle />
     <div style="flex: 1 0 0; overflow-y: auto">
       <div class="pb-2 pl-4 pr-2">
@@ -180,3 +179,8 @@ const onSettings = () => dispatcher.showSettingsModal()
     <HNavSetting @click="onSettings" :name="mainStore.username" />
   </div>
 </template>
+<style lang="less" scoped>
+.home-nav-view {
+  background-color: v-bind("vars.backgroundColorTertiary");
+}
+</style>
