@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { nextTick, onMounted, ref } from "vue"
-import { RouterView, useRoute } from "vue-router"
-import { useArticleListStore } from "~/store/articleList"
+import { RouterView } from "vue-router"
 import { useDispatcher } from "~/store/dispatcher"
-import { useMainStore } from "~/store/main"
 import SplitView from "~/lib/splitview"
 import HomeNavView from "~/views/HomeNavView.vue"
 import HSearchBar from "@/HSearchBar.vue"
@@ -16,6 +14,7 @@ const dispatcher = useDispatcher()
 
 onMounted(() => {
   dispatcher.loadBlogData()
+  dispatcher.getInfo()
 })
 const sep11 = ref(200)
 const sep22 = ref(320)

@@ -2,6 +2,7 @@ import { ERROR_CODE } from "@hexon/typedef"
 import { defineStore } from "pinia"
 import { defineAsyncComponent } from "vue"
 import { ICreateOptions } from "~/api"
+import { getSettings } from "~/api/settings"
 import { IChangePasswordFormPayload } from "~/components/forms/interface"
 import { getErrorMessage } from "~/errors"
 import { IArticleIdentifier } from "~/interface"
@@ -22,11 +23,16 @@ export const useDispatcher = defineStore("dispatcher", {
   actions: {
     init() {
       const mainStore = useMainStore()
-      const settingsStore = useSettingsStore()
       mainStore.loadUsername()
-      settingsStore.load()
     },
     //#region user
+    async getInfo() {
+      return Promise.all([this.getUsername(), this.getSettings()])
+    },
+    async getSettings() {
+      const settingsStore = useSettingsStore()
+      await settingsStore.load()
+    },
     async getUsername() {
       const mainStore = useMainStore()
       const { username } = await this.account.info()
@@ -41,7 +47,7 @@ export const useDispatcher = defineStore("dispatcher", {
     }) {
       try {
         await this.account.signin(username, password)
-        this.getUsername()
+        this.getInfo()
         this.router.push("/home")
       } catch (e) {
         this.notification.notify({
