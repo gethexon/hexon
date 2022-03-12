@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.10.0](https://git.yujianghao.cn/winwin2011/hexon/compare/v0.9.1...v0.10.0) (2022-03-12)
+
+
+### Bug Fixes
+
+* infinite loop after login expires ([#11](https://git.yujianghao.cn/winwin2011/hexon/issues/11)) ([451a94c](https://git.yujianghao.cn/winwin2011/hexon/commits/451a94c4be3e80eeeefd841d084e6f47ea195a47)), closes [#10](https://git.yujianghao.cn/winwin2011/hexon/issues/10)
+* wrong teleport index ([#7](https://git.yujianghao.cn/winwin2011/hexon/issues/7)) ([b967483](https://git.yujianghao.cn/winwin2011/hexon/commits/b9674839128789d71b7d703170def6b3c8336514)), closes [#5](https://git.yujianghao.cn/winwin2011/hexon/issues/5)
+
+
+### Features
+
+* editor font family ([#4](https://git.yujianghao.cn/winwin2011/hexon/issues/4)) ([46c3d52](https://git.yujianghao.cn/winwin2011/hexon/commits/46c3d52c812716c07c7da5eeca8b60f5ecefea2c)), closes [#2](https://git.yujianghao.cn/winwin2011/hexon/issues/2)
+* template for frontmatters ([#14](https://git.yujianghao.cn/winwin2011/hexon/issues/14)) ([9032813](https://git.yujianghao.cn/winwin2011/hexon/commits/90328133a77d9988c9a1771bf5262e57c55bf607)), closes [#1](https://git.yujianghao.cn/winwin2011/hexon/issues/1)
+
+
+
+
+
 ## [0.9.1](https://bitbucket.org/winwin2011/hexon/compare/v0.9.0...v0.9.1) (2022-02-21)
 
 **Note:** Version bump only for package @hexon/web

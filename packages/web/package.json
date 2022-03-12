@@ -1,6 +1,6 @@
 {
   "name": "@hexon/web",
-  "version": "0.9.1",
+  "version": "0.10.0",
   "private": true,
   "author": "winwin_2011 <yjh2011@live.com>",
   "license": "GPL-3.0",
@@ -13,7 +13,7 @@
     "doc": "vite --config .demo/vite.config.ts"
   },
   "dependencies": {
-    "@hexon/typedef": "^0.9.1",
+    "@hexon/typedef": "^0.10.0",
     "@vueuse/core": "^6.8.0",
     "@winwin/vue-global-theming": "^0.1.5",
     "@winwin/vue-simple-account": "^0.0.5",
