@@ -15,7 +15,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [0.9.1](https://github.com/gethexon/hexon/compare/v0.9.0...v0.9.1) (2022-02-21)
+# [0.9.1](https://github.com/gethexon/hexon/compare/v0.9.0...v0.9.1) (2022-02-21)
 
 **Note:** Version bump only for package @hexon/typedef
 
