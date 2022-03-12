@@ -1,10 +1,15 @@
 <script setup lang="ts">
-import { nextTick, ref, watch } from "vue"
-import HTextarea from "../ui/textarea/src/HTextarea.vue"
+import { defineAsyncComponent, nextTick, ref, watch } from "vue"
+import { HTextarea } from "@/ui/textarea"
+import { HButton } from "@/ui/button"
 import yaml from "js-yaml"
-import { useThemeVars } from "../ui/theme"
-import { debouncedWatch, throttledWatch } from "@vueuse/core"
+import { useThemeVars } from "@/ui/theme"
+import { debouncedWatch } from "@vueuse/core"
 import { cloneDeep } from "lodash-es"
+import { useModal } from "~/lib/modal"
+import FrontMatterTemplateModal from "~/components/editors/FrontMatterTemplate.vue"
+import HModal from "../ui/modal/src/HModal.vue"
+import FrontMatterTemplateEdit from "./FrontMatterTemplateEdit.vue"
 const props = defineProps<{
   fm: {
     [key: string]: unknown
@@ -18,6 +23,7 @@ const emtis = defineEmits<{
     }
   ): void
 }>()
+const modal = useModal()
 const internal = ref("")
 watch(
   () => cloneDeep(props.fm),
@@ -65,6 +71,14 @@ debouncedWatch(
 )
 const error = ref("")
 const vars = useThemeVars()
+const showTemplateModal = ref(false)
+const onTemplate = () => {
+  showTemplateModal.value = true
+}
+const onSetTemplate = (v: string) => {
+  showTemplateModal.value = false
+  internal.value = v
+}
 </script>
 
 <template>
@@ -75,6 +89,12 @@ const vars = useThemeVars()
       :error="!!error"
       placeholder="key: value"
     />
-    <div class="text-sm" :style="{ color: vars.colorError }">{{ error }}</div>
+    <div class="text-sm mb-2" :style="{ color: vars.colorError }">
+      {{ error }}
+    </div>
+    <HButton @click="onTemplate">使用模板</HButton>
+    <HModal v-model:show="showTemplateModal">
+      <FrontMatterTemplateModal @set-template="(v) => onSetTemplate(v)" />
+    </HModal>
   </div>
 </template>

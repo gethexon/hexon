@@ -10,6 +10,7 @@ import hexo from "./hexo"
 import git from "./git"
 import account from "./account"
 import settingsRouter from "../routers/settings-router"
+import templateRouter from "../routers/template"
 
 export default compose([
   account,
@@ -19,4 +20,5 @@ export default compose([
   mount("/hexo", hexo),
   mount("/git", git),
   settingsRouter.routes(),
+  templateRouter.routes(),
 ])

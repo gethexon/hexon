@@ -19,7 +19,7 @@ const onClose = () => props.data.close()
 const vars = useThemeVars()
 </script>
 <template>
-  <HBaseModal @on-close="onClose">
+  <HBaseModal @on-close="onClose" style="z-index: 1">
     <div
       class="rounded-md w-96"
       :style="{ backgroundColor: vars.backgroundColorTertiary }"

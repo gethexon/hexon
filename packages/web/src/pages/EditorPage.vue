@@ -11,21 +11,22 @@ import { useMainStore } from "~/store/main"
 import { useSettingsStore } from "~/store/settings"
 import { noop, useAsyncComponentWithLoading } from "~/utils"
 import { parseHfm, updateStringByObj } from "~/utils/hfm"
-import HDateEditor from "~/components/editors/HDateEditor.vue"
-import HFrontmatterEditor from "~/components/editors/HFrontmatterEditor.vue"
 import ErroredView from "~/views/ErroredView.vue"
 import { HEditorToolbarActionPayload } from "@/types"
 import { HButton } from "@/ui/button"
 import { HIcon, HIconName } from "@/ui/icon"
 import { HLoading } from "@/ui/loading"
+import { useThemeVars } from "@/ui/theme"
 import HEditorToolbar from "@/HEditorToolbar.vue"
+import HTitle from "@/HTitle.vue"
 import HToolbar from "@/HToolbar.vue"
 import HCategoriesEditor from "@/editors/HCategoriesEditor.vue"
+import HDateEditor from "@/editors/HDateEditor.vue"
+import HFrontmatterEditor from "@/editors/HFrontmatterEditor.vue"
 import HHeaderEditor from "@/editors/HHeaderEditor.vue"
 import HLayoutEditor from "@/editors/HLayoutEditor.vue"
 import HTagEditor from "@/editors/HTagEditor.vue"
 import HNavTitle from "@/ui/nav-list/src/HNavTitle.vue"
-import { useThemeVars } from "~/components/ui/theme"
 
 const [HMonacoEditor, monacoLoading] = useAsyncComponentWithLoading(
   () => import("@/editors/HMonacoEditor.vue")
@@ -210,14 +211,9 @@ const updateFm = (fm: { [key: string]: unknown }) => {
         class="side w-72 h-full flex flex-col"
         :style="{ backgroundColor: vars.backgroundColorTertiary }"
       >
-        <HToolbar>
-          <div
-            class="px-5 text-xl"
-            style="letter-spacing: 0.05rem; font-weight: 600"
-          >
-            Frontmatters
-          </div>
-        </HToolbar>
+        <HTitle>
+          <div class="px-5">Frontmatters</div>
+        </HTitle>
         <div class="flex-1 h-0 overflow-auto pt-2 pb-4">
           <HNavTitle>
             <HIcon :name="HIconName.Globe" class="mr-1" />

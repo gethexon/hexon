@@ -41,7 +41,7 @@ onMounted(() => {
           <HDialog :data="slotProps.data" />
         </template>
       </DialogContainer>
-      <Notifications>
+      <Notifications :z-index="1">
         <template #default="slotProps">
           <HNotificationItem :data="slotProps.item" />
         </template>

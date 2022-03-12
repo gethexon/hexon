@@ -4,6 +4,7 @@ export enum ERROR_CODE {
   E_UNKNOWN,
   E_NOT_FOUND,
   E_INVALID_CREATE_OPTION_PATH,
+  E_BAD_REQUEST,
 }
 
 export interface IErrorResponse {
@@ -21,4 +22,11 @@ export interface ISettings {
       fontFamily: string
     }
   }
+}
+export interface IFrontmatterTemplateItem {
+  data: string
+}
+
+export interface IFrontmatterTemplate {
+  items: IFrontmatterTemplateItem[]
 }

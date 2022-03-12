@@ -4,6 +4,7 @@ import { ref } from "vue"
 const props = withDefaults(
   defineProps<{
     persistent?: boolean
+    zIndex?: number
   }>(),
   { persistent: false }
 )
@@ -36,6 +37,7 @@ const clickOutside = () => {
       align-items: center;
       justify-content: center;
     "
+    :style="{ zIndex: zIndex }"
     @click="clickOutside"
   >
     <div ref="contentRef" @click.stop>

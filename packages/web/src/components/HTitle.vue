@@ -6,13 +6,15 @@ const vars = useThemeVars()
 <template>
   <HToolbar>
     <span
-      class="text-xl pl-8"
+      class="text-xl"
       :style="{
         fontWeight: 600,
         letterSpacing: '0.05rem',
       }"
     >
-      Hexon
+      <slot>
+        <span class="pl-8">Hexon</span>
+      </slot>
     </span>
   </HToolbar>
 </template>

@@ -29,7 +29,7 @@ export async function errorHandler(ctx: Context, next: Next) {
       err instanceof PassworCheckError ||
       err instanceof BasicAuthError
     ) {
-      ctx.body = err.name
+      ctx.body = { message: err.name }
       ctx.status = 401
     } else throw err
   }

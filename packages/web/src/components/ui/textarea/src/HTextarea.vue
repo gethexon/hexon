@@ -71,6 +71,7 @@ const vars = useThemeVars()
         backgroundColor: vars.backgroundColorPrimary,
       }"
       v-model="internal"
+      spellcheck="false"
     ></textarea>
   </div>
 </template>
