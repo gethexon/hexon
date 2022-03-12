@@ -534,8 +534,8 @@ InstallService = InstallService_1 = __decorate([
         LogService])
 ], InstallService);
 
-const router$4 = new Router__default["default"]();
-router$4.get("/", (ctx) => {
+const router$6 = new Router__default["default"]();
+router$6.get("/", (ctx) => {
     const service = tsyringe.container.resolve(InstallService);
     if (service.isInstalled()) {
         ctx.status = 404;
@@ -545,7 +545,7 @@ router$4.get("/", (ctx) => {
         ctx.body = "Waiting For Install";
     }
 });
-router$4.post("/", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+router$6.post("/", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const service = tsyringe.container.resolve(InstallService);
     if (service.isInstalled()) {
         ctx.status = 404;
@@ -577,16 +577,16 @@ const checkInstall = () => (ctx, next) => __awaiter(void 0, void 0, void 0, func
 });
 
 const app$4 = new Koa__default["default"]();
-app$4.use(router$4.routes());
-app$4.use(router$4.allowedMethods());
+app$4.use(router$6.routes());
+app$4.use(router$6.allowedMethods());
 
-const router$3 = new Router__default["default"]();
-router$3.get("/", (ctx) => {
+const router$5 = new Router__default["default"]();
+router$5.get("/", (ctx) => {
     ctx.status = 200;
 });
 const app$3 = new Koa__default["default"]();
-app$3.use(router$3.routes());
-app$3.use(router$3.allowedMethods());
+app$3.use(router$5.routes());
+app$3.use(router$5.allowedMethods());
 
 class EmptyAuthticationHeaderError extends Error {
     constructor() {
@@ -802,7 +802,7 @@ function errorHandler(ctx, next) {
                 err instanceof NotBasicAuthError ||
                 err instanceof PassworCheckError ||
                 err instanceof BasicAuthError) {
-                ctx.body = err.name;
+                ctx.body = { message: err.name };
                 ctx.status = 401;
             }
             else
@@ -825,21 +825,21 @@ function createBasicAuthMiddleWare() {
     });
 }
 
-const router$2 = new Router__default["default"]();
-router$2.post("/signin", createBasicAuthMiddleWare(), (ctx, next) => __awaiter(void 0, void 0, void 0, function* () {
+const router$4 = new Router__default["default"]();
+router$4.post("/signin", createBasicAuthMiddleWare(), (ctx, next) => __awaiter(void 0, void 0, void 0, function* () {
     const auth = tsyringe.container.resolve(AuthService);
     ctx.body = auth.sign(ctx.state.user.username);
 }));
-router$2.post("/refresh", createTokenAuthMiddleWare("refresh"), (ctx) => {
+router$4.post("/refresh", createTokenAuthMiddleWare("refresh"), (ctx) => {
     const auth = tsyringe.container.resolve(AuthService);
     ctx.body = auth.sign(ctx.state.user.username);
 });
-router$2.post("/signout", createTokenAuthMiddleWare("refresh"), (ctx) => {
+router$4.post("/signout", createTokenAuthMiddleWare("refresh"), (ctx) => {
     const auth = tsyringe.container.resolve(AuthService);
     auth.signout(ctx);
     ctx.status = 200;
 });
-router$2.put("/info/username", createTokenAuthMiddleWare("access"), (ctx) => {
+router$4.put("/info/username", createTokenAuthMiddleWare("access"), (ctx) => {
     const username = ctx.request.body.username || "";
     if (username) {
         const account = tsyringe.container.resolve(AccountService);
@@ -850,7 +850,7 @@ router$2.put("/info/username", createTokenAuthMiddleWare("access"), (ctx) => {
         ctx.status = 400;
     }
 });
-router$2.put("/info/password", createTokenAuthMiddleWare("access"), (ctx) => {
+router$4.put("/info/password", createTokenAuthMiddleWare("access"), (ctx) => {
     const password = ctx.request.body.password || "";
     if (password) {
         const account = tsyringe.container.resolve(AccountService);
@@ -861,15 +861,15 @@ router$2.put("/info/password", createTokenAuthMiddleWare("access"), (ctx) => {
         ctx.status = 400;
     }
 });
-router$2.get("/info", createTokenAuthMiddleWare("access"), (ctx) => {
+router$4.get("/info", createTokenAuthMiddleWare("access"), (ctx) => {
     const account = tsyringe.container.resolve(AccountService);
     ctx.body = { username: account.getUsername() };
 });
-router$2.use((ctx, next) => __awaiter(void 0, void 0, void 0, function* () {
+router$4.use((ctx, next) => __awaiter(void 0, void 0, void 0, function* () {
     yield next();
 }));
 
-var account = compose__default["default"]([errorHandler, router$2.routes(), router$2.allowedMethods()]);
+var account = compose__default["default"]([errorHandler, router$4.routes(), router$4.allowedMethods()]);
 
 const toPost = (post) => post;
 const toPage = (post) => post;
@@ -1209,8 +1209,8 @@ HexoService = __decorate([
         HexoInstanceService])
 ], HexoService);
 
-const router$1 = new Router__default["default"]();
-router$1.use((ctx, next) => __awaiter(void 0, void 0, void 0, function* () {
+const router$3 = new Router__default["default"]();
+router$3.use((ctx, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield next();
     }
@@ -1247,11 +1247,11 @@ router$1.use((ctx, next) => __awaiter(void 0, void 0, void 0, function* () {
             throw err;
     }
 }));
-router$1.get("/posts", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+router$3.get("/posts", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const hexo = tsyringe.container.resolve(HexoService);
     ctx.body = yield hexo.listPost();
 }));
-router$1.get("/post/:source", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+router$3.get("/post/:source", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const hexo = tsyringe.container.resolve(HexoService);
     const { source } = ctx.params;
     if (!source) {
@@ -1260,11 +1260,11 @@ router$1.get("/post/:source", (ctx) => __awaiter(void 0, void 0, void 0, functio
     }
     ctx.body = yield hexo.getPostBySource(decodeURIComponent(source));
 }));
-router$1.get("/pages", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+router$3.get("/pages", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const hexo = tsyringe.container.resolve(HexoService);
     ctx.body = yield hexo.listPage();
 }));
-router$1.get("/page/:source", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+router$3.get("/page/:source", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const hexo = tsyringe.container.resolve(HexoService);
     const { source } = ctx.params;
     if (!source) {
@@ -1273,30 +1273,30 @@ router$1.get("/page/:source", (ctx) => __awaiter(void 0, void 0, void 0, functio
     }
     ctx.body = yield hexo.getPageBySource(decodeURIComponent(source));
 }));
-router$1.get("/tags", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+router$3.get("/tags", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const hexo = tsyringe.container.resolve(HexoService);
     ctx.body = yield hexo.listTag();
 }));
-router$1.get("/categories", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+router$3.get("/categories", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const hexo = tsyringe.container.resolve(HexoService);
     ctx.body = yield hexo.listCategory();
 }));
-router$1.post("/deploy", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+router$3.post("/deploy", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const hexo = tsyringe.container.resolve(HexoService);
     yield hexo.deploy(ctx.request.body);
     ctx.status = 200;
 }));
-router$1.post("/generate", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+router$3.post("/generate", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const hexo = tsyringe.container.resolve(HexoService);
     yield hexo.generate(ctx.request.body);
     ctx.status = 200;
 }));
-router$1.post("/clean", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+router$3.post("/clean", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const hexo = tsyringe.container.resolve(HexoService);
     yield hexo.clean();
     ctx.status = 200;
 }));
-router$1.post("/publish", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+router$3.post("/publish", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const hexo = tsyringe.container.resolve(HexoService);
     const { filename, layout } = ctx.request.body;
     if (!filename) {
@@ -1306,7 +1306,7 @@ router$1.post("/publish", (ctx) => __awaiter(void 0, void 0, void 0, function* (
     }
     ctx.body = yield hexo.publish(filename, layout);
 }));
-router$1.post("/create", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+router$3.post("/create", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const hexo = tsyringe.container.resolve(HexoService);
     const { title, layout, path, slug, replace } = ctx.request.body;
     if (!title) {
@@ -1316,7 +1316,7 @@ router$1.post("/create", (ctx) => __awaiter(void 0, void 0, void 0, function* ()
     }
     ctx.body = yield hexo.create(title, { layout, path, slug, replace });
 }));
-router$1.put("/post/:source", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+router$3.put("/post/:source", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const hexo = tsyringe.container.resolve(HexoService);
     const { source } = ctx.params;
     const { raw } = ctx.request.body;
@@ -1327,7 +1327,7 @@ router$1.put("/post/:source", (ctx) => __awaiter(void 0, void 0, void 0, functio
     }
     ctx.body = yield hexo.update(source, raw, "post");
 }));
-router$1.put("/page/:source", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+router$3.put("/page/:source", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const hexo = tsyringe.container.resolve(HexoService);
     const { source } = ctx.params;
     const { raw } = ctx.request.body;
@@ -1338,7 +1338,7 @@ router$1.put("/page/:source", (ctx) => __awaiter(void 0, void 0, void 0, functio
     }
     ctx.body = yield hexo.update(source, raw, "page");
 }));
-router$1.delete("/post/:source", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+router$3.delete("/post/:source", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const hexo = tsyringe.container.resolve(HexoService);
     const { source } = ctx.params;
     if (!source) {
@@ -1348,7 +1348,7 @@ router$1.delete("/post/:source", (ctx) => __awaiter(void 0, void 0, void 0, func
     }
     ctx.body = yield hexo.delete(source, "post");
 }));
-router$1.delete("/page/:source", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+router$3.delete("/page/:source", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const hexo = tsyringe.container.resolve(HexoService);
     const { source } = ctx.params;
     if (!source) {
@@ -1361,8 +1361,8 @@ router$1.delete("/page/:source", (ctx) => __awaiter(void 0, void 0, void 0, func
 
 const app$2 = new Koa__default["default"]();
 app$2.use(createTokenAuthMiddleWare());
-app$2.use(router$1.routes());
-app$2.use(router$1.allowedMethods());
+app$2.use(router$3.routes());
+app$2.use(router$3.allowedMethods());
 
 class ResetHardError extends Error {
     constructor() {
@@ -1491,8 +1491,8 @@ GitService = __decorate([
         LogService])
 ], GitService);
 
-const router = new Router__default["default"]();
-router.use((ctx, next) => __awaiter(void 0, void 0, void 0, function* () {
+const router$2 = new Router__default["default"]();
+router$2.use((ctx, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield next();
     }
@@ -1512,12 +1512,12 @@ router.use((ctx, next) => __awaiter(void 0, void 0, void 0, function* () {
         throw err;
     }
 }));
-router.post("/sync", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+router$2.post("/sync", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const git = tsyringe.container.resolve(GitService);
     yield git.sync();
     ctx.status = 200;
 }));
-router.post("/save", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+router$2.post("/save", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const git = tsyringe.container.resolve(GitService);
     yield git.save();
     ctx.status = 200;
@@ -1525,8 +1525,111 @@ router.post("/save", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
 
 const app$1 = new Koa__default["default"]();
 app$1.use(createTokenAuthMiddleWare());
-app$1.use(router.routes());
-app$1.use(router.allowedMethods());
+app$1.use(router$2.routes());
+app$1.use(router$2.allowedMethods());
+
+var SettingsService_1;
+let SettingsService = SettingsService_1 = class SettingsService {
+    constructor(_storageService) {
+        this._storageService = _storageService;
+    }
+    get() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return (this._storageService.get(SettingsService_1.KEY) || {});
+        });
+    }
+    set(settings) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this._storageService.set(SettingsService_1.KEY, settings);
+        });
+    }
+};
+SettingsService.KEY = "settings";
+SettingsService = SettingsService_1 = __decorate([
+    tsyringe.injectable(),
+    tsyringe.singleton(),
+    __param(0, tsyringe.inject(StorageService)),
+    __metadata("design:paramtypes", [StorageService])
+], SettingsService);
+
+const router$1 = new Router__default["default"]();
+router$1.use(createTokenAuthMiddleWare());
+router$1.get("/settings", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+    const settingsService = tsyringe.container.resolve(SettingsService);
+    ctx.body = yield settingsService.get();
+}));
+router$1.post("/settings", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const settingsService = tsyringe.container.resolve(SettingsService);
+    const settings = (_a = ctx.request.body) !== null && _a !== void 0 ? _a : {};
+    yield settingsService.set(settings);
+    ctx.status = 200;
+}));
+
+var ERROR_CODE;
+(function (ERROR_CODE) {
+    ERROR_CODE[ERROR_CODE["E_INIT"] = 0] = "E_INIT";
+    ERROR_CODE[ERROR_CODE["E_INITIATING"] = 1] = "E_INITIATING";
+    ERROR_CODE[ERROR_CODE["E_UNKNOWN"] = 2] = "E_UNKNOWN";
+    ERROR_CODE[ERROR_CODE["E_NOT_FOUND"] = 3] = "E_NOT_FOUND";
+    ERROR_CODE[ERROR_CODE["E_INVALID_CREATE_OPTION_PATH"] = 4] = "E_INVALID_CREATE_OPTION_PATH";
+    ERROR_CODE[ERROR_CODE["E_BAD_REQUEST"] = 5] = "E_BAD_REQUEST";
+})(ERROR_CODE || (ERROR_CODE = {}));
+function createErrorResponse(code, message) {
+    return { code, message };
+}
+
+var FrontmatterTemplateService_1;
+let FrontmatterTemplateService = FrontmatterTemplateService_1 = class FrontmatterTemplateService {
+    constructor(_storageService) {
+        this._storageService = _storageService;
+    }
+    _list() {
+        return (this._storageService.get(FrontmatterTemplateService_1.KEY) || []);
+    }
+    _set(items) {
+        this._storageService.set(FrontmatterTemplateService_1.KEY, items);
+    }
+    list() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this._list();
+        });
+    }
+    set(items) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this._set(items);
+        });
+    }
+};
+FrontmatterTemplateService.KEY = "frontmatter-template";
+FrontmatterTemplateService = FrontmatterTemplateService_1 = __decorate([
+    tsyringe.injectable(),
+    tsyringe.singleton(),
+    __param(0, tsyringe.inject(StorageService)),
+    __metadata("design:paramtypes", [StorageService])
+], FrontmatterTemplateService);
+
+const router = new Router__default["default"]();
+router.use(createTokenAuthMiddleWare());
+router.prefix("/template");
+router.get("/frontmatter", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+    const frontmatterTemplateService = tsyringe.container.resolve(FrontmatterTemplateService);
+    const items = yield frontmatterTemplateService.list();
+    ctx.body = { items };
+}));
+router.post("/frontmatter", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const items = (_a = ctx.request.body) === null || _a === void 0 ? void 0 : _a.items;
+    if (!items) {
+        ctx.status = 400;
+        ctx.body = createErrorResponse(ERROR_CODE.E_BAD_REQUEST, "`raw` is required");
+        return;
+    }
+    const frontmatterTemplateService = tsyringe.container.resolve(FrontmatterTemplateService);
+    yield frontmatterTemplateService.set(items);
+    ctx.status = 200;
+    ctx.body = { message: "OK" };
+}));
 
 /**
  * config app entrance
@@ -1538,6 +1641,8 @@ var apps = compose__default["default"]([
     mount__default["default"]("/health", app$3),
     mount__default["default"]("/hexo", app$2),
     mount__default["default"]("/git", app$1),
+    router$1.routes(),
+    router.routes(),
 ]);
 
 function statics(root) {
