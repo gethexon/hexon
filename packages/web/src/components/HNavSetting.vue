@@ -26,7 +26,9 @@ const vars = useThemeVars()
         background: vars.colorPrimary,
       }"
     >
-      <span v-if="!icon && first">{{ first }}</span>
+      <span v-if="!icon && first" :style="{ color: vars.textColorWhite }">
+        {{ first }}
+      </span>
       <HIcon v-else :name="HIconName.Contact" />
     </div>
     <div class="flex-1 flex flex-col ml-2">
