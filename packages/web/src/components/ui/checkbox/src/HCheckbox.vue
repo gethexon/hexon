@@ -41,7 +41,7 @@ const theme = useTheme("unknown")
       <div
         class="h-5 w-5 rounded flex items-center justify-center pb-0.5"
         :style="{
-          backgroundColor: theme.backgroundColorPrimary,
+          backgroundColor: theme.backgroundColorTertiary,
         }"
       >
         <div

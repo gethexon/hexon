@@ -90,7 +90,12 @@ onMounted(() => {
           标题
         </div>
         <div style="grid-column: controls">
-          <HInput v-model="title" :error="''" ref="titleInputRef" />
+          <HInput
+            v-model="title"
+            :error="''"
+            ref="titleInputRef"
+            type="secondary"
+          />
         </div>
       </div>
       <template v-if="!advanced">
@@ -147,7 +152,7 @@ onMounted(() => {
             layout
           </div>
           <div style="grid-column: controls">
-            <HInput v-model="layout" :error="''" />
+            <HInput v-model="layout" :error="''" type="secondary" />
           </div>
         </div>
         <div
@@ -162,7 +167,7 @@ onMounted(() => {
             slug
           </div>
           <div style="grid-column: controls">
-            <HInput v-model="slug" :error="''" />
+            <HInput v-model="slug" :error="''" type="secondary" />
           </div>
         </div>
         <div
@@ -177,7 +182,7 @@ onMounted(() => {
             path
           </div>
           <div style="grid-column: controls">
-            <HInput v-model="path" :error="''" />
+            <HInput v-model="path" :error="''" type="secondary" />
           </div>
         </div>
         <div

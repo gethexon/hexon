@@ -62,7 +62,7 @@ const tabs2 = computed(() => {
     </div>
     <div
       class="flex-1 overflow-hidden relative"
-      :style="{ backgroundColor: vars.backgroundColorPrimary }"
+      :style="{ backgroundColor: vars.backgroundColorSecondary }"
     >
       <TabSwitcher :current="activeNavIdx" :model="tabs2" />
     </div>

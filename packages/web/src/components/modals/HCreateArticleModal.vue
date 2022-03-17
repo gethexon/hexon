@@ -28,7 +28,7 @@ const theme = useTheme("unknown")
     <div
       class="py-2 px-4 rounded-md"
       :style="{
-        backgroundColor: theme.backgroundColorTertiary,
+        backgroundColor: theme.backgroundColorPrimary,
       }"
     >
       <HCreateArticleForm

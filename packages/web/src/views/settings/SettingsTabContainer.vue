@@ -5,7 +5,7 @@ defineProps<{
 </script>
 <template>
   <div class="p-8 w-full h-full overflow-auto">
-    <div class="py-4 text-2xl mb-4">
+    <div class="py-4 text-2xl mb-2">
       {{ title }}
     </div>
     <slot></slot>
