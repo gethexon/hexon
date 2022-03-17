@@ -4,6 +4,7 @@ import * as monaco from "monaco-editor"
 import "./workers"
 import { MonacoMarkdownExtension } from "monaco-markdown"
 import { PrettierFormatterExtension } from "./prettier-formatter-ext"
+import { MarkdownImageExtension } from "./markdown-image-ext"
 import { editorOptions } from "./monaco"
 import { useMonacoTheme } from "./theme"
 
@@ -31,6 +32,9 @@ function createInstance() {
 
   const fmExtension = new PrettierFormatterExtension()
   fmExtension.activate(instance)
+
+  const mdImgExtension = new MarkdownImageExtension()
+  mdImgExtension.activate()
 
   resetModal()
   instance.onDidChangeModelContent(() => {
