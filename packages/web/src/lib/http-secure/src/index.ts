@@ -26,6 +26,20 @@ function parseData(data: string): IData {
   return JSON.parse(str)
 }
 
+const isHttps = window.location.protocol === "https:"
+const isLocalhost = window.location.hostname === "localhost"
+if (!isHttps && !isLocalhost) {
+  console.warn(
+    "`https` not available. Hexon will enable encrypt. Please use https for your safety."
+  )
+}
+
+function parseConfig(config: AxiosRequestConfig = {}) {
+  config.httpSecureDisabled =
+    isHttps || isLocalhost || config.httpSecureDisabled
+  return config
+}
+
 export default function createHttpSecureAxios(
   config?: AxiosRequestConfig,
   option: IHttpSecureOption = {}
@@ -34,10 +48,11 @@ export default function createHttpSecureAxios(
 
   const rawMap = new Map<number, IRawData>()
 
+  const parsedConfig = parseConfig(config)
   const onDisable = option.onDisable ?? (() => {})
-  const instance = axios.create(config)
+  const instance = axios.create(parsedConfig)
 
-  instance.defaults.httpSecureDisabled = false
+  instance.defaults.httpSecureDisabled = parsedConfig.httpSecureDisabled
 
   const storage: {
     serverPublicKey?: string
@@ -139,7 +154,7 @@ export default function createHttpSecureAxios(
       return res
     },
     async (err) => {
-      if (err.response) {
+      if (err.response && !err.response.config.httpSecureDisabled) {
         const res = err.response as AxiosResponse
         //#region restore url
         if (res.config.httpSecureId !== void 0) {
