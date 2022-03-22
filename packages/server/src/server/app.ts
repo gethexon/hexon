@@ -1,14 +1,13 @@
-import path from "path"
-import Koa from "koa"
-import logger from "koa-logger"
-import bodyParser from "koa-bodyparser"
 import cors from "@koa/cors"
-
-import apps from "./apps/index"
-import statics from "./lib/statics"
-import httpSecure from "./lib/http-secure"
-import { DEV } from "./utils"
+import Koa from "koa"
+import bodyParser from "koa-bodyparser"
+import compress from "koa-compress"
+import logger from "koa-logger"
 import mount from "koa-mount"
+import { DEV } from "./utils"
+import apps from "./apps/index"
+import httpSecure from "./lib/http-secure"
+import { statics } from "./apps/statics"
 
 const app = new Koa()
 
@@ -33,8 +32,8 @@ app.use(
 app.use(httpSecure())
 app.use(logger())
 
-app.use(mount("/", statics(path.resolve(process.cwd(), "../web/dist"))))
-// app.use(account.middleware);
+app.use(compress())
+app.use(mount("/", statics))
 
 app.use(apps)
 
