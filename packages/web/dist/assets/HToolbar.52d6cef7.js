@@ -1,0 +1,1 @@
+import{c as o}from"./index.6c72b78c.js";import{o as r,b as s,e as t}from"./vendor.a0f19e68.js";const c={},n={class:"h-toolbar h-12 flex items-center select-none flex-shrink-0"};function a(e,l){return r(),s("div",n,[t(e.$slots,"default")])}var _=o(c,[["render",a]]);export{_ as H};

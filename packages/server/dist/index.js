@@ -10,20 +10,21 @@ var HexoCore = require('hexo');
 var chalk = require('chalk');
 var dayjs = require('dayjs');
 require('debug');
-var Koa = require('koa');
-var logger = require('koa-logger');
-var bodyParser = require('koa-bodyparser');
 var cors = require('@koa/cors');
-var compose = require('koa-compose');
+var Koa = require('koa');
+var bodyParser = require('koa-bodyparser');
+var compress = require('koa-compress');
+var logger = require('koa-logger');
 var mount = require('koa-mount');
+var compose = require('koa-compose');
 var Router = require('@koa/router');
 var CryptoJS = require('crypto-js');
 var jwt = require('jsonwebtoken');
 var typedef = require('@hexon/typedef');
 var execa = require('execa');
-var serve = require('koa-static');
 var crypto = require('crypto');
 var JSEncrypt = require('node-jsencrypt');
+var serve = require('koa-static');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -34,19 +35,20 @@ var JSONdb__default = /*#__PURE__*/_interopDefaultLegacy(JSONdb);
 var HexoCore__default = /*#__PURE__*/_interopDefaultLegacy(HexoCore);
 var chalk__default = /*#__PURE__*/_interopDefaultLegacy(chalk);
 var dayjs__default = /*#__PURE__*/_interopDefaultLegacy(dayjs);
-var Koa__default = /*#__PURE__*/_interopDefaultLegacy(Koa);
-var logger__default = /*#__PURE__*/_interopDefaultLegacy(logger);
-var bodyParser__default = /*#__PURE__*/_interopDefaultLegacy(bodyParser);
 var cors__default = /*#__PURE__*/_interopDefaultLegacy(cors);
-var compose__default = /*#__PURE__*/_interopDefaultLegacy(compose);
+var Koa__default = /*#__PURE__*/_interopDefaultLegacy(Koa);
+var bodyParser__default = /*#__PURE__*/_interopDefaultLegacy(bodyParser);
+var compress__default = /*#__PURE__*/_interopDefaultLegacy(compress);
+var logger__default = /*#__PURE__*/_interopDefaultLegacy(logger);
 var mount__default = /*#__PURE__*/_interopDefaultLegacy(mount);
+var compose__default = /*#__PURE__*/_interopDefaultLegacy(compose);
 var Router__default = /*#__PURE__*/_interopDefaultLegacy(Router);
 var CryptoJS__default = /*#__PURE__*/_interopDefaultLegacy(CryptoJS);
 var jwt__default = /*#__PURE__*/_interopDefaultLegacy(jwt);
 var execa__default = /*#__PURE__*/_interopDefaultLegacy(execa);
-var serve__default = /*#__PURE__*/_interopDefaultLegacy(serve);
 var crypto__default = /*#__PURE__*/_interopDefaultLegacy(crypto);
 var JSEncrypt__default = /*#__PURE__*/_interopDefaultLegacy(JSEncrypt);
+var serve__default = /*#__PURE__*/_interopDefaultLegacy(serve);
 
 /**
  * @deprecated
@@ -1645,20 +1647,6 @@ var apps = compose__default["default"]([
     router.routes(),
 ]);
 
-function statics(root) {
-    return (ctx, next) => __awaiter(this, void 0, void 0, function* () {
-        yield serve__default["default"](root, {
-            setHeaders: (res, fullpath, stats) => {
-                const isHtml = path__default["default"].extname(fullpath).toLowerCase() === ".html";
-                if (isHtml)
-                    ctx.set("Cache-Control", "no-cache");
-                else
-                    ctx.set("Cache-Control", "max-age=31536000");
-            },
-        })(ctx, next);
-    });
-}
-
 function secure(enable = () => true) {
     const { publicKey, privateKey } = crypto__default["default"].generateKeyPairSync("rsa", {
         // The standard secure default length for RSA keys is 2048 bits
@@ -1733,6 +1721,17 @@ function secure(enable = () => true) {
     });
 }
 
+const ROOT = path__default["default"].resolve(process.cwd(), "../web/dist");
+const statics = serve__default["default"](ROOT, {
+    setHeaders: (res, fullpath) => {
+        const isHtml = path__default["default"].extname(fullpath).toLowerCase() === ".html";
+        if (isHtml)
+            res.setHeader("Cache-Control", "no-cache");
+        else
+            res.setHeader("Cache-Control", "max-age=31536000");
+    },
+});
+
 const app = new Koa__default["default"]();
 app.use(cors__default["default"]());
 app.use((ctx, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -1754,8 +1753,8 @@ app.use(bodyParser__default["default"]({
 }));
 app.use(secure());
 app.use(logger__default["default"]());
-app.use(mount__default["default"]("/", statics(path__default["default"].resolve(process.cwd(), "../web/dist"))));
-// app.use(account.middleware);
+app.use(compress__default["default"]());
+app.use(mount__default["default"]("/", statics));
 app.use(apps);
 
 const storage = tsyringe.container.resolve(StorageService);
