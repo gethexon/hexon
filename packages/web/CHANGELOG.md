@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.11.0](https://git.yujianghao.cn/winwin2011/hexon/compare/v0.10.0...v0.11.0) (2022-03-25)
+
+
+### Bug Fixes
+
+* avatar text color ([#16](https://git.yujianghao.cn/winwin2011/hexon/issues/16)) ([caed466](https://git.yujianghao.cn/winwin2011/hexon/commits/caed466d494ab0b79b53cbc81cdc299408b710a7)), closes [#15](https://git.yujianghao.cn/winwin2011/hexon/issues/15)
+
+
+### Features
+
+* markdown hover show image ([#18](https://git.yujianghao.cn/winwin2011/hexon/issues/18)) ([b77782a](https://git.yujianghao.cn/winwin2011/hexon/commits/b77782a58f5efd6427731ddc675359e4596988a8)), closes [#17](https://git.yujianghao.cn/winwin2011/hexon/issues/17)
+
+
+
+
+
 # [0.10.0](https://git.yujianghao.cn/winwin2011/hexon/compare/v0.9.1...v0.10.0) (2022-03-12)
 
 
