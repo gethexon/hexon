@@ -2,7 +2,7 @@ import { ERROR_CODE } from "@hexon/typedef"
 import { defineStore } from "pinia"
 import { defineAsyncComponent } from "vue"
 import { ICreateOptions } from "~/api"
-import { getSettings } from "~/api/settings"
+import { changePassword, getInfo, login, changeUsername } from "~/api/auth"
 import { IChangePasswordFormPayload } from "~/components/forms/interface"
 import { getErrorMessage } from "~/errors"
 import { IArticleIdentifier } from "~/interface"
@@ -35,7 +35,7 @@ export const useDispatcher = defineStore("dispatcher", {
     },
     async getUsername() {
       const mainStore = useMainStore()
-      const { username } = await this.account.info()
+      const { username } = await getInfo()
       mainStore.setUsername(username)
     },
     async signIn({
@@ -46,7 +46,7 @@ export const useDispatcher = defineStore("dispatcher", {
       password: string
     }) {
       try {
-        await this.account.signin(username, password)
+        await login(username, password)
         this.getInfo()
         this.router.push("/home")
       } catch (e) {
@@ -57,24 +57,22 @@ export const useDispatcher = defineStore("dispatcher", {
       }
     },
     async changePassword(payload: IChangePasswordFormPayload) {
-      return this.account
-        .changePassword(payload.oldPassword, { password: payload.newPassword })
-        .then(
-          () => {
-            this.notification.notify({ type: "success", title: "密码修改成功" })
-          },
-          (err) => {
-            this.notification.notify({
-              title: "密码修改失败",
-              desc: (err as Error).message,
-              type: "error",
-              duration: 5000,
-            })
-          }
-        )
+      return changePassword(payload.oldPassword, payload.newPassword).then(
+        () => {
+          this.notification.notify({ type: "success", title: "密码修改成功" })
+        },
+        (err) => {
+          this.notification.notify({
+            title: "密码修改失败",
+            desc: (err as Error).message,
+            type: "error",
+            duration: 5000,
+          })
+        }
+      )
     },
     async changeUsername(username: string) {
-      return this.account.changeUsername(username).then(
+      return changeUsername(username).then(
         () => {
           this.notification.notify({ type: "success", title: "用户名修改成功" })
           return this.getUsername()

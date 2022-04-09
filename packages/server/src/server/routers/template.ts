@@ -1,12 +1,9 @@
 import Router from "@koa/router"
 import { container } from "tsyringe"
 import { createErrorResponse, ERROR_CODE } from "../../../../typedef/src"
-import { createTokenAuthMiddleWare } from "../apps/account"
 import { FrontmatterTemplateService } from "../services/frontmatter-template-service"
 
 const router = new Router()
-
-router.use(createTokenAuthMiddleWare())
 
 router.prefix("/template")
 

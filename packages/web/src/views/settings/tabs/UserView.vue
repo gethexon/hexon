@@ -1,19 +1,18 @@
 <script setup lang="ts">
 import HChangePasswordForm from "@/forms/HChangePasswordForm.vue"
-import { useAccount } from "~/lib/account"
 import { IChangePasswordFormPayload } from "~/components/forms/interface"
 import { useNotification } from "~/lib/notification"
 import HChangeUsernameForm from "~/components/forms/HChangeUsernameForm.vue"
 import HDivider from "~/components/ui/divider/src/HDivider.vue"
 import { useDispatcher } from "~/store/dispatcher"
-const account = useAccount()
+import { changeUsername } from "~/api/auth"
 const notification = useNotification()
 const dispatcher = useDispatcher()
 const onChangePassword = (payload: IChangePasswordFormPayload) => {
   dispatcher.changePassword(payload)
 }
 const onChangeUsername = (username: string) => {
-  account.changeUsername(username).then(
+  changeUsername(username).then(
     () => {
       notification.notify({ type: "success", title: "用户名修改成功" })
       dispatcher.getUsername()

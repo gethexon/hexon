@@ -8,12 +8,10 @@ import install, { checkInstall } from "./install"
 import health from "./health"
 import hexo from "./hexo"
 import git from "./git"
-import account from "./account"
 import settingsRouter from "../routers/settings-router"
 import templateRouter from "../routers/template"
 
 export default compose([
-  account,
   mount("/install", install),
   checkInstall(),
   mount("/health", health),

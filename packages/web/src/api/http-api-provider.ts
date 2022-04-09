@@ -1,5 +1,4 @@
 import { isPost } from "~/utils/article"
-import account from "~/plugins/account"
 import {
   ICreateOptions,
   ZBriefPage,
@@ -24,6 +23,7 @@ import {
   Tag,
 } from "./entities"
 import { IApiProvider, IDeployOptions, IGenerateOptions } from "./interface"
+import { request } from "./instance"
 
 const dashIdToId = ({ _id: id, ...rest }: any) => ({ id, ...rest })
 
@@ -39,25 +39,25 @@ export class HttpApiProvider implements IApiProvider {
   }
 
   async getPosts(): Promise<BriefPost[]> {
-    const res = await account.access.get<BriefPost[]>("/hexo/posts")
+    const res = await request.get<BriefPost[]>("/hexo/posts")
     const data: BriefPost[] = ZBriefPost.array().parse(res.data.map(dashIdToId))
     return data
   }
 
   async getPages(): Promise<BriefPage[]> {
-    const res = await account.access.get<BriefPage[]>("/hexo/pages")
+    const res = await request.get<BriefPage[]>("/hexo/pages")
     const data: BriefPage[] = ZBriefPage.array().parse(res.data.map(dashIdToId))
     return data
   }
 
   async getTags(): Promise<Tag[]> {
-    const res = await account.access.get("/hexo/tags")
+    const res = await request.get("/hexo/tags")
     const data: Tag[] = ZTag.array().parse(res.data.map(dashIdToId))
     return data
   }
 
   async getCategories(): Promise<Category[]> {
-    const res = await account.access.get<Category[]>("/hexo/categories")
+    const res = await request.get<Category[]>("/hexo/categories")
     const data: Category[] = ZCategory.array().parse(res.data.map(dashIdToId))
     return data
   }
@@ -69,9 +69,7 @@ export class HttpApiProvider implements IApiProvider {
     type: "post" | "page",
     source: string
   ): Promise<Post | Page> {
-    const res = await account.access.get(
-      `/hexo/${type}/${encodeURIComponent(source)}`
-    )
+    const res = await request.get(`/hexo/${type}/${encodeURIComponent(source)}`)
     if (type === "post") {
       const data: Post = ZPost.parse(dashIdToId(res.data))
       return data
@@ -101,7 +99,7 @@ export class HttpApiProvider implements IApiProvider {
     source: string,
     raw: string
   ): Promise<IPostWithAllData | IPageWithAllData> {
-    const res = await account.access.put(
+    const res = await request.put(
       `/hexo/${type}/${encodeURIComponent(source)}`,
       { raw }
     )
@@ -137,7 +135,7 @@ export class HttpApiProvider implements IApiProvider {
     type: "post" | "page",
     source: string
   ): Promise<IWithAllData> {
-    const res = await account.access.delete(
+    const res = await request.delete(
       `/hexo/${type}/${encodeURIComponent(source)}`
     )
     const { posts, pages, tags, categories } = res.data
@@ -154,7 +152,7 @@ export class HttpApiProvider implements IApiProvider {
     title: string,
     options: ICreateOptions = {}
   ): Promise<IPostWithAllData | IPageWithAllData> {
-    const res = await account.access.post("/hexo/create", { title, ...options })
+    const res = await request.post("/hexo/create", { title, ...options })
     const { article } = res.data
     if (isPost(article)) {
       const { article: post, posts, pages, tags, categories } = res.data
@@ -179,7 +177,7 @@ export class HttpApiProvider implements IApiProvider {
     }
   }
   async publishArticle(filename: string, layout?: string): Promise<Post> {
-    const res = await account.access.post("/hexo/publish", {
+    const res = await request.post("/hexo/publish", {
       filename,
       layout,
     })
@@ -187,18 +185,18 @@ export class HttpApiProvider implements IApiProvider {
     return ZPost.parse(dashIdToId(article))
   }
   async deploy(options: IDeployOptions = {}): Promise<void> {
-    return account.access.post("/hexo/deploy", options)
+    return request.post("/hexo/deploy", options)
   }
   async generate(options: IGenerateOptions = {}): Promise<void> {
-    return account.access.post("/hexo/generate", options)
+    return request.post("/hexo/generate", options)
   }
   async clean(): Promise<void> {
-    return account.access.post("/hexo/clean")
+    return request.post("/hexo/clean")
   }
   async gitSync(): Promise<void> {
-    return account.access.post("/git/sync")
+    return request.post("/git/sync")
   }
   async gitSave(): Promise<void> {
-    return account.access.post("/git/save")
+    return request.post("/git/save")
   }
 }

@@ -56,6 +56,7 @@
     "@hexon/typedef": "^0.11.0",
     "@koa/cors": "^3.1.0",
     "@koa/router": "^10.0.0",
+    "@winwin/koa-authentication": "^0.1.1",
     "@winwin/koa-simple-account": "^0.0.13",
     "basic-auth": "^2.0.1",
     "chalk": "^4.1.1",

@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router"
-import account from "./account"
 import { isInstalled } from "../api"
+import { isLogin } from "~/api/auth"
 
 const path = {
   home: "/",
@@ -49,19 +49,10 @@ router.beforeEach(async (to, from) => {
     installed = await isInstalled()
     checked = true
   }
-  if (!installed) {
-    if (to.path !== path.install) return path.install
-    else return true
-  } else {
-    if (to.path === path.install) return path.home
-  }
-  if (account.isSignedIn) {
-    if (to.path === path.signin) return path.home
-    else return true
-  } else {
-    if (to.path !== path.signin) return path.signin
-    else return true
-  }
+  if (!installed && to.path !== path.install) return path.install
+  if (installed && to.path === path.install) return path.home
+  if (isLogin() && to.path === path.signin) return path.home
+  if (!isLogin() && to.path !== path.signin) return path.signin
 })
 
 export default router

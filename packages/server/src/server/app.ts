@@ -8,6 +8,7 @@ import { DEV } from "./utils"
 import apps from "./apps/index"
 import httpSecure from "./lib/http-secure"
 import { statics } from "./apps/statics"
+import { auth } from "./middlewares/auth"
 
 const app = new Koa()
 
@@ -35,6 +36,8 @@ app.use(logger())
 app.use(compress())
 app.use(mount("/", statics))
 
+app.use(auth.router.routes())
+app.use(auth.auth)
 app.use(apps)
 
 export default app

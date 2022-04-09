@@ -4,7 +4,6 @@ import dialog from "./dialog"
 import notification from "./notification"
 import modal from "./modal"
 import loading from "./loading"
-import account from "./account"
 
 const pinia = createPinia()
 pinia.use(() => ({
@@ -13,7 +12,6 @@ pinia.use(() => ({
   router,
   notification,
   modal,
-  account,
 }))
 
 export default pinia

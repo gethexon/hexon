@@ -1,6 +1,5 @@
 import { createApp } from "vue"
 import App from "./App.vue"
-import account from "./plugins/account"
 import dialog from "./plugins/dialog"
 import loading from "./plugins/loading"
 import modal from "./plugins/modal"
@@ -20,5 +19,4 @@ createApp(App)
   .use(modal)
   .use(notification)
   .use(dialog)
-  .use(account)
   .mount("#app")

@@ -1,8 +1,8 @@
-import account from "~/plugins/account"
 import { HttpApiProvider } from "./http-api-provider"
+import { request } from "./instance"
 
 export const isInstalled = async () => {
-  return account.origin.get("/install").then(
+  return request.get("/install").then(
     () => false,
     () => true
   )
@@ -21,7 +21,7 @@ export const install = async ({
   expiresIn: number
   refreshableIn: number
 }) => {
-  return account.origin.post("/install", {
+  return request.post("/install", {
     username,
     password,
     secret,

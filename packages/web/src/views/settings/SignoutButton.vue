@@ -2,13 +2,10 @@
 import { HIcon, HIconName } from "@/ui/icon"
 import { useThemeVars } from "@/ui/theme"
 import HToolbar from "@/HToolbar.vue"
-import { useAccount } from "~/lib/account"
-import { forceReloadWindow } from "~/utils"
+import { logout } from "~/api/auth"
 const vars = useThemeVars()
-const account = useAccount()
 const signOut = async () => {
-  await account.signout()
-  forceReloadWindow()
+  return logout()
 }
 </script>
 <template>

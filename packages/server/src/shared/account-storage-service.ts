@@ -1,6 +1,7 @@
 import { SHA1 } from "crypto-js"
 import { inject, injectable, singleton } from "tsyringe"
 import { StorageService } from "~/shared/storage-service"
+import { Unauthorized } from "http-errors"
 
 interface IUserInfo {
   password: string
@@ -54,10 +55,10 @@ export class AccountService {
   verify(username: string, password: string) {
     const info = this._fromStorage()
     if (username !== info.username) {
-      throw new BasicAuthError()
+      throw new Unauthorized()
     }
     if (this._encrypt(password) !== info.password) {
-      throw new BasicAuthError()
+      throw new Unauthorized()
     }
   }
 }
