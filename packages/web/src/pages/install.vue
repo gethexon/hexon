@@ -33,3 +33,9 @@ const models: ISlideViewItem[] = [
   color: v-bind("styleVars.color");
 }
 </style>
+
+<route>
+{
+  name: "install",
+}
+</route>

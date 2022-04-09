@@ -2,6 +2,8 @@ import path from "path"
 import { defineConfig } from "vite"
 import vue from "@vitejs/plugin-vue"
 import visualizer from "rollup-plugin-visualizer"
+import Pages from "vite-plugin-pages"
+import Layouts from "vite-plugin-vue-layouts"
 import unused from "./find-unused-file-plugin"
 const projectRootDir = path.resolve(__dirname)
 
@@ -22,7 +24,7 @@ export default defineConfig({
       },
     },
   },
-  plugins: [vue(), unused()],
+  plugins: [vue(), unused(), Pages(), Layouts()],
   resolve: {
     alias: [
       {

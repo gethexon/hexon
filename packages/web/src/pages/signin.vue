@@ -25,3 +25,9 @@ const vars = useThemeVars()
     </div>
   </div>
 </template>
+
+<route>
+{
+  name: "signin",
+}
+</route>

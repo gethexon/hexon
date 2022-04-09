@@ -1,44 +1,16 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router"
 import { isInstalled } from "../api"
 import { isLogin } from "~/api/auth"
+import { setupLayouts } from "virtual:generated-layouts"
+import generatedRoutes from "virtual:generated-pages"
+
+const routes = setupLayouts(generatedRoutes)
 
 const path = {
   home: "/",
   signin: "/signin",
   install: "/install",
 }
-
-const routes: RouteRecordRaw[] = [
-  {
-    path: "/",
-    component: () => import("../pages/HomePage.vue"),
-    name: "home",
-    children: [
-      {
-        path: "view/:type/:source",
-        component: () => import("../views/ViewerView.vue"),
-        name: "view",
-      },
-    ],
-  },
-  {
-    path: "/edit/:type/:source",
-    component: () => import("../pages/EditorPage.vue"),
-    name: "edit",
-  },
-  {
-    path: path.signin,
-    component: () => import("../pages/SignInPage.vue"),
-  },
-  {
-    path: path.install,
-    component: () => import("../pages/InstallPage.vue"),
-  },
-  {
-    path: "/:pathMatch(.*)*",
-    redirect: "/",
-  },
-]
 
 const router = createRouter({ history: createWebHashHistory(), routes })
 
