@@ -4,6 +4,7 @@
   "workspaces": [
     "packages/*"
   ],
+  "license": "GPL-3.0",
   "devDependencies": {
     "chalk": "^4.1.0",
     "execa": "^5.0.0",
