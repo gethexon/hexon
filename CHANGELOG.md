@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.11.1](https://git.yujianghao.cn/winwin2011/hexon/compare/v0.11.0...v0.11.1) (2022-04-11)
+
+
+### Bug Fixes
+
+* settings unset ([5906264](https://git.yujianghao.cn/winwin2011/hexon/commits/590626443a5d64974f3c8ae7d244c2b9fb9933e2))
+
+
+
+
+
 # [0.11.0](https://git.yujianghao.cn/winwin2011/hexon/compare/v0.10.0...v0.11.0) (2022-03-25)
 
 
