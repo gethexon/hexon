@@ -19,12 +19,13 @@ var mount = require('koa-mount');
 var compose = require('koa-compose');
 var Router = require('@koa/router');
 var CryptoJS = require('crypto-js');
-var jwt = require('jsonwebtoken');
+var httpErrors = require('http-errors');
 var typedef = require('@hexon/typedef');
 var execa = require('execa');
 var crypto = require('crypto');
 var JSEncrypt = require('node-jsencrypt');
 var serve = require('koa-static');
+var koaAuthentication = require('@winwin/koa-authentication');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -44,7 +45,6 @@ var mount__default = /*#__PURE__*/_interopDefaultLegacy(mount);
 var compose__default = /*#__PURE__*/_interopDefaultLegacy(compose);
 var Router__default = /*#__PURE__*/_interopDefaultLegacy(Router);
 var CryptoJS__default = /*#__PURE__*/_interopDefaultLegacy(CryptoJS);
-var jwt__default = /*#__PURE__*/_interopDefaultLegacy(jwt);
 var execa__default = /*#__PURE__*/_interopDefaultLegacy(execa);
 var crypto__default = /*#__PURE__*/_interopDefaultLegacy(crypto);
 var JSEncrypt__default = /*#__PURE__*/_interopDefaultLegacy(JSEncrypt);
@@ -396,12 +396,6 @@ HexoInstanceService = HexoInstanceService_1 = __decorate([
 ], HexoInstanceService);
 
 var AccountService_1;
-class BasicAuthError extends Error {
-    constructor() {
-        super(...arguments);
-        this.name = "BasicAuthError";
-    }
-}
 let AccountService = AccountService_1 = class AccountService {
     constructor(_storage) {
         this._storage = _storage;
@@ -443,10 +437,10 @@ let AccountService = AccountService_1 = class AccountService {
     verify(username, password) {
         const info = this._fromStorage();
         if (username !== info.username) {
-            throw new BasicAuthError();
+            throw new httpErrors.Unauthorized();
         }
         if (this._encrypt(password) !== info.password) {
-            throw new BasicAuthError();
+            throw new httpErrors.Unauthorized();
         }
     }
 };
@@ -536,8 +530,8 @@ InstallService = InstallService_1 = __decorate([
         LogService])
 ], InstallService);
 
-const router$6 = new Router__default["default"]();
-router$6.get("/", (ctx) => {
+const router$5 = new Router__default["default"]();
+router$5.get("/", (ctx) => {
     const service = tsyringe.container.resolve(InstallService);
     if (service.isInstalled()) {
         ctx.status = 404;
@@ -547,7 +541,7 @@ router$6.get("/", (ctx) => {
         ctx.body = "Waiting For Install";
     }
 });
-router$6.post("/", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+router$5.post("/", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const service = tsyringe.container.resolve(InstallService);
     if (service.isInstalled()) {
         ctx.status = 404;
@@ -579,299 +573,16 @@ const checkInstall = () => (ctx, next) => __awaiter(void 0, void 0, void 0, func
 });
 
 const app$4 = new Koa__default["default"]();
-app$4.use(router$6.routes());
-app$4.use(router$6.allowedMethods());
+app$4.use(router$5.routes());
+app$4.use(router$5.allowedMethods());
 
-const router$5 = new Router__default["default"]();
-router$5.get("/", (ctx) => {
+const router$4 = new Router__default["default"]();
+router$4.get("/", (ctx) => {
     ctx.status = 200;
 });
 const app$3 = new Koa__default["default"]();
-app$3.use(router$5.routes());
-app$3.use(router$5.allowedMethods());
-
-class EmptyAuthticationHeaderError extends Error {
-    constructor() {
-        super(...arguments);
-        this.name = "EmptyAuthticationHeaderError";
-    }
-}
-class InvalidAuthticationHeaderError extends Error {
-    constructor() {
-        super(...arguments);
-        this.name = "InvalidAuthticationHeaderError";
-    }
-}
-class TokenBlockedError extends Error {
-    constructor() {
-        super(...arguments);
-        this.name = "TokenBlockedError";
-    }
-}
-class InvalidTokenError extends Error {
-    constructor() {
-        super(...arguments);
-        this.name = "InvalidTokenError";
-    }
-}
-class TokenTypeError extends Error {
-    constructor() {
-        super(...arguments);
-        this.name = "TokenTypeError";
-    }
-}
-class TokenDecodeError extends Error {
-    constructor() {
-        super(...arguments);
-        this.name = "TokenDecodeError";
-    }
-}
-class NotBasicAuthError extends Error {
-    constructor() {
-        super(...arguments);
-        this.name = "NotBasicAuthError";
-    }
-}
-class PassworCheckError extends Error {
-    constructor() {
-        super(...arguments);
-        this.name = "PassworCheckError";
-    }
-}
-
-var BlockService_1;
-let BlockService = BlockService_1 = class BlockService {
-    constructor(_storage, _logService) {
-        this._storage = _storage;
-        this._logService = _logService;
-        this._logService.setScope("block-service");
-    }
-    _toStorage(info) {
-        this._storage.set(BlockService_1.KEY, info);
-    }
-    _fromStorage() {
-        return this._storage.get(BlockService_1.KEY) || [];
-    }
-    isBlocked(token) {
-        this._logService.log("query token");
-        return this._fromStorage().includes(token);
-    }
-    block(tokens) {
-        const blocked = this._fromStorage();
-        blocked.push(...tokens);
-        this._toStorage(blocked);
-        this._logService.log("block tokens", tokens.length);
-    }
-    clear() {
-        this._toStorage([]);
-        // FIXME 按照过期时间清理
-        this._logService.log("clear block");
-    }
-};
-BlockService.KEY = "blocklist";
-BlockService = BlockService_1 = __decorate([
-    tsyringe.injectable(),
-    tsyringe.singleton(),
-    __param(0, tsyringe.inject(StorageService)),
-    __param(1, tsyringe.inject(LogService)),
-    __metadata("design:paramtypes", [StorageService,
-        LogService])
-], BlockService);
-
-let AuthService = class AuthService {
-    constructor(_auth, _account, _block, _logService) {
-        this._auth = _auth;
-        this._account = _account;
-        this._block = _block;
-        this._logService = _logService;
-        this._logService.setScope("auth-service");
-    }
-    _resolveBasicAuth(ctx) {
-        const user = ctx.request.body;
-        if (!user || !("username" in user) || !("password" in user)) {
-            throw new NotBasicAuthError();
-        }
-        else {
-            return user;
-        }
-    }
-    _resolveAuthorizationHeader(ctx) {
-        if (!ctx.header || !ctx.header.authorization) {
-            throw new EmptyAuthticationHeaderError();
-        }
-        const parts = ctx.header.authorization.split(" ");
-        if (parts.length === 2) {
-            const scheme = parts[0];
-            const credentials = parts[1];
-            if (/^Bearer$/i.test(scheme)) {
-                return credentials;
-            }
-        }
-        throw new InvalidAuthticationHeaderError();
-    }
-    _verifyJwtToken(token) {
-        try {
-            jwt__default["default"].verify(token, this._auth.getSecret());
-        }
-        catch (err) {
-            if (err instanceof Error &&
-                ["JsonWebTokenError", "TokenExpiredError"].includes(err.name)) {
-                throw new InvalidTokenError();
-            }
-            else
-                throw err;
-        }
-    }
-    _decodeToken(token) {
-        const user = jwt__default["default"].decode(token);
-        if (!(user &&
-            typeof user !== "string" &&
-            typeof user.username === "string" &&
-            typeof user.type === "string" &&
-            (user.type === "access" || user.type === "refresh"))) {
-            throw new TokenDecodeError();
-        }
-        return user;
-    }
-    _verifyTokenType(user, type) {
-        if (user.type !== type) {
-            throw new TokenTypeError();
-        }
-    }
-    verityToken(ctx, type) {
-        const token = this._resolveAuthorizationHeader(ctx);
-        if (this._block.isBlocked(token)) {
-            this._logService.log("blocked token attempt", token);
-            throw new TokenBlockedError();
-        }
-        this._verifyJwtToken(token);
-        const user = this._decodeToken(token);
-        this._verifyTokenType(user, type);
-        ctx.state.user = { username: user.username, type: user.type };
-        this._logService.log(`token verified`, user.username);
-    }
-    verifyBasic(ctx) {
-        const user = this._resolveBasicAuth(ctx);
-        this._account.verify(user.username, user.password);
-        ctx.state.user = { username: user.username };
-        this._logService.log(`basic verified`, user.username);
-    }
-    sign(username) {
-        const { secret, expiresIn, refreshableIn } = this._auth.getAuthInfo();
-        const accessToken = jwt__default["default"].sign({ username: username, type: "access" }, secret, { expiresIn: expiresIn });
-        const refreshToken = jwt__default["default"].sign({ username: username, type: "refresh" }, secret, { expiresIn: refreshableIn });
-        this._logService.log("token sign", username);
-        return { accessToken, refreshToken };
-    }
-    signout(ctx) {
-        const token = this._resolveAuthorizationHeader(ctx);
-        const toBlock = [];
-        if (token)
-            toBlock.push(token);
-        const access = ctx.request.body.access;
-        if (access)
-            toBlock.push(token);
-        this._block.block(toBlock);
-        this._logService.log(`sign out`, ctx.state.user.username);
-    }
-};
-AuthService.KEY = "authinfo";
-AuthService = __decorate([
-    tsyringe.injectable(),
-    tsyringe.singleton(),
-    __param(0, tsyringe.inject(AuthStorageService)),
-    __param(1, tsyringe.inject(AccountService)),
-    __param(2, tsyringe.inject(BlockService)),
-    __param(3, tsyringe.inject(LogService)),
-    __metadata("design:paramtypes", [AuthStorageService,
-        AccountService,
-        BlockService,
-        LogService])
-], AuthService);
-
-function errorHandler(ctx, next) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            yield next();
-        }
-        catch (err) {
-            if (err instanceof EmptyAuthticationHeaderError ||
-                err instanceof InvalidAuthticationHeaderError ||
-                err instanceof TokenBlockedError ||
-                err instanceof InvalidTokenError ||
-                err instanceof TokenTypeError ||
-                err instanceof TokenDecodeError ||
-                err instanceof NotBasicAuthError ||
-                err instanceof PassworCheckError ||
-                err instanceof BasicAuthError) {
-                ctx.body = { message: err.name };
-                ctx.status = 401;
-            }
-            else
-                throw err;
-        }
-    });
-}
-function createTokenAuthMiddleWare(type = "access") {
-    return (ctx, next) => __awaiter(this, void 0, void 0, function* () {
-        const auth = tsyringe.container.resolve(AuthService);
-        auth.verityToken(ctx, type);
-        yield next();
-    });
-}
-function createBasicAuthMiddleWare() {
-    return (ctx, next) => __awaiter(this, void 0, void 0, function* () {
-        const auth = tsyringe.container.resolve(AuthService);
-        auth.verifyBasic(ctx);
-        yield next();
-    });
-}
-
-const router$4 = new Router__default["default"]();
-router$4.post("/signin", createBasicAuthMiddleWare(), (ctx, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const auth = tsyringe.container.resolve(AuthService);
-    ctx.body = auth.sign(ctx.state.user.username);
-}));
-router$4.post("/refresh", createTokenAuthMiddleWare("refresh"), (ctx) => {
-    const auth = tsyringe.container.resolve(AuthService);
-    ctx.body = auth.sign(ctx.state.user.username);
-});
-router$4.post("/signout", createTokenAuthMiddleWare("refresh"), (ctx) => {
-    const auth = tsyringe.container.resolve(AuthService);
-    auth.signout(ctx);
-    ctx.status = 200;
-});
-router$4.put("/info/username", createTokenAuthMiddleWare("access"), (ctx) => {
-    const username = ctx.request.body.username || "";
-    if (username) {
-        const account = tsyringe.container.resolve(AccountService);
-        account.setUsername(username);
-        ctx.status = 200;
-    }
-    else {
-        ctx.status = 400;
-    }
-});
-router$4.put("/info/password", createTokenAuthMiddleWare("access"), (ctx) => {
-    const password = ctx.request.body.password || "";
-    if (password) {
-        const account = tsyringe.container.resolve(AccountService);
-        account.setPassword(password);
-        ctx.status = 200;
-    }
-    else {
-        ctx.status = 400;
-    }
-});
-router$4.get("/info", createTokenAuthMiddleWare("access"), (ctx) => {
-    const account = tsyringe.container.resolve(AccountService);
-    ctx.body = { username: account.getUsername() };
-});
-router$4.use((ctx, next) => __awaiter(void 0, void 0, void 0, function* () {
-    yield next();
-}));
-
-var account = compose__default["default"]([errorHandler, router$4.routes(), router$4.allowedMethods()]);
+app$3.use(router$4.routes());
+app$3.use(router$4.allowedMethods());
 
 const toPost = (post) => post;
 const toPage = (post) => post;
@@ -1362,7 +1073,6 @@ router$3.delete("/page/:source", (ctx) => __awaiter(void 0, void 0, void 0, func
 }));
 
 const app$2 = new Koa__default["default"]();
-app$2.use(createTokenAuthMiddleWare());
 app$2.use(router$3.routes());
 app$2.use(router$3.allowedMethods());
 
@@ -1526,7 +1236,6 @@ router$2.post("/save", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
 }));
 
 const app$1 = new Koa__default["default"]();
-app$1.use(createTokenAuthMiddleWare());
 app$1.use(router$2.routes());
 app$1.use(router$2.allowedMethods());
 
@@ -1555,7 +1264,6 @@ SettingsService = SettingsService_1 = __decorate([
 ], SettingsService);
 
 const router$1 = new Router__default["default"]();
-router$1.use(createTokenAuthMiddleWare());
 router$1.get("/settings", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const settingsService = tsyringe.container.resolve(SettingsService);
     ctx.body = yield settingsService.get();
@@ -1612,7 +1320,6 @@ FrontmatterTemplateService = FrontmatterTemplateService_1 = __decorate([
 ], FrontmatterTemplateService);
 
 const router = new Router__default["default"]();
-router.use(createTokenAuthMiddleWare());
 router.prefix("/template");
 router.get("/frontmatter", (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const frontmatterTemplateService = tsyringe.container.resolve(FrontmatterTemplateService);
@@ -1637,7 +1344,6 @@ router.post("/frontmatter", (ctx) => __awaiter(void 0, void 0, void 0, function*
  * config app entrance
  */
 var apps = compose__default["default"]([
-    account,
     mount__default["default"]("/install", app$4),
     checkInstall(),
     mount__default["default"]("/health", app$3),
@@ -1732,6 +1438,30 @@ const statics = serve__default["default"](ROOT, {
     },
 });
 
+const auth = koaAuthentication.createAuth({
+    verify(username, password) {
+        const account = tsyringe.container.resolve(AccountService);
+        account.verify(username, password);
+    },
+    secret() {
+        return tsyringe.container.resolve(AuthStorageService).getSecret();
+    },
+});
+auth.router.post("/password", auth.auth, (ctx) => {
+    const account = tsyringe.container.resolve(AccountService);
+    const { oldPassword, password } = ctx.request.body;
+    account.verify(ctx.state.user.username, oldPassword);
+    account.setPassword(password);
+    ctx.status = 200;
+});
+auth.router.post("/username", auth.auth, (ctx, next) => {
+    const account = tsyringe.container.resolve(AccountService);
+    const { username } = ctx.request.body;
+    account.setUsername(username);
+    ctx.state.user.username = username;
+    return next();
+}, auth.cookie, (ctx) => (ctx.status = 200));
+
 const app = new Koa__default["default"]();
 app.use(cors__default["default"]());
 app.use((ctx, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -1755,6 +1485,8 @@ app.use(secure());
 app.use(logger__default["default"]());
 app.use(compress__default["default"]());
 app.use(mount__default["default"]("/", statics));
+app.use(auth.router.routes());
+app.use(auth.auth);
 app.use(apps);
 
 const storage = tsyringe.container.resolve(StorageService);

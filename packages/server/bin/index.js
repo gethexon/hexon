@@ -9,6 +9,7 @@ var tsyringe = require('tsyringe');
 var fs = require('fs');
 var JSONdb = require('simple-json-db');
 var cryptoJs = require('crypto-js');
+var httpErrors = require('http-errors');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -210,12 +211,6 @@ function install () {
 }
 
 var AccountService_1;
-class BasicAuthError extends Error {
-    constructor() {
-        super(...arguments);
-        this.name = "BasicAuthError";
-    }
-}
 let AccountService = AccountService_1 = class AccountService {
     constructor(_storage) {
         this._storage = _storage;
@@ -257,10 +252,10 @@ let AccountService = AccountService_1 = class AccountService {
     verify(username, password) {
         const info = this._fromStorage();
         if (username !== info.username) {
-            throw new BasicAuthError();
+            throw new httpErrors.Unauthorized();
         }
         if (this._encrypt(password) !== info.password) {
-            throw new BasicAuthError();
+            throw new httpErrors.Unauthorized();
         }
     }
 };
