@@ -1,7 +1,7 @@
 import fs from "fs"
 import path from "path"
 import { Plugin } from "vite"
-import chalk from "chalk"
+import pc from "picocolors"
 
 function list(root: string): string[] {
   if (fs.lstatSync(root).isFile()) {
@@ -25,14 +25,14 @@ list("./src")
 
 function log() {
   console.log(
-    chalk.redBright(
+    pc.red(
       [...allFile.values()]
         .map((v, idx) => `[${idx}].${v.split(current).join("")}`)
         .join("\n")
     )
   )
   console.log(
-    `${chalk.red("×")} ${chalk.dim.white(`${allFile.size} unused files`)}`
+    `${pc.red("×")} ${pc.dim(pc.white(`${allFile.size} unused files`))}`
   )
 }
 

@@ -177,7 +177,7 @@ const updateFm = (fm: { [key: string]: unknown }) => {
 //#endregion
 </script>
 <template>
-  <HLoading :loading="detailStore.loading">
+  <HLoading :loading="detailStore.isLoading">
     <ErroredView v-if="detailStore.error">
       <div>
         <HButton inverted @click="onHome">回主页</HButton>

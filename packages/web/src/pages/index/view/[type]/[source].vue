@@ -72,7 +72,7 @@ const onAction = (payload: HViewerToolbarActionPayload) => {
 //#endregion
 </script>
 <template>
-  <HLoading :loading="detailStore.loading">
+  <HLoading :loading="detailStore.isLoading">
     <ErroredView v-if="detailStore.error">
       <HButton @click="load">重试</HButton>
     </ErroredView>

@@ -18,7 +18,7 @@ export const useDetailStore = defineStore("detail", {
     saving: false,
   }),
   getters: {
-    loading(): boolean {
+    isLoading(): boolean {
       return (this._loading || !this.article) && !this.error
     },
     isDraft(): boolean {

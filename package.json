@@ -6,9 +6,9 @@
   ],
   "license": "GPL-3.0",
   "devDependencies": {
-    "chalk": "^4.1.0",
-    "execa": "^5.0.0",
-    "inquirer": "^8.0.0",
+    "chalk": "^5.0.1",
+    "execa": "^6.1.0",
+    "inquirer": "^8.2.2",
     "lerna": "^4.0.0"
   },
   "scripts": {
