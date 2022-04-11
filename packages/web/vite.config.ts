@@ -4,6 +4,7 @@ import vue from "@vitejs/plugin-vue"
 import visualizer from "rollup-plugin-visualizer"
 import Pages from "vite-plugin-pages"
 import Layouts from "vite-plugin-vue-layouts"
+import compression from "vite-plugin-compression"
 import unused from "./find-unused-file-plugin"
 const projectRootDir = path.resolve(__dirname)
 
@@ -24,7 +25,13 @@ export default defineConfig({
       },
     },
   },
-  plugins: [vue(), unused(), Pages(), Layouts()],
+  plugins: [
+    vue(),
+    unused(),
+    Pages(),
+    Layouts(),
+    compression({ algorithm: "brotliCompress", ext: ".br" }),
+  ],
   resolve: {
     alias: [
       {

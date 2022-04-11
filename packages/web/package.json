@@ -35,6 +35,7 @@
     "string-similarity": "^4.0.4",
     "universal-cookie": "^4.0.4",
     "uuid": "^8.3.2",
+    "vite-plugin-compression": "^0.5.1",
     "vue": "^3.2.26",
     "vue-router": "4",
     "zod": "^3.11.6"
