@@ -55,10 +55,11 @@ export class AccountService {
   verify(username: string, password: string) {
     const info = this._fromStorage()
     if (username !== info.username) {
-      throw new Unauthorized()
+      return false
     }
     if (this._encrypt(password) !== info.password) {
-      throw new Unauthorized()
+      return false
     }
+    return true
   }
 }

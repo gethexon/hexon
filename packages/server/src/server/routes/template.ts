@@ -1,7 +1,7 @@
 import Router from "@koa/router"
 import { container } from "tsyringe"
-import { createErrorResponse, ERROR_CODE } from "../../../../typedef/src"
-import { FrontmatterTemplateService } from "../services/frontmatter-template-service"
+import { createErrorResponse, ERROR_CODE } from "@hexon/typedef"
+import { FrontmatterTemplateService } from "@/services/frontmatter-template-service"
 
 const router = new Router()
 

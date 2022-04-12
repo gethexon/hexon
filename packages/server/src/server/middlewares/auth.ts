@@ -1,20 +1,23 @@
-import { createAuth } from "@winwin/koa-authentication"
+import { AuthenticationError, createAuth } from "@winwin/koa-authentication"
 import { container } from "tsyringe"
-import { AuthStorageService } from "~/server/services/auth-storage-service"
 import { AccountService } from "~/shared/account-storage-service"
+import { AuthStorageService } from "@/services/auth-storage-service"
+
 export const auth = createAuth({
   verify(username, password) {
     const account = container.resolve(AccountService)
-    account.verify(username, password)
+    return account.verify(username, password)
   },
   secret() {
     return container.resolve(AuthStorageService).getSecret()
   },
 })
+
 auth.router.post("/password", auth.auth, (ctx) => {
   const account = container.resolve(AccountService)
   const { oldPassword, password } = ctx.request.body
-  account.verify(ctx.state.user!.username, oldPassword)
+  const verified = account.verify(ctx.state.user!.username, oldPassword)
+  if (!verified) throw new AuthenticationError()
   account.setPassword(password)
   ctx.status = 200
 })

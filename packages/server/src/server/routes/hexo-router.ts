@@ -2,44 +2,11 @@ import { ERROR_CODE } from "@hexon/typedef"
 import { Context } from "koa"
 import { container } from "tsyringe"
 import Router from "@koa/router"
-import {
-  HexoCoreInitError,
-  HexoCoreInitiatingError,
-} from "@/services/hexo-instance-service"
-import { HexoService, InvalidPathOptionError } from "@/services/hexo-service"
+import { HexoService } from "@/services/hexo-service"
+import { PostOrPageNotFoundError } from "../errors"
 
 const router = new Router()
-router.use(async (ctx, next) => {
-  try {
-    await next()
-  } catch (err) {
-    if (err instanceof HexoCoreInitError) {
-      ctx.status = 500
-      ctx.body = {
-        code: ERROR_CODE.E_INIT,
-        message: err.message,
-      }
-    } else if (err instanceof HexoCoreInitiatingError) {
-      ctx.status = 503
-      ctx.body = {
-        code: ERROR_CODE.E_INITIATING,
-        message: "hexo core initiating please wait for a second",
-      }
-    } else if (err instanceof InvalidPathOptionError) {
-      ctx.status = 400
-      ctx.body = {
-        code: ERROR_CODE.E_INVALID_CREATE_OPTION_PATH,
-        message: "hexo core initiating please wait for a second",
-      }
-    } else if (err instanceof Error && err.message === "not found") {
-      ctx.status = 404
-      ctx.body = {
-        code: ERROR_CODE.E_NOT_FOUND,
-        message: "not found",
-      }
-    } else throw err
-  }
-})
+router.prefix("/hexo")
 router.get("/posts", async (ctx: Context) => {
   const hexo = container.resolve(HexoService)
   ctx.body = await hexo.listPost()
@@ -51,7 +18,9 @@ router.get("/post/:source", async (ctx: Context) => {
     ctx.status = 400
     ctx.body = "need `source`"
   }
-  ctx.body = await hexo.getPostBySource(decodeURIComponent(source))
+  const post = await hexo.getPostBySource(decodeURIComponent(source))
+  if (!post) throw new PostOrPageNotFoundError("post")
+  ctx.body = post
 })
 router.get("/pages", async (ctx: Context) => {
   const hexo = container.resolve(HexoService)

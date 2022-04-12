@@ -6,7 +6,7 @@ import {
   PushError,
   ResetHardError,
 } from "@/apps/git/errors"
-import { run } from "@/apps/hexo/utils"
+import { run } from "@/utils/exec"
 import { LogService } from "@/services/log-service"
 import { HEXO_BASE_DIR_KEY } from "~/shared/constants"
 import { StorageService } from "~/shared/storage-service"

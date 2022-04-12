@@ -11,7 +11,7 @@ export const noop = () => {}
 
 export function expandHomeDir(fullpath: string) {
   const homedir =
-    process.env[process.platform == "win32" ? "USERPROFILE" : "HOME"]
+    process.env[process.platform == "win32" ? "USERPROFILE" : "HOME"]!
 
   if (!fullpath) return fullpath
   if (fullpath == "~") return homedir

@@ -3070,25 +3070,15 @@
   dependencies:
     vue-demi "*"
 
-"@winwin/koa-authentication@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.npmjs.org/@winwin/koa-authentication/-/koa-authentication-0.1.1.tgz#7954132b4a5de83735bd21bfa757c4a2104152e8"
-  integrity sha512-UUxATgCGWz2DSzV3INCtQSPj2/uxdqOwNfX4YU+xzGc1c3L32CtBVA1R/EXh0CoTDagSNT3+kCTmyh1Sc58s8A==
+"@winwin/koa-authentication@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.npmjs.org/@winwin/koa-authentication/-/koa-authentication-0.2.1.tgz#32778c28f67af8c5c80796ba115dbf390215309f"
+  integrity sha512-LIl9sE3dVLRf7aTIM74PgTStdPnDwRkmSZlPGwgHaX7R6TfDgocFzUDvYSv7fSDfBXlf3xa7xT5ytnbMt0bi7A==
   dependencies:
     "@koa/router" "^10.1.1"
     http-errors "^2.0.0"
     jsonwebtoken "^8.5.1"
     koa "^2.13.4"
-
-"@winwin/koa-simple-account@^0.0.13":
-  version "0.0.13"
-  resolved "https://registry.npmmirror.com/@winwin/koa-simple-account/download/@winwin/koa-simple-account-0.0.13.tgz#e4e3597eef2a07544ff95aa89dbd9777bcf17625"
-  integrity sha512-m/gRFVlCcQrPoxEFcQ+c/QIlgBHVYVP7js6hHLB5Tz8u5ZDEp8L9TGBVaIcXda8nzK2qZF9IowFTPY4WS4v92g==
-  dependencies:
-    crypto-js "^4.1.1"
-    jsonwebtoken "^8.5.1"
-    koa "^2.13.3"
-    simple-json-db "^1.2.3"
 
 "@winwin/vue-global-theming@^0.1.5":
   version "0.1.5"
@@ -6206,7 +6196,7 @@ http-errors@1.8.1, http-errors@^1.6.3, http-errors@^1.7.3, http-errors@^1.8.0, h
 
 http-errors@^2.0.0:
   version "2.0.0"
-  resolved "https://registry.npmmirror.com/http-errors/download/http-errors-2.0.0.tgz#b7774a1486ef73cf7667ac9ae0858c012c57b9d3"
+  resolved "https://registry.npmjs.org/http-errors/-/http-errors-2.0.0.tgz#b7774a1486ef73cf7667ac9ae0858c012c57b9d3"
   integrity sha512-FtwrG/euBzaEjYeRqOgly7G0qviiXoJWnvEH2Z1plBdXgbyjv34pHTSb9zoeHMyDy33+DWy5Wt9Wo+TURtOYSQ==
   dependencies:
     depd "2.0.0"
@@ -7686,7 +7676,7 @@ koa2-cors@^2.0.6:
   resolved "https://registry.nlark.com/koa2-cors/download/koa2-cors-2.0.6.tgz#9ad23df3a0b9bb84530b46f5944f3fb576086554"
   integrity sha1-mtI986C5u4RTC0b1lE8/tXYIZVQ=
 
-koa@^2.13.1, koa@^2.13.3, koa@^2.13.4:
+koa@^2.13.1, koa@^2.13.4:
   version "2.13.4"
   resolved "https://registry.npmmirror.com/koa/download/koa-2.13.4.tgz#ee5b0cb39e0b8069c38d115139c774833d32462e"
   integrity sha512-43zkIKubNbnrULWlHdN5h1g3SEKXOEzoAlRsHOTFpnlDu8JlAOZSMJBLULusuXRequboiwJcj5vtYXKB3k7+2g==
@@ -10268,11 +10258,6 @@ signal-exit@^3.0.7:
   version "3.0.7"
   resolved "https://registry.npmjs.org/signal-exit/-/signal-exit-3.0.7.tgz#a9a1767f8af84155114eaabd73f99273c8f59ad9"
   integrity sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==
-
-simple-json-db@^1.2.3:
-  version "1.2.3"
-  resolved "https://registry.npmmirror.com/simple-json-db/download/simple-json-db-1.2.3.tgz#ea7256bbbb1205b4af079f9bed2611e33401bce7"
-  integrity sha1-6nJWu7sSBbSvB5+b7SYR4zQBvOc=
 
 simple-json-db@^2.0.0:
   version "2.0.0"
