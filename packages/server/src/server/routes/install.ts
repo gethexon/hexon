@@ -1,9 +1,10 @@
 import Router from "@koa/router"
 import { Context } from "koa"
 import { container } from "tsyringe"
-import { InstallService } from "./service"
+import { InstallService } from "@/services/install-service"
 
 const router = new Router()
+router.prefix("/install")
 router.get("/", (ctx) => {
   const service = container.resolve(InstallService)
   if (service.isInstalled()) {

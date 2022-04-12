@@ -4,6 +4,7 @@ import { GitService } from "@/services/git-service"
 
 const router = new Router()
 
+router.prefix("/git")
 router.use(async (ctx, next) => {
   try {
     await next()

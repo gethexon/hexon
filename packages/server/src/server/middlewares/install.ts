@@ -1,6 +1,6 @@
 import { Context, Next } from "koa"
 import { container } from "tsyringe"
-import { InstallService } from "./service"
+import { InstallService } from "@/services/install-service"
 
 export const checkInstall = () => async (ctx: Context, next: Next) => {
   const service = container.resolve(InstallService)
