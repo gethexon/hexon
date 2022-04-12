@@ -2,7 +2,7 @@
 import { ref, onMounted, watch, onBeforeUnmount } from "vue"
 import * as monaco from "monaco-editor"
 import "./workers"
-import { MonacoMarkdownExtension } from "monaco-markdown"
+import { MonacoMarkdownExtension } from "./monaco-markdown"
 import { PrettierFormatterExtension } from "./prettier-formatter-ext"
 import { MarkdownImageExtension } from "./markdown-image-ext"
 import { editorOptions } from "./monaco"
@@ -15,6 +15,7 @@ const props = defineProps<{
 }>()
 const emits = defineEmits<{
   (e: "update:value", value: string): void
+  (e: "on-save"): void
 }>()
 const dom = ref<HTMLElement>()
 let instance: monaco.editor.IStandaloneCodeEditor
@@ -40,6 +41,15 @@ function createInstance() {
   instance.onDidChangeModelContent(() => {
     const newValue = instance.getValue()
     emits("update:value", newValue)
+  })
+
+  instance.addAction({
+    id: "hexon.save",
+    label: "Save Changes",
+    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS],
+    run() {
+      emits("on-save")
+    },
   })
 }
 onMounted(() => {

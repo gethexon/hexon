@@ -86,6 +86,12 @@ const onAction = (payload: HEditorToolbarActionPayload) => {
       break
   }
 }
+
+const onSave = () => {
+  onAction({
+    type: "save",
+  })
+}
 useEventListener("beforeunload", (e) => {
   if (!changed.value) return
   if (!confirm("确定离开？你所做的更改可能未保存。")) {
@@ -204,6 +210,7 @@ const updateFm = (fm: { [key: string]: unknown }) => {
                 :font-family="settingsStore.settings.ui.editor.fontFamily"
                 :value="content"
                 @update:value="updateContent"
+                @on-save="onSave"
               />
             </HLoading>
           </div>

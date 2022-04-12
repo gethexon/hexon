@@ -30,7 +30,6 @@
     "jsencrypt": "^3.2.1",
     "lodash-es": "^4.17.21",
     "monaco-editor": "0.33.0",
-    "monaco-markdown": "^0.0.12",
     "pinia": "^2.0.0-rc.14",
     "prettier": "^2.6.2",
     "string-similarity": "^4.0.4",
