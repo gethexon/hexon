@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import { computed, toRefs } from "vue"
+import { computed, toRefs, watch } from "vue"
 import { useThemeVars } from "@/ui/theme"
 
 const props = defineProps<{
   content?: string
 }>()
-// TODO content 中的超链接改成 target="_blank"
-const { content } = toRefs(props)
 const vars = useThemeVars()
 const styleVars = computed(() => ({
   primary: vars.value.colorPrimary,
@@ -14,6 +12,9 @@ const styleVars = computed(() => ({
   base3BgColor: vars.value.backgroundColorTertiary,
   base2BgColor: vars.value.backgroundColorSecondary,
 }))
+const content = computed(() => {
+  return (props.content ?? "").replaceAll(/(href=".*?")/g, '$1 target="_blank"')
+})
 </script>
 <template>
   <div class="article-entry" v-html="content || ''"></div>
