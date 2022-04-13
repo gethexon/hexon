@@ -1,876 +1,114 @@
-var __create = Object.create;
-var __defProp = Object.defineProperty;
-var __defProps = Object.defineProperties;
-var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
-var __getOwnPropNames = Object.getOwnPropertyNames;
-var __getOwnPropSymbols = Object.getOwnPropertySymbols;
-var __getProtoOf = Object.getPrototypeOf;
-var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __propIsEnum = Object.prototype.propertyIsEnumerable;
-var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __spreadValues = (a, b) => {
-  for (var prop in b || (b = {}))
-    if (__hasOwnProp.call(b, prop))
-      __defNormalProp(a, prop, b[prop]);
-  if (__getOwnPropSymbols)
-    for (var prop of __getOwnPropSymbols(b)) {
-      if (__propIsEnum.call(b, prop))
-        __defNormalProp(a, prop, b[prop]);
-    }
-  return a;
-};
-var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
-var __objRest = (source, exclude) => {
-  var target = {};
-  for (var prop in source)
-    if (__hasOwnProp.call(source, prop) && exclude.indexOf(prop) < 0)
-      target[prop] = source[prop];
-  if (source != null && __getOwnPropSymbols)
-    for (var prop of __getOwnPropSymbols(source)) {
-      if (exclude.indexOf(prop) < 0 && __propIsEnum.call(source, prop))
-        target[prop] = source[prop];
-    }
-  return target;
-};
-var __commonJS = (cb, mod) => function __require() {
-  return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
-};
-var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
-    for (let key of __getOwnPropNames(from))
-      if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
-  }
-  return to;
-};
-var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target, mod));
-var __decorateClass = (decorators, target, key, kind) => {
-  var result = kind > 1 ? void 0 : kind ? __getOwnPropDesc(target, key) : target;
-  for (var i = decorators.length - 1, decorator; i >= 0; i--)
-    if (decorator = decorators[i])
-      result = (kind ? decorator(target, key, result) : decorator(result)) || result;
-  if (kind && result)
-    __defProp(target, key, result);
-  return result;
-};
-var __decorateParam = (index, decorator) => (target, key) => decorator(target, key, index);
+'use strict';
 
-// ../../node_modules/isexe/windows.js
-var require_windows = __commonJS({
-  "../../node_modules/isexe/windows.js"(exports, module2) {
-    module2.exports = isexe;
-    isexe.sync = sync;
-    var fs3 = require("fs");
-    function checkPathExt(path8, options) {
-      var pathext = options.pathExt !== void 0 ? options.pathExt : process.env.PATHEXT;
-      if (!pathext) {
-        return true;
-      }
-      pathext = pathext.split(";");
-      if (pathext.indexOf("") !== -1) {
-        return true;
-      }
-      for (var i = 0; i < pathext.length; i++) {
-        var p = pathext[i].toLowerCase();
-        if (p && path8.substr(-p.length).toLowerCase() === p) {
-          return true;
-        }
-      }
-      return false;
-    }
-    function checkStat(stat, path8, options) {
-      if (!stat.isSymbolicLink() && !stat.isFile()) {
-        return false;
-      }
-      return checkPathExt(path8, options);
-    }
-    function isexe(path8, options, cb) {
-      fs3.stat(path8, function(er, stat) {
-        cb(er, er ? false : checkStat(stat, path8, options));
-      });
-    }
-    function sync(path8, options) {
-      return checkStat(fs3.statSync(path8), path8, options);
-    }
-  }
-});
+require('reflect-metadata');
+var tsyringe = require('tsyringe');
+var http = require('http');
+var fs = require('fs');
+var path = require('path');
+var JSONdb = require('simple-json-db');
+var HexoCore = require('hexo');
+var chalk = require('chalk');
+var dayjs = require('dayjs');
+require('debug');
+var cors = require('@koa/cors');
+var Koa = require('koa');
+var bodyParser = require('koa-bodyparser');
+var compress = require('koa-compress');
+var logger = require('koa-logger');
+var mount = require('koa-mount');
+var compose = require('koa-compose');
+var Router = require('@koa/router');
+var CryptoJS = require('crypto-js');
+var httpErrors = require('http-errors');
+var typedef = require('@hexon/typedef');
+var execa = require('execa');
+var koaAuthentication = require('@winwin/koa-authentication');
+var crypto = require('crypto');
+var JSEncrypt = require('node-jsencrypt');
+var serve = require('koa-static');
 
-// ../../node_modules/isexe/mode.js
-var require_mode = __commonJS({
-  "../../node_modules/isexe/mode.js"(exports, module2) {
-    module2.exports = isexe;
-    isexe.sync = sync;
-    var fs3 = require("fs");
-    function isexe(path8, options, cb) {
-      fs3.stat(path8, function(er, stat) {
-        cb(er, er ? false : checkStat(stat, options));
-      });
-    }
-    function sync(path8, options) {
-      return checkStat(fs3.statSync(path8), options);
-    }
-    function checkStat(stat, options) {
-      return stat.isFile() && checkMode(stat, options);
-    }
-    function checkMode(stat, options) {
-      var mod = stat.mode;
-      var uid = stat.uid;
-      var gid = stat.gid;
-      var myUid = options.uid !== void 0 ? options.uid : process.getuid && process.getuid();
-      var myGid = options.gid !== void 0 ? options.gid : process.getgid && process.getgid();
-      var u = parseInt("100", 8);
-      var g = parseInt("010", 8);
-      var o = parseInt("001", 8);
-      var ug = u | g;
-      var ret = mod & o || mod & g && gid === myGid || mod & u && uid === myUid || mod & ug && myUid === 0;
-      return ret;
-    }
-  }
-});
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-// ../../node_modules/isexe/index.js
-var require_isexe = __commonJS({
-  "../../node_modules/isexe/index.js"(exports, module2) {
-    var fs3 = require("fs");
-    var core;
-    if (process.platform === "win32" || global.TESTING_WINDOWS) {
-      core = require_windows();
-    } else {
-      core = require_mode();
-    }
-    module2.exports = isexe;
-    isexe.sync = sync;
-    function isexe(path8, options, cb) {
-      if (typeof options === "function") {
-        cb = options;
-        options = {};
-      }
-      if (!cb) {
-        if (typeof Promise !== "function") {
-          throw new TypeError("callback not provided");
-        }
-        return new Promise(function(resolve2, reject) {
-          isexe(path8, options || {}, function(er, is) {
-            if (er) {
-              reject(er);
-            } else {
-              resolve2(is);
-            }
-          });
-        });
-      }
-      core(path8, options || {}, function(er, is) {
-        if (er) {
-          if (er.code === "EACCES" || options && options.ignoreErrors) {
-            er = null;
-            is = false;
-          }
-        }
-        cb(er, is);
-      });
-    }
-    function sync(path8, options) {
-      try {
-        return core.sync(path8, options || {});
-      } catch (er) {
-        if (options && options.ignoreErrors || er.code === "EACCES") {
-          return false;
-        } else {
-          throw er;
-        }
-      }
-    }
-  }
-});
+var http__default = /*#__PURE__*/_interopDefaultLegacy(http);
+var fs__default = /*#__PURE__*/_interopDefaultLegacy(fs);
+var path__default = /*#__PURE__*/_interopDefaultLegacy(path);
+var JSONdb__default = /*#__PURE__*/_interopDefaultLegacy(JSONdb);
+var HexoCore__default = /*#__PURE__*/_interopDefaultLegacy(HexoCore);
+var chalk__default = /*#__PURE__*/_interopDefaultLegacy(chalk);
+var dayjs__default = /*#__PURE__*/_interopDefaultLegacy(dayjs);
+var cors__default = /*#__PURE__*/_interopDefaultLegacy(cors);
+var Koa__default = /*#__PURE__*/_interopDefaultLegacy(Koa);
+var bodyParser__default = /*#__PURE__*/_interopDefaultLegacy(bodyParser);
+var compress__default = /*#__PURE__*/_interopDefaultLegacy(compress);
+var logger__default = /*#__PURE__*/_interopDefaultLegacy(logger);
+var mount__default = /*#__PURE__*/_interopDefaultLegacy(mount);
+var compose__default = /*#__PURE__*/_interopDefaultLegacy(compose);
+var Router__default = /*#__PURE__*/_interopDefaultLegacy(Router);
+var CryptoJS__default = /*#__PURE__*/_interopDefaultLegacy(CryptoJS);
+var execa__default = /*#__PURE__*/_interopDefaultLegacy(execa);
+var crypto__default = /*#__PURE__*/_interopDefaultLegacy(crypto);
+var JSEncrypt__default = /*#__PURE__*/_interopDefaultLegacy(JSEncrypt);
+var serve__default = /*#__PURE__*/_interopDefaultLegacy(serve);
 
-// ../../node_modules/which/which.js
-var require_which = __commonJS({
-  "../../node_modules/which/which.js"(exports, module2) {
-    var isWindows = process.platform === "win32" || process.env.OSTYPE === "cygwin" || process.env.OSTYPE === "msys";
-    var path8 = require("path");
-    var COLON = isWindows ? ";" : ":";
-    var isexe = require_isexe();
-    var getNotFoundError = (cmd) => Object.assign(new Error(`not found: ${cmd}`), { code: "ENOENT" });
-    var getPathInfo = (cmd, opt) => {
-      const colon = opt.colon || COLON;
-      const pathEnv = cmd.match(/\//) || isWindows && cmd.match(/\\/) ? [""] : [
-        ...isWindows ? [process.cwd()] : [],
-        ...(opt.path || process.env.PATH || "").split(colon)
-      ];
-      const pathExtExe = isWindows ? opt.pathExt || process.env.PATHEXT || ".EXE;.CMD;.BAT;.COM" : "";
-      const pathExt = isWindows ? pathExtExe.split(colon) : [""];
-      if (isWindows) {
-        if (cmd.indexOf(".") !== -1 && pathExt[0] !== "")
-          pathExt.unshift("");
-      }
-      return {
-        pathEnv,
-        pathExt,
-        pathExtExe
-      };
-    };
-    var which = (cmd, opt, cb) => {
-      if (typeof opt === "function") {
-        cb = opt;
-        opt = {};
-      }
-      if (!opt)
-        opt = {};
-      const { pathEnv, pathExt, pathExtExe } = getPathInfo(cmd, opt);
-      const found = [];
-      const step = (i) => new Promise((resolve2, reject) => {
-        if (i === pathEnv.length)
-          return opt.all && found.length ? resolve2(found) : reject(getNotFoundError(cmd));
-        const ppRaw = pathEnv[i];
-        const pathPart = /^".*"$/.test(ppRaw) ? ppRaw.slice(1, -1) : ppRaw;
-        const pCmd = path8.join(pathPart, cmd);
-        const p = !pathPart && /^\.[\\\/]/.test(cmd) ? cmd.slice(0, 2) + pCmd : pCmd;
-        resolve2(subStep(p, i, 0));
-      });
-      const subStep = (p, i, ii) => new Promise((resolve2, reject) => {
-        if (ii === pathExt.length)
-          return resolve2(step(i + 1));
-        const ext = pathExt[ii];
-        isexe(p + ext, { pathExt: pathExtExe }, (er, is) => {
-          if (!er && is) {
-            if (opt.all)
-              found.push(p + ext);
-            else
-              return resolve2(p + ext);
-          }
-          return resolve2(subStep(p, i, ii + 1));
-        });
-      });
-      return cb ? step(0).then((res) => cb(null, res), cb) : step(0);
-    };
-    var whichSync = (cmd, opt) => {
-      opt = opt || {};
-      const { pathEnv, pathExt, pathExtExe } = getPathInfo(cmd, opt);
-      const found = [];
-      for (let i = 0; i < pathEnv.length; i++) {
-        const ppRaw = pathEnv[i];
-        const pathPart = /^".*"$/.test(ppRaw) ? ppRaw.slice(1, -1) : ppRaw;
-        const pCmd = path8.join(pathPart, cmd);
-        const p = !pathPart && /^\.[\\\/]/.test(cmd) ? cmd.slice(0, 2) + pCmd : pCmd;
-        for (let j = 0; j < pathExt.length; j++) {
-          const cur = p + pathExt[j];
-          try {
-            const is = isexe.sync(cur, { pathExt: pathExtExe });
-            if (is) {
-              if (opt.all)
-                found.push(cur);
-              else
-                return cur;
-            }
-          } catch (ex) {
-          }
-        }
-      }
-      if (opt.all && found.length)
-        return found;
-      if (opt.nothrow)
-        return null;
-      throw getNotFoundError(cmd);
-    };
-    module2.exports = which;
-    which.sync = whichSync;
-  }
-});
+/**
+ * @deprecated
+ */
+const HEXO_BASE_DIR_KEY$1 = "hexo-basedir";
+const BRIEF_LENGTH = 500;
+const HEXON_PORT_KEY = "@hexon/port";
+const HEXON_DEFAULT_PORT = 5777;
 
-// ../../node_modules/path-key/index.js
-var require_path_key = __commonJS({
-  "../../node_modules/path-key/index.js"(exports, module2) {
-    "use strict";
-    var pathKey2 = (options = {}) => {
-      const environment = options.env || process.env;
-      const platform = options.platform || process.platform;
-      if (platform !== "win32") {
-        return "PATH";
-      }
-      return Object.keys(environment).reverse().find((key) => key.toUpperCase() === "PATH") || "Path";
-    };
-    module2.exports = pathKey2;
-    module2.exports.default = pathKey2;
-  }
-});
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
 
-// ../../node_modules/cross-spawn/lib/util/resolveCommand.js
-var require_resolveCommand = __commonJS({
-  "../../node_modules/cross-spawn/lib/util/resolveCommand.js"(exports, module2) {
-    "use strict";
-    var path8 = require("path");
-    var which = require_which();
-    var getPathKey = require_path_key();
-    function resolveCommandAttempt(parsed, withoutPathExt) {
-      const env2 = parsed.options.env || process.env;
-      const cwd = process.cwd();
-      const hasCustomCwd = parsed.options.cwd != null;
-      const shouldSwitchCwd = hasCustomCwd && process.chdir !== void 0 && !process.chdir.disabled;
-      if (shouldSwitchCwd) {
-        try {
-          process.chdir(parsed.options.cwd);
-        } catch (err) {
-        }
-      }
-      let resolved;
-      try {
-        resolved = which.sync(parsed.command, {
-          path: env2[getPathKey({ env: env2 })],
-          pathExt: withoutPathExt ? path8.delimiter : void 0
-        });
-      } catch (e) {
-      } finally {
-        if (shouldSwitchCwd) {
-          process.chdir(cwd);
-        }
-      }
-      if (resolved) {
-        resolved = path8.resolve(hasCustomCwd ? parsed.options.cwd : "", resolved);
-      }
-      return resolved;
-    }
-    function resolveCommand(parsed) {
-      return resolveCommandAttempt(parsed) || resolveCommandAttempt(parsed, true);
-    }
-    module2.exports = resolveCommand;
-  }
-});
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
 
-// ../../node_modules/cross-spawn/lib/util/escape.js
-var require_escape = __commonJS({
-  "../../node_modules/cross-spawn/lib/util/escape.js"(exports, module2) {
-    "use strict";
-    var metaCharsRegExp = /([()\][%!^"`<>&|;, *?])/g;
-    function escapeCommand(arg) {
-      arg = arg.replace(metaCharsRegExp, "^$1");
-      return arg;
-    }
-    function escapeArgument(arg, doubleEscapeMetaChars) {
-      arg = `${arg}`;
-      arg = arg.replace(/(\\*)"/g, '$1$1\\"');
-      arg = arg.replace(/(\\*)$/, "$1$1");
-      arg = `"${arg}"`;
-      arg = arg.replace(metaCharsRegExp, "^$1");
-      if (doubleEscapeMetaChars) {
-        arg = arg.replace(metaCharsRegExp, "^$1");
-      }
-      return arg;
-    }
-    module2.exports.command = escapeCommand;
-    module2.exports.argument = escapeArgument;
-  }
-});
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
 
-// ../../node_modules/shebang-regex/index.js
-var require_shebang_regex = __commonJS({
-  "../../node_modules/shebang-regex/index.js"(exports, module2) {
-    "use strict";
-    module2.exports = /^#!(.*)/;
-  }
-});
+function __rest(s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+}
 
-// ../../node_modules/shebang-command/index.js
-var require_shebang_command = __commonJS({
-  "../../node_modules/shebang-command/index.js"(exports, module2) {
-    "use strict";
-    var shebangRegex = require_shebang_regex();
-    module2.exports = (string = "") => {
-      const match = string.match(shebangRegex);
-      if (!match) {
-        return null;
-      }
-      const [path8, argument] = match[0].replace(/#! ?/, "").split(" ");
-      const binary = path8.split("/").pop();
-      if (binary === "env") {
-        return argument;
-      }
-      return argument ? `${binary} ${argument}` : binary;
-    };
-  }
-});
+function __decorate(decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+}
 
-// ../../node_modules/cross-spawn/lib/util/readShebang.js
-var require_readShebang = __commonJS({
-  "../../node_modules/cross-spawn/lib/util/readShebang.js"(exports, module2) {
-    "use strict";
-    var fs3 = require("fs");
-    var shebangCommand = require_shebang_command();
-    function readShebang(command) {
-      const size = 150;
-      const buffer = Buffer.alloc(size);
-      let fd;
-      try {
-        fd = fs3.openSync(command, "r");
-        fs3.readSync(fd, buffer, 0, size, 0);
-        fs3.closeSync(fd);
-      } catch (e) {
-      }
-      return shebangCommand(buffer.toString());
-    }
-    module2.exports = readShebang;
-  }
-});
+function __param(paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+}
 
-// ../../node_modules/cross-spawn/lib/parse.js
-var require_parse = __commonJS({
-  "../../node_modules/cross-spawn/lib/parse.js"(exports, module2) {
-    "use strict";
-    var path8 = require("path");
-    var resolveCommand = require_resolveCommand();
-    var escape = require_escape();
-    var readShebang = require_readShebang();
-    var isWin = process.platform === "win32";
-    var isExecutableRegExp = /\.(?:com|exe)$/i;
-    var isCmdShimRegExp = /node_modules[\\/].bin[\\/][^\\/]+\.cmd$/i;
-    function detectShebang(parsed) {
-      parsed.file = resolveCommand(parsed);
-      const shebang = parsed.file && readShebang(parsed.file);
-      if (shebang) {
-        parsed.args.unshift(parsed.file);
-        parsed.command = shebang;
-        return resolveCommand(parsed);
-      }
-      return parsed.file;
-    }
-    function parseNonShell(parsed) {
-      if (!isWin) {
-        return parsed;
-      }
-      const commandFile = detectShebang(parsed);
-      const needsShell = !isExecutableRegExp.test(commandFile);
-      if (parsed.options.forceShell || needsShell) {
-        const needsDoubleEscapeMetaChars = isCmdShimRegExp.test(commandFile);
-        parsed.command = path8.normalize(parsed.command);
-        parsed.command = escape.command(parsed.command);
-        parsed.args = parsed.args.map((arg) => escape.argument(arg, needsDoubleEscapeMetaChars));
-        const shellCommand = [parsed.command].concat(parsed.args).join(" ");
-        parsed.args = ["/d", "/s", "/c", `"${shellCommand}"`];
-        parsed.command = process.env.comspec || "cmd.exe";
-        parsed.options.windowsVerbatimArguments = true;
-      }
-      return parsed;
-    }
-    function parse(command, args, options) {
-      if (args && !Array.isArray(args)) {
-        options = args;
-        args = null;
-      }
-      args = args ? args.slice(0) : [];
-      options = Object.assign({}, options);
-      const parsed = {
-        command,
-        args,
-        options,
-        file: void 0,
-        original: {
-          command,
-          args
-        }
-      };
-      return options.shell ? parsed : parseNonShell(parsed);
-    }
-    module2.exports = parse;
-  }
-});
+function __metadata(metadataKey, metadataValue) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
+}
 
-// ../../node_modules/cross-spawn/lib/enoent.js
-var require_enoent = __commonJS({
-  "../../node_modules/cross-spawn/lib/enoent.js"(exports, module2) {
-    "use strict";
-    var isWin = process.platform === "win32";
-    function notFoundError(original, syscall) {
-      return Object.assign(new Error(`${syscall} ${original.command} ENOENT`), {
-        code: "ENOENT",
-        errno: "ENOENT",
-        syscall: `${syscall} ${original.command}`,
-        path: original.command,
-        spawnargs: original.args
-      });
-    }
-    function hookChildProcess(cp, parsed) {
-      if (!isWin) {
-        return;
-      }
-      const originalEmit = cp.emit;
-      cp.emit = function(name, arg1) {
-        if (name === "exit") {
-          const err = verifyENOENT(arg1, parsed, "spawn");
-          if (err) {
-            return originalEmit.call(cp, "error", err);
-          }
-        }
-        return originalEmit.apply(cp, arguments);
-      };
-    }
-    function verifyENOENT(status, parsed) {
-      if (isWin && status === 1 && !parsed.file) {
-        return notFoundError(parsed.original, "spawn");
-      }
-      return null;
-    }
-    function verifyENOENTSync(status, parsed) {
-      if (isWin && status === 1 && !parsed.file) {
-        return notFoundError(parsed.original, "spawnSync");
-      }
-      return null;
-    }
-    module2.exports = {
-      hookChildProcess,
-      verifyENOENT,
-      verifyENOENTSync,
-      notFoundError
-    };
-  }
-});
-
-// ../../node_modules/cross-spawn/index.js
-var require_cross_spawn = __commonJS({
-  "../../node_modules/cross-spawn/index.js"(exports, module2) {
-    "use strict";
-    var cp = require("child_process");
-    var parse = require_parse();
-    var enoent = require_enoent();
-    function spawn(command, args, options) {
-      const parsed = parse(command, args, options);
-      const spawned = cp.spawn(parsed.command, parsed.args, parsed.options);
-      enoent.hookChildProcess(spawned, parsed);
-      return spawned;
-    }
-    function spawnSync(command, args, options) {
-      const parsed = parse(command, args, options);
-      const result = cp.spawnSync(parsed.command, parsed.args, parsed.options);
-      result.error = result.error || enoent.verifyENOENTSync(result.status, parsed);
-      return result;
-    }
-    module2.exports = spawn;
-    module2.exports.spawn = spawn;
-    module2.exports.sync = spawnSync;
-    module2.exports._parse = parse;
-    module2.exports._enoent = enoent;
-  }
-});
-
-// node_modules/signal-exit/signals.js
-var require_signals = __commonJS({
-  "node_modules/signal-exit/signals.js"(exports, module2) {
-    module2.exports = [
-      "SIGABRT",
-      "SIGALRM",
-      "SIGHUP",
-      "SIGINT",
-      "SIGTERM"
-    ];
-    if (process.platform !== "win32") {
-      module2.exports.push("SIGVTALRM", "SIGXCPU", "SIGXFSZ", "SIGUSR2", "SIGTRAP", "SIGSYS", "SIGQUIT", "SIGIOT");
-    }
-    if (process.platform === "linux") {
-      module2.exports.push("SIGIO", "SIGPOLL", "SIGPWR", "SIGSTKFLT", "SIGUNUSED");
-    }
-  }
-});
-
-// node_modules/signal-exit/index.js
-var require_signal_exit = __commonJS({
-  "node_modules/signal-exit/index.js"(exports, module2) {
-    var process5 = global.process;
-    var processOk = function(process6) {
-      return process6 && typeof process6 === "object" && typeof process6.removeListener === "function" && typeof process6.emit === "function" && typeof process6.reallyExit === "function" && typeof process6.listeners === "function" && typeof process6.kill === "function" && typeof process6.pid === "number" && typeof process6.on === "function";
-    };
-    if (!processOk(process5)) {
-      module2.exports = function() {
-        return function() {
-        };
-      };
-    } else {
-      assert = require("assert");
-      signals = require_signals();
-      isWin = /^win/i.test(process5.platform);
-      EE = require("events");
-      if (typeof EE !== "function") {
-        EE = EE.EventEmitter;
-      }
-      if (process5.__signal_exit_emitter__) {
-        emitter = process5.__signal_exit_emitter__;
-      } else {
-        emitter = process5.__signal_exit_emitter__ = new EE();
-        emitter.count = 0;
-        emitter.emitted = {};
-      }
-      if (!emitter.infinite) {
-        emitter.setMaxListeners(Infinity);
-        emitter.infinite = true;
-      }
-      module2.exports = function(cb, opts) {
-        if (!processOk(global.process)) {
-          return function() {
-          };
-        }
-        assert.equal(typeof cb, "function", "a callback must be provided for exit handler");
-        if (loaded === false) {
-          load();
-        }
-        var ev = "exit";
-        if (opts && opts.alwaysLast) {
-          ev = "afterexit";
-        }
-        var remove = function() {
-          emitter.removeListener(ev, cb);
-          if (emitter.listeners("exit").length === 0 && emitter.listeners("afterexit").length === 0) {
-            unload();
-          }
-        };
-        emitter.on(ev, cb);
-        return remove;
-      };
-      unload = function unload2() {
-        if (!loaded || !processOk(global.process)) {
-          return;
-        }
-        loaded = false;
-        signals.forEach(function(sig) {
-          try {
-            process5.removeListener(sig, sigListeners[sig]);
-          } catch (er) {
-          }
-        });
-        process5.emit = originalProcessEmit;
-        process5.reallyExit = originalProcessReallyExit;
-        emitter.count -= 1;
-      };
-      module2.exports.unload = unload;
-      emit = function emit2(event, code, signal) {
-        if (emitter.emitted[event]) {
-          return;
-        }
-        emitter.emitted[event] = true;
-        emitter.emit(event, code, signal);
-      };
-      sigListeners = {};
-      signals.forEach(function(sig) {
-        sigListeners[sig] = function listener() {
-          if (!processOk(global.process)) {
-            return;
-          }
-          var listeners = process5.listeners(sig);
-          if (listeners.length === emitter.count) {
-            unload();
-            emit("exit", null, sig);
-            emit("afterexit", null, sig);
-            if (isWin && sig === "SIGHUP") {
-              sig = "SIGINT";
-            }
-            process5.kill(process5.pid, sig);
-          }
-        };
-      });
-      module2.exports.signals = function() {
-        return signals;
-      };
-      loaded = false;
-      load = function load2() {
-        if (loaded || !processOk(global.process)) {
-          return;
-        }
-        loaded = true;
-        emitter.count += 1;
-        signals = signals.filter(function(sig) {
-          try {
-            process5.on(sig, sigListeners[sig]);
-            return true;
-          } catch (er) {
-            return false;
-          }
-        });
-        process5.emit = processEmit;
-        process5.reallyExit = processReallyExit;
-      };
-      module2.exports.load = load;
-      originalProcessReallyExit = process5.reallyExit;
-      processReallyExit = function processReallyExit2(code) {
-        if (!processOk(global.process)) {
-          return;
-        }
-        process5.exitCode = code || 0;
-        emit("exit", process5.exitCode, null);
-        emit("afterexit", process5.exitCode, null);
-        originalProcessReallyExit.call(process5, process5.exitCode);
-      };
-      originalProcessEmit = process5.emit;
-      processEmit = function processEmit2(ev, arg) {
-        if (ev === "exit" && processOk(global.process)) {
-          if (arg !== void 0) {
-            process5.exitCode = arg;
-          }
-          var ret = originalProcessEmit.apply(this, arguments);
-          emit("exit", process5.exitCode, null);
-          emit("afterexit", process5.exitCode, null);
-          return ret;
-        } else {
-          return originalProcessEmit.apply(this, arguments);
-        }
-      };
-    }
-    var assert;
-    var signals;
-    var isWin;
-    var EE;
-    var emitter;
-    var unload;
-    var emit;
-    var sigListeners;
-    var loaded;
-    var load;
-    var originalProcessReallyExit;
-    var processReallyExit;
-    var originalProcessEmit;
-    var processEmit;
-  }
-});
-
-// ../../node_modules/get-stream/buffer-stream.js
-var require_buffer_stream = __commonJS({
-  "../../node_modules/get-stream/buffer-stream.js"(exports, module2) {
-    "use strict";
-    var { PassThrough: PassThroughStream } = require("stream");
-    module2.exports = (options) => {
-      options = __spreadValues({}, options);
-      const { array } = options;
-      let { encoding } = options;
-      const isBuffer = encoding === "buffer";
-      let objectMode = false;
-      if (array) {
-        objectMode = !(encoding || isBuffer);
-      } else {
-        encoding = encoding || "utf8";
-      }
-      if (isBuffer) {
-        encoding = null;
-      }
-      const stream = new PassThroughStream({ objectMode });
-      if (encoding) {
-        stream.setEncoding(encoding);
-      }
-      let length = 0;
-      const chunks = [];
-      stream.on("data", (chunk) => {
-        chunks.push(chunk);
-        if (objectMode) {
-          length = chunks.length;
-        } else {
-          length += chunk.length;
-        }
-      });
-      stream.getBufferedValue = () => {
-        if (array) {
-          return chunks;
-        }
-        return isBuffer ? Buffer.concat(chunks, length) : chunks.join("");
-      };
-      stream.getBufferedLength = () => length;
-      return stream;
-    };
-  }
-});
-
-// ../../node_modules/get-stream/index.js
-var require_get_stream = __commonJS({
-  "../../node_modules/get-stream/index.js"(exports, module2) {
-    "use strict";
-    var { constants: BufferConstants } = require("buffer");
-    var stream = require("stream");
-    var { promisify } = require("util");
-    var bufferStream = require_buffer_stream();
-    var streamPipelinePromisified = promisify(stream.pipeline);
-    var MaxBufferError = class extends Error {
-      constructor() {
-        super("maxBuffer exceeded");
-        this.name = "MaxBufferError";
-      }
-    };
-    async function getStream2(inputStream, options) {
-      if (!inputStream) {
-        throw new Error("Expected a stream");
-      }
-      options = __spreadValues({
-        maxBuffer: Infinity
-      }, options);
-      const { maxBuffer } = options;
-      const stream2 = bufferStream(options);
-      await new Promise((resolve2, reject) => {
-        const rejectPromise = (error) => {
-          if (error && stream2.getBufferedLength() <= BufferConstants.MAX_LENGTH) {
-            error.bufferedData = stream2.getBufferedValue();
-          }
-          reject(error);
-        };
-        (async () => {
-          try {
-            await streamPipelinePromisified(inputStream, stream2);
-            resolve2();
-          } catch (error) {
-            rejectPromise(error);
-          }
-        })();
-        stream2.on("data", () => {
-          if (stream2.getBufferedLength() > maxBuffer) {
-            rejectPromise(new MaxBufferError());
-          }
-        });
-      });
-      return stream2.getBufferedValue();
-    }
-    module2.exports = getStream2;
-    module2.exports.buffer = (stream2, options) => getStream2(stream2, __spreadProps(__spreadValues({}, options), { encoding: "buffer" }));
-    module2.exports.array = (stream2, options) => getStream2(stream2, __spreadProps(__spreadValues({}, options), { array: true }));
-    module2.exports.MaxBufferError = MaxBufferError;
-  }
-});
-
-// ../../node_modules/merge-stream/index.js
-var require_merge_stream = __commonJS({
-  "../../node_modules/merge-stream/index.js"(exports, module2) {
-    "use strict";
-    var { PassThrough } = require("stream");
-    module2.exports = function() {
-      var sources = [];
-      var output = new PassThrough({ objectMode: true });
-      output.setMaxListeners(0);
-      output.add = add;
-      output.isEmpty = isEmpty;
-      output.on("unpipe", remove);
-      Array.prototype.slice.call(arguments).forEach(add);
-      return output;
-      function add(source) {
-        if (Array.isArray(source)) {
-          source.forEach(add);
-          return this;
-        }
-        sources.push(source);
-        source.once("end", remove.bind(null, source));
-        source.once("error", output.emit.bind(output, "error"));
-        source.pipe(output, { end: false });
-        return this;
-      }
-      function isEmpty() {
-        return sources.length == 0;
-      }
-      function remove(source) {
-        sources = sources.filter(function(it) {
-          return it !== source;
-        });
-        if (!sources.length && output.readable) {
-          output.end();
-        }
-      }
-    };
-  }
-});
-
-// src/server/index.ts
-var import_reflect_metadata = require("reflect-metadata");
-var import_tsyringe19 = require("tsyringe");
-var import_http = __toESM(require("http"));
+function __awaiter(thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+}
 
 // src/shared/constants.ts
 var HEXO_BASE_DIR_KEY = "hexo-basedir";
@@ -3475,15 +2713,42 @@ router6.post("/frontmatter", async (ctx) => {
 });
 var template_default = router6;
 
-// src/server/apps/index.ts
-var apps_default = (0, import_koa_compose.default)([
-  (0, import_koa_mount.default)("/install", install_default),
-  checkInstall(),
-  (0, import_koa_mount.default)("/health", health_default),
-  (0, import_koa_mount.default)("/hexo", hexo_default),
-  (0, import_koa_mount.default)("/git", git_default),
-  settings_router_default.routes(),
-  template_default.routes()
+const auth = koaAuthentication.createAuth({
+    verify(username, password) {
+        const account = tsyringe.container.resolve(AccountService);
+        account.verify(username, password);
+    },
+    secret() {
+        return tsyringe.container.resolve(AuthStorageService).getSecret();
+    },
+});
+auth.router.post("/password", auth.auth, (ctx) => {
+    const account = tsyringe.container.resolve(AccountService);
+    const { oldPassword, password } = ctx.request.body;
+    account.verify(ctx.state.user.username, oldPassword);
+    account.setPassword(password);
+    ctx.status = 200;
+});
+auth.router.post("/username", auth.auth, (ctx, next) => {
+    const account = tsyringe.container.resolve(AccountService);
+    const { username } = ctx.request.body;
+    account.setUsername(username);
+    ctx.state.user.username = username;
+    return next();
+}, auth.cookie, (ctx) => (ctx.status = 200));
+
+/**
+ * config app entrance
+ */
+var apps = compose__default["default"]([
+    mount__default["default"]("/install", app$4),
+    checkInstall(),
+    auth.auth,
+    mount__default["default"]("/health", app$3),
+    mount__default["default"]("/hexo", app$2),
+    mount__default["default"]("/git", app$1),
+    router$1.routes(),
+    router.routes(),
 ]);
 
 // src/server/lib/http-secure.ts
@@ -3602,41 +2867,39 @@ auth.router.post("/username", auth.auth, (ctx, next) => {
   return next();
 }, auth.cookie, (ctx) => ctx.status = 200);
 
-// src/server/app.ts
-var app5 = new import_koa5.default();
-app5.use((0, import_cors.default)());
-app5.use(async (ctx, next) => {
-  try {
-    await next();
-  } catch (err) {
-    ctx.status = err.status || 500;
-    if (ctx.status === 500) {
-      ctx.body = { message: DEV ? err : "server internal error" };
-      console.error(err);
-    } else
-      ctx.body = { message: err.message };
-  }
-});
-app5.use((0, import_koa_bodyparser.default)({
-  enableTypes: ["json", "form", "text"]
+const app = new Koa__default["default"]();
+app.use(cors__default["default"]());
+app.use((ctx, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        yield next();
+    }
+    catch (err) {
+        ctx.status = err.status || 500;
+        if (ctx.status === 500) {
+            ctx.body = { message: DEV ? err : "server internal error" };
+            console.error(err);
+        }
+        else
+            ctx.body = { message: err.message };
+    }
 }));
-app5.use(http_secure_default());
-app5.use((0, import_koa_logger.default)());
-app5.use((0, import_koa_compress.default)());
-app5.use((0, import_koa_mount2.default)("/", statics));
-app5.use(auth.router.routes());
-app5.use(auth.auth);
-app5.use(apps_default);
-var app_default = app5;
+app.use(bodyParser__default["default"]({
+    enableTypes: ["json", "form", "text"],
+}));
+app.use(secure());
+app.use(logger__default["default"]());
+app.use(compress__default["default"]());
+app.use(mount__default["default"]("/", statics));
+app.use(auth.router.routes());
+app.use(apps);
 
-// src/server/index.ts
-var storage = import_tsyringe19.container.resolve(StorageService);
-var server = import_http.default.createServer(app_default.callback());
+const storage = tsyringe.container.resolve(StorageService);
+const server = http__default["default"].createServer(app.callback());
 server.on("listening", () => {
-  const addr = server.address();
-  const bind = typeof addr === "string" ? "pipe " + addr : "http://localhost:" + addr.port;
-  console.log("Server running on " + bind);
-  const his = import_tsyringe19.container.resolve(HexoInstanceService);
-  his.init();
+    const addr = server.address();
+    const bind = typeof addr === "string" ? "pipe " + addr : "http://localhost:" + addr.port;
+    console.log("Server running on " + bind);
+    const his = tsyringe.container.resolve(HexoInstanceService);
+    his.init();
 });
 server.listen(storage.get(HEXON_PORT_KEY) || HEXON_DEFAULT_PORT);

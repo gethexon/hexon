@@ -34,7 +34,6 @@ app.use(compress())
 app.use(mount("/", statics))
 
 app.use(auth.router.routes())
-app.use(auth.auth)
 app.use(apps)
 app.use(hexo.routes())
 

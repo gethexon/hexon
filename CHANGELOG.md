@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.11.2](https://git.yujianghao.cn/winwin2011/hexon/compare/v0.11.1...v0.11.2) (2022-04-13)
+
+
+### Bug Fixes
+
+* install route is blocked by auth ([15b80d1](https://git.yujianghao.cn/winwin2011/hexon/commits/15b80d15872e1e56f500e2e0ea4f2b4de64e86d7))
+
+
+
+
+
 ## [0.11.1](https://git.yujianghao.cn/winwin2011/hexon/compare/v0.11.0...v0.11.1) (2022-04-11)
 
 

@@ -9,6 +9,7 @@ import health from "./health"
 import git from "./git"
 import settingsRouter from "../routes/settings-router"
 import templateRouter from "../routes/template"
+import { auth } from "../middlewares/auth"
 
 /**
  * @deprecated 以后慢慢挪出去
@@ -16,6 +17,7 @@ import templateRouter from "../routes/template"
 export default compose([
   mount("/install", install),
   checkInstall(),
+  auth.auth,
   mount("/health", health),
   mount("/git", git),
   settingsRouter.routes(),
