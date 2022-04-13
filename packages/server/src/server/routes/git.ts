@@ -5,27 +5,6 @@ import { GitService } from "@/services/git-service"
 const router = new Router()
 
 router.prefix("/git")
-router.use(async (ctx, next) => {
-  try {
-    await next()
-  } catch (err) {
-    if (
-      [
-        "RepoOpenError",
-        "ResetHardError",
-        "PullError",
-        "AddAllError",
-        "CreateCommitError",
-        "PushError",
-      ].includes(err)
-    ) {
-      ctx.status = 500
-      ctx.body = err.name as string
-      return
-    }
-    throw err
-  }
-})
 
 router.post("/sync", async (ctx) => {
   const git = container.resolve(GitService)

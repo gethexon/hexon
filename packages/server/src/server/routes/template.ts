@@ -1,7 +1,7 @@
 import Router from "@koa/router"
 import { container } from "tsyringe"
-import { createErrorResponse, ERROR_CODE } from "@hexon/typedef"
 import { FrontmatterTemplateService } from "@/services/frontmatter-template-service"
+import { InvalidOptionsError } from "@/errors"
 
 const router = new Router()
 
@@ -17,14 +17,7 @@ router.get("/frontmatter", async (ctx) => {
 
 router.post("/frontmatter", async (ctx) => {
   const items = ctx.request.body?.items
-  if (!items) {
-    ctx.status = 400
-    ctx.body = createErrorResponse(
-      ERROR_CODE.E_BAD_REQUEST,
-      "`raw` is required"
-    )
-    return
-  }
+  if (!items) throw new InvalidOptionsError("`raw` is required")
   const frontmatterTemplateService = container.resolve(
     FrontmatterTemplateService
   )

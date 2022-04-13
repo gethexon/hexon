@@ -1,10 +1,9 @@
-import { ERROR_CODE } from "@hexon/typedef"
 import { defineStore } from "pinia"
 import { defineAsyncComponent } from "vue"
 import { ICreateOptions } from "~/api"
 import { changePassword, getInfo, login, changeUsername } from "~/api/auth"
 import { IChangePasswordFormPayload } from "~/components/forms/interface"
-import { getErrorMessage } from "~/errors"
+import { getErrorId, getErrorMessage } from "~/errors"
 import { IArticleIdentifier } from "~/interface"
 import { isPost } from "~/utils/article"
 import { useDetailStore } from "./detail"
@@ -182,7 +181,7 @@ export const useDispatcher = defineStore("dispatcher", {
     getArticle(id: IArticleIdentifier) {
       const detailStore = useDetailStore()
       detailStore.getArticle(id.type, id.source).catch((err) => {
-        if (err?.code === ERROR_CODE.E_NOT_FOUND) {
+        if (getErrorId(err) === "PostOrPageNotFoundError") {
           this.goHome()
         } else {
           this.notification.notify({

@@ -13,11 +13,11 @@
     "lerna": "^4.0.0"
   },
   "scripts": {
-    "release":"yarn build && git add . && git commit -m 'chore: build' && lerna version --conventional-commits --no-push -m 'chore: release'",
+    "release": "yarn build && git add . && git commit -m 'chore: build' && lerna version --conventional-commits --no-push -m 'chore: release'",
     "build": "lerna run build",
     "setup": "cd ./packages/server && yarn setup",
     "start": "cd ./packages/server && yarn start",
     "prd": "cd ./packages/server && yarn prd",
-    "dev": "concurrently -p [{name}] -n 'client,server' -c 'green.bold,blue.bold' 'cd ./packages/server && yarn dev' 'cd ./packages/web && yarn dev' "
+    "dev": "concurrently -p [{name}] -n 'server,client' -c 'green.bold,blue.bold' 'cd ./packages/server && yarn dev' 'cd ./packages/web && yarn dev' "
   }
 }

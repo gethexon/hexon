@@ -5,6 +5,7 @@ import { LogService } from "@/services/log-service"
 import { IStorageService, StorageService } from "~/shared/storage-service"
 import { isBlog, toRealPath } from "~/shared/utils"
 import { DEV } from "../utils"
+import { HexoInitError } from "../errors"
 
 const HEXO_BASE_DIR_KEY = "hexo-basedir"
 const HEXO_OPTIONS_KEY = "hexo-options"
@@ -18,7 +19,6 @@ export class HexoInstanceService {
   static MAX_RETRY = 2
   static CURRENT_RETRY = 0
   static TO_BE_CLEANED = 0
-  static INIT_ERROR: any
 
   private _options: HexoCore.InstanceOptions | null = null
   private _base: string | null = null
@@ -79,44 +79,33 @@ export class HexoInstanceService {
     this._logService.log("options set")
   }
 
-  async init(retry = false): Promise<void> {
-    if (!retry && HexoInstanceService.INITING) {
-      this._logService.log("pending init")
-      return this._promise
-    }
-    this._promise = new Promise<void>(async (resolve) => {
-      this._logService.log("start init")
-      HexoInstanceService.CURRENT_RETRY++
-      HexoInstanceService.INITING = true
-      HexoInstanceService.INIT_ERROR = null
-      try {
-        await this._init()
-        HexoInstanceService.CURRENT_RETRY = 0
-        HexoInstanceService.INITING = false
-      } catch (err) {
-        this._logService.error(err)
-        this._logService.error(`error when init hexo instance. `)
-        this._logService.error(
-          `retry in ${HexoInstanceService.RETRY_INTERVAL} ms.`,
-          `${HexoInstanceService.CURRENT_RETRY}/${HexoInstanceService.MAX_RETRY}`
-        )
-
-        if (
-          HexoInstanceService.CURRENT_RETRY >= HexoInstanceService.MAX_RETRY
-        ) {
-          HexoInstanceService.INIT_ERROR = err
-          HexoInstanceService.INITING = false
-          HexoInstanceService.CURRENT_RETRY = 0
-          throw HexoInstanceService.INIT_ERROR
-        }
-        await new Promise((resolve) => {
+  async _tryInit(count = HexoInstanceService.MAX_RETRY) {
+    try {
+      await this._init()
+      HexoInstanceService.INITING = false
+    } catch (err) {
+      this._logService.error(err)
+      this._logService.error(`error when init hexo instance. `)
+      this._logService.error(
+        `retry in ${HexoInstanceService.RETRY_INTERVAL} ms.`,
+        `${count} retry left`
+      )
+      if (count)
+        return new Promise((resolve) => {
           setTimeout(() => {
-            resolve(this.init(true))
+            resolve(this._tryInit(count - 1))
           }, HexoInstanceService.RETRY_INTERVAL)
         })
+      else {
+        HexoInstanceService.INITING = false
+        // String(err) 用于向客户端显示详细报错信息
+        throw new HexoInitError(String(err))
       }
-      resolve()
-    })
+    }
+  }
+
+  async init(): Promise<void> {
+    if (!HexoInstanceService.INITING) this._promise = this._tryInit()
     return this._promise
   }
 
@@ -164,7 +153,6 @@ export class HexoInstanceService {
   async runBetweenReload<T>(fn: () => T | Promise<T>): Promise<T> {
     if (!this._ready) await this.init()
     const unload = async () => {
-      HexoInstanceService.INIT_ERROR = null
       await this._hexo!.unwatch()
     }
     const load = async () => {
@@ -173,9 +161,7 @@ export class HexoInstanceService {
     }
     const markHexoInitError = (err: any) => {
       this._ready = false
-      HexoInstanceService.INIT_ERROR = err
       HexoInstanceService.INITING = false
-      throw HexoInstanceService.INIT_ERROR
     }
     HexoInstanceService.INITING = true
     await unload().catch(markHexoInitError)

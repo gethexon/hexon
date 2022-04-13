@@ -1,11 +1,4 @@
 import { inject, injectable, singleton } from "tsyringe"
-import {
-  AddAllError,
-  CreateCommitError,
-  PullError,
-  PushError,
-  ResetHardError,
-} from "@/apps/git/errors"
 import { run } from "@/utils/exec"
 import { LogService } from "@/services/log-service"
 import { HEXO_BASE_DIR_KEY } from "~/shared/constants"
@@ -48,13 +41,14 @@ export class GitService {
     await run("git", ["reset", "--hard"], { cwd }).catch((err) => {
       this._logService.error(err)
       this._logService.error("git reset hard error")
-      throw new ResetHardError()
+      throw err
     })
     this._logService.log("git reset succeed")
     if (await hasRemtoe(cwd)) {
       await run("git", ["pull"], { cwd }).catch((err) => {
-        console.error(err)
-        throw new PullError()
+        this._logService.error(err)
+        this._logService.error("git pull error")
+        throw err
       })
     } else {
       this._logService.log("no remote detected, skip pull")
@@ -76,7 +70,7 @@ export class GitService {
     await run("git", ["add", ".", "--all"], { cwd }).catch((err) => {
       this._logService.error(err)
       this._logService.error("git add all error")
-      throw new AddAllError()
+      throw err
     })
     this._logService.log("git add succeed")
     await run(
@@ -86,14 +80,14 @@ export class GitService {
     ).catch((err) => {
       this._logService.error(err)
       this._logService.error("git commit error")
-      throw new CreateCommitError()
+      throw err
     })
     this._logService.log("git commit succeed")
     if (await hasRemtoe(cwd)) {
       await run("git", ["push"], { cwd }).catch((err) => {
         this._logService.error(err)
         this._logService.error("git push error")
-        throw new PushError()
+        throw err
       })
     } else {
       this._logService.log("no remote detected, skip push")

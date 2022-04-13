@@ -7642,14 +7642,6 @@ koa-mount@^4.0.0:
     debug "^4.0.1"
     koa-compose "^4.1.0"
 
-koa-onerror@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.npmjs.org/koa-onerror/-/koa-onerror-4.2.0.tgz#c617bb71dd036f27f6ade58e70480a50ff5fd4b1"
-  integrity sha512-D15tp5rxevHqqcvOiEDbtQolG6z3NpBNupz3EUZz43pjYv5SGMom2Xz1FKM8oTya56+aq+hejPW/iBrNnC/UGQ==
-  dependencies:
-    escape-html "^1.0.3"
-    stream-wormhole "^1.1.0"
-
 koa-router@^10.1.1:
   version "10.1.1"
   resolved "https://registry.npmmirror.com/koa-router/download/koa-router-10.1.1.tgz#20809f82648518b84726cd445037813cd99f17ff"
@@ -10490,11 +10482,6 @@ statuses@2.0.1, statuses@^2.0.1:
   version "1.5.0"
   resolved "https://registry.nlark.com/statuses/download/statuses-1.5.0.tgz#161c7dac177659fd9811f43771fa99381478628c"
   integrity sha1-Fhx9rBd2Wf2YEfQ3cfqZOBR4Yow=
-
-stream-wormhole@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.nlark.com/stream-wormhole/download/stream-wormhole-1.1.0.tgz#300aff46ced553cfec642a05251885417693c33d"
-  integrity sha1-MAr/Rs7VU8/sZCoFJRiFQXaTwz0=
 
 strict-uri-encode@^2.0.0:
   version "2.0.0"

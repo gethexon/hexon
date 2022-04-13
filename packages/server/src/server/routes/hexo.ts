@@ -1,4 +1,3 @@
-import { ERROR_CODE } from "@hexon/typedef"
 import { Context } from "koa"
 import { container } from "tsyringe"
 import Router from "@koa/router"

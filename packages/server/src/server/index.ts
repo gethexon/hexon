@@ -14,6 +14,6 @@ server.on("listening", () => {
     typeof addr === "string" ? "pipe " + addr : "http://localhost:" + addr.port
   console.log("Server running on " + bind)
   const his = container.resolve(HexoInstanceService)
-  his.init()
+  his.init().catch(console.error)
 })
 server.listen(storage.get(HEXON_PORT_KEY) || HEXON_DEFAULT_PORT)

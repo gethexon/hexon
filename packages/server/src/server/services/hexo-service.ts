@@ -346,7 +346,8 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
       if (!relative.startsWith("..")) {
         this._logService.error(`${fullPath} is not valid`)
         throw new InvalidOptionsError(
-          `${options.path} is not inside hexo blog folder`
+          `${options.path} is not inside hexo blog folder`,
+          "InvalidCreatePathError"
         )
       }
       args.push("--path")
