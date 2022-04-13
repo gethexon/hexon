@@ -30,10 +30,10 @@ app.use(
     enableTypes: ["json", "form", "text"],
   })
 )
+app.use(compress())
 app.use(httpSecure())
 app.use(logger())
 
-app.use(compress())
 app.use(mount("/", statics))
 
 app.use(auth.router.routes())
