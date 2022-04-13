@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.11.3](https://git.yujianghao.cn/winwin2011/hexon/compare/v0.11.2...v0.11.3) (2022-04-13)
+
+
+### Bug Fixes
+
+* content compress conflict with http secure ([7775e17](https://git.yujianghao.cn/winwin2011/hexon/commits/7775e1744ea54db45cbe4677b942d9b1810c2876))
+
+
+
+
+
 ## [0.11.2](https://git.yujianghao.cn/winwin2011/hexon/compare/v0.11.1...v0.11.2) (2022-04-13)
 
 

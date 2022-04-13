@@ -23,13 +23,11 @@ onerror(app, {
   },
 })
 
-app.use(cors())
-
 app.use(bodyParser())
+app.use(compress())
 app.use(httpSecure())
 app.use(logger())
 
-app.use(compress())
 app.use(mount("/", statics))
 
 app.use(auth.router.routes())
