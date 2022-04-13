@@ -1482,9 +1482,9 @@ app.use((ctx, next) => __awaiter(void 0, void 0, void 0, function* () {
 app.use(bodyParser__default["default"]({
     enableTypes: ["json", "form", "text"],
 }));
+app.use(compress__default["default"]());
 app.use(secure());
 app.use(logger__default["default"]());
-app.use(compress__default["default"]());
 app.use(mount__default["default"]("/", statics));
 app.use(auth.router.routes());
 app.use(apps);
