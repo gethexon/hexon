@@ -14,6 +14,7 @@
   "scripts": {
     "beta": "node ./scripts/prerelease.js",
     "main": "node ./scripts/release.js",
+    "hot": "node ./scripts/hotfix.js",
     "build": "lerna run build",
     "setup": "cd ./packages/server && yarn setup",
     "start": "cd ./packages/server && yarn start",
