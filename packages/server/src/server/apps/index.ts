@@ -10,10 +10,12 @@ import hexo from "./hexo"
 import git from "./git"
 import settingsRouter from "../routers/settings-router"
 import templateRouter from "../routers/template"
+import { auth } from "../middlewares/auth"
 
 export default compose([
   mount("/install", install),
   checkInstall(),
+  auth.auth,
   mount("/health", health),
   mount("/hexo", hexo),
   mount("/git", git),
