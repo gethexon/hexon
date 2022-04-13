@@ -1,4 +1,5 @@
-import {Range} from "./extHostTypes";
+// @ts-nocheck
+import { Range } from "./extHostTypes"
 
 /**
  * Represents a line of text, such as a line of source code.

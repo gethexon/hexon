@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use strict'
 
 import * as TypeConverters from './vscode-converters'

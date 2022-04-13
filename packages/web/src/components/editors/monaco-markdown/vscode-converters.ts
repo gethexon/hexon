@@ -1,4 +1,12 @@
-import {editor, Range as _Range, Position as _Position, IRange, Selection as _Selection, IPosition} from "monaco-editor";
+// @ts-nocheck
+import {
+  editor,
+  Range as _Range,
+  Position as _Position,
+  IRange,
+  Selection as _Selection,
+  IPosition,
+} from "monaco-editor"
 
 import * as vscode from "./extHostTypes";
 

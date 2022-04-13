@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use strict';
 
 import {editor, KeyCode, KeyMod} from 'monaco-editor';

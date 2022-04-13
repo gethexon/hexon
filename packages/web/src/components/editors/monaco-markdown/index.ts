@@ -1,4 +1,5 @@
-import {editor} from 'monaco-editor';
+// @ts-nocheck
+import { editor } from "monaco-editor"
 import {activateFormatting} from "./formatting";
 import {setWordDefinitionFor, TextEditor} from "./vscode-monaco";
 import {activateListEditing} from "./listEditing";
