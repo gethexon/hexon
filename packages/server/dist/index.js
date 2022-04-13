@@ -22,10 +22,10 @@ var CryptoJS = require('crypto-js');
 var httpErrors = require('http-errors');
 var typedef = require('@hexon/typedef');
 var execa = require('execa');
+var koaAuthentication = require('@winwin/koa-authentication');
 var crypto = require('crypto');
 var JSEncrypt = require('node-jsencrypt');
 var serve = require('koa-static');
-var koaAuthentication = require('@winwin/koa-authentication');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -1340,12 +1340,37 @@ router.post("/frontmatter", (ctx) => __awaiter(void 0, void 0, void 0, function*
     ctx.body = { message: "OK" };
 }));
 
+const auth = koaAuthentication.createAuth({
+    verify(username, password) {
+        const account = tsyringe.container.resolve(AccountService);
+        account.verify(username, password);
+    },
+    secret() {
+        return tsyringe.container.resolve(AuthStorageService).getSecret();
+    },
+});
+auth.router.post("/password", auth.auth, (ctx) => {
+    const account = tsyringe.container.resolve(AccountService);
+    const { oldPassword, password } = ctx.request.body;
+    account.verify(ctx.state.user.username, oldPassword);
+    account.setPassword(password);
+    ctx.status = 200;
+});
+auth.router.post("/username", auth.auth, (ctx, next) => {
+    const account = tsyringe.container.resolve(AccountService);
+    const { username } = ctx.request.body;
+    account.setUsername(username);
+    ctx.state.user.username = username;
+    return next();
+}, auth.cookie, (ctx) => (ctx.status = 200));
+
 /**
  * config app entrance
  */
 var apps = compose__default["default"]([
     mount__default["default"]("/install", app$4),
     checkInstall(),
+    auth.auth,
     mount__default["default"]("/health", app$3),
     mount__default["default"]("/hexo", app$2),
     mount__default["default"]("/git", app$1),
@@ -1438,30 +1463,6 @@ const statics = serve__default["default"](ROOT, {
     },
 });
 
-const auth = koaAuthentication.createAuth({
-    verify(username, password) {
-        const account = tsyringe.container.resolve(AccountService);
-        account.verify(username, password);
-    },
-    secret() {
-        return tsyringe.container.resolve(AuthStorageService).getSecret();
-    },
-});
-auth.router.post("/password", auth.auth, (ctx) => {
-    const account = tsyringe.container.resolve(AccountService);
-    const { oldPassword, password } = ctx.request.body;
-    account.verify(ctx.state.user.username, oldPassword);
-    account.setPassword(password);
-    ctx.status = 200;
-});
-auth.router.post("/username", auth.auth, (ctx, next) => {
-    const account = tsyringe.container.resolve(AccountService);
-    const { username } = ctx.request.body;
-    account.setUsername(username);
-    ctx.state.user.username = username;
-    return next();
-}, auth.cookie, (ctx) => (ctx.status = 200));
-
 const app = new Koa__default["default"]();
 app.use(cors__default["default"]());
 app.use((ctx, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -1486,7 +1487,6 @@ app.use(logger__default["default"]());
 app.use(compress__default["default"]());
 app.use(mount__default["default"]("/", statics));
 app.use(auth.router.routes());
-app.use(auth.auth);
 app.use(apps);
 
 const storage = tsyringe.container.resolve(StorageService);
