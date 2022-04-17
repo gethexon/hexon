@@ -1,9 +1,12 @@
-import { inject, injectable, singleton } from "tsyringe"
-import { run } from "@/utils/exec"
-import { LogService } from "@/services/log-service"
-import { HEXO_BASE_DIR_KEY } from "~/shared/constants"
+import { inject , injectable , singleton } from "tsyringe"
 import { StorageService } from "~/shared/storage-service"
+import { scriptStore } from "~/shared/store"
 import { toRealPath } from "~/shared/utils"
+import { LogService } from "@/services/log-service"
+import { run } from "@/utils/exec"
+import { ScriptError } from "../errors"
+import { ExecService } from "./exec-service"
+import { HexoInstanceService } from "./hexo-instance-service"
 
 async function isClean(repoPath: string) {
   return !(await run("git", ["status", "-s"], { cwd: repoPath }))
@@ -27,12 +30,23 @@ async function hasRemtoe(repoPath: string) {
 export class GitService {
   constructor(
     @inject(StorageService) private storage: StorageService,
-    @inject(LogService) private _logService: LogService
+    @inject(LogService) private _logService: LogService,
+    @inject(ExecService) private _execService: ExecService
   ) {
     this._logService.setScope("git-service")
   }
   async sync() {
-    const base = this.storage.get<string>(HEXO_BASE_DIR_KEY)
+    if (scriptStore.hasScript("git-sync"))
+      return this._execService
+        .run(scriptStore.getScript("git-sync"))
+        .catch((err) => {
+          this._logService.error(err)
+          throw new ScriptError(
+            "fail to run git sync script",
+            "GitSyncScriptError"
+          )
+        })
+    const base = this.storage.get<string>(HexoInstanceService.HEXO_BASE_DIR_KEY)
     const cwd = toRealPath(base)
     if (!(await hasRepo(cwd))) {
       this._logService.log("not git repo, skipped")
@@ -57,7 +71,17 @@ export class GitService {
   }
 
   async save() {
-    const base = this.storage.get<string>(HEXO_BASE_DIR_KEY)
+    if (scriptStore.hasScript("git-save"))
+      return this._execService
+        .run(scriptStore.getScript("git-save"))
+        .catch((err) => {
+          this._logService.error(err)
+          throw new ScriptError(
+            "fail to run git save script",
+            "GitSaveScriptError"
+          )
+        })
+    const base = this.storage.get<string>(HexoInstanceService.HEXO_BASE_DIR_KEY)
     const cwd = toRealPath(base)
     if (!(await hasRepo(cwd))) {
       this._logService.log("not git repo, skipped")

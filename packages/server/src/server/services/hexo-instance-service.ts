@@ -7,12 +7,12 @@ import { isBlog, toRealPath } from "~/shared/utils"
 import { DEV } from "../utils"
 import { HexoInitError } from "../errors"
 
-const HEXO_BASE_DIR_KEY = "hexo-basedir"
-const HEXO_OPTIONS_KEY = "hexo-options"
 
 @injectable()
 @singleton()
 export class HexoInstanceService {
+  static HEXO_BASE_DIR_KEY = "hexo-basedir" as const
+  static HEXO_OPTIONS_KEY = "hexo-options" as const
   static INITING = false
   static PENDING_COUNT = 0
   static RETRY_INTERVAL = 1000
@@ -38,7 +38,7 @@ export class HexoInstanceService {
   }
 
   private _setHexoBase() {
-    const base = this._storageService.get<string>(HEXO_BASE_DIR_KEY)
+    const base = this._storageService.get<string>(HexoInstanceService.HEXO_BASE_DIR_KEY)
     const base_dir = path.resolve(__dirname, toRealPath(base))
     if (!isBlog(base_dir))
       throw new Error(`"${base_dir}" is not a hexo blog folder`)
@@ -47,7 +47,7 @@ export class HexoInstanceService {
 
   private _setOptions() {
     this._options =
-      this._storageService.get<HexoCore.InstanceOptions>(HEXO_OPTIONS_KEY) || {}
+      this._storageService.get<HexoCore.InstanceOptions>(HexoInstanceService.HEXO_OPTIONS_KEY) || {}
     this._options.silent = DEV ? false : this._options.silent
   }
 
@@ -73,7 +73,7 @@ export class HexoInstanceService {
 
   async setOptions(options: HexoCore.InstanceOptions) {
     this._storageService.set<HexoCore.InstanceOptions>(
-      HEXO_OPTIONS_KEY,
+      HexoInstanceService.HEXO_OPTIONS_KEY,
       options
     )
     this._logService.log("options set")

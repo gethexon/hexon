@@ -4,23 +4,16 @@ import inquirer from "inquirer"
 import { container } from "tsyringe"
 import { StorageService } from "~/shared/storage-service"
 import { isBlog, toRealPath } from "~/shared/utils"
-import { logo, version } from "./constants"
-import { printer } from "./utils"
-import {
-  HEXON_DEFAULT_PORT,
-  HEXON_PORT_KEY,
-  HEXO_BASE_DIR_KEY,
-} from "~/shared/constants"
+import { logo } from "./constants"
+import { printer, printVersion } from "./utils"
+import { HEXON_DEFAULT_PORT, HEXON_PORT_KEY } from "~/shared/constants"
+import { HexoInstanceService } from "~/server/services/hexo-instance-service"
 
 export default async function () {
   console.clear()
   console.log(chalk.blue(logo))
 
-  printer.section("Check version")
-  printer.info(`Current Version: ${version}`)
-  if (version.indexOf("-") >= 0) {
-    printer.warn("This is a preview version!")
-  }
+  printVersion()
 
   printer.section("Configuation")
   const portPrompt = {
@@ -52,7 +45,7 @@ export default async function () {
   }
   const answer = await inquirer.prompt([portPrompt, rootPrompt])
   const storage = container.resolve(StorageService)
-  storage.set<string>(HEXO_BASE_DIR_KEY, answer.root)
+  storage.set<string>(HexoInstanceService.HEXO_BASE_DIR_KEY, answer.root)
   storage.set<string>(HEXON_PORT_KEY, answer.port)
 
   printer.section("Install")

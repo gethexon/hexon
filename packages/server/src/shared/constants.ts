@@ -1,9 +1,9 @@
 /**
- * @deprecated
+ * @deprecated use HexoInstanceService.HEXO_BASE_DIR_KEY
  */
 export const HEXO_BASE_DIR_KEY = "hexo-basedir"
 /**
- * @deprecated
+ * @deprecated use HexoInstanceService.HEXO_OPTIONS_KEY
  */
 export const HEXO_OPTIONS_KEY = "hexo-options"
 export const BRIEF_LENGTH = 500

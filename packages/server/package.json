@@ -6,6 +6,8 @@
   "license": "GPL-3.0",
   "scripts": {
     "setup": "node ./bin/index.js install",
+    "resetpwd": "node ./bin/index.js resetpwd",
+    "script": "node ./bin/index.js script",
     "start": "export DEBUG=null && export NODE_ENV=production && node dist/index.js",
     "prd": "pm2 start dist/index.js --name hexon -o log/pm2-log.log -e log/pm2-err.log",
     "dev": "pnpm run build && nodemon ./dist/index.js",
@@ -51,6 +53,7 @@
     "@koa/cors": "^3.3.0",
     "@koa/router": "^10.0.0",
     "@winwin/koa-authentication": "^0.2.1",
+    "@winwin/server-reactive-store": "^0.2.2",
     "basic-auth": "^2.0.1",
     "chalk": "^5.0.1",
     "commander": "^9.1.0",

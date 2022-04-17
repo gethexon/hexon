@@ -27,6 +27,7 @@ app.use(async (ctx, next) => {
     const id = err.id || "UnkownError"
     ctx.status = status
     ctx.body = { status, message, id }
+    if (status === 500) logService.error(err)
   }
 })
 

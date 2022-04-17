@@ -4,7 +4,7 @@ import { readJsonFile } from "./utils"
 
 export const logo: string = (() => {
   try {
-    fs.readFileSync(path.resolve(__dirname, "../assets/logo.art"), "utf-8")
+    return fs.readFileSync(path.resolve(process.cwd(), "./assets/logo.art"), "utf-8")
   } catch (err) {
     console.error(err)
     return "Hexon"

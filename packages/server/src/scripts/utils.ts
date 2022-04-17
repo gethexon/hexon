@@ -1,6 +1,6 @@
 import fs from "fs"
-import path from "path"
 import chalk from "chalk"
+import { version } from "./constants"
 
 function section(title: string) {
   console.log()
@@ -39,4 +39,12 @@ export const printer = {
 export function readJsonFile(filename: string) {
   const file = fs.readFileSync(filename, { encoding: "utf-8" })
   return JSON.parse(file)
+}
+
+export function printVersion(){
+    printer.section("Check version")
+    printer.info(`Current Version: ${version}`)
+    if (version.indexOf("-") >= 0) {
+      printer.warn("This is a preview version!")
+    }
 }

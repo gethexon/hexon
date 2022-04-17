@@ -3,7 +3,11 @@ import { inject, injectable, singleton } from "tsyringe"
 import fs from "fs"
 import HexoCore from "hexo"
 import { BRIEF_LENGTH } from "~/shared/constants"
-import { InvalidOptionsError, PostOrPageNotFoundError } from "@/errors"
+import {
+  InvalidOptionsError,
+  PostOrPageNotFoundError,
+  ScriptError,
+} from "@/errors"
 import { HexoInstanceService } from "@/services/hexo-instance-service"
 import { LogService } from "@/services/log-service"
 import { BriefPage, BriefPost, Category, Page, Post, Tag } from "@/types/hexo"
@@ -17,6 +21,8 @@ import {
   toPost,
   toTag,
 } from "@/utils/hexo"
+import { scriptStore } from "~/shared/store"
+import { ExecService } from "./exec-service"
 
 interface IHexoAPI {
   listPost(): Promise<BriefPost[]>
@@ -129,7 +135,8 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
   constructor(
     @inject(LogService) private _logService: LogService,
     @inject(HexoInstanceService)
-    private _hexoInstanceService: HexoInstanceService
+    private _hexoInstanceService: HexoInstanceService,
+    @inject(ExecService) private _execService: ExecService
   ) {
     this._logService.setScope("hexo-service")
   }
@@ -281,6 +288,18 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
 
   //#region IHexoCommand
   async deploy(options: IDeployOptions = {}) {
+    if (scriptStore.hasScript("hexo-deploy")) {
+      await this._execService
+        .run(scriptStore.getScript("hexo-deploy"))
+        .catch((err) => {
+          this._logService.error(err)
+          throw new ScriptError(
+            "fail to run hexo deploy script",
+            "HexoDeployScriptError"
+          )
+        })
+      return
+    }
     const { generate = false } = options
     const args: string[] = []
     if (generate) args.push("--generate")
@@ -292,6 +311,18 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
   }
 
   async generate(options: IGenerateOptions = {}) {
+    if (scriptStore.hasScript("hexo-generate")) {
+      await this._execService
+        .run(scriptStore.getScript("hexo-generate"))
+        .catch((err) => {
+          this._logService.error(err)
+          throw new ScriptError(
+            "fail to run hexo generate script",
+            "HexoGenerateScriptError"
+          )
+        })
+      return
+    }
     const {
       deploy = false,
       watch = false,
@@ -313,6 +344,18 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
   }
 
   async clean() {
+    if (scriptStore.hasScript("hexo-clean")) {
+      await this._execService
+        .run(scriptStore.getScript("hexo-clean"))
+        .catch((err) => {
+          this._logService.error(err)
+          throw new ScriptError(
+            "fail to run hexo clean script",
+            "HexoCleanScriptError"
+          )
+        })
+      return
+    }
     this.runWithoutModifiedOption(async (hexo) => {
       await hexo.call("clean")
       await hexo.exit()

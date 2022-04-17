@@ -11,7 +11,16 @@ function buildServer() {
         platform: "node",
         target: "node12",
         outfile: "dist/index.js",
-        plugins: [esbuildPluginNodeExternals({ include: ["execa", "chalk"] })],
+        plugins: [
+          esbuildPluginNodeExternals({
+            include: [
+              "execa",
+              "chalk",
+              "@winwin/server-reactive-store",
+              // 为了让 store 工作，如果不加，store 中的 watch 会失效
+            ],
+          }),
+        ],
       })
       .then(() => {
         // eslint-disable-next-line no-console
@@ -30,7 +39,16 @@ function buildBin() {
         platform: "node",
         target: "node12",
         outfile: "bin/index.js",
-        plugins: [esbuildPluginNodeExternals({ include: ["execa", "chalk"] })],
+        plugins: [
+          esbuildPluginNodeExternals({
+            include: [
+              "execa",
+              "chalk",
+              "@winwin/server-reactive-store",
+              // 为了让 store 工作，如果不加，store 中的 watch 会失效
+            ],
+          }),
+        ],
       })
       .then(() => {
         // eslint-disable-next-line no-console

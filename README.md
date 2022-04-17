@@ -32,6 +32,14 @@ yarn start # for plain nodejs
 yarn prd # for pm2
 ```
 
+## Commands
+
+- `yarn setup`: install and config
+- `yarn start`: start hexon with node
+- `yarn prd`: start hexon with pm2
+- `yarn resetpwd [new-password]`: reset password to `[new password]`
+- `yarn script`: manage custom script
+
 ## 🖥️ Develop
 
 Check out `develop` branch and show your magic!

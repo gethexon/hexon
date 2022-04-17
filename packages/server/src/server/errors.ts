@@ -16,3 +16,11 @@ export class InvalidOptionsError extends BadRequest {
     super(message)
   }
 }
+
+export class ScriptError extends InternalServerError {
+  public id: string
+  constructor(message: string, id = "ScriptError") {
+    super(message)
+    this.id = id
+  }
+}
