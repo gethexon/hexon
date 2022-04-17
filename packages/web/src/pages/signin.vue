@@ -26,8 +26,8 @@ const vars = useThemeVars()
   </div>
 </template>
 
-<route>
-{
-  name: "signin",
-}
+<route lang="yaml">
+meta:
+  name: signin
+  layout: unauthorized
 </route>

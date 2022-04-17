@@ -34,8 +34,8 @@ const models: ISlideViewItem[] = [
 }
 </style>
 
-<route>
-{
-  name: "install",
-}
+<route lang="yaml">
+meta:
+  name: install
+  layout: unauthorized
 </route>
