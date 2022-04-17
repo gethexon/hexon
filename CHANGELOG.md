@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.12.0](https://git.yujianghao.cn/winwin2011/hexon/compare/v0.11.3...v0.12.0) (2022-04-17)
+
+
+### Features
+
+* custom script ([#40](https://git.yujianghao.cn/winwin2011/hexon/issues/40)) ([55e4830](https://git.yujianghao.cn/winwin2011/hexon/commits/55e48302c568c10fa795a9a1900907fbabdb98a9)), closes [#39](https://git.yujianghao.cn/winwin2011/hexon/issues/39)
+* monaco save action ([#37](https://git.yujianghao.cn/winwin2011/hexon/issues/37)) ([213902f](https://git.yujianghao.cn/winwin2011/hexon/commits/213902fbc33862ebec32db85c7b46b6e71cdbd93)), closes [#33](https://git.yujianghao.cn/winwin2011/hexon/issues/33)
+
+
+
+
+
 ## [0.11.3](https://git.yujianghao.cn/winwin2011/hexon/compare/v0.11.2...v0.11.3) (2022-04-13)
 
 

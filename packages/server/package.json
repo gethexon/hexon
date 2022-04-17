@@ -1,6 +1,6 @@
 {
   "name": "@hexon/server",
-  "version": "0.11.3",
+  "version": "0.12.0",
   "private": true,
   "author": "winwin_2011 <yjh2011@live.com>",
   "license": "GPL-3.0",
@@ -49,7 +49,7 @@
     "typescript": "^4.6.3"
   },
   "dependencies": {
-    "@hexon/typedef": "^0.11.0",
+    "@hexon/typedef": "^0.12.0",
     "@koa/cors": "^3.3.0",
     "@koa/router": "^10.0.0",
     "@winwin/koa-authentication": "^0.2.1",
