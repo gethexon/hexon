@@ -1,7 +1,7 @@
 import path from "path"
 import serve from "koa-static"
 
-const ROOT = path.resolve(process.cwd(), "../web/dist")
+const ROOT = path.resolve(process.cwd(), "../client/dist")
 
 export const statics = serve(ROOT, {
   setHeaders: (res, fullpath) => {
