@@ -42,7 +42,9 @@ pnpm prd # for pm2
 
 ## 🖥️ Develop
 
-Check out `develop` branch and show your magic!
+- Check out `develop` branch.
+- Run `pnpm dev-init` install dependencies and config hexon.
+- Run `pnpm dev` and show your magic!
 
 ## ❓ Want to know more?
 
