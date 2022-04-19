@@ -28,17 +28,17 @@ rm -rf hexon
 ### Start
 
 ```bash
-pnpm run start # for plain nodejs
-pnpm run prd # for pm2
+pnpm start # for plain nodejs
+pnpm prd # for pm2
 ```
 
 ## Commands
 
 - `pnpm run setup`: install and config
-- `pnpm run start`: start hexon with node
-- `pnpm run prd`: start hexon with pm2
-- `pnpm run resetpwd [new-password]`: reset password to `[new password]`
-- `pnpm run script`: manage custom script
+- `pnpm start`: start hexon with node
+- `pnpm prd`: start hexon with pm2
+- `pnpm resetpwd [new-password]`: reset password to `[new password]`
+- `pnpm script`: manage custom script
 
 ## 🖥️ Develop
 

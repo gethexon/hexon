@@ -5,7 +5,7 @@
   "author": "winwin2011 <yjh2011@live.com>",
   "license": "GPL-3.0",
   "scripts": {
-    "release": "pnpm build && git add . && git commit -m 'chore: build' && bumpp --commit --tag",
+    "release": "pnpm build && git add . && git commit -m 'chore: build' && standard-version",
     "build": "concurrently -p [{name}] -n 'server,client' -c 'green.bold,blue.bold' 'cd ./server && pnpm build' 'cd ./client && pnpm build' ",
     "setup": "cd ./server && pnpm install -P && pnpm run setup",
     "script": "cd ./server && pnpm script",
@@ -15,7 +15,7 @@
     "dev": "concurrently -p [{name}] -n 'server,client' -c 'green.bold,blue.bold' 'cd ./server && pnpm dev' 'cd ./client && pnpm dev' "
   },
   "devDependencies": {
-    "bumpp": "^7.1.1",
-    "concurrently": "^7.1.0"
+    "concurrently": "^7.1.0",
+    "standard-version": "^9.3.2"
   }
 }
