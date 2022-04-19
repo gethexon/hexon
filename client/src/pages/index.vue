@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { nextTick, onMounted, ref } from "vue"
+import { useLocalStorage } from "@vueuse/core"
+import { MainPart , SidePart , SideSplit } from "@winwin/vue-side-split"
+import { nextTick , onMounted , ref } from "vue"
 import { RouterView } from "vue-router"
 import { useDispatcher } from "~/store/dispatcher"
-import SplitView from "~/lib/splitview"
 import preLoadAll from "~/utils/preload"
 import ArticleListView from "~/views/ArticleListView.vue"
 import HomeNavView from "~/views/HomeNavView.vue"
@@ -17,18 +18,7 @@ onMounted(() => {
   dispatcher.loadBlogData()
   dispatcher.getInfo()
 })
-const sep11 = ref(200)
-const sep22 = ref(320)
-const config = {
-  sep1: {
-    min: 150,
-    max: 300,
-  },
-  sep2: {
-    min: 200,
-    max: 500,
-  },
-}
+const sep = useLocalStorage("index-sep", { nav: 200, list: 320 })
 
 const search = ref("")
 
@@ -43,30 +33,24 @@ const vars = useThemeVars()
 vars.value.backgroundColorTertiary
 </script>
 <template>
-  <SplitView
-    v-model:sep1at="sep11"
-    v-model:sep2at="sep22"
-    :sep1="config.sep1"
-    :sep2="config.sep2"
-    class="h-full w-full"
-  >
-    <template v-slot:first>
+  <SideSplit class="index-page w-full h-full">
+    <SidePart :min="150" v-model="sep.nav" :max="300">
       <HomeNavView />
-    </template>
-    <template v-slot:second>
+    </SidePart>
+    <SidePart :min="200" v-model="sep.list" :max="500">
       <div class="home-list-view flex flex-col w-full h-full">
         <HSearchBar v-model="search" class="flex-shrink-0" @on-add="onAdd" />
         <div class="overflow-auto flex-1">
           <ArticleListView />
         </div>
       </div>
-    </template>
-    <template v-slot:third>
+    </SidePart>
+    <MainPart type="main">
       <div class="home-viewer-view w-full h-full">
         <RouterView />
       </div>
-    </template>
-  </SplitView>
+    </MainPart>
+  </SideSplit>
 </template>
 <style lang="less" scoped>
 .home-list-view {

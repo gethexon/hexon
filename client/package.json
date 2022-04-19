@@ -12,6 +12,7 @@
     "@vueuse/core": "^8.2.5",
     "@vueuse/integrations": "^8.2.5",
     "@winwin/vue-global-theming": "^0.1.5",
+    "@winwin/vue-side-split": "^0.0.5",
     "@winwin/vue-simple-account": "^0.0.5",
     "animejs": "^3.2.1",
     "axios": "^0.26.1",

@@ -18,6 +18,7 @@ specifiers:
   '@vueuse/core': ^8.2.5
   '@vueuse/integrations': ^8.2.5
   '@winwin/vue-global-theming': ^0.1.5
+  '@winwin/vue-side-split': ^0.0.5
   '@winwin/vue-simple-account': ^0.0.5
   animejs: ^3.2.1
   autoprefixer: ^10.4.4
@@ -64,6 +65,7 @@ dependencies:
   '@vueuse/core': 8.2.6_vue@3.2.33
   '@vueuse/integrations': 8.2.6_0825a8bf54be76509318bbdd50245806
   '@winwin/vue-global-theming': 0.1.5
+  '@winwin/vue-side-split': 0.0.5_vue@3.2.33
   '@winwin/vue-simple-account': 0.0.5
   animejs: 3.2.1
   axios: 0.26.1
@@ -1100,6 +1102,17 @@ packages:
     resolution: {integrity: sha512-AXgpmZzNrOe7mAMAPQb1fOh74ZcOVD1huBSe3CxuTGsGIJl+wy7KuEF3aEDWexdxceHgenbIdMgPvAo4ucUhfg==}
     dependencies:
       vue: 3.2.33
+    dev: false
+
+  /@winwin/vue-side-split/0.0.5_vue@3.2.33:
+    resolution: {integrity: sha512-gLLu36cIVFTJm0LQDGU9U7CH9J17/7WqpNpwCFE1OTLNCrlwt3EEFYgMFM+dwtozD9mp9wwFUTX/hQDUO5SYow==}
+    peerDependencies:
+      vue: ^3.2.33
+    dependencies:
+      '@vueuse/core': 8.2.6_vue@3.2.33
+      vue: 3.2.33
+    transitivePeerDependencies:
+      - '@vue/composition-api'
     dev: false
 
   /@winwin/vue-simple-account/0.0.5:
