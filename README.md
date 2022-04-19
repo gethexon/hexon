@@ -14,8 +14,8 @@ Make sure your `git`, `hexo` and `Node.js` workflow is fine. Hexon only provide 
 
 ```bash
 git clone https://github.com/gethexon/hexon
-yarn
-yarn setup
+pnpm install
+pnpm run setup
 ```
 
 ### Uninstall
@@ -28,17 +28,17 @@ rm -rf hexon
 ### Start
 
 ```bash
-yarn start # for plain nodejs
-yarn prd # for pm2
+pnpm run start # for plain nodejs
+pnpm run prd # for pm2
 ```
 
 ## Commands
 
-- `yarn setup`: install and config
-- `yarn start`: start hexon with node
-- `yarn prd`: start hexon with pm2
-- `yarn resetpwd [new-password]`: reset password to `[new password]`
-- `yarn script`: manage custom script
+- `pnpm run setup`: install and config
+- `pnpm run start`: start hexon with node
+- `pnpm run prd`: start hexon with pm2
+- `pnpm run resetpwd [new-password]`: reset password to `[new password]`
+- `pnpm run script`: manage custom script
 
 ## 🖥️ Develop
 

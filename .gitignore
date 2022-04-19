@@ -1,6 +1,5 @@
 node_modules
-lerna-debug.log
-yarn-error.log
+*.log
 stats.html
 data
 log

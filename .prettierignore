@@ -4,8 +4,7 @@ CHANGELOG.md
 lerna.json
 #gitignore
 node_modules
-lerna-debug.log
-yarn-error.log
+*.log
 stats.html
 data
 log

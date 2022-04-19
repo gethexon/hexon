@@ -1,25 +1,21 @@
 {
-  "name": "root",
+  "name": "hexon",
+  "version": "0.12.0",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "author": "winwin2011 <yjh2011@live.com>",
   "license": "GPL-3.0",
-  "devDependencies": {
-    "chalk": "^5.0.1",
-    "concurrently": "^7.1.0",
-    "execa": "^6.1.0",
-    "inquirer": "^8.2.2",
-    "lerna": "^4.0.0"
-  },
   "scripts": {
-    "release": "yarn build && git add . && git commit -m 'chore: build' && lerna version --conventional-commits --no-push -m 'chore: release %s'",
-    "build": "lerna run build",
-    "setup": "cd ./packages/server && yarn setup",
-    "script": "cd ./packages/server && yarn script",
-    "resetpwd": "cd ./packages/server && yarn resetpwd",
-    "start": "cd ./packages/server && yarn start",
-    "prd": "cd ./packages/server && yarn prd",
-    "dev": "concurrently -p [{name}] -n 'server,client' -c 'green.bold,blue.bold' 'cd ./packages/server && yarn dev' 'cd ./packages/web && yarn dev' "
+    "release": "pnpm build && git add . && git commit -m 'chore: build' && bumpp --commit --tag",
+    "build": "concurrently -p [{name}] -n 'server,client' -c 'green.bold,blue.bold' 'cd ./server && pnpm build' 'cd ./client && pnpm build' ",
+    "setup": "cd ./server && pnpm install -P && pnpm run setup",
+    "script": "cd ./server && pnpm script",
+    "resetpwd": "cd ./server && pnpm resetpwd",
+    "start": "cd ./server && pnpm start",
+    "prd": "cd ./server && pnpm prd",
+    "dev": "concurrently -p [{name}] -n 'server,client' -c 'green.bold,blue.bold' 'cd ./server && pnpm dev' 'cd ./client && pnpm dev' "
+  },
+  "devDependencies": {
+    "bumpp": "^7.1.1",
+    "concurrently": "^7.1.0"
   }
 }
