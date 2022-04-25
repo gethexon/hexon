@@ -8,14 +8,9 @@ import { logo } from "./constants"
 import { printer, printVersion } from "./utils"
 import { HEXON_DEFAULT_PORT, HEXON_PORT_KEY } from "~/shared/constants"
 import { HexoInstanceService } from "~/server/services/hexo-instance-service"
+import { AccountService } from "~/shared/account-storage-service"
 
-export default async function () {
-  console.clear()
-  console.log(chalk.blue(logo))
-
-  printVersion()
-
-  printer.section("Configuation")
+async function getPort() {
   const portPrompt = {
     name: "port",
     message: "Which port do you like Hexon running at?",
@@ -25,6 +20,11 @@ export default async function () {
     },
     prefix: chalk.blue("?"),
   }
+  const answer = await inquirer.prompt(portPrompt)
+  return String(answer.port as number)
+}
+
+async function getRoot() {
   const rootPrompt = {
     name: "root",
     message: `Your hexo blog path? ${chalk.grey(
@@ -43,10 +43,49 @@ export default async function () {
       }
     },
   }
-  const answer = await inquirer.prompt([portPrompt, rootPrompt])
+  const answer = await inquirer.prompt(rootPrompt)
+  return answer.root as string
+}
+
+async function getUserInfo() {
+  const answer = await inquirer.prompt([
+    {
+      name: "username",
+      message: "Username ?",
+      validate(v: string) {
+        if (!v) return "Must not empty"
+        return true
+      },
+    },
+    {
+      name: "password",
+      message: "Password ?",
+      validate(v: string) {
+        if (!v) return "Must not empty"
+        return true
+      },
+    },
+  ])
+  const { username, password } = answer as {
+    username: string
+    password: string
+  }
+  return { username, password }
+}
+
+export default async function () {
+  console.clear()
+  console.log(chalk.blue(logo))
+
+  printVersion()
+
+  printer.section("Configuration")
   const storage = container.resolve(StorageService)
-  storage.set<string>(HexoInstanceService.HEXO_BASE_DIR_KEY, answer.root)
-  storage.set<string>(HEXON_PORT_KEY, answer.port)
+  storage.set<string>(HEXON_PORT_KEY, await getPort())
+  storage.set<string>(HexoInstanceService.HEXO_BASE_DIR_KEY, await getRoot())
+  const { username, password } = await getUserInfo()
+  const account = container.resolve(AccountService)
+  account.setUserInfo(username, password)
 
   printer.section("Install")
   const base = path.resolve(__dirname, "../../..")
