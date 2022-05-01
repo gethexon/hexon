@@ -1,6 +1,14 @@
 import esbuild from "esbuild"
 import { esbuildPluginNodeExternals } from "esbuild-plugin-node-externals"
 import chalk from "chalk"
+
+const INCLUDE_MODULES = [
+  "execa",
+  "chalk",
+  "@winwin/server-reactive-store",
+  // 为了让 store 工作，如果不加，store 中的 watch 会失效
+  "strip-ansi",
+]
 // FIXME replace with picocolors
 function buildServer() {
   return new Promise((resolve) => {
@@ -13,12 +21,7 @@ function buildServer() {
         outfile: "dist/index.js",
         plugins: [
           esbuildPluginNodeExternals({
-            include: [
-              "execa",
-              "chalk",
-              "@winwin/server-reactive-store",
-              // 为了让 store 工作，如果不加，store 中的 watch 会失效
-            ],
+            include: INCLUDE_MODULES,
           }),
         ],
       })
@@ -41,12 +44,7 @@ function buildBin() {
         outfile: "bin/index.js",
         plugins: [
           esbuildPluginNodeExternals({
-            include: [
-              "execa",
-              "chalk",
-              "@winwin/server-reactive-store",
-              // 为了让 store 工作，如果不加，store 中的 watch 会失效
-            ],
+            include: INCLUDE_MODULES,
           }),
         ],
       })

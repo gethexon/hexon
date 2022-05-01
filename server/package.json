@@ -72,6 +72,7 @@
     "node-jsencrypt": "^1.0.0",
     "reflect-metadata": "^0.1.13",
     "simple-json-db": "^2.0.0",
+    "strip-ansi": "^7.0.1",
     "tsyringe": "^4.6.0",
     "winston": "^3.7.2"
   }

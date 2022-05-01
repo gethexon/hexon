@@ -371,6 +371,7 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
     args.push(filename)
     const info = await run("hexo", args, {
       cwd: await this._hexoInstanceService.getBaseDir(),
+      stripAnsi: true,
     })
     const fullSource = expandHomeDir(info.split("Published: ")[1].trim())
     const article = (await this.getPostByFullSource(fullSource))!
@@ -405,6 +406,7 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
     const info = await this._hexoInstanceService.runBetweenReload(async () => {
       return await run("hexo", args, {
         cwd: await this._hexoInstanceService.getBaseDir(),
+        stripAnsi: true,
       })
     })
     const fullSource = expandHomeDir(info.split("Created: ")[1].trim())
