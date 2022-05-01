@@ -369,10 +369,13 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
     const args: string[] = ["publish"]
     if (layout) args.push(layout)
     args.push(filename)
-    const info = await run("hexo", args, {
-      cwd: await this._hexoInstanceService.getBaseDir(),
-      stripAnsi: true,
-    })
+    const info = await this._hexoInstanceService.runBetweenReload(
+      async () =>
+        await run("hexo", args, {
+          cwd: await this._hexoInstanceService.getBaseDir(),
+          stripAnsi: true,
+        })
+    )
     const fullSource = expandHomeDir(info.split("Published: ")[1].trim())
     const article = (await this.getPostByFullSource(fullSource))!
     const res = await this.WithCategoriesTagsBriefArticleList(article)
