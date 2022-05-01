@@ -12,7 +12,7 @@
     "resetpwd": "cd ./server && pnpm resetpwd",
     "start": "cd ./server && pnpm start",
     "prd": "cd ./server && pnpm prd",
-    "dev-init": "pnpm install && concurrently -p [{name}] -n 'server,client' -c 'green.bold,blue.bold' 'cd ./server && pnpm i' 'cd ./client && pnpm i' && cd ./server && pnpm run setup",
+    "dev-init": "pnpm install && concurrently -p [{name}] -n 'server,client' -c 'green.bold,blue.bold' 'cd ./server && pnpm i' 'cd ./client && pnpm i' && cd ./server && pnpm run build && pnpm run setup",
     "dev": "concurrently -p [{name}] -n 'server,client' -c 'green.bold,blue.bold' 'cd ./server && pnpm dev' 'cd ./client && pnpm dev' "
   },
   "devDependencies": {
