@@ -2012,7 +2012,7 @@ async function install_default() {
   const account = import_tsyringe5.container.resolve(AccountService);
   account.setUserInfo(username, password);
   printer.section("Install");
-  const base = import_path5.default.resolve(__dirname, "../../..");
+  const base = import_path5.default.resolve(__dirname, "../..");
   printer.success(`Hexon has been installed to \`${base}\``);
   printer.log(`Run \`pnpm start\` to start`);
   printer.log(`Run \`pnpm prd\` to start with pm2`);
