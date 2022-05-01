@@ -1,7 +1,15 @@
-# Change Log
+# Changelog
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### [0.12.1](https://git.yujianghao.cn/winwin2011/hexon/compare/v0.12.0...v0.12.1) (2022-05-01)
+
+
+### Bug Fixes
+
+* 401 fix [#41](https://git.yujianghao.cn/winwin2011/hexon/issues/41) ([2004a93](https://git.yujianghao.cn/winwin2011/hexon/commit/2004a9313bae33d4076f1f30cac1facd2ca852af))
+* cant find newly created or published post ([0abb162](https://git.yujianghao.cn/winwin2011/hexon/commit/0abb16228c649942c4f1252d62df7cd01de36e21)), closes [#36](https://git.yujianghao.cn/winwin2011/hexon/issues/36)
+* cant find newly published post ([fb0db36](https://git.yujianghao.cn/winwin2011/hexon/commit/fb0db36eb579bc08badc1336eb4182876d08fb2a)), closes [#36](https://git.yujianghao.cn/winwin2011/hexon/issues/36)
 
 # [0.12.0](https://git.yujianghao.cn/winwin2011/hexon/compare/v0.11.3...v0.12.0) (2022-04-17)
 
