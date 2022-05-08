@@ -73,8 +73,9 @@ const onChange = () =>
         忘记密码
         <HPopover position="bottom-left">
           <div class="text-xs max-w-sm">
-            将 hexon/packages/server/data/common.db 中 userinfo.password 改为
-            d033e22ae348aeb5660fc2140aec35850c4da997 即可将密码重置为 admin
+            运行
+            <span class="font-mono">pnpm resetpwd</span>
+            重置密码
           </div>
         </HPopover>
       </HButton>

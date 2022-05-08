@@ -37,7 +37,7 @@ pnpm prd # for pm2
 - `pnpm run setup`: install and config
 - `pnpm start`: start hexon with node
 - `pnpm prd`: start hexon with pm2
-- `pnpm resetpwd [new-password]`: reset password to `[new password]`
+- `pnpm resetpwd`: reset password
 - `pnpm script`: manage custom script
 
 ## 🖥️ Develop

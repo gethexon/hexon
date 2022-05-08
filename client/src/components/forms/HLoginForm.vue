@@ -5,6 +5,7 @@ import { HButton } from "@/ui/button"
 import { HIconName } from "@/ui/icon"
 import { HIcon } from "@/ui/icon"
 import { HInput } from "@/ui/input"
+import { HPopover } from "@/ui/popover"
 import HImage from "@/HImage.vue"
 import { useThemeVars } from "@/ui/theme"
 
@@ -56,6 +57,13 @@ const vars = useThemeVars()
         attr-type="button"
       >
         忘记密码
+        <HPopover position="bottom-left">
+          <div class="text-xs max-w-sm">
+            运行
+            <span class="font-mono">pnpm resetpwd</span>
+            重置密码
+          </div>
+        </HPopover>
       </HButton>
       <HButton
         type="common"
