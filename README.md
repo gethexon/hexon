@@ -32,6 +32,10 @@ pnpm start # for plain nodejs
 pnpm prd # for pm2
 ```
 
+### Update
+
+Hexon is still under development, so just reinstall from fresh to avoid errors.
+
 ## Commands
 
 - `pnpm run setup`: install and config
