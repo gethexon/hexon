@@ -2,6 +2,14 @@
 import { createClassNames } from "~/utils/create-classnames"
 import { HVerticalCenter } from "@/ui/vertical-center"
 import { HIconName } from "./interface"
+import { onMounted } from "vue"
+
+//#region deprecated warning
+if (import.meta.env.DEV)
+  onMounted(() => {
+    console.warn("h-icon has been deprecated, use unocss/preset-icon instead")
+  })
+//#endregion
 
 const props = withDefaults(
   defineProps<{

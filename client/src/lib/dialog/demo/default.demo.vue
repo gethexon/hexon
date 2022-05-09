@@ -4,6 +4,7 @@ import { HButton } from "@/ui/button"
 import { HInput } from "@/ui/input"
 import HToggle from "@/ui/toggle/src/HToggle.vue"
 import { useDialog } from ".."
+import DemoPad from "~/components/DemoPad.vue"
 
 const dialog = useDialog()
 const fire = () => {
@@ -49,11 +50,13 @@ const content = ref("此操作不可撤销")
 const persistent = ref(false)
 </script>
 <template>
-  title
-  <HInput type="secondary" v-model="title" />
-  content
-  <HInput type="secondary" v-model="content" />
-  persistent
-  <HToggle v-model:active="persistent" />
-  <HButton @click="fire">fire</HButton>
+  <DemoPad>
+    title
+    <HInput type="secondary" v-model="title" />
+    content
+    <HInput type="secondary" v-model="content" />
+    persistent
+    <HToggle v-model:active="persistent" />
+    <HButton @click="fire">fire</HButton>
+  </DemoPad>
 </template>

@@ -6,6 +6,8 @@ import notification from "~/plugins/notification"
 import dialog from "~/plugins/dialog"
 import "~/plugins/dayjs"
 import { router } from "./router"
+import "@unocss/reset/tailwind.css"
+import "uno.css"
 
 createApp(App)
   .use(router)

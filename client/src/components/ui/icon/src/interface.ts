@@ -1,5 +1,6 @@
 /**
  * @see https://docs.microsoft.com/en-us/windows/apps/design/style/segoe-fluent-icons-font#pua-e700-e900
+ * @deprecated
  */
 export enum HIconName {
   GlobalNavButton = "\ue700",

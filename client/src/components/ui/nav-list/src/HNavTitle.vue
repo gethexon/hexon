@@ -1,6 +1,6 @@
 <script setup lang="ts"></script>
 <template>
-  <div class="h-nav-title text-sm select-none font-bold leading-11 px-4">
+  <div class="h-nav-title text-sm select-none font-bold leading-12 px-4">
     <slot></slot>
   </div>
 </template>

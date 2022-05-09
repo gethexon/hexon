@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import DemoPad from "@/DemoPad.vue"
 import HCreateArticleForm from "../HCreateArticleForm.vue"
 </script>
-<template><HCreateArticleForm /></template>
+<template>
+  <DemoPad>
+    <HCreateArticleForm />
+  </DemoPad>
+</template>

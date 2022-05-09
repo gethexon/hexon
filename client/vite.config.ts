@@ -2,6 +2,10 @@ import path from "path"
 import { defineConfig } from "vite"
 import vue from "@vitejs/plugin-vue"
 import visualizer from "rollup-plugin-visualizer"
+import Unocss from "unocss/vite"
+import presetUno from "@unocss/preset-uno"
+import presetAttributify from "@unocss/preset-attributify"
+import transformerDirective from "@unocss/transformer-directives"
 import Pages from "vite-plugin-pages"
 import Layouts from "vite-plugin-vue-layouts"
 import compression from "vite-plugin-compression"
@@ -27,6 +31,10 @@ export default defineConfig({
   },
   plugins: [
     vue(),
+    Unocss({
+      presets: [presetUno(), presetAttributify()],
+      transformers: [transformerDirective()],
+    }),
     unused(),
     Pages(),
     Layouts(),

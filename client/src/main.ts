@@ -9,6 +9,8 @@ import router from "./plugins/router"
 import theme from "./plugins/theme"
 import themes from "./themes"
 import "./plugins/dayjs"
+import "@unocss/reset/tailwind.css"
+import "uno.css"
 
 createApp(App)
   .use(loading)

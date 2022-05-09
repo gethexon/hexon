@@ -2,6 +2,7 @@
 import { ref } from "vue"
 import { HInput } from ".."
 import { HIcon, HIconName } from "../../icon"
+import DemoPad from "~/components/DemoPad.vue"
 const value = ref("")
 </script>
 <template>
@@ -41,15 +42,14 @@ const value = ref("")
   </div>
 
   <h3>Secondary</h3>
-
-  <div class="bg-base-2 h-input-container">
+  <DemoPad>
     <HInput
       v-model="value"
       placeholder="type something"
       type="secondary"
       clearable
     ></HInput>
-  </div>
+  </DemoPad>
 
   <h2>错误</h2>
 
@@ -63,7 +63,7 @@ const value = ref("")
     ></HInput>
   </div>
 
-  <div class="bg-base-1 h-input-container">
+  <DemoPad>
     <HInput
       v-model="value"
       placeholder="type something"
@@ -71,7 +71,7 @@ const value = ref("")
       error="文字错误"
       clearable
     ></HInput>
-  </div>
+  </DemoPad>
 
   <div class="bg-base-3 h-input-container">
     <HInput v-model="value" placeholder="type something" error="文字错误">
@@ -95,7 +95,7 @@ const value = ref("")
     ></HInput>
   </div>
 
-  <div class="bg-base-1 h-input-container">
+  <DemoPad>
     <HInput
       v-model="value"
       placeholder="type something"
@@ -103,7 +103,7 @@ const value = ref("")
       error=""
       clearable
     ></HInput>
-  </div>
+  </DemoPad>
 
   <h2>表单</h2>
 
@@ -123,8 +123,7 @@ const value = ref("")
       clearable
     ></HInput>
   </div>
-
-  <div class="bg-base-1 h-input-container">
+  <DemoPad>
     <HInput
       v-model="value"
       placeholder="type something"
@@ -139,7 +138,7 @@ const value = ref("")
       :error="value"
       clearable
     ></HInput>
-  </div>
+  </DemoPad>
 </template>
 
 <style scope>
