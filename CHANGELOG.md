@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.12.3](https://git.yujianghao.cn/winwin2011/hexon/compare/v0.12.3-0...v0.12.3) (2022-05-15)
+
+### [0.12.3-0](https://git.yujianghao.cn/winwin2011/hexon/compare/v0.12.2...v0.12.3-0) (2022-05-15)
+
+
+### Bug Fixes
+
+* asset is treat as page ([4926de0](https://git.yujianghao.cn/winwin2011/hexon/commit/4926de08be077b682b779b2bc57547a245d60d32))
+
 ### [0.12.2](https://git.yujianghao.cn/winwin2011/hexon/compare/v0.12.1...v0.12.2) (2022-05-01)
 
 

@@ -85,6 +85,15 @@ interface IHexoCli {
   ): Promise<WithCategoriesTagsBriefArticleList<void>>
 }
 
+/**
+ * A page object can be asset. e.g. css file. we need to filter it out.
+ * @param pageOrAsset
+ * @returns
+ */
+function isAsset(pageOrAsset: HexoPage) {
+  return pageOrAsset.layout === "false"
+}
+
 function transformPost(doc: HexoPost): Post {
   return {
     ...doc,
@@ -243,7 +252,11 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
   }
   async listPage() {
     const hexo = await this._hexoInstanceService.getInstance()
-    const docs = hexo.locals.get("pages").toArray().map(toPage)
+    const docs = hexo.locals
+      .get("pages")
+      .toArray()
+      .map(toPage)
+      .filter((doc) => !isAsset(doc))
     const res = docs.map((pageDoc) => {
       const page: BriefPage = transformPageToBrief(transformPage(pageDoc))
       delete page.content
@@ -259,7 +272,7 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
     const hexo = await this._hexoInstanceService.getInstance()
     const docs = hexo.locals.get("pages").toArray().map(toPage)
     const doc = docs.find((item) => item.source === source)
-    if (!doc) throw new PostOrPageNotFoundError("page")
+    if (!doc || isAsset(doc)) throw new PostOrPageNotFoundError("page")
     const res = transformPage(doc)
     this._logService.log("get page by source", source)
     return res
