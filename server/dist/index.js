@@ -1733,9 +1733,9 @@ var require_shared = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@vue-reactivity+watch@0.2.0_67b798d8ec0daaabc2fb8fe3d71ce56d/node_modules/@vue-reactivity/watch/dist/index.js
+// node_modules/.pnpm/@vue-reactivity+watch@0.2.0_m63zrwhmbwvkxqx3r7r5ohhfnu/node_modules/@vue-reactivity/watch/dist/index.js
 var require_dist = __commonJS({
-  "node_modules/.pnpm/@vue-reactivity+watch@0.2.0_67b798d8ec0daaabc2fb8fe3d71ce56d/node_modules/@vue-reactivity/watch/dist/index.js"(exports, module2) {
+  "node_modules/.pnpm/@vue-reactivity+watch@0.2.0_m63zrwhmbwvkxqx3r7r5ohhfnu/node_modules/@vue-reactivity/watch/dist/index.js"(exports, module2) {
     var __defProp2 = Object.defineProperty;
     var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
     var __getOwnPropNames2 = Object.getOwnPropertyNames;
@@ -3980,6 +3980,9 @@ ExecService = __decorateClass([
 ], ExecService);
 
 // src/server/services/hexo-service.ts
+function isAsset(pageOrAsset) {
+  return pageOrAsset.layout === "false";
+}
 function transformPost(doc) {
   var _a, _b, _c, _d;
   return __spreadProps(__spreadValues({}, doc), {
@@ -4110,7 +4113,7 @@ var HexoService = class {
   }
   async listPage() {
     const hexo = await this._hexoInstanceService.getInstance();
-    const docs = hexo.locals.get("pages").toArray().map(toPage);
+    const docs = hexo.locals.get("pages").toArray().map(toPage).filter((doc) => !isAsset(doc));
     const res = docs.map((pageDoc) => {
       const page = transformPageToBrief(transformPage(pageDoc));
       delete page.content;
@@ -4126,7 +4129,7 @@ var HexoService = class {
     const hexo = await this._hexoInstanceService.getInstance();
     const docs = hexo.locals.get("pages").toArray().map(toPage);
     const doc = docs.find((item) => item.source === source);
-    if (!doc)
+    if (!doc || isAsset(doc))
       throw new PostOrPageNotFoundError("page");
     const res = transformPage(doc);
     this._logService.log("get page by source", source);
