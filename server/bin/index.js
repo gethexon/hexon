@@ -1569,7 +1569,6 @@ var chalkStderr = createChalk({ level: stderrColor ? stderrColor.level : 0 });
 var source_default = chalk;
 
 // src/scripts/install.ts
-var import_inquirer = __toESM(require("inquirer"));
 var import_tsyringe5 = require("tsyringe");
 
 // src/shared/storage-service.ts
@@ -1601,38 +1600,12 @@ StorageService = __decorateClass([
   (0, import_tsyringe.singleton)()
 ], StorageService);
 
-// src/shared/utils.ts
-var import_fs2 = __toESM(require("fs"));
-var import_path2 = __toESM(require("path"));
-function isBlog(cwd) {
-  var _a;
-  let file;
-  try {
-    file = import_fs2.default.readFileSync(import_path2.default.join(cwd, "package.json"), {
-      encoding: "utf-8"
-    });
-    import_fs2.default.readFileSync(import_path2.default.join(cwd, "_config.yml"), { encoding: "utf-8" });
-  } catch (err) {
-    if (err.code === "ENOENT") {
-      return false;
-    }
-    throw err;
-  }
-  const packageJSON = JSON.parse(file);
-  if (!((_a = packageJSON == null ? void 0 : packageJSON.dependencies) == null ? void 0 : _a.hexo))
-    return false;
-  return true;
-}
-function toRealPath(value) {
-  return import_path2.default.isAbsolute(value) ? value : import_path2.default.resolve(process.cwd(), "../..", value);
-}
-
 // src/scripts/constants.ts
-var import_fs4 = __toESM(require("fs"));
-var import_path3 = __toESM(require("path"));
+var import_fs3 = __toESM(require("fs"));
+var import_path2 = __toESM(require("path"));
 
 // src/scripts/utils.ts
-var import_fs3 = __toESM(require("fs"));
+var import_fs2 = __toESM(require("fs"));
 function section(title) {
   console.log();
   console.log(source_default.blue.bold("\u2699 " + title));
@@ -1662,7 +1635,7 @@ var printer = {
   error
 };
 function readJsonFile(filename) {
-  const file = import_fs3.default.readFileSync(filename, { encoding: "utf-8" });
+  const file = import_fs2.default.readFileSync(filename, { encoding: "utf-8" });
   return JSON.parse(file);
 }
 function printVersion() {
@@ -1676,13 +1649,13 @@ function printVersion() {
 // src/scripts/constants.ts
 var logo = (() => {
   try {
-    return import_fs4.default.readFileSync(import_path3.default.resolve(process.cwd(), "./assets/logo.art"), "utf-8");
+    return import_fs3.default.readFileSync(import_path2.default.resolve(process.cwd(), "./assets/logo.art"), "utf-8");
   } catch (err) {
     console.error(err);
     return "Hexon";
   }
 })();
-var version = readJsonFile(import_path3.default.resolve(process.cwd(), "../package.json")).version;
+var version = readJsonFile(import_path2.default.resolve(process.cwd(), "../package.json")).version;
 
 // src/shared/constants.ts
 var HEXON_PORT_KEY = "@hexon/port";
@@ -1732,6 +1705,32 @@ var LogService = class {
     return instance;
   }
 };
+
+// src/shared/utils.ts
+var import_fs4 = __toESM(require("fs"));
+var import_path3 = __toESM(require("path"));
+function isBlog(cwd) {
+  var _a;
+  let file;
+  try {
+    file = import_fs4.default.readFileSync(import_path3.default.join(cwd, "package.json"), {
+      encoding: "utf-8"
+    });
+    import_fs4.default.readFileSync(import_path3.default.join(cwd, "_config.yml"), { encoding: "utf-8" });
+  } catch (err) {
+    if (err.code === "ENOENT") {
+      return false;
+    }
+    throw err;
+  }
+  const packageJSON = JSON.parse(file);
+  if (!((_a = packageJSON == null ? void 0 : packageJSON.dependencies) == null ? void 0 : _a.hexo))
+    return false;
+  return true;
+}
+function toRealPath(value) {
+  return import_path3.default.isAbsolute(value) ? value : import_path3.default.resolve(process.cwd(), "../..", value);
+}
 
 // src/server/utils.ts
 var import_debug = __toESM(require("debug"));
@@ -1945,12 +1944,45 @@ AccountService = __decorateClass([
   __decorateParam(0, (0, import_tsyringe4.inject)(StorageService))
 ], AccountService);
 
-// src/scripts/install.ts
-async function getPort() {
+// src/scripts/prompts.ts
+var import_inquirer = __toESM(require("inquirer"));
+async function requestPassword() {
+  const answer = await import_inquirer.default.prompt({
+    name: "password",
+    message: "Password ?",
+    type: "password",
+    validate(v) {
+      if (!v)
+        return "Must not empty";
+      return true;
+    }
+  });
+  const { password } = answer;
+  return password;
+}
+async function requestUsername() {
+  const answer = await import_inquirer.default.prompt({
+    name: "username",
+    message: "Username ?",
+    validate(v) {
+      if (!v)
+        return "Must not empty";
+      return true;
+    }
+  });
+  const { username } = answer;
+  return username;
+}
+async function requestUserInfo() {
+  const username = await requestUsername();
+  const password = await requestPassword();
+  return { username, password };
+}
+async function requestPort(defaultPort) {
   const portPrompt = {
     name: "port",
     message: "Which port do you like Hexon running at?",
-    default: HEXON_DEFAULT_PORT,
+    default: defaultPort,
     validate(v) {
       return !isNaN(v) || `number is required ${typeof v} given`;
     },
@@ -1959,7 +1991,7 @@ async function getPort() {
   const answer = await import_inquirer.default.prompt(portPrompt);
   return String(answer.port);
 }
-async function getRoot() {
+async function requestRoot() {
   const rootPrompt = {
     name: "root",
     message: `Your hexo blog path? ${source_default.grey("Absolute or relative path to hexon.")}`,
@@ -1976,39 +2008,17 @@ async function getRoot() {
   const answer = await import_inquirer.default.prompt(rootPrompt);
   return answer.root;
 }
-async function getUserInfo() {
-  const answer = await import_inquirer.default.prompt([
-    {
-      name: "username",
-      message: "Username ?",
-      validate(v) {
-        if (!v)
-          return "Must not empty";
-        return true;
-      }
-    },
-    {
-      name: "password",
-      message: "Password ?",
-      validate(v) {
-        if (!v)
-          return "Must not empty";
-        return true;
-      }
-    }
-  ]);
-  const { username, password } = answer;
-  return { username, password };
-}
+
+// src/scripts/install.ts
 async function install_default() {
   console.clear();
   console.log(source_default.blue(logo));
   printVersion();
   printer.section("Configuration");
   const storage = import_tsyringe5.container.resolve(StorageService);
-  storage.set(HEXON_PORT_KEY, await getPort());
-  storage.set(HexoInstanceService.HEXO_BASE_DIR_KEY, await getRoot());
-  const { username, password } = await getUserInfo();
+  storage.set(HEXON_PORT_KEY, await requestPort(HEXON_DEFAULT_PORT));
+  storage.set(HexoInstanceService.HEXO_BASE_DIR_KEY, await requestRoot());
+  const { username, password } = await requestUserInfo();
   const account = import_tsyringe5.container.resolve(AccountService);
   account.setUserInfo(username, password);
   printer.section("Install");
@@ -2021,10 +2031,11 @@ async function install_default() {
 
 // src/scripts/reset-password.ts
 var import_tsyringe6 = require("tsyringe");
-async function resetPassword(newpwd = "admin") {
+async function resetPassword() {
   const account = import_tsyringe6.container.resolve(AccountService);
+  const newpwd = await requestPassword();
   account.setPassword(newpwd);
-  console.log(source_default.green(`Password has been reset to "${newpwd}".`));
+  console.log(source_default.green(`Password has been reset.`));
 }
 
 // src/scripts/script.ts
@@ -2149,6 +2160,6 @@ async function script() {
 // src/scripts/index.ts
 var program = new import_commander.Command("npx .");
 program.command("install").description("install hexon").action(install_default);
-program.command("resetpwd").description("reset password").argument("[new-password]", "new password", "admin").action(resetPassword);
+program.command("resetpwd").description("reset password").action(resetPassword);
 program.command("script").description("manage custom script").action(script);
 program.parse();
