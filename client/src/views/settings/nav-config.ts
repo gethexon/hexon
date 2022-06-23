@@ -20,14 +20,6 @@ export function useNavConfig() {
     },
     {
       type: "item" as const,
-      text: "安全",
-      icon: HIconName.ReportHacked,
-      color: vars.value.colorPrimary,
-      key: "security" as const,
-      comp: markRaw(SecurityView),
-    },
-    {
-      type: "item" as const,
       text: "样式",
       icon: HIconName.OEM,
       color: vars.value.colorWarning,
@@ -41,14 +33,6 @@ export function useNavConfig() {
       color: vars.value.textColorSecondary,
       key: "about" as const,
       comp: markRaw(AboutView),
-    },
-    {
-      type: "item" as const,
-      text: "帮助",
-      icon: HIconName.EaseOfAccess,
-      color: vars.value.textColorSecondary,
-      key: "help" as const,
-      comp: markRaw(HelpView),
     },
   ]
   const fullConfig = computed(() => {
