@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.12.4](https://git.yujianghao.cn/winwin2011/hexon/compare/v0.12.4-0...v0.12.4) (2022-06-23)
+
 ### [0.12.4-0](https://git.yujianghao.cn/winwin2011/hexon/compare/v0.12.3...v0.12.4-0) (2022-06-23)
 
 ### [0.12.3](https://git.yujianghao.cn/winwin2011/hexon/compare/v0.12.3-0...v0.12.3) (2022-05-15)
