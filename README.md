@@ -4,6 +4,12 @@
 
 winwin-hexo-editor has been renamed to Hexon witch means hexo online. Wish you love it!
 
+## ⭐️ Features
+
+- Post and page management
+- Front-matter template
+- ~~Online image management~~ use [imageur](https://github.com/YuJianghao/imageur)
+
 ## 📘 Guide
 
 ### Before Install
@@ -36,7 +42,7 @@ pnpm prd # for pm2
 
 Hexon is still under development, so just reinstall from fresh to avoid errors.
 
-## Commands
+## 💻 Commands
 
 - `pnpm run setup`: install and config
 - `pnpm start`: start hexon with node
@@ -50,9 +56,29 @@ Hexon is still under development, so just reinstall from fresh to avoid errors.
 - Run `pnpm dev-init` install dependencies and config hexon.
 - Run `pnpm dev` and show your magic!
 
+## 💩 Have trouble?
+
+- Read FAQs below.
+- Try to find answer in [issue list](https://github.com/gethexon/hexon/issues).
+- Raise an [issue](https://github.com/gethexon/hexon/issues/new).
+
+**TRY NOT ASK QUESTION VIA QQ GROUP. SOLUTIONS IN QQ GROUP WON'T HELP OTHERS.**
+
 ## ❓ Want to know more?
 
 Start a [discussion](https://github.com/gethexon/hexon/discussions) or join us via QQ group 590355610.
+
+## 👌🏻 FAQ
+
+### 404 Error
+
+Maybe mistakes in revert proxy config(e.g. Nginx or Apache config). To verify, use `curl` on your server directly request assets without any revert proxy. This should be a command looks like:
+
+```bash
+curl http://localhost:5777/assets/HMonacoEditor.5101bbae.js
+```
+
+Or hexon failure. Just raise an issue.
 
 ## ⏱️ Looking for old version?
 
