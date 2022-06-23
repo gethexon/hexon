@@ -5,8 +5,8 @@
   "author": "winwin2011 <yjh2011@live.com>",
   "license": "GPL-3.0",
   "scripts": {
-    "release": "pnpm build && git add . && git commit -m 'chore: build released' && standard-version --releaseCommitMessageFormat='chore: release v{{currentTag}}'",
-    "prerelease": "pnpm build && git add . && git commit -m 'chore: build' && standard-version --releaseCommitMessageFormat='chore: release v{{currentTag}}' --prerelease",
+    "release": "standard-version --releaseCommitMessageFormat='chore: release v{{currentTag}}' && pnpm build && git add . && git commit -m 'chore: build released'",
+    "prerelease": "standard-version --releaseCommitMessageFormat='chore: release v{{currentTag}}' --prerelease && pnpm build && git add . && git commit -m 'chore: build released'",
     "build": "concurrently -p [{name}] -n 'server,client' -c 'green.bold,blue.bold' 'cd ./server && pnpm build' 'cd ./client && pnpm build' ",
     "setup": "cd ./server && pnpm install -P && pnpm run setup",
     "script": "cd ./server && pnpm script",
