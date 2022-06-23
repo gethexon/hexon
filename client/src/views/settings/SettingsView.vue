@@ -32,10 +32,8 @@ const model = computed(() => {
 const onSelect = (key: string) => {
   switch (key) {
     case "user":
-    case "security":
     case "style":
     case "about":
-    case "help":
       const next = getConfig(key).idx
       activeNavIdx.value = next
       break
