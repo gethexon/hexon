@@ -243,6 +243,7 @@ $line-numbers
     code
       background: none
       text-shadow: none
+      margin: 0
       padding: 0
   .highlight
     @extend $code-block
