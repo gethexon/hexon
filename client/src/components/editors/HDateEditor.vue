@@ -14,8 +14,11 @@ const emits = defineEmits<{
 const { classNames } = createClassNames("h-date-editor")
 const vars = useThemeVars()
 const text = computed(() =>
-  props.date ? props.date.format("YYYY-MM-DD hh:mm:ss") : "未指定数据"
+  props.date ? props.date.format("YYYY-MM-DD HH:mm:ss") : "未指定数据"
 )
+const onPickDate = (date: Dayjs | null) => {
+  emits('update:date', date);
+}
 </script>
 <template>
   <div :class="classNames" class="px-4">
@@ -27,7 +30,7 @@ const text = computed(() =>
       </div>
       <HDatePicker
         :date="props.date"
-        @update:date="(v) => emits('update:date', v)"
+        @update:date="onPickDate"
       />
     </div>
   </div>
