@@ -172,10 +172,10 @@ const updateLayout = (layout: string = "") => {
   updateFromObj({ layout })
 }
 const updateDate = (date: Dayjs | null) => {
-  updateFromObj({ date: date?.format("YYYY-MM-DD hh:mm:ss") })
+  updateFromObj({ date: date?.format("YYYY-MM-DD HH:mm:ss") })
 }
 const updateUpdated = (updated: Dayjs | null) => {
-  updateFromObj({ updated: updated?.format("YYYY-MM-DD hh:mm:ss") })
+  updateFromObj({ updated: updated?.format("YYYY-MM-DD HH:mm:ss") })
 }
 const updateFm = (fm: { [key: string]: unknown }) => {
   updateFromObj({ fm })
