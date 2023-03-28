@@ -56,9 +56,9 @@ var __decorateClass = (decorators, target, key, kind) => {
 };
 var __decorateParam = (index, decorator) => (target, key) => decorator(target, key, index);
 
-// node_modules/.pnpm/isexe@2.0.0/node_modules/isexe/windows.js
+// node_modules/.pnpm/registry.npmmirror.com+isexe@2.0.0/node_modules/isexe/windows.js
 var require_windows = __commonJS({
-  "node_modules/.pnpm/isexe@2.0.0/node_modules/isexe/windows.js"(exports, module2) {
+  "node_modules/.pnpm/registry.npmmirror.com+isexe@2.0.0/node_modules/isexe/windows.js"(exports, module2) {
     module2.exports = isexe;
     isexe.sync = sync;
     var fs3 = require("fs");
@@ -96,9 +96,9 @@ var require_windows = __commonJS({
   }
 });
 
-// node_modules/.pnpm/isexe@2.0.0/node_modules/isexe/mode.js
+// node_modules/.pnpm/registry.npmmirror.com+isexe@2.0.0/node_modules/isexe/mode.js
 var require_mode = __commonJS({
-  "node_modules/.pnpm/isexe@2.0.0/node_modules/isexe/mode.js"(exports, module2) {
+  "node_modules/.pnpm/registry.npmmirror.com+isexe@2.0.0/node_modules/isexe/mode.js"(exports, module2) {
     module2.exports = isexe;
     isexe.sync = sync;
     var fs3 = require("fs");
@@ -129,9 +129,9 @@ var require_mode = __commonJS({
   }
 });
 
-// node_modules/.pnpm/isexe@2.0.0/node_modules/isexe/index.js
+// node_modules/.pnpm/registry.npmmirror.com+isexe@2.0.0/node_modules/isexe/index.js
 var require_isexe = __commonJS({
-  "node_modules/.pnpm/isexe@2.0.0/node_modules/isexe/index.js"(exports, module2) {
+  "node_modules/.pnpm/registry.npmmirror.com+isexe@2.0.0/node_modules/isexe/index.js"(exports, module2) {
     var fs3 = require("fs");
     var core;
     if (process.platform === "win32" || global.TESTING_WINDOWS) {
@@ -362,9 +362,9 @@ var require_escape = __commonJS({
   }
 });
 
-// node_modules/.pnpm/shebang-regex@3.0.0/node_modules/shebang-regex/index.js
+// node_modules/.pnpm/registry.npmmirror.com+shebang-regex@3.0.0/node_modules/shebang-regex/index.js
 var require_shebang_regex = __commonJS({
-  "node_modules/.pnpm/shebang-regex@3.0.0/node_modules/shebang-regex/index.js"(exports, module2) {
+  "node_modules/.pnpm/registry.npmmirror.com+shebang-regex@3.0.0/node_modules/shebang-regex/index.js"(exports, module2) {
     "use strict";
     module2.exports = /^#!(.*)/;
   }
