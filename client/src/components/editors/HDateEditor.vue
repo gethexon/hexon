@@ -4,6 +4,7 @@ import { computed } from "vue"
 import { createClassNames } from "~/utils/create-classnames"
 import { HDatePicker } from "@/ui/date-picker"
 import { useThemeVars } from "@/ui/theme"
+import { DATE_FORMAT } from "~/constants";
 
 const props = defineProps<{
   date: Dayjs | null
@@ -14,7 +15,7 @@ const emits = defineEmits<{
 const { classNames } = createClassNames("h-date-editor")
 const vars = useThemeVars()
 const text = computed(() =>
-  props.date ? props.date.format("YYYY-MM-DD HH:mm:ss") : "未指定数据"
+  props.date ? props.date.format(DATE_FORMAT) : "未指定数据"
 )
 const onPickDate = (date: Dayjs | null) => {
   emits('update:date', date);
