@@ -27,6 +27,7 @@ import HHeaderEditor from "@/editors/HHeaderEditor.vue"
 import HLayoutEditor from "@/editors/HLayoutEditor.vue"
 import HTagEditor from "@/editors/HTagEditor.vue"
 import HNavTitle from "@/ui/nav-list/src/HNavTitle.vue"
+import { DATE_FORMAT } from "~/constants";
 
 const [HMonacoEditor, monacoLoading] = useAsyncComponentWithLoading(
   () => import("@/editors/HMonacoEditor.vue")
@@ -172,10 +173,10 @@ const updateLayout = (layout: string = "") => {
   updateFromObj({ layout })
 }
 const updateDate = (date: Dayjs | null) => {
-  updateFromObj({ date: date?.format("YYYY-MM-DD HH:mm:ss") })
+  updateFromObj({ date: date?.format(DATE_FORMAT) })
 }
 const updateUpdated = (updated: Dayjs | null) => {
-  updateFromObj({ updated: updated?.format("YYYY-MM-DD HH:mm:ss") })
+  updateFromObj({ updated: updated?.format(DATE_FORMAT) })
 }
 const updateFm = (fm: { [key: string]: unknown }) => {
   updateFromObj({ fm })
