@@ -5,3 +5,4 @@ data
 log
 .DS_Store
 *.local
+.env

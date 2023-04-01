@@ -28,7 +28,7 @@ export class AuthStorageService {
       secret = "secret",
       expiresIn = "1h",
       refreshableIn = "7d",
-    } = this._storage.get(AuthStorageService.KEY) || {}
+    } = this._storage.get<IAuthInfo>(AuthStorageService.KEY) || {}
     return { secret, expiresIn, refreshableIn }
   }
 
