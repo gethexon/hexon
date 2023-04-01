@@ -1,7 +1,6 @@
 import { SHA1 } from "crypto-js"
 import { inject, injectable, singleton } from "tsyringe"
 import { StorageService } from "~/shared/storage-service"
-import { Unauthorized } from "http-errors"
 
 interface IUserInfo {
   password: string
@@ -25,7 +24,7 @@ export class AccountService {
   }
   private _fromStorage(): IUserInfo {
     const { username = "", password = "" } =
-      this._storage.get(AccountService.KEY) || {}
+      this._storage.get<IUserInfo>(AccountService.KEY) || {}
     return { username, password }
   }
   setUserInfo(username: string, password: string) {
