@@ -1,8 +1,12 @@
 # Hexon
 
-## 🎉 New Name
+Let's hexo online! 
 
-winwin-hexo-editor has been renamed to Hexon witch means hexo online. Wish you love it!
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/gethexon/hexon?style=flat-square)](https://github.com/gethexon/hexon/releases/)
+
+## ❔ How it works?
+
+Hexon is a GUI for hexo with git, run commands and manage content for you.
 
 ## ⭐️ Features
 
@@ -26,21 +30,30 @@ pnpm run setup
 
 ### Uninstall
 
+Just remove the folder you just cloned
+
 ```bash
 rm -rf hexon
-# just remove the folder you just cloned
 ```
 
 ### Start
 
+For plain Node.js:
+
 ```bash
-pnpm start # for plain nodejs
-pnpm prd # for pm2
+pnpm start
+```
+
+For better devOps with [pm2](https://pm2.keymetrics.io/)
+
+```bash
+pnpm prd
+# or integrate pm2 with `pnpm start` manually
 ```
 
 ### Update
 
-Hexon is still under development, so just reinstall from fresh to avoid errors.
+Just uninstall the old one and install the new one.
 
 ## 💻 Commands
 
@@ -50,9 +63,17 @@ Hexon is still under development, so just reinstall from fresh to avoid errors.
 - `pnpm resetpwd`: reset password
 - `pnpm script`: manage custom script
 
+You can replace hexon commands with your own bash script inside hexo blog folder.
+
+e.g. modify `git sync` script
+1. write your script in `<hexo-blog-path>/git_sync.sh`
+2. run `pnpm script`
+3. select `git sync` 
+4. set script to `bash ./git_sync.sh`
+
 ## 🖥️ Develop
 
-- Check out `develop` branch.
+- Check out `main` branch.
 - Run `pnpm dev-init` install dependencies and config hexon.
 - Run `pnpm dev` and show your magic!
 
@@ -63,6 +84,7 @@ Hexon is still under development, so just reinstall from fresh to avoid errors.
 - Raise an [issue](https://github.com/gethexon/hexon/issues/new).
 
 **TRY NOT ASK QUESTION VIA QQ GROUP. SOLUTIONS IN QQ GROUP WON'T HELP OTHERS.**
+
 
 ## ❓ Want to know more?
 
@@ -80,9 +102,15 @@ curl http://localhost:5777/assets/HMonacoEditor.5101bbae.js
 
 Or hexon failure. Just raise an issue.
 
-## ⏱️ Looking for old version?
+## Star history
 
-Versions under v0.6.x are still available at [winwin-hexo-editor](https://github.com/YuJianghao/winwin-hexo-editor/)
+[![Star History Chart](https://api.star-history.com/svg?repos=gethexon/hexon&type=Date)](https://star-history.com/#gethexon/hexon&Date)
+
+## Contributors
+
+<a href="https://github.com/usememos/memos/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=gethexon/hexon" />
+</a>
 
 ## License
 
