@@ -19,11 +19,11 @@ import { HLoading } from "@/ui/loading"
 import { useThemeVars } from "@/ui/theme"
 import HEditorToolbar from "@/HEditorToolbar.vue"
 import HTitle from "@/HTitle.vue"
-import HToolbar from "@/HToolbar.vue"
 import HCategoriesEditor from "@/editors/HCategoriesEditor.vue"
 import HDateEditor from "@/editors/HDateEditor.vue"
 import HFrontmatterEditor from "@/editors/HFrontmatterEditor.vue"
 import HHeaderEditor from "@/editors/HHeaderEditor.vue"
+import HAbstractsEditor from "@/editors/HAbstractsEditor.vue"
 import HLayoutEditor from "@/editors/HLayoutEditor.vue"
 import HTagEditor from "@/editors/HTagEditor.vue"
 import HNavTitle from "@/ui/nav-list/src/HNavTitle.vue"
@@ -187,8 +187,8 @@ const updateFm = (fm: { [key: string]: unknown }) => {
   <HLoading :loading="detailStore.isLoading">
     <ErroredView v-if="detailStore.error">
       <div>
-        <HButton inverted @click="onHome">回主页</HButton>
-        <HButton class="ml-2" @click="load">重试</HButton>
+        <HButton inverted @click="onHome">回首頁</HButton>
+        <HButton class="ml-2" @click="load">重試</HButton>
       </div>
     </ErroredView>
     <div class="flex h-full w-full overflow-hidden" v-else>
@@ -227,17 +227,17 @@ const updateFm = (fm: { [key: string]: unknown }) => {
         <div class="flex-1 h-0 overflow-auto pt-2 pb-4">
           <HNavTitle>
             <HIcon :name="HIconName.Globe" class="mr-1" />
-            发布于
+            發布於
           </HNavTitle>
           <HDateEditor :date="date" @update:date="updateDate" />
           <HNavTitle class="mt-2">
             <HIcon :name="HIconName.DevUpdate" class="mr-1" />
-            更新于
+            更新於
           </HNavTitle>
           <HDateEditor :date="updated" @update:date="updateUpdated" />
           <HNavTitle class="mt-2">
             <HIcon :name="HIconName.Tag" class="mr-1" />
-            标签
+            標籤
           </HNavTitle>
           <HTagEditor
             :available-tags="availableTags"
@@ -245,8 +245,8 @@ const updateFm = (fm: { [key: string]: unknown }) => {
             @update:tags="updateTags"
           />
           <HNavTitle class="mt-2">
-            <HIcon :name="HIconName.Folder" class="mr-2" />
-            分类
+            <HIcon :name="HIconName.Folder" class="mr-1" />
+            分類
           </HNavTitle>
           <HCategoriesEditor
             :availableCats="availableCats"
@@ -254,13 +254,13 @@ const updateFm = (fm: { [key: string]: unknown }) => {
             @update:categories="updateCategories"
           />
           <HNavTitle class="mt-2">
-            <HIcon :name="HIconName.Type" class="mr-2" />
+            <HIcon :name="HIconName.Type" class="mr-1" />
             Layout
           </HNavTitle>
           <HLayoutEditor :layout="layout" @update:layout="updateLayout" />
           <HNavTitle class="mt-2">
-            <HIcon :name="HIconName.HolePunchLandscapeTop" class="mr-2" />
-            Frontmatters
+            <HIcon :name="HIconName.HolePunchLandscapeTop" class="mr-1" />
+            Front-matter
           </HNavTitle>
           <HFrontmatterEditor :fm="fm" @update:fm="updateFm" />
         </div>
