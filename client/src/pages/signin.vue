@@ -5,7 +5,7 @@ import HLoginForm from "@/forms/HLoginForm.vue"
 import { useThemeVars } from "~/components/ui/theme"
 const dispatcher = useDispatcher()
 const footer = computed(() => {
-  return `©️ 2019 ~ ${new Date().getFullYear()} winwin_2011`
+  return `©️ 2019 ~ ${new Date().getFullYear()} Konnokai`
 })
 const onSignIn = (payload: { username: string; password: string }) =>
   dispatcher.signIn(payload)
