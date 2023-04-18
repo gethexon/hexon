@@ -23,7 +23,7 @@ const onInput: any = (value: string) => emits("update:modelValue", value)
       :modelValue="modelValue"
       @update:model-value="onInput"
       type="secondary"
-      placeholder="搜索"
+      placeholder="搜尋"
       clearable
     >
       <template v-slot:prefix>

@@ -37,21 +37,21 @@ const actionItems: NavListItem[] = [
   { type: "title", label: "操作" },
   {
     type: "item",
-    text: "部署",
+    text: "部屬",
     icon: HIconName.Airplane,
     color: colors.value.deploy,
     key: "deploy",
   },
   {
     type: "item",
-    text: "生成",
+    text: "建立",
     icon: HIconName.Library,
     color: colors.value.generate,
     key: "generate",
   },
   {
     type: "item",
-    text: "清理",
+    text: "清除",
     icon: HIconName.EraseTool,
     color: colors.value.clean,
     key: "clean",
@@ -65,7 +65,7 @@ const actionItems: NavListItem[] = [
   },
   {
     type: "item",
-    text: "从 Git 同步",
+    text: "從 Git 同步",
     icon: HIconName.Download,
     color: colors.value.gitsync,
     key: "gitsync",
@@ -84,7 +84,7 @@ const type = computed(() => articleListStore.filter.type)
 const filterItems: ComputedRef<NavListItem[]> = computed(() => [
   {
     type: "title",
-    label: "筛选",
+    label: "篩選",
   },
   {
     type: "item",
@@ -106,7 +106,7 @@ const filterItems: ComputedRef<NavListItem[]> = computed(() => [
   },
   {
     type: "item",
-    text: "页面",
+    text: "頁面",
     icon: HIconName.Page,
     sub: pagesCount.value,
     color: colors.value.page,
@@ -127,7 +127,7 @@ const filterItems: ComputedRef<NavListItem[]> = computed(() => [
 
 //#region category
 const categoryItems: ComputedRef<NavListItem[]> = computed(() => {
-  const res: NavListItem[] = [{ type: "title", label: "分类" }]
+  const res: NavListItem[] = [{ type: "title", label: "分類" }]
   function go(c: TreeNode<Category, "children">, i = 0) {
     res.push({
       type: "item",

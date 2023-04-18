@@ -15,7 +15,7 @@ const onChange = () => emits("change-username", username.value)
   <div class="flex">
     <HInput
       class="flex-1"
-      placeholder="旧密码"
+      placeholder="新使用者名稱"
       type="secondary"
       v-model="username"
     >

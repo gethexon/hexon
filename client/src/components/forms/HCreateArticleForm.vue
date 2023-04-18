@@ -65,7 +65,7 @@ const onCancel = () => {
   emits("on-cancel")
 }
 const text = computed(() => {
-  if (page.value) return "页面"
+  if (page.value) return "頁面"
   if (draft.value) return "草稿"
   return "文章"
 })
@@ -87,7 +87,7 @@ onMounted(() => {
           class="label text-right"
           style="grid-column: labels"
         >
-          标题
+          標題
         </div>
         <div style="grid-column: controls">
           <HInput
@@ -115,7 +115,7 @@ onMounted(() => {
                 @update:checked="(v) => (v ? (layout = 'page') : (layout = ''))"
                 class="mr-4"
               >
-                页面
+                頁面
               </HCheckbox>
               <HCheckbox
                 :checked="draft"
@@ -134,7 +134,7 @@ onMounted(() => {
               inverted
               @click="advanced = true"
             >
-              高级模式
+              進階模式
             </HButton>
           </div>
         </div>
@@ -205,7 +205,7 @@ onMounted(() => {
               inverted
               @click="advanced = false"
             >
-              简洁模式
+              簡易模式
             </HButton>
           </div>
         </div>
@@ -222,7 +222,7 @@ onMounted(() => {
           取消
         </HButton>
         <HButton size="small" attr-type="submit" :disabled="disabled">
-          创建
+          建立
         </HButton>
       </div>
     </form>

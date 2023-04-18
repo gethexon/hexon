@@ -14,12 +14,12 @@ const onChangePassword = (payload: IChangePasswordFormPayload) => {
 const onChangeUsername = (username: string) => {
   changeUsername(username).then(
     () => {
-      notification.notify({ type: "success", title: "用户名修改成功" })
+      notification.notify({ type: "success", title: "使用者名稱修改成功" })
       dispatcher.getUsername()
     },
     (err) => {
       notification.notify({
-        title: "用户名修改失败",
+        title: "使用者名稱修改失敗",
         desc: (err as Error).message,
         type: "error",
         duration: 5000,

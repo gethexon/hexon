@@ -14,7 +14,7 @@ const model = computed(() => {
   return [
     {
       type: "title" as const,
-      label: "设置",
+      label: "設定",
     } as NavListItem,
     ...config.value.map(
       ({ type, text, icon, color, key }, idx): NavListItem => ({

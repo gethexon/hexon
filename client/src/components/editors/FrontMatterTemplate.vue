@@ -43,17 +43,17 @@ const save = () => {
     .then(() => {
       notification.notify({
         type: "success",
-        title: "保存预设成功",
+        title: "保存預設成功",
       })
     })
     .catch((err) => {
       notification.notify({
         type: "error",
-        title: "保存预设失败",
+        title: "保存預設失敗",
         desc: err,
         actions: [
           {
-            label: "重试",
+            label: "重試",
             run: save,
           },
         ],

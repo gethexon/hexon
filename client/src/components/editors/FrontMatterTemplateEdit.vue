@@ -29,7 +29,7 @@ watch(
       <HButton class="mr-2" size="small" inverted @click="emits('cancel')">
         取消
       </HButton>
-      <HButton size="small" @click="emits('finish', internal)">保存</HButton>
+      <HButton size="small" @click="emits('finish', internal)">儲存</HButton>
     </div>
   </div>
 </template>
