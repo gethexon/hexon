@@ -59,8 +59,8 @@ const onAction = (payload: HEditorToolbarActionPayload) => {
       changed.value
         ? dialog.create({
             type: "warning",
-            title: "有未保存的更改",
-            content: "确定要离开么？",
+            title: "有未儲存的更改",
+            content: "確定要離開麼？",
             actions: [
               { label: "再想想", type: "common" },
               {
@@ -95,7 +95,7 @@ const onSave = () => {
 }
 useEventListener("beforeunload", (e) => {
   if (!changed.value) return
-  if (!confirm("确定离开？你所做的更改可能未保存。")) {
+  if (!confirm("確定離開？你所做的更改可能未儲存。")) {
     e.preventDefault()
     e.returnValue = ""
   }

@@ -23,6 +23,6 @@ const onChange = () => emits("change-username", username.value)
         <HIcon :name="HIconName.Contact" />
       </template>
     </HInput>
-    <HButton class="ml-2" :disabled="disabled" @click="onChange">保存</HButton>
+    <HButton class="ml-2" :disabled="disabled" @click="onChange">儲存</HButton>
   </div>
 </template>

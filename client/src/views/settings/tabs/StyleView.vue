@@ -26,7 +26,7 @@ const save = () => {
   settingsStore.save().then(() => {
     notification.notify({
       type: "success",
-      title: "樣式已保存",
+      title: "樣式已儲存",
     })
   })
 }
@@ -61,6 +61,6 @@ const DEV = import.meta.env.DEV
         <HToggle :active="vars.isDark" @update:active="(v) => setDark(v)" />
       </div>
     </template>
-    <HButton class="mt-8" @click="save">保存</HButton>
+    <HButton class="mt-8" @click="save">儲存</HButton>
   </div>
 </template>

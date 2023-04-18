@@ -43,13 +43,13 @@ const save = () => {
     .then(() => {
       notification.notify({
         type: "success",
-        title: "保存預設成功",
+        title: "模板儲存成功",
       })
     })
     .catch((err) => {
       notification.notify({
         type: "error",
-        title: "保存預設失敗",
+        title: "模板儲存成功",
         desc: err,
         actions: [
           {
@@ -72,10 +72,10 @@ const onCancel = () => {
 const onDelete = (idx: number) => {
   dialog.create({
     type: "error",
-    title: "确认删除么？",
+    title: "確認刪除嗎？",
     actions: [
       {
-        label: "删除",
+        label: "刪除",
         type: "error",
         run() {
           templates.value.splice(idx, 1)
@@ -96,9 +96,9 @@ const onAdd = () => {
     class="py-2 px-4 rounded-md modal-panel flex flex-col"
   >
     <HTitle class="justify-center">
-      使用 frontmatter 预设
+      使用 Front-matter 模板
       <HVerticalCenter>
-        <HButton @click="load" size="small">刷新</HButton>
+        <HButton @click="load" size="small">重新整理</HButton>
       </HVerticalCenter>
     </HTitle>
     <div class="mt-2 flex-1 overflow-auto relative">
@@ -127,8 +127,8 @@ const onAdd = () => {
       </HModal>
     </div>
     <div class="py-2">
-      <HButton size="small" @click="onAdd">添加</HButton>
-      <HButton class="ml-2" size="small" @click="save">保存</HButton>
+      <HButton size="small" @click="onAdd">新增</HButton>
+      <HButton class="ml-2" size="small" @click="save">儲存</HButton>
     </div>
   </div>
 </template>
