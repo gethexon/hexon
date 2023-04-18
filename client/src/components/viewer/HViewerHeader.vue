@@ -29,14 +29,6 @@ const rest = computed(() => {
       {{ article.title }}
     </h1>
     <div :style="{ color: vars.textColorSecondary }">
-      <div class="updated" v-if="updated">
-        <HIcon
-          class="mr-1"
-          style="transform: translateX(-1px)"
-          :name="HIconName.DevUpdate"
-        />
-        <span>{{ updated }}</span>
-      </div>
       <div class="date" v-if="date">
         <HIcon
           class="mr-1"
@@ -44,6 +36,14 @@ const rest = computed(() => {
           :name="HIconName.Globe"
         />
         <span>{{ date }}</span>
+      </div>
+      <div class="updated" v-if="updated">
+        <HIcon
+          class="mr-1"
+          style="transform: translateX(-1px)"
+          :name="HIconName.DevUpdate"
+        />
+        <span>{{ updated }}</span>
       </div>
       <div class="categories mt-1 text-sm" v-if="article.categories.length">
         <HIcon class="mr-1" :name="HIconName.Folder" />
