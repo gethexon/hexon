@@ -6,3 +6,5 @@ log
 .DS_Store
 *.local
 .env
+
+client/dist/
