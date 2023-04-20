@@ -15,7 +15,7 @@ export const ZIBrief = z.object({
 export type IBrief = z.infer<typeof ZIBrief>
 
 export const ZIPage = z.object({
-  __page: z.boolean().refine((v) => v, { message: "__page must be true" }),
+  __page: z.boolean().default(true),
 })
 export type IPage = z.infer<typeof ZIPage>
 
@@ -24,7 +24,7 @@ export const ZIPost = z.object({
   published: z.boolean(),
   categories: z.string().array(),
   tags: z.string().array(),
-  __post: z.boolean().refine((v) => v, { message: "__post must be true" }),
+  __post: z.boolean().default(true),
 })
 export type IPost = z.infer<typeof ZIPost>
 
