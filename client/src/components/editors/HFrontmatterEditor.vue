@@ -77,7 +77,7 @@ const onTemplate = () => {
 }
 const onSetTemplate = (v: string) => {
   showTemplateModal.value = false
-  internal.value = v
+  internal.value += v
 }
 </script>
 
