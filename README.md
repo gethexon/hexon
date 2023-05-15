@@ -102,7 +102,13 @@ curl http://localhost:5777/assets/HMonacoEditor.5101bbae.js
 
 Or hexon failure. Just raise an issue.
 
-If you are using Apache's reverse proxy, please make sure to add `AllowEncodedSlashes NoDecode` in your `VirtualHost` configuration ([ref](https://stackoverflow.com/questions/52034899/express-nodejs-server-through-apache-proxy-error-404-for-route-with-express-par)), and add `nocanon` at the end of the `ProxyPass` setting. ([ref](https://stackoverflow.com/questions/4390436/need-to-allow-encoded-slashes-on-apache))
+<details>
+  <summary>If you are using Apache's reverse proxy...</summary>
+Please make sure to add `AllowEncodedSlashes NoDecode` in your `VirtualHost` configuration, and add `nocanon` at the end of the `ProxyPass` setting. 
+    
+See https://stackoverflow.com/questions/52034899/express-nodejs-server-through-apache-proxy-error-404-for-route-with-express-par
+    
+and https://stackoverflow.com/questions/4390436/need-to-allow-encoded-slashes-on-apache
 
 Example:
 ```conf
@@ -123,6 +129,7 @@ Example:
     ProxyPassReverse / http://localhost:5777/
 </VirtualHost>
 ```
+</details>
 
 ## Star history
 
