@@ -448,8 +448,12 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
     this._hexoInstanceService.runBetweenReload(() => {
       this.writeFile(fullPath, raw)
     })
-    const article = (await this.getPostBySource(source))!
-    return this.WithCategoriesTagsBriefArticleList(article)
+    if (type === "post") {
+      return this.WithCategoriesTagsBriefArticleList(await this.getPostBySource(source)!)
+    }
+    else {
+      return this.WithCategoriesTagsBriefArticleList(await this.getPageBySource(source))!
+    }
   }
 
   async delete(

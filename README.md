@@ -128,7 +128,7 @@ Example:
     ProxyPass / http://localhost:5777/ nocanon
     ProxyPassReverse / http://localhost:5777/
 </VirtualHost>
-```
+
 </details>
 
 ## Star history

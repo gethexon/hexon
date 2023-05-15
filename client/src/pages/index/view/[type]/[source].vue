@@ -74,7 +74,7 @@ const onAction = (payload: HViewerToolbarActionPayload) => {
 <template>
   <HLoading :loading="detailStore.isLoading">
     <ErroredView v-if="detailStore.error">
-      <HButton @click="load">重试</HButton>
+      <HButton @click="load">重試</HButton>
     </ErroredView>
     <div class="w-full h-full flex flex-col" v-else>
       <HViewerToolbar @on-action="onAction" />

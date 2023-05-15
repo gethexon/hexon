@@ -10,7 +10,7 @@ const signOut = async () => {
 </script>
 <template>
   <HToolbar class="signout-button cursor-pointer px-5" @click="signOut">
-    <span class="text-sm font-bold">退出登录</span>
+    <span class="text-sm font-bold">登出</span>
     <div class="flex-1"></div>
     <HIcon :name="HIconName.PowerButton" />
   </HToolbar>

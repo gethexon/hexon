@@ -13,7 +13,7 @@ function fail(e: unknown) {
   const err = e instanceof Error ? e : new Error(e as any)
   console.log(getErrorMessage(err))
   const id = notification.notify({
-    title: "失败",
+    title: "失敗",
     desc: getErrorMessage(err),
     type: "error",
     actions: [

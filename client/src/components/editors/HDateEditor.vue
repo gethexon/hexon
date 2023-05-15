@@ -15,7 +15,7 @@ const emits = defineEmits<{
 const { classNames } = createClassNames("h-date-editor")
 const vars = useThemeVars()
 const text = computed(() =>
-  props.date ? props.date.format(DATE_FORMAT) : "未指定数据"
+  props.date ? props.date.format(DATE_FORMAT) : "未設定時間"
 )
 const onPickDate = (date: Dayjs | null) => {
   emits('update:date', date);

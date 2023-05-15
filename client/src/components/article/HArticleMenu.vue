@@ -131,10 +131,10 @@ const dateToString = (date: Dayjs | null) => {
         </div>
         <div class="mb-2">
           <div class="text-sm">
-            {{`发布于 ${dateToString(article!.date)}`}}
+            {{`發布於 ${dateToString(article!.date)}`}}
           </div>
           <div class="text-sm">
-            {{`更新于 ${dateToString(article!.updated)}`}}
+            {{`更新於 ${dateToString(article!.updated)}`}}
           </div>
         </div>
         <template v-if="article!.categories?.length">

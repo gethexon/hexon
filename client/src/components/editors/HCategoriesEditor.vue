@@ -69,7 +69,7 @@ const vars = useThemeVars()
         <HIcon :name="HIconName.Add" />
       </HBadge>
     </div>
-    <HInput v-model="newCat" placeholder="新分类" @keydown.enter="onNewCat">
+    <HInput v-model="newCat" placeholder="新分類" @keydown.enter="onNewCat">
       <template #suffix>
         <HIcon :name="HIconName.Add" clickable @click="onNewCat" />
       </template>

@@ -15,7 +15,7 @@ const onChange = () => emits("change-username", username.value)
   <div class="flex">
     <HInput
       class="flex-1"
-      placeholder="旧密码"
+      placeholder="新使用者名稱"
       type="secondary"
       v-model="username"
     >
@@ -23,6 +23,6 @@ const onChange = () => emits("change-username", username.value)
         <HIcon :name="HIconName.Contact" />
       </template>
     </HInput>
-    <HButton class="ml-2" :disabled="disabled" @click="onChange">保存</HButton>
+    <HButton class="ml-2" :disabled="disabled" @click="onChange">儲存</HButton>
   </div>
 </template>

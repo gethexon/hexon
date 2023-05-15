@@ -14,7 +14,7 @@ const version = pkgJson.version
             {{ `v${version}` }}
           </span>
         </div>
-        <span text-sm op50>Made by winwin2011 with love.</span>
+        <span text-sm op50>Made by winwin2011 with love and modify by Konnokai.</span>
       </div>
     </div>
   </div>

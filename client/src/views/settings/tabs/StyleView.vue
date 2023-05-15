@@ -26,7 +26,7 @@ const save = () => {
   settingsStore.save().then(() => {
     notification.notify({
       type: "success",
-      title: "设置已保存",
+      title: "樣式已儲存",
     })
   })
 }
@@ -42,9 +42,9 @@ const DEV = import.meta.env.DEV
 <template>
   <div class="">
     <div class="text-lg mb-2" :style="{ color: vars.textColorPrimary }">
-      编辑器
+      編輯器
     </div>
-    <div class="mb-2" :style="{ color: vars.textColorSecondary }">字体</div>
+    <div class="mb-2" :style="{ color: vars.textColorSecondary }">字體</div>
     <HInput
       class="w-full font-mono"
       type="secondary"
@@ -52,15 +52,15 @@ const DEV = import.meta.env.DEV
     ></HInput>
     <template v-if="DEV">
       <div class="text-lg my-2" :style="{ color: vars.textColorPrimary }">
-        颜色
+        顏色
       </div>
       <div class="mb-2" :style="{ color: vars.textColorSecondary }">
-        暗黑模式
+        黑暗模式
       </div>
       <div>
         <HToggle :active="vars.isDark" @update:active="(v) => setDark(v)" />
       </div>
     </template>
-    <HButton class="mt-8" @click="save">保存</HButton>
+    <HButton class="mt-8" @click="save">儲存</HButton>
   </div>
 </template>

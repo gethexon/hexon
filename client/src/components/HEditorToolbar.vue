@@ -23,7 +23,7 @@ const detailStore = useDetailStore()
       返回
     </HButton>
     <div class="flex-1"></div>
-    <HBadge class="mr-2" v-if="props.saving" rounded>保存中...</HBadge>
+    <HBadge class="mr-2" v-if="props.saving" rounded>儲存中...</HBadge>
     <template v-else>
       <HBadge
         class="mr-2"
@@ -31,7 +31,7 @@ const detailStore = useDetailStore()
         v-if="props.changed"
         rounded
       >
-        未保存
+        未儲存
       </HBadge>
     </template>
     <HButton
@@ -61,18 +61,6 @@ const detailStore = useDetailStore()
       v-if="detailStore.isDraft"
     >
       <HIcon :name="HIconName.Upload" />
-    </HButton>
-    <HButton
-      class="mr-2"
-      type="common"
-      round
-      inverted
-      @click="emits('on-action', { type: 'code' })"
-    >
-      <HIcon :name="HIconName.Code" />
-    </HButton>
-    <HButton class="mr-2" type="common" round inverted>
-      <HIcon :name="HIconName.GlobalNavButton" />
     </HButton>
   </HToolbar>
 </template>
