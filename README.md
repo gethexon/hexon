@@ -136,7 +136,7 @@ Example:
 
 ## Contributors
 
-<a href="https://github.com/usememos/memos/graphs/contributors">
+<a href="https://github.com/gethexon/hexon/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=gethexon/hexon" />
 </a>
 
