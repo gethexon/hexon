@@ -97,6 +97,7 @@ function isAsset(pageOrAsset: HexoPage) {
 function transformPost(doc: HexoPost): Post {
   return {
     ...doc,
+    __post: true,
     slug: doc.slug,
     date: doc.date.toString(),
     updated: doc.updated?.toString(),
@@ -120,6 +121,7 @@ function transformPostToBrief({
 function transformPage(doc: HexoPage) {
   return {
     ...doc,
+    __page: true,
     slug: doc.slug,
     date: doc.date.toString(),
     updated: doc.updated?.toString(),
