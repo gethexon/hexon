@@ -62,7 +62,7 @@ var require_windows = __commonJS({
     module2.exports = isexe;
     isexe.sync = sync;
     var fs3 = require("fs");
-    function checkPathExt(path8, options) {
+    function checkPathExt(path9, options) {
       var pathext = options.pathExt !== void 0 ? options.pathExt : process.env.PATHEXT;
       if (!pathext) {
         return true;
@@ -73,25 +73,25 @@ var require_windows = __commonJS({
       }
       for (var i = 0; i < pathext.length; i++) {
         var p = pathext[i].toLowerCase();
-        if (p && path8.substr(-p.length).toLowerCase() === p) {
+        if (p && path9.substr(-p.length).toLowerCase() === p) {
           return true;
         }
       }
       return false;
     }
-    function checkStat(stat, path8, options) {
+    function checkStat(stat, path9, options) {
       if (!stat.isSymbolicLink() && !stat.isFile()) {
         return false;
       }
-      return checkPathExt(path8, options);
+      return checkPathExt(path9, options);
     }
-    function isexe(path8, options, cb) {
-      fs3.stat(path8, function(er, stat) {
-        cb(er, er ? false : checkStat(stat, path8, options));
+    function isexe(path9, options, cb) {
+      fs3.stat(path9, function(er, stat) {
+        cb(er, er ? false : checkStat(stat, path9, options));
       });
     }
-    function sync(path8, options) {
-      return checkStat(fs3.statSync(path8), path8, options);
+    function sync(path9, options) {
+      return checkStat(fs3.statSync(path9), path9, options);
     }
   }
 });
@@ -102,13 +102,13 @@ var require_mode = __commonJS({
     module2.exports = isexe;
     isexe.sync = sync;
     var fs3 = require("fs");
-    function isexe(path8, options, cb) {
-      fs3.stat(path8, function(er, stat) {
+    function isexe(path9, options, cb) {
+      fs3.stat(path9, function(er, stat) {
         cb(er, er ? false : checkStat(stat, options));
       });
     }
-    function sync(path8, options) {
-      return checkStat(fs3.statSync(path8), options);
+    function sync(path9, options) {
+      return checkStat(fs3.statSync(path9), options);
     }
     function checkStat(stat, options) {
       return stat.isFile() && checkMode(stat, options);
@@ -141,7 +141,7 @@ var require_isexe = __commonJS({
     }
     module2.exports = isexe;
     isexe.sync = sync;
-    function isexe(path8, options, cb) {
+    function isexe(path9, options, cb) {
       if (typeof options === "function") {
         cb = options;
         options = {};
@@ -151,7 +151,7 @@ var require_isexe = __commonJS({
           throw new TypeError("callback not provided");
         }
         return new Promise(function(resolve4, reject) {
-          isexe(path8, options || {}, function(er, is) {
+          isexe(path9, options || {}, function(er, is) {
             if (er) {
               reject(er);
             } else {
@@ -160,7 +160,7 @@ var require_isexe = __commonJS({
           });
         });
       }
-      core(path8, options || {}, function(er, is) {
+      core(path9, options || {}, function(er, is) {
         if (er) {
           if (er.code === "EACCES" || options && options.ignoreErrors) {
             er = null;
@@ -170,9 +170,9 @@ var require_isexe = __commonJS({
         cb(er, is);
       });
     }
-    function sync(path8, options) {
+    function sync(path9, options) {
       try {
-        return core.sync(path8, options || {});
+        return core.sync(path9, options || {});
       } catch (er) {
         if (options && options.ignoreErrors || er.code === "EACCES") {
           return false;
@@ -188,7 +188,7 @@ var require_isexe = __commonJS({
 var require_which = __commonJS({
   "node_modules/.pnpm/which@2.0.2/node_modules/which/which.js"(exports, module2) {
     var isWindows = process.platform === "win32" || process.env.OSTYPE === "cygwin" || process.env.OSTYPE === "msys";
-    var path8 = require("path");
+    var path9 = require("path");
     var COLON = isWindows ? ";" : ":";
     var isexe = require_isexe();
     var getNotFoundError = (cmd) => Object.assign(new Error(`not found: ${cmd}`), { code: "ENOENT" });
@@ -224,7 +224,7 @@ var require_which = __commonJS({
           return opt.all && found.length ? resolve4(found) : reject(getNotFoundError(cmd));
         const ppRaw = pathEnv[i];
         const pathPart = /^".*"$/.test(ppRaw) ? ppRaw.slice(1, -1) : ppRaw;
-        const pCmd = path8.join(pathPart, cmd);
+        const pCmd = path9.join(pathPart, cmd);
         const p = !pathPart && /^\.[\\\/]/.test(cmd) ? cmd.slice(0, 2) + pCmd : pCmd;
         resolve4(subStep(p, i, 0));
       });
@@ -251,7 +251,7 @@ var require_which = __commonJS({
       for (let i = 0; i < pathEnv.length; i++) {
         const ppRaw = pathEnv[i];
         const pathPart = /^".*"$/.test(ppRaw) ? ppRaw.slice(1, -1) : ppRaw;
-        const pCmd = path8.join(pathPart, cmd);
+        const pCmd = path9.join(pathPart, cmd);
         const p = !pathPart && /^\.[\\\/]/.test(cmd) ? cmd.slice(0, 2) + pCmd : pCmd;
         for (let j = 0; j < pathExt.length; j++) {
           const cur = p + pathExt[j];
@@ -299,7 +299,7 @@ var require_path_key = __commonJS({
 var require_resolveCommand = __commonJS({
   "node_modules/.pnpm/cross-spawn@7.0.3/node_modules/cross-spawn/lib/util/resolveCommand.js"(exports, module2) {
     "use strict";
-    var path8 = require("path");
+    var path9 = require("path");
     var which = require_which();
     var getPathKey = require_path_key();
     function resolveCommandAttempt(parsed, withoutPathExt) {
@@ -317,7 +317,7 @@ var require_resolveCommand = __commonJS({
       try {
         resolved = which.sync(parsed.command, {
           path: env2[getPathKey({ env: env2 })],
-          pathExt: withoutPathExt ? path8.delimiter : void 0
+          pathExt: withoutPathExt ? path9.delimiter : void 0
         });
       } catch (e) {
       } finally {
@@ -326,7 +326,7 @@ var require_resolveCommand = __commonJS({
         }
       }
       if (resolved) {
-        resolved = path8.resolve(hasCustomCwd ? parsed.options.cwd : "", resolved);
+        resolved = path9.resolve(hasCustomCwd ? parsed.options.cwd : "", resolved);
       }
       return resolved;
     }
@@ -380,8 +380,8 @@ var require_shebang_command = __commonJS({
       if (!match) {
         return null;
       }
-      const [path8, argument] = match[0].replace(/#! ?/, "").split(" ");
-      const binary = path8.split("/").pop();
+      const [path9, argument] = match[0].replace(/#! ?/, "").split(" ");
+      const binary = path9.split("/").pop();
       if (binary === "env") {
         return argument;
       }
@@ -416,7 +416,7 @@ var require_readShebang = __commonJS({
 var require_parse = __commonJS({
   "node_modules/.pnpm/cross-spawn@7.0.3/node_modules/cross-spawn/lib/parse.js"(exports, module2) {
     "use strict";
-    var path8 = require("path");
+    var path9 = require("path");
     var resolveCommand = require_resolveCommand();
     var escape = require_escape();
     var readShebang = require_readShebang();
@@ -441,7 +441,7 @@ var require_parse = __commonJS({
       const needsShell = !isExecutableRegExp.test(commandFile);
       if (parsed.options.forceShell || needsShell) {
         const needsDoubleEscapeMetaChars = isCmdShimRegExp.test(commandFile);
-        parsed.command = path8.normalize(parsed.command);
+        parsed.command = path9.normalize(parsed.command);
         parsed.command = escape.command(parsed.command);
         parsed.args = parsed.args.map((arg) => escape.argument(arg, needsDoubleEscapeMetaChars));
         const shellCommand = [parsed.command].concat(parsed.args).join(" ");
@@ -1733,9 +1733,9 @@ var require_shared = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@vue-reactivity+watch@0.2.0_m63zrwhmbwvkxqx3r7r5ohhfnu/node_modules/@vue-reactivity/watch/dist/index.js
+// node_modules/.pnpm/@vue-reactivity+watch@0.2.0_@vue+reactivity@3.2.33_@vue+shared@3.2.33/node_modules/@vue-reactivity/watch/dist/index.js
 var require_dist = __commonJS({
-  "node_modules/.pnpm/@vue-reactivity+watch@0.2.0_m63zrwhmbwvkxqx3r7r5ohhfnu/node_modules/@vue-reactivity/watch/dist/index.js"(exports, module2) {
+  "node_modules/.pnpm/@vue-reactivity+watch@0.2.0_@vue+reactivity@3.2.33_@vue+shared@3.2.33/node_modules/@vue-reactivity/watch/dist/index.js"(exports, module2) {
     var __defProp2 = Object.defineProperty;
     var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
     var __getOwnPropNames2 = Object.getOwnPropertyNames;
@@ -1920,7 +1920,8 @@ var require_dist = __commonJS({
 
 // src/server/index.ts
 var import_reflect_metadata = require("reflect-metadata");
-var import_tsyringe18 = require("tsyringe");
+var dotenv = __toESM(require("dotenv"));
+var import_tsyringe19 = require("tsyringe");
 var import_http = __toESM(require("http"));
 
 // src/shared/constants.ts
@@ -2986,9 +2987,9 @@ function npmRunPath(options = {}) {
 function npmRunPathEnv(_a = {}) {
   var _b = _a, { env: env2 = import_node_process2.default.env } = _b, options = __objRest(_b, ["env"]);
   env2 = __spreadValues({}, env2);
-  const path8 = pathKey({ env: env2 });
-  options.path = env2[path8];
-  env2[path8] = npmRunPath(options);
+  const path9 = pathKey({ env: env2 });
+  options.path = env2[path9];
+  env2[path9] = npmRunPath(options);
   return env2;
 }
 
@@ -4271,11 +4272,15 @@ var HexoService = class {
     const fullPath = await this.getFullPathBySource(source, type);
     if (!fullPath)
       throw new PostOrPageNotFoundError(type);
-    this._hexoInstanceService.runBetweenReload(() => {
+    await this._hexoInstanceService.runBetweenReload(() => {
       this.writeFile(fullPath, raw);
     });
-    const article = await this.getPostBySource(source);
-    return this.WithCategoriesTagsBriefArticleList(article);
+    this._logService.log(`${type} update succeed`, fullPath);
+    if (type === "post") {
+      return this.WithCategoriesTagsBriefArticleList(await this.getPostBySource(source));
+    } else {
+      return this.WithCategoriesTagsBriefArticleList(await this.getPageBySource(source));
+    }
   }
   async delete(source, type) {
     const fullPath = await this.getFullPathBySource(source, type);
@@ -4362,13 +4367,13 @@ router2.post("/publish", async (ctx) => {
 });
 router2.post("/create", async (ctx) => {
   const hexo = import_tsyringe10.container.resolve(HexoService);
-  const { title, layout, path: path8, slug, replace } = ctx.request.body;
+  const { title, layout, path: path9, slug, replace } = ctx.request.body;
   if (!title) {
     ctx.status = 400;
     ctx.body = "need `title`";
     return;
   }
-  ctx.body = await hexo.create(title, { layout, path: path8, slug, replace });
+  ctx.body = await hexo.create(title, { layout, path: path9, slug, replace });
 });
 router2.put("/post/:source", async (ctx) => {
   const hexo = import_tsyringe10.container.resolve(HexoService);
@@ -4432,8 +4437,8 @@ async function hasRemtoe(repoPath) {
   return !!await run("git", ["remote", "-v"], { cwd: repoPath });
 }
 var GitService = class {
-  constructor(storage2, _logService, _execService) {
-    this.storage = storage2;
+  constructor(storage, _logService, _execService) {
+    this.storage = storage;
     this._logService = _logService;
     this._execService = _execService;
     this._logService.setScope("git-service");
@@ -4657,13 +4662,60 @@ app.use(routes_default.routes());
 var app_default = app;
 
 // src/server/index.ts
-var storage = import_tsyringe18.container.resolve(StorageService);
-var server = import_http.default.createServer(app_default.callback());
-server.on("listening", () => {
-  const addr = server.address();
-  const bind = typeof addr === "string" ? "pipe " + addr : "http://localhost:" + addr.port;
-  console.log("Server running on " + bind);
-  const his = import_tsyringe18.container.resolve(HexoInstanceService);
-  his.init().catch(console.error);
-});
-server.listen(storage.get(HEXON_PORT_KEY) || HEXON_DEFAULT_PORT);
+var import_path9 = __toESM(require("path"));
+
+// src/shared/env-service.ts
+var import_tsyringe18 = require("tsyringe");
+var EnvService = class {
+  constructor(storage, account) {
+    this.storage = storage;
+    this.account = account;
+  }
+  sync() {
+    this.syncAccount();
+    this.syncHexon();
+    this.syncHexo();
+  }
+  syncAccount() {
+    const username = process.env.USERNAME;
+    const password = process.env.PASSWORD;
+    username && this.account.setUsername(username);
+    password && this.account.setPassword(password);
+    console.log({ username, password });
+  }
+  syncHexon() {
+    const port = process.env.HEXON_PORT;
+    port && this.storage.set(HEXON_PORT_KEY, port);
+    console.log({ port });
+  }
+  syncHexo() {
+    const base = process.env.HEXO_BASE;
+    base && this.storage.set(HexoInstanceService.HEXO_BASE_DIR_KEY, base);
+    console.log({ base });
+  }
+};
+EnvService = __decorateClass([
+  (0, import_tsyringe18.injectable)(),
+  (0, import_tsyringe18.singleton)(),
+  __decorateParam(0, (0, import_tsyringe18.inject)(StorageService)),
+  __decorateParam(1, (0, import_tsyringe18.inject)(AccountService))
+], EnvService);
+
+// src/server/index.ts
+(async () => {
+  dotenv.config({
+    path: process.env.NODE_ENV === "production" ? process.cwd() + "/.env" : import_path9.default.resolve(process.cwd(), "../.env")
+  });
+  const storage = import_tsyringe19.container.resolve(StorageService);
+  const server = import_http.default.createServer(app_default.callback());
+  server.on("listening", () => {
+    const addr = server.address();
+    const bind = typeof addr === "string" ? "pipe " + addr : "http://localhost:" + addr.port;
+    console.log("Server running on " + bind);
+    const his = import_tsyringe19.container.resolve(HexoInstanceService);
+    his.init().catch(console.error);
+  });
+  const env2 = import_tsyringe19.container.resolve(EnvService);
+  await env2.sync();
+  server.listen(storage.get(HEXON_PORT_KEY) || HEXON_DEFAULT_PORT);
+})();
