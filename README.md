@@ -23,7 +23,8 @@ Make sure your `git`, `hexo` and `Node.js` workflow is fine. Hexon only provide 
 ### Install
 
 ```bash
-git clone https://github.com/gethexon/hexon
+git clone https://github.com/gethexon/hexon --depth 1
+cd hexon
 pnpm install
 pnpm run setup
 ```
@@ -80,15 +81,12 @@ e.g. modify `git sync` script
 ## 💩 Have trouble?
 
 - Read FAQs below.
-- Try to find answer in [issue list](https://github.com/gethexon/hexon/issues).
-- Raise an [issue](https://github.com/gethexon/hexon/issues/new).
-
-**TRY NOT ASK QUESTION VIA QQ GROUP. SOLUTIONS IN QQ GROUP WON'T HELP OTHERS.**
-
+- Search in [Issue list](https://github.com/gethexon/hexon/Issues).
+- [Add new Issue](https://github.com/gethexon/hexon/issueI/new).
 
 ## ❓ Want to know more?
 
-Start a [discussion](https://github.com/gethexon/hexon/discussions) or join us via QQ group 590355610.
+Start a [discussion](https://github.com/gethexon/hexon/discussions).
 
 ## 👌🏻 FAQ
 
