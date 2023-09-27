@@ -445,9 +445,10 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
   async update(source: string, raw: string, type: "post" | "page") {
     const fullPath = await this.getFullPathBySource(source, type)
     if (!fullPath) throw new PostOrPageNotFoundError(type)
-    this._hexoInstanceService.runBetweenReload(() => {
+    await this._hexoInstanceService.runBetweenReload(() => {
       this.writeFile(fullPath, raw)
     })
+    this._logService.log(`${type} update succeed`, fullPath)
     if (type === "post") {
       return this.WithCategoriesTagsBriefArticleList(await this.getPostBySource(source)!)
     }
