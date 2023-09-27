@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.12.6](https://github.com/gethexon/hexon/compare/v0.12.5...v0.12.6) (2023-09-27)
+
+
+### Features
+
+* install via env ([f0b91aa](https://github.com/gethexon/hexon/commit/f0b91aa39d4f7ab8f050f4ed8c470843299c5bc2))
+
+
+### Bug Fixes
+
+* 修正成正確的專案名稱 ([fb38e7b](https://github.com/gethexon/hexon/commit/fb38e7bcb93b7c7c0e3bf7aea60ab685af0c8bba))
+* 因缺少 type 檢查導致回傳值缺少 Article 屬性的問題 ([#36](https://github.com/gethexon/hexon/issues/36)) ([e75fea6](https://github.com/gethexon/hexon/commit/e75fea693248849a18a8dd1dbb0299416e9b52db))
+
 ### [0.12.5](https://github.com/gethexon/hexon/compare/v0.12.4...v0.12.5) (2023-03-28)
 
 ### [0.12.4](https://git.yujianghao.cn/winwin2011/hexon/compare/v0.12.4-0...v0.12.4) (2022-06-23)
