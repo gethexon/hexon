@@ -4,6 +4,8 @@ Let's hexo online!
 
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/gethexon/hexon?style=flat-square)](https://github.com/gethexon/hexon/releases/)
 
+English | [中文](./README_CN.md)
+
 ## ❔ How it works?
 
 Hexon is a GUI for hexo with git, run commands and manage content for you.
