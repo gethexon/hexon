@@ -1,0 +1,24 @@
+{
+  "include": [
+    "server/src/**/*.ts",
+    "server-shared/src/**/*.ts",
+    "server-scripts/src/**/*.ts",
+  ],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "declaration": false,
+    "noImplicitAny": true,
+    "allowJs": true,
+    "target": "es2015",
+    "outDir": "dist",
+    "strict": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "paths": {
+      "@server-shared/*": ["server-shared/src/*"],
+      "@server/*": ["server/src/*"]
+    }
+  }
+}

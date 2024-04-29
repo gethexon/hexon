@@ -1,14 +1,8 @@
 {
+  "name": "server-scripts",
   "private": true,
   "scripts": {
-    "setup": "node ./bin/index.js install",
-    "resetpwd": "node ./bin/index.js resetpwd",
-    "script": "node ./bin/index.js script",
-    "start": "cross-env DEBUG=null NODE_ENV=production && node dist/index.js",
-    "prd": "pm2 start dist/index.js --name hexon -o log/pm2-log.log -e log/pm2-err.log",
-    "dev": "pnpm run build && nodemon ./dist/index.js",
-    "build": "rimraf dist && node ./scripts/build.mjs",
-    "test": "jest"
+    "build": "node ./scripts/build.mjs"
   },
   "dependencies": {
     "@koa/cors": "^3.3.0",
@@ -43,7 +37,7 @@
     "reflect-metadata": "^0.1.13",
     "simple-json-db": "^2.0.0",
     "strip-ansi": "^7.0.1",
-    "tsyringe": "^4.6.0",
+    "tsyringe": "^4.8.0",
     "winston": "^3.7.2"
   }
 }
