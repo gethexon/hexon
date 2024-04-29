@@ -10,9 +10,8 @@ const INCLUDE_MODULES = [
   "strip-ansi",
 ]
 
-// FIXME replace with picocolors
-function buildServer() {
-  console.log(chalk.gray("[server]"), chalk.green("Building server..."))
+function buildBin() {
+  console.log(chalk.gray("[bin]"), chalk.green("Building bin..."))
   return new Promise((resolve) => {
     esbuild
       .build({
@@ -20,7 +19,7 @@ function buildServer() {
         bundle: true,
         platform: "node",
         target: "node12",
-        outfile: "dist/index.js",
+        outfile: "./bin/index.js",
         plugins: [
           esbuildPluginNodeExternals({
             include: INCLUDE_MODULES,
@@ -29,10 +28,10 @@ function buildServer() {
       })
       .then(() => {
         // eslint-disable-next-line no-console
-        console.log(chalk.gray("[server]"), chalk.green("Build finished."))
+        console.log(chalk.gray("[bin]"), chalk.green("Build finished."))
         resolve()
       })
   })
 }
 
-buildServer()
+buildBin()
