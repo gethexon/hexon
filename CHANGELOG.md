@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.12.7](https://github.com/gethexon/hexon/compare/v0.12.6...v0.12.7) (2024-06-07)
+
+
+### Bug Fixes
+
+* article type ([e4dd713](https://github.com/gethexon/hexon/commit/e4dd7135470558659bcc47cb9ddf9d199bd1425d))
+* show error message when auth failed ([83b4cda](https://github.com/gethexon/hexon/commit/83b4cdaa8ed91878911fbe0fbd40846ce61baf0b))
+
 ### [0.12.6](https://github.com/gethexon/hexon/compare/v0.12.5...v0.12.6) (2023-09-27)
 
 
