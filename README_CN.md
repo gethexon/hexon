@@ -6,6 +6,8 @@ Let's hexo online!
 
 [English](./README.md) | 中文
 
+![home screen](./images/home-screen.png)
+
 ## ❔ Hexon 是什么
 
 Hexon 是一个集成了git、命令行并能够帮你管理 hexo 内容的图形化界面
