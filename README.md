@@ -6,6 +6,8 @@ Let's hexo online!
 
 English | [中文](./README_CN.md)
 
+![home screen](./images/home-screen.png)
+
 ## ❔ How it works?
 
 Hexon is a GUI for hexo with git, run commands and manage content for you.
