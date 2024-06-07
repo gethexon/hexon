@@ -7,7 +7,13 @@ export function isLogin() {
 }
 
 export function login(username: string, password: string) {
-  return request.post("/auth/login", { username, password })
+  return request.post(
+    "/auth/login",
+    { username, password },
+    {
+      disableAuthenticationRedirect: true,
+    }
+  )
 }
 
 export function logout() {
