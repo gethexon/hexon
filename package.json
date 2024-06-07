@@ -14,7 +14,8 @@
     "start": "cd ./server && pnpm start",
     "prd": "cd ./server && pnpm prd",
     "dev-init": "pnpm install && pnpm run build && cd ./server-scripts && node ./bin/index.js install",
-    "dev": "concurrently -p [{name}] -n 'server,client' -c 'green.bold,blue.bold' 'cd ./server && pnpm dev' 'cd ./client && pnpm dev' "
+    "dev": "concurrently -p [{name}] -n 'server,client' -c 'green.bold,blue.bold' 'cd ./server && pnpm dev' 'cd ./client && pnpm dev' ",
+    "test:fresh-install": "bash ./scripts/fresh_installation.test.sh"
   },
   "devDependencies": {
     "@types/http-errors": "^2.0.4",

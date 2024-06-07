@@ -48,10 +48,11 @@ export const useDispatcher = defineStore("dispatcher", {
         await login(username, password)
         this.getInfo()
         this.router.push({ name: "home" })
-      } catch (e) {
+      } catch (e: any) {
         this.notification.notify({
           title: "登陆失败",
           type: "error",
+          desc: e?.response?.data?.message,
         })
       }
     },
