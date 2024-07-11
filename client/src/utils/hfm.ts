@@ -11,7 +11,7 @@
  * => internal_raw
  */
 
-import hfm from "hexo-front-matter"
+import * as hfm from "hexo-front-matter"
 import { categories2Array2d } from "~/utils"
 
 type FrontMatterRequired = {

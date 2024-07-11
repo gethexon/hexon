@@ -18,7 +18,6 @@
     "test:fresh-install": "bash ./scripts/fresh_installation.test.sh"
   },
   "devDependencies": {
-    "@types/http-errors": "^2.0.4",
     "@types/animejs": "^3.1.12",
     "@types/basic-auth": "^1.1.8",
     "@types/color": "^3.0.6",
@@ -27,6 +26,7 @@
     "@types/debug": "^4.1.12",
     "@types/faker": "^6.6.9",
     "@types/hexo": "^3.8.12",
+    "@types/http-errors": "^2.0.4",
     "@types/inquirer": "^8.2.10",
     "@types/jest": "^27.5.2",
     "@types/js-yaml": "^4.0.9",
@@ -52,8 +52,8 @@
     "@vicons/fluent": "^0.12.0",
     "@vicons/utils": "^0.1.4",
     "@vitejs/plugin-vue": "^2.3.4",
-    "@vue/compiler-sfc": "^3.4.25",
-    "@vue/test-utils": "^2.4.5",
+    "@vue/compiler-sfc": "^3.4.27",
+    "@vue/test-utils": "^2.4.6",
     "autoprefixer": "^10.4.19",
     "babel-loader": "^8.3.0",
     "concurrently": "^7.6.0",
@@ -67,9 +67,9 @@
     "jsdom": "^19.0.0",
     "less": "^4.2.0",
     "less-loader": "^10.2.0",
-    "naive-ui": "^2.38.1",
+    "naive-ui": "^2.38.2",
     "nodemon": "^2.0.22",
-    "picocolors": "^1.0.0",
+    "picocolors": "^1.0.1",
     "postcss": "^8.4.38",
     "prettier": "^2.8.8",
     "rimraf": "^3.0.2",
@@ -83,6 +83,6 @@
     "vite": "^2.9.18",
     "vite-plugin-pages": "^0.22.0",
     "vite-plugin-vue-layouts": "^0.6.0",
-    "vue-tsc": "^2.0.14"
+    "vue-tsc": "^2.0.19"
   }
 }
