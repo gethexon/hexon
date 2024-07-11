@@ -1,4 +1,4 @@
-import { ISettings } from "@server/types/api"
+import { ISettings } from "@shared/types/api"
 import { inject, injectable, singleton } from "tsyringe"
 import { StorageService } from "@server-shared/storage-service"
 

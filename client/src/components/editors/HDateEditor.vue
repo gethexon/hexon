@@ -4,7 +4,7 @@ import { computed } from "vue"
 import { createClassNames } from "~/utils/create-classnames"
 import { HDatePicker } from "@/ui/date-picker"
 import { useThemeVars } from "@/ui/theme"
-import { DATE_FORMAT } from "~/constants";
+import { DATE_FORMAT } from "@shared/constants";
 
 const props = defineProps<{
   date: Dayjs | null
