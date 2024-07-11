@@ -1,0 +1,1 @@
+import{d as e,m as o,o as a,z as n,j as t,a6 as r}from"./index.53117bef.js";const d=e({__name:"unauthorized",setup(s){return o(()=>{console.log("unauthorized layout used")}),(u,c)=>(a(),n(t(r)))}});export{d as default};
