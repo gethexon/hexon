@@ -1,0 +1,7 @@
+{
+  "name": "shared",
+  "private": true,
+  "scripts": {
+    "build": "exit 0"
+  }
+}
