@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import dayjs, { Dayjs } from "dayjs"
-import { computed, ref, watch } from "vue"
+import { computed, ref, watch, onMounted } from "vue"
 import { HButtonType } from "@/ui/button"
 import { HButton } from "@/ui/button"
 import { HDivider } from "@/ui/divider"
@@ -13,6 +13,11 @@ import HSlider from "../../slider/src/HSlider.vue"
 const props = defineProps<{
   date: Dayjs | null
 }>()
+onMounted(()=>{
+  if(props.date===null){
+    emits("update:date",dayjs())
+  }
+})
 const emits = defineEmits<{
   (e: "update:date", v: Dayjs | null): void
 }>()

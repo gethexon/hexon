@@ -13,6 +13,7 @@
 
 import * as hfm from "hexo-front-matter"
 import { categories2Array2d } from "~/utils"
+import dayjs from "dayjs"
 
 type FrontMatterRequired = {
   _content: string
@@ -46,6 +47,9 @@ export const parseHfm = (str: string = ""): FrontMatterResult => {
   const parseString = (val: unknown): string => {
     return typeof val === "string" ? val : ""
   }
+  const parseDate = (val:string): string => {
+    return dayjs(val).format("YYYY-MM-DD HH:mm:ss")
+  }
   const parseStringArray = (val: unknown): string[] => {
     if (!Array.isArray(val)) return []
     return val.map(parseString)
@@ -59,7 +63,7 @@ export const parseHfm = (str: string = ""): FrontMatterResult => {
   const _content = parseString(d_content)
   const title = parseString(dtitle)
   const tags = parseStringArray(dtags)
-  const date = parseString(ddate)
+  const date = parseDate(ddate)
   const updated = parseString(dupdated)
   const layout = parseString(dlayout)
   const categories =
