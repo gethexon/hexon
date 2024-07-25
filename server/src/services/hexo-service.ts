@@ -10,7 +10,7 @@ import {
 } from "@server/errors"
 import { HexoInstanceService } from "@server/services/hexo-instance-service"
 import { LogService } from "@server-shared/log-service"
-import { BriefPage, BriefPost, Category, Page, Post, Tag } from "@server/types/hexo"
+import { BriefPage, BriefPost, Category, Page, Post, Tag } from "@shared/types/hexo"
 import { expandHomeDir } from "@server/utils"
 import { run } from "@server/utils/exec"
 import {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue"
-import { DATE_FORMAT } from "~/constants"
+import { DATE_FORMAT } from "@shared/constants"
 import { IParsedArticleMeta } from "~/utils/article"
 import { HIcon, HIconName } from "@/ui/icon"
 import { useThemeVars } from "../ui/theme"

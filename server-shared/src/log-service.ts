@@ -1,11 +1,11 @@
 import { container } from "tsyringe"
 import chalk from "chalk"
 import dayjs from "dayjs"
-const DEFAULT_DATE_FORMAT = "YYYY-MM-DD hh:mm:ss.SSS"
+import { DATE_FORMAT } from "@shared/constants"
 
 export class LogService {
   private scope = ""
-  private dateFormat = DEFAULT_DATE_FORMAT
+  private dateFormat = DATE_FORMAT
   _prefix(type: "green" | "red") {
     let prefix = ""
     this.scope && (prefix += chalk[type].bold(`[${this.scope}]`))

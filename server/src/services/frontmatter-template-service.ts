@@ -1,5 +1,5 @@
 import { inject, injectable, singleton } from "tsyringe"
-import { IFrontmatterTemplateItem } from "@server/types/api"
+import { IFrontmatterTemplateItem } from "@shared/types/api"
 import { StorageService } from "@server-shared/storage-service"
 
 @injectable()
