@@ -7,7 +7,7 @@
   "dependencies": {
     "@koa/cors": "^3.4.3",
     "@koa/router": "^10.1.1",
-    "@vue/reactivity": "^3.4.27",
+    "@vue/reactivity": "^3.4.34",
     "@winwin/koa-authentication": "^0.2.3",
     "@winwin/server-reactive-store": "^0.2.2",
     "basic-auth": "^2.0.1",
@@ -15,11 +15,11 @@
     "commander": "^9.5.0",
     "cross-env": "^7.0.3",
     "crypto-js": "^4.2.0",
-    "dayjs": "^1.11.11",
+    "dayjs": "^1.11.12",
     "debug": "^4.3.5",
     "dotenv": "^16.4.5",
     "execa": "^6.1.0",
-    "hexo": "^7.2.0",
+    "hexo": "^7.3.0",
     "http-errors": "^2.0.0",
     "inquirer": "^8.2.6",
     "jsencrypt": "^3.3.2",
@@ -38,6 +38,6 @@
     "simple-json-db": "^2.0.0",
     "strip-ansi": "^7.1.0",
     "tsyringe": "^4.8.0",
-    "winston": "^3.13.0"
+    "winston": "^3.13.1"
   }
 }
