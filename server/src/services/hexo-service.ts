@@ -297,35 +297,17 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
     this._logService.log("list tag", res.length)
     return res
   }
-  async getSays(): Promise<Say[]> {
-    const hexo = await this._hexoInstanceService.getInstance()
-    const says_dir= hexo.base_dir + "source\\_data\\essay.yaml"
+
+  loadSays(says_dir: string): { essay_list: Say[] } {
     if (!fs.existsSync(says_dir)) {
       this._logService.log('File does not exist:', says_dir);
-      return [];
+      return { essay_list: [] }
     }
     const fileContents = fs.readFileSync(says_dir, 'utf8');
-    const parsedData = yaml.load(fileContents) as { essay_list: Say[] };
-    return parsedData.essay_list.map((item: any) => {
-      return {
-        content: item.content === null ? "" : item.content,
-        date: item.date,
-        video: item.video,
-        aplayer: item.aplayer,
-        image: item.image,
-        link: item.link
-      }
-    })
+    return yaml.load(fileContents) as { essay_list: Say[] }
   }
-  async createSay(date:string,options:ICreateSayOptions = {}): Promise<string> {
-    const hexo = await this._hexoInstanceService.getInstance()
-    const says_dir= hexo.base_dir + "source\\_data\\essay.yaml"
-    if (!fs.existsSync(says_dir)) {
-      this._logService.log('File does not exist:', says_dir);
-      return "";
-    }
-    const fileContents = fs.readFileSync(says_dir, 'utf8');
-    const parsedData = yaml.load(fileContents) as { essay_list: Say[] };
+
+  newSay(date: string, options: ICreateSayOptions = {}): Say {
     const newSay:Say = {
       content: options.content || null,
       date: date,
@@ -354,16 +336,60 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
     if(options.link){
       newSay.link = options.link
     }
+    return newSay
+  }
+
+  async getSays(): Promise<Say[]> {
+    const hexo = await this._hexoInstanceService.getInstance()
+    const says_dir = hexo.base_dir + "source\\_data\\essay.yaml"
+    const parsedData = this.loadSays(says_dir)
+    return parsedData.essay_list.map((item: any) => {
+      return {
+        content: item.content === null ? "" : item.content,
+        date: item.date,
+        video: item.video,
+        aplayer: item.aplayer,
+        image: item.image,
+        link: item.link
+      }
+    })
+  }
+
+  async createSay(date: string, options: ICreateSayOptions = {}): Promise<string> {
+    const hexo = await this._hexoInstanceService.getInstance()
+    const says_dir = hexo.base_dir + "source\\_data\\essay.yaml"
+    const parsedData = this.loadSays(says_dir)
+    const newSay = this.newSay(date, options)
     parsedData.essay_list.push(newSay)
     const updatedYaml = yaml.dump(parsedData);
-    try{
-      fs.writeFileSync(says_dir, updatedYaml, 'utf8');
-    }
-    catch (e){
-      console.log(e)
+    this.writeFile(says_dir, updatedYaml)
+    return "success"
+  }
+
+  async editSay(date: string, options: ICreateSayOptions = {}): Promise<string> {
+    const hexo = await this._hexoInstanceService.getInstance()
+    const says_dir = hexo.base_dir + "source\\_data\\essay.yaml"
+    const parsedData = this.loadSays(says_dir)
+    const realIndex = parsedData.essay_list.indexOf(<Say>parsedData.essay_list.find(item => item.date === date))
+    parsedData.essay_list[realIndex] = this.newSay(date, options)
+    const updatedYaml = yaml.dump(parsedData)
+    this.writeFile(says_dir, updatedYaml)
+    return "success"
+  }
+
+  async deleteSay(date: string): Promise<string> {
+    const hexo = await this._hexoInstanceService.getInstance()
+    const says_dir = hexo.base_dir + "source\\_data\\essay.yaml"
+    const parsedData = this.loadSays(says_dir)
+    const realIndex = parsedData.essay_list.indexOf(<Say>parsedData.essay_list.find(item => item.date === date))
+    if (realIndex > -1) {
+      parsedData.essay_list.splice(index, 1)
+      const updatedYaml = yaml.dump(parsedData)
+      this.writeFile(says_dir, updatedYaml)
+      return "success"
+    } else {
       return "fail"
     }
-    return "success"
   }
   //#endregion
 

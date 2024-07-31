@@ -1,20 +1,24 @@
 <script lang="ts" setup>
 
 import { IRSaysListData } from "@/says/interface"
-import { computed } from "vue"
+import { computed, ref } from "vue"
 import dayjs from "dayjs"
 import customParseFormat from "dayjs/plugin/customParseFormat"
 import { useThemeVars } from "@/ui/theme"
 import { LazyImg } from "vue-waterfall-plugin-next"
 import RSaysAPlayer from "@/says/RSaysAPlayer.vue"
 import RSaysBilibiliPlayer from "@/says/RSaysBilibiliPlayer.vue"
-import { Say } from "~/api"
+import RSaysModal from "@/modals/RSaysModal.vue"
 
 dayjs.extend(customParseFormat)
 
 const props = defineProps<{
   say: IRSaysListData
   index: number
+}>()
+const emits = defineEmits<{
+  (e: "on-edit", payload: { say: IRSaysListData }): void
+  (e: "on-delete", payload: { say: IRSaysListData }): void
 }>()
 const formatedDate = computed(() => {
   return dayjs(props.say.date, "YYYY-MM-DD H:mm").fromNow()
@@ -29,12 +33,17 @@ const styleVars = computed(() => {
   }
 })
 
-const handleEdit=(say:Say, index:number)=>{
-  console.log(say)
+const modalVisible = ref(false)
+const onClose = () => {
+  modalVisible.value = false
 }
 
-const handleDeletet=(say:Say, index:number)=>{
-  console.log(say)
+const handleEdit = (say: IRSaysListData) => {
+  emits("on-edit", { say })
+}
+
+const handleDelete = (say: IRSaysListData) => {
+  emits("on-delete", { say })
 }
 </script>
 
@@ -83,6 +92,8 @@ const handleDeletet=(say:Say, index:number)=>{
       </div>
     </div>
   </div>
+  <RSaysModal v-if="modalVisible" :close="onClose" :say="props.say" :visible="modalVisible" class="overflow-auto"
+              type="add" />
 </template>
 
 <style lang="less" scoped>

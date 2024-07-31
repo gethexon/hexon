@@ -3,11 +3,13 @@ import { useDispatcher } from "~/store/dispatcher"
 import { useTheme } from "@/ui/theme"
 import { HBaseModal } from "@/ui/modal"
 import RSaysForm from "@/forms/RSaysForm.vue"
+import { IRSaysListData } from "@/says/interface"
 
 const props = defineProps<{
   close: () => void
   type: string
   visible: boolean
+  say?: IRSaysListData
 }>()
 const dispatcher = useDispatcher()
 const onCreate = (value: {
@@ -21,7 +23,11 @@ const onCreate = (value: {
   link?: string
 }) => {
   const { date, ...options } = value
-  dispatcher.createSay(date, options)
+  if (props.type === "add") {
+    dispatcher.createSay(date, options)
+  } else if (props.type === "edit") {
+    dispatcher.editSay(date, options)
+  }
   props.close()
 }
 const theme = useTheme("unknown")
@@ -37,6 +43,7 @@ const theme = useTheme("unknown")
     >
       <RSaysForm
         :type="props.type"
+        :say="props.say"
         @on-create="onCreate"
         @on-cancel="props.close"
       />

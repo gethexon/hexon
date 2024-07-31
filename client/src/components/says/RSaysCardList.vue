@@ -11,7 +11,8 @@ const props = defineProps<{
   says: IRSaysListData[]
 }>()
 const emits = defineEmits<{
-  (e: "on-click", payload: { source: string; type: "post" | "page" }): void
+  (e: "on-edit", payload: { say: IRSaysListData }): void
+  (e: "on-delete", payload: { say: IRSaysListData }): void
 }>()
 const says = computed(() => sortSaysByTime(props.says))
 
@@ -30,6 +31,13 @@ const breakpoints = {
   800: { rowPerView: 1 },
   500: { rowPerView: 1 }
 }
+
+const handleEdit = (payload: { say: IRSaysListData }) => {
+  emits("on-edit", payload)
+}
+const handleDelete = (say: IRSaysListData) => {
+  emits("on-delete", { say })
+}
 </script>
 
 <template>
@@ -40,7 +48,7 @@ const breakpoints = {
                :list="says"
     >
       <template #item="{ item, url, index }">
-        <RSaysCardItem :index="index" :say="item" />
+        <RSaysCardItem :index="index" :say="item" @on-edit="handleEdit" @on-delete="handleDelete" />
       </template>
     </Waterfall>
   </div>

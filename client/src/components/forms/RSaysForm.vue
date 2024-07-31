@@ -9,9 +9,11 @@ import dayjs, { Dayjs } from "dayjs"
 import { DATE_FORMAT } from "~/constants"
 import { useThemeVars } from "@/ui/theme"
 import { HTextarea } from "@/ui/textarea"
+import { IRSaysListData } from "@/says/interface"
 
 const props = defineProps<{
   type: string
+  say?: IRSaysListData
 }>()
 const emits = defineEmits<{
   (e: "on-cancel"): void
@@ -47,8 +49,31 @@ const bilibili = computed(() => videoType.value === "bilibili")
 const videoLink = ref("")
 const link = ref("")
 const images = ref("")
+const isOverflow = computed(()=>{
+  let len=images.value?.split('\n').length
+  return typeof len !== 'undefined' && len > 1;
+})
 const disabled = computed(() => !pubDate.value)
 const width = "40px"
+
+const init = () =>{
+  if(props.say){
+    content.value=props.say.content || ""
+    pubDate.value=dayjs(props.say.date).format(DATE_FORMAT) || null
+    musicServer.value=props.say.aplayer?.server || ""
+    musicId.value=props.say.aplayer?.id.toString() || ""
+    if(props.say.video?.player){
+      videoType.value="player"
+      videoLink.value=props.say.video.player
+    }
+    else if(props.say.video?.bilibili){
+      videoType.value="bilibili"
+      videoLink.value=props.say.video.bilibili
+    }
+    link.value=props.say.link || ""
+    images.value=props.say.image?.join("\n") || ""
+  }
+}
 
 const onCreate = () => {
   if (!pubDate.value) return
@@ -77,6 +102,7 @@ const typeText = computed(() => {
 })
 const contentInputRef = ref<HInputRef | null>(null)
 onMounted(() => {
+  init()
   contentInputRef.value?.focus()
 })
 </script>
@@ -96,7 +122,7 @@ onMounted(() => {
         >
           内容
         </div>
-        <div style="grid-column: controls">
+        <div style="grid-column: controls" class="overflow-auto h-12">
           <HTextarea
             v-model:value="content"
             :error="''"
@@ -133,7 +159,7 @@ onMounted(() => {
         >
           图像
         </div>
-        <div style="grid-column: controls">
+        <div style="grid-column: controls" :class="isOverflow?'overflow-auto h-12':''">
           <HTextarea
             v-model:value="images"
             :error="''"
@@ -143,7 +169,7 @@ onMounted(() => {
       </div>
 
       <div
-        class="grid gap-4 grid-rows-1 mt-4"
+        class="grid gap-4 grid-rows-1 mt-3"
         style="grid-template-columns: [labels] auto [controls] 1fr"
       >
         <div

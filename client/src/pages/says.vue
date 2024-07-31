@@ -9,6 +9,8 @@ import { useArticleListStore } from "~/store/articleList"
 import SaysListView from "~/views/SaysListView.vue"
 import { ref } from "vue"
 import RSaysModal from "@/modals/RSaysModal.vue"
+import { IRSaysListData } from "@/says/interface"
+import dayjs from "dayjs"
 
 //#region hooks
 const dispatcher = useDispatcher()
@@ -26,15 +28,31 @@ const goHome = () => {
 }
 
 const modalVisible = ref(false)
-
+const say = ref<IRSaysListData>({
+  date: dayjs()
+})
+const type = ref("")
 const onAdd = () => {
   modalVisible.value = true
+  type.value = "add"
+  say.value = {
+    date: dayjs()
+  }
 }
 
 const onClose = () => {
   modalVisible.value = false
 }
 
+const handleEdit = (payload: { say: IRSaysListData }) => {
+  modalVisible.value = true
+  type.value = "edit"
+  say.value = payload.say
+}
+
+const handleDelete = (payload: { say: IRSaysListData }) => {
+  console.log(123)
+}
 </script>
 
 <template>
@@ -53,10 +71,11 @@ const onClose = () => {
           </button>
         </div>
         <div class="overflow-auto flex-1 mt-2">
-          <SaysListView />
+          <SaysListView @on-edit="handleEdit" @on-delete="handleDelete" />
         </div>
       </div>
-      <RSaysModal v-if="modalVisible" :close="onClose" :visible="modalVisible" class="overflow-auto" type="add" />
+      <RSaysModal v-if="modalVisible" :close="onClose" :say="say" :type="type" :visible="modalVisible"
+                  class="overflow-y-auto" />
     </MainPart>
   </SideSplit>
 </template>

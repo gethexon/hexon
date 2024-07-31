@@ -79,10 +79,26 @@ export const useMainStore = defineStore("main", {
       const data = await api.createSay(date, options)
       await this.getSaysData()
       if(data==="fail"){
-        throw new Error("记录过程出现失败")
+        throw new Error("记录过程出现错误")
       }
       return data
     },
+    async editSay(date: string, options: ICreateSayOptions = {}) {
+      const data = await api.editSay(date, options)
+      await this.getSaysData()
+      if (data === "fail") {
+        throw new Error("修改过程出现错误")
+      }
+      return data
+    },
+    async deleteSay(date: string) {
+      const data = await api.deleteSay(date)
+      await this.getSaysData()
+      if (data === "fail") {
+        throw new Error("删除过程出现错误")
+      }
+      return data
+    }
   },
   getters: {
     articles(state): (BriefPost | BriefPage)[] {

@@ -1,7 +1,7 @@
 import { defineStore } from "pinia"
 import { defineAsyncComponent } from "vue"
 import { ICreateOptions, ICreateSayOptions } from "~/api"
-import { changePassword, getInfo, login, changeUsername } from "~/api/auth"
+import { changePassword, changeUsername, getInfo, login } from "~/api/auth"
 import { IChangePasswordFormPayload } from "~/components/forms/interface"
 import { getErrorId, getErrorMessage } from "~/errors"
 import { IArticleIdentifier } from "~/interface"
@@ -268,10 +268,54 @@ export const useDispatcher = defineStore("dispatcher", {
           },
           (err) => {
             this.notification.notify({
-              title: "记录过程出现失败",
+              title: "记录过程出现错误",
               desc: (err as Error).message,
               type: "error",
               duration: 5000,
+            })
+          }
+        )
+      } catch (err) {
+      }
+    },
+    async editSay(date: string, options: ICreateSayOptions) {
+      const mainStore = useMainStore()
+      try {
+        await mainStore.editSay(date, options).then(
+          () => {
+            this.notification.notify({
+              type: "success",
+              title: "修改成功"
+            })
+          },
+          (err) => {
+            this.notification.notify({
+              title: "修改过程出现错误",
+              desc: (err as Error).message,
+              type: "error",
+              duration: 5000
+            })
+          }
+        )
+      } catch (err) {
+      }
+    },
+    async deleteSay(date: string) {
+      const mainStore = useMainStore()
+      try {
+        await mainStore.deleteSay(date).then(
+          () => {
+            this.notification.notify({
+              type: "success",
+              title: "删除成功"
+            })
+          },
+          (err) => {
+            this.notification.notify({
+              title: "删除过程出现错误",
+              desc: (err as Error).message,
+              type: "error",
+              duration: 5000
             })
           }
         )
