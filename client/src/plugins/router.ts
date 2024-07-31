@@ -8,6 +8,7 @@ const routes = setupLayouts(generatedRoutes)
 const path = {
   home: "/",
   signin: "/signin",
+  says: "/says",
 }
 
 const router = createRouter({ history: createWebHashHistory(), routes })

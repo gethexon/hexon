@@ -1,6 +1,6 @@
 import { defineStore } from "pinia"
 import { defineAsyncComponent } from "vue"
-import { ICreateOptions } from "~/api"
+import { ICreateOptions, ICreateSayOptions } from "~/api"
 import { changePassword, getInfo, login, changeUsername } from "~/api/auth"
 import { IChangePasswordFormPayload } from "~/components/forms/interface"
 import { getErrorId, getErrorMessage } from "~/errors"
@@ -256,6 +256,28 @@ export const useDispatcher = defineStore("dispatcher", {
         this.loading.stop()
       }
     },
+    async createSay(date: string, options: ICreateSayOptions) {
+      const mainStore = useMainStore()
+      try {
+        await mainStore.createSay(date, options).then(
+          () => {
+            this.notification.notify({
+              type: "success",
+              title: "记录成功",
+            })
+          },
+          (err) => {
+            this.notification.notify({
+              title: "记录过程出现失败",
+              desc: (err as Error).message,
+              type: "error",
+              duration: 5000,
+            })
+          }
+        )
+      } catch (err) {
+      }
+    },
     goHome() {
       this.router.push({ name: "home" })
     },
@@ -282,6 +304,18 @@ export const useDispatcher = defineStore("dispatcher", {
       mainStore.getBlogData().catch((err) => {
         this.notification.notify({
           title: `博客数据载入失败`,
+          desc: (err as Error).message,
+          type: "error",
+          duration: 5000,
+        })
+      })
+    },
+    goSays(){
+      this.router.push({ name: "says" })
+      const mainStore = useMainStore()
+      mainStore.getSaysData().catch((err) => {
+        this.notification.notify({
+          title: `即刻短文数据载入失败`,
           desc: (err as Error).message,
           type: "error",
           duration: 5000,

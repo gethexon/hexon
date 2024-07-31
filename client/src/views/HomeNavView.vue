@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ComputedRef, computed } from "vue"
+import { computed, ComputedRef } from "vue"
 import { Category } from "~/api"
 import { TreeNode } from "~/lib/list2tree"
 import { useActionsStore } from "~/store/actions"
@@ -23,9 +23,11 @@ const vars = useThemeVars()
 const colors = computed(() => ({
   deploy: vars.value.colorPrimary,
   generate: vars.value.colorPrimary,
+  generateAndDeploy: vars.value.colorPrimary,
   clean: vars.value.colorError,
   gitsave: vars.value.colorPrimary,
   gitsync: vars.value.colorError,
+  says: vars.value.colorPrimary,
   all: vars.value.colorAll,
   post: vars.value.colorPost,
   page: vars.value.colorPage,
@@ -48,6 +50,13 @@ const actionItems: NavListItem[] = [
     icon: HIconName.Library,
     color: colors.value.generate,
     key: "generate",
+  },
+  {
+    type: "item",
+    text: "生成并部署",
+    icon: HIconName.Send,
+    color: colors.value.generateAndDeploy,
+    key: "generateAndDeploy"
   },
   {
     type: "item",
@@ -122,6 +131,14 @@ const filterItems: ComputedRef<NavListItem[]> = computed(() => [
     selected: type.value === "draft",
     key: "draft",
   },
+  {
+    type: "item",
+    text: "即刻短文",
+    icon: HIconName.QuickNote,
+    color: colors.value.says,
+    selected: type.value === "says",
+    key: "says"
+  }
 ])
 //#endregion
 
@@ -153,18 +170,20 @@ const model = computed(() => [
   ...filterItems.value,
   ...categoryItems.value,
 ])
-const onSelect = (key: string) => {
+const onSelect = async (key: string) => {
   key === "all" && articleListStore.setFilter({ type: "all" })
   key === "post" && articleListStore.setFilter({ type: "post" })
   key === "page" && articleListStore.setFilter({ type: "page" })
   key === "draft" && articleListStore.setFilter({ type: "draft" })
   if (key.slice(0, 2) === "c-")
     articleListStore.setFilter({ type: "category", slug: key.slice(2) })
-  key === "deploy" && actionsStore.deploy()
-  key === "generate" && actionsStore.generate()
-  key === "clean" && actionsStore.clean()
-  key === "gitsync" && actionsStore.gitSync()
-  key === "gitsave" && actionsStore.gitSave()
+  key === "deploy" && await actionsStore.deploy()
+  key === "generate" && await actionsStore.generate()
+  key === "generateAndDeploy" && await actionsStore.generateAndDeploy()
+  key === "clean" && await actionsStore.clean()
+  key === "gitsync" && await actionsStore.gitSync()
+  key === "gitsave" && await actionsStore.gitSave()
+  key === "says" && await actionsStore.says() && articleListStore.setFilter({ type: "says" })
 }
 const onSettings = () => dispatcher.showSettingsModal()
 </script>

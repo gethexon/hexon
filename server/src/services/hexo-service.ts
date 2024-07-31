@@ -1,26 +1,16 @@
 import path from "path"
 import { inject, injectable, singleton } from "tsyringe"
 import fs from "fs"
+import yaml from "js-yaml"
 import HexoCore from "hexo"
 import { BRIEF_LENGTH } from "@server-shared/constants"
-import {
-  InvalidOptionsError,
-  PostOrPageNotFoundError,
-  ScriptError,
-} from "@server/errors"
+import { InvalidOptionsError, PostOrPageNotFoundError, ScriptError } from "@server/errors"
 import { HexoInstanceService } from "@server/services/hexo-instance-service"
 import { LogService } from "@server-shared/log-service"
-import { BriefPage, BriefPost, Category, Page, Post, Tag } from "@server/types/hexo"
+import { BriefPage, BriefPost, Category, Page, Post, Say, Tag } from "@server/types/hexo"
 import { expandHomeDir } from "@server/utils"
 import { run } from "@server/utils/exec"
-import {
-  HexoPage,
-  HexoPost,
-  toCategory,
-  toPage,
-  toPost,
-  toTag,
-} from "@server/utils/hexo"
+import { HexoPage, HexoPost, toCategory, toPage, toPost, toTag } from "@server/utils/hexo"
 import { scriptStore } from "@server-shared/store"
 import { ExecService } from "./exec-service"
 
@@ -39,7 +29,15 @@ interface ICreateOptions {
   slug?: string
   replace?: boolean
 }
-
+interface ICreateSayOptions {
+  content?: string
+  images?: string
+  server?: string
+  id?: number
+  video?: string
+  videoLink?: string
+  link?: string
+}
 interface IHexoCommand {
   deploy(options?: IDeployOptions): Promise<void>
   generate(): Promise<void>
@@ -299,6 +297,74 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
     this._logService.log("list tag", res.length)
     return res
   }
+  async getSays(): Promise<Say[]> {
+    const hexo = await this._hexoInstanceService.getInstance()
+    const says_dir= hexo.base_dir + "source\\_data\\essay.yaml"
+    if (!fs.existsSync(says_dir)) {
+      this._logService.log('File does not exist:', says_dir);
+      return [];
+    }
+    const fileContents = fs.readFileSync(says_dir, 'utf8');
+    const parsedData = yaml.load(fileContents) as { essay_list: Say[] };
+    return parsedData.essay_list.map((item: any) => {
+      return {
+        content: item.content === null ? "" : item.content,
+        date: item.date,
+        video: item.video,
+        aplayer: item.aplayer,
+        image: item.image,
+        link: item.link
+      }
+    })
+  }
+  async createSay(date:string,options:ICreateSayOptions = {}): Promise<string> {
+    const hexo = await this._hexoInstanceService.getInstance()
+    const says_dir= hexo.base_dir + "source\\_data\\essay.yaml"
+    if (!fs.existsSync(says_dir)) {
+      this._logService.log('File does not exist:', says_dir);
+      return "";
+    }
+    const fileContents = fs.readFileSync(says_dir, 'utf8');
+    const parsedData = yaml.load(fileContents) as { essay_list: Say[] };
+    const newSay:Say = {
+      content: options.content || null,
+      date: date,
+    }
+    if(options.images) {
+      newSay.image = options.images.split("\n")
+    }
+    if(options.id && options.server) {
+      newSay.aplayer = {
+        server: options.server,
+        id: options.id
+      }
+    }
+    if(options.video && options.videoLink) {
+      if(options.video === "bilibili"){
+        newSay.video = {
+          bilibili: options.videoLink
+        }
+      }
+      else if(options.video === "player"){
+        newSay.video = {
+          player: options.videoLink
+        }
+      }
+    }
+    if(options.link){
+      newSay.link = options.link
+    }
+    parsedData.essay_list.push(newSay)
+    const updatedYaml = yaml.dump(parsedData);
+    try{
+      fs.writeFileSync(says_dir, updatedYaml, 'utf8');
+    }
+    catch (e){
+      console.log(e)
+      return "fail"
+    }
+    return "success"
+  }
   //#endregion
 
   //#region IHexoCommand
@@ -318,7 +384,7 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
     const { generate = false } = options
     const args: string[] = []
     if (generate) args.push("--generate")
-    this.runWithoutModifiedOption(async (hexo) => {
+    await this.runWithoutModifiedOption(async (hexo) => {
       await hexo.call("deploy", { _: args })
       await hexo.exit()
     })
@@ -350,7 +416,7 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
     if (watch) args.push("--watch")
     if (bail) args.push("--bail")
     if (force) args.push("--force")
-    this.runWithoutModifiedOption(async (hexo) => {
+    await this.runWithoutModifiedOption(async (hexo) => {
       if (concurrency) args.push("--concurrency")
       await hexo.call("generate", { _: args })
       await hexo.exit()

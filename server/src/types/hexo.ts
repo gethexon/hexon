@@ -56,3 +56,12 @@ export interface Tag {
 export interface Category extends Tag {
   parent: string
 }
+
+export interface Say {
+  date: string
+  content?: string | null
+  link?: string
+  video?: { bilibili?: string, player?: string }
+  aplayer?: { server: string, id: number }
+  image?: string[]
+}

@@ -27,6 +27,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
+      "/bilibili": {
+        target: "https://api.bilibili.com/x/web-interface",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/bilibili/, ""),
+      },
     },
   },
   plugins: [
