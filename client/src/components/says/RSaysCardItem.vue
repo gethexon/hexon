@@ -80,12 +80,12 @@ const handleDelete = (say: IRSaysListData) => {
         <div>
           <button
             class="px-3 h-7 rounded-full bg-blue-500 text-sm text-white shadow-lg transition-all duration-300 hover:bg-blue-600"
-            @click.stop="handleEdit(say, index)">
+            @click.stop="handleEdit(say)">
             修改
           </button>
           <button
             class="px-3 ml-4 h-7 rounded-full bg-red-500 text-sm text-white shadow-lg transition-all duration-300 hover:bg-red-600"
-            @click.stop="handleDelete(say, index)">
+            @click.stop="handleDelete(say)">
             删除
           </button>
         </div>

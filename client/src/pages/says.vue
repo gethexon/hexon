@@ -11,6 +11,7 @@ import { ref } from "vue"
 import RSaysModal from "@/modals/RSaysModal.vue"
 import { IRSaysListData } from "@/says/interface"
 import dayjs from "dayjs"
+import RSayDeleteConfirmModal from "@/modals/RSayDeleteConfirmModal.vue"
 
 //#region hooks
 const dispatcher = useDispatcher()
@@ -27,31 +28,37 @@ const goHome = () => {
   articleListStore.setFilter({ type: "all" })
 }
 
-const modalVisible = ref(false)
+const editModalVisible = ref(false)
+const deleteModalVisible = ref(false)
 const say = ref<IRSaysListData>({
   date: dayjs()
 })
 const type = ref("")
 const onAdd = () => {
-  modalVisible.value = true
+  editModalVisible.value = true
   type.value = "add"
   say.value = {
     date: dayjs()
   }
 }
 
-const onClose = () => {
-  modalVisible.value = false
+const onEditModalClose = () => {
+  editModalVisible.value = false
+}
+
+const onDeleteModalClose = () => {
+  deleteModalVisible.value = false
 }
 
 const handleEdit = (payload: { say: IRSaysListData }) => {
-  modalVisible.value = true
+  editModalVisible.value = true
   type.value = "edit"
   say.value = payload.say
 }
 
 const handleDelete = (payload: { say: IRSaysListData }) => {
-  console.log(123)
+  deleteModalVisible.value = true
+  say.value = payload.say
 }
 </script>
 
@@ -74,8 +81,10 @@ const handleDelete = (payload: { say: IRSaysListData }) => {
           <SaysListView @on-edit="handleEdit" @on-delete="handleDelete" />
         </div>
       </div>
-      <RSaysModal v-if="modalVisible" :close="onClose" :say="say" :type="type" :visible="modalVisible"
+      <RSaysModal v-if="editModalVisible" :close="onEditModalClose" :say="say" :type="type" :visible="editModalVisible"
                   class="overflow-y-auto" />
+      <RSayDeleteConfirmModal v-if="deleteModalVisible" :close="onDeleteModalClose" :say="say"
+                              :visible="deleteModalVisible" />
     </MainPart>
   </SideSplit>
 </template>

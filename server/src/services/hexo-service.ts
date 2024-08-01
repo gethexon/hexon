@@ -383,7 +383,7 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
     const parsedData = this.loadSays(says_dir)
     const realIndex = parsedData.essay_list.indexOf(<Say>parsedData.essay_list.find(item => item.date === date))
     if (realIndex > -1) {
-      parsedData.essay_list.splice(index, 1)
+      parsedData.essay_list.splice(realIndex, 1)
       const updatedYaml = yaml.dump(parsedData)
       this.writeFile(says_dir, updatedYaml)
       return "success"

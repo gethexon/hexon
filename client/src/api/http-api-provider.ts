@@ -212,7 +212,7 @@ export class HttpApiProvider implements IApiProvider {
   async deleteSay(
     date: string
   ): Promise<string> {
-    const res = await request.post("/hexo/says/delete", { date })
+    const res = await request.delete("/hexo/says/delete", { data: { date: date } })
     return res.data
   }
   async deploy(options: IDeployOptions = {}): Promise<void> {

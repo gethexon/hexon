@@ -9,6 +9,7 @@ import { isPost } from "~/utils/article"
 import { useDetailStore } from "./detail"
 import { useMainStore } from "./main"
 import { useSettingsStore } from "./settings"
+import { Dayjs } from "dayjs"
 
 const HCreateArticleModal = defineAsyncComponent(
   () => import("@/modals/HCreateArticleModal.vue")
@@ -300,10 +301,10 @@ export const useDispatcher = defineStore("dispatcher", {
       } catch (err) {
       }
     },
-    async deleteSay(date: string) {
+    async deleteSay(date: string | Dayjs) {
       const mainStore = useMainStore()
       try {
-        await mainStore.deleteSay(date).then(
+        await mainStore.deleteSay(typeof date === "string" ? date : "").then(
           () => {
             this.notification.notify({
               type: "success",

@@ -15,8 +15,8 @@ const emits = defineEmits<{
 const handleEdit = (payload: { say: IRSaysListData }) => {
   emits("on-edit", payload)
 }
-const handleDelete = (say: IRSaysListData) => {
-  emits("on-delete", { say })
+const handleDelete = (payload: { say: IRSaysListData }) => {
+  emits("on-delete", payload)
 }
 </script>
 
