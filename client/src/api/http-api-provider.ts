@@ -1,6 +1,7 @@
 import { isPost } from "~/utils/article"
 import {
   ICreateOptions,
+  ICreateSayOptions,
   ZBriefPage,
   ZBriefPost,
   ZCategory,
@@ -9,7 +10,8 @@ import {
   ZIWithAllData,
   ZPage,
   ZPost,
-  ZTag,
+  ZSay,
+  ZTag
 } from "."
 import {
   BriefPage,
@@ -20,7 +22,8 @@ import {
   IWithAllData,
   Page,
   Post,
-  Tag,
+  Say,
+  Tag
 } from "./entities"
 import { IApiProvider, IDeployOptions, IGenerateOptions } from "./interface"
 import { request } from "./instance"
@@ -59,6 +62,12 @@ export class HttpApiProvider implements IApiProvider {
   async getCategories(): Promise<Category[]> {
     const res = await request.get<Category[]>("/hexo/categories")
     const data: Category[] = ZCategory.array().parse(res.data.map(dashIdToId))
+    return data
+  }
+
+  async getSays(): Promise<Say[]>{
+    const res = await request.get<Say[]>("/hexo/says")
+    const data: Say[] = ZSay.array().parse(res.data)
     return data
   }
 
@@ -183,6 +192,28 @@ export class HttpApiProvider implements IApiProvider {
     })
     const { article } = res.data
     return ZPost.parse(dashIdToId(article))
+  }
+  async createSay(
+    date: string,
+    options: ICreateSayOptions = {}
+  ): Promise<string> {
+    const res = await request.post("/hexo/says/create", { date, ...options })
+    return res.data
+  }
+
+  async editSay(
+    date: string,
+    options: ICreateSayOptions = {}
+  ): Promise<string> {
+    const res = await request.post("/hexo/says/edit", { date, ...options })
+    return res.data
+  }
+
+  async deleteSay(
+    date: string
+  ): Promise<string> {
+    const res = await request.delete("/hexo/says/delete", { data: { date: date } })
+    return res.data
   }
   async deploy(options: IDeployOptions = {}): Promise<void> {
     return request.post("/hexo/deploy", options)

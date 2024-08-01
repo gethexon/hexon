@@ -14,7 +14,7 @@
     "start": "cd ./server && pnpm start",
     "prd": "cd ./server && pnpm prd",
     "dev-init": "pnpm install && pnpm run build && cd ./server-scripts && node ./bin/index.js install",
-    "dev": "concurrently -p [{name}] -n 'server,client' -c 'green.bold,blue.bold' 'cd ./server && pnpm dev' 'cd ./client && pnpm dev' ",
+    "dev": "concurrently -p [{name}] -n \"server,client\" -c \"green.bold,blue.bold\" \"cd ./server && pnpm dev\" \"cd ./client && pnpm dev\"",
     "test:fresh-install": "bash ./scripts/fresh_installation.test.sh"
   },
   "devDependencies": {
@@ -32,8 +32,6 @@
     "@types/js-yaml": "^4.0.9",
     "@types/jsonwebtoken": "^8.5.9",
     "@types/koa": "^2.15.0",
-    "@types/koa__cors": "^3.3.1",
-    "@types/koa__router": "^8.0.11",
     "@types/koa-bodyparser": "^4.3.12",
     "@types/koa-compress": "^4.0.6",
     "@types/koa-logger": "^3.1.5",
@@ -41,6 +39,8 @@
     "@types/koa-router": "^7.4.8",
     "@types/koa-static": "^4.0.4",
     "@types/koa2-cors": "^2.0.5",
+    "@types/koa__cors": "^3.3.1",
+    "@types/koa__router": "^8.0.11",
     "@types/lodash-es": "^4.17.12",
     "@types/node": "^17.0.45",
     "@types/uuid": "^8.3.4",
@@ -54,6 +54,7 @@
     "@vitejs/plugin-vue": "^2.3.4",
     "@vue/compiler-sfc": "^3.4.27",
     "@vue/test-utils": "^2.4.6",
+    "aplayer": "^1.10.1",
     "autoprefixer": "^10.4.19",
     "babel-loader": "^8.3.0",
     "concurrently": "^7.6.0",
@@ -64,6 +65,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "faker": "^6.6.6",
     "jest": "^27.5.1",
+    "js-yaml": "^4.1.0",
     "jsdom": "^19.0.0",
     "less": "^4.2.0",
     "less-loader": "^10.2.0",
@@ -83,6 +85,7 @@
     "vite": "^2.9.18",
     "vite-plugin-pages": "^0.22.0",
     "vite-plugin-vue-layouts": "^0.6.0",
-    "vue-tsc": "^2.0.19"
+    "vue-tsc": "^2.0.19",
+    "vue-waterfall-plugin-next": "^2.4.3"
   }
 }

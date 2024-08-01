@@ -42,6 +42,40 @@ router.get("/categories", async (ctx: Context) => {
   const hexo = container.resolve(HexoService)
   ctx.body = await hexo.listCategory()
 })
+router.get("/says", async (ctx: Context) => {
+  const hexo = container.resolve(HexoService)
+  ctx.body = await hexo.getSays()
+})
+router.post("/says/create", async (ctx: Context) => {
+  const hexo = container.resolve(HexoService)
+  const { content, date, images, server, id, video, videoLink, link } = ctx.request.body
+  if (!date) {
+    ctx.status = 400
+    ctx.body = "need `date`"
+    return
+  }
+  ctx.body = await hexo.createSay(date, { content, images, server, id, video, videoLink, link })
+})
+router.post("/says/edit", async (ctx: Context) => {
+  const hexo = container.resolve(HexoService)
+  const { content, date, images, server, id, video, videoLink, link } = ctx.request.body
+  if (!date) {
+    ctx.status = 400
+    ctx.body = "need `date`"
+    return
+  }
+  ctx.body = await hexo.editSay(date, { content, images, server, id, video, videoLink, link })
+})
+router.delete("/says/delete", async (ctx: Context) => {
+  const hexo = container.resolve(HexoService)
+  const { date } = ctx.request.body
+  if (!date) {
+    ctx.status = 400
+    ctx.body = "need `date`"
+    return
+  }
+  ctx.body = await hexo.deleteSay(date)
+})
 router.post("/deploy", async (ctx: Context) => {
   const hexo = container.resolve(HexoService)
   await hexo.deploy(ctx.request.body)

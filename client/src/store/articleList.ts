@@ -22,6 +22,10 @@ type TagFilter = {
   type: "tag"
   slug: string
 }
+type SaysFilter = {
+  type: "says"
+  slug:string
+}
 type Filter =
   | AllFilter
   | PostFilter
@@ -29,6 +33,7 @@ type Filter =
   | DraftFilter
   | CategorieFilter
   | TagFilter
+  | SaysFilter
 
 interface IState {
   filter: Filter
@@ -61,6 +66,8 @@ export const useArticleListStore = defineStore("article-list", {
             return (articles.filter(isPost) as BriefPost[]).filter((post) =>
               post.tags?.includes(filter.slug)
             )
+          case "says":
+            return []
           default:
             return [] as never[]
         }

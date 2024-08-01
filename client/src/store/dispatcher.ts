@@ -1,7 +1,7 @@
 import { defineStore } from "pinia"
 import { defineAsyncComponent } from "vue"
-import { ICreateOptions } from "~/api"
-import { changePassword, getInfo, login, changeUsername } from "~/api/auth"
+import { ICreateOptions, ICreateSayOptions } from "~/api"
+import { changePassword, changeUsername, getInfo, login } from "~/api/auth"
 import { IChangePasswordFormPayload } from "~/components/forms/interface"
 import { getErrorId, getErrorMessage } from "~/errors"
 import { IArticleIdentifier } from "~/interface"
@@ -9,6 +9,7 @@ import { isPost } from "~/utils/article"
 import { useDetailStore } from "./detail"
 import { useMainStore } from "./main"
 import { useSettingsStore } from "./settings"
+import { Dayjs } from "dayjs"
 
 const HCreateArticleModal = defineAsyncComponent(
   () => import("@/modals/HCreateArticleModal.vue")
@@ -256,6 +257,72 @@ export const useDispatcher = defineStore("dispatcher", {
         this.loading.stop()
       }
     },
+    async createSay(date: string, options: ICreateSayOptions) {
+      const mainStore = useMainStore()
+      try {
+        await mainStore.createSay(date, options).then(
+          () => {
+            this.notification.notify({
+              type: "success",
+              title: "记录成功",
+            })
+          },
+          (err) => {
+            this.notification.notify({
+              title: "记录过程出现错误",
+              desc: (err as Error).message,
+              type: "error",
+              duration: 5000,
+            })
+          }
+        )
+      } catch (err) {
+      }
+    },
+    async editSay(date: string, options: ICreateSayOptions) {
+      const mainStore = useMainStore()
+      try {
+        await mainStore.editSay(date, options).then(
+          () => {
+            this.notification.notify({
+              type: "success",
+              title: "修改成功"
+            })
+          },
+          (err) => {
+            this.notification.notify({
+              title: "修改过程出现错误",
+              desc: (err as Error).message,
+              type: "error",
+              duration: 5000
+            })
+          }
+        )
+      } catch (err) {
+      }
+    },
+    async deleteSay(date: string | Dayjs) {
+      const mainStore = useMainStore()
+      try {
+        await mainStore.deleteSay(typeof date === "string" ? date : "").then(
+          () => {
+            this.notification.notify({
+              type: "success",
+              title: "删除成功"
+            })
+          },
+          (err) => {
+            this.notification.notify({
+              title: "删除过程出现错误",
+              desc: (err as Error).message,
+              type: "error",
+              duration: 5000
+            })
+          }
+        )
+      } catch (err) {
+      }
+    },
     goHome() {
       this.router.push({ name: "home" })
     },
@@ -282,6 +349,18 @@ export const useDispatcher = defineStore("dispatcher", {
       mainStore.getBlogData().catch((err) => {
         this.notification.notify({
           title: `博客数据载入失败`,
+          desc: (err as Error).message,
+          type: "error",
+          duration: 5000,
+        })
+      })
+    },
+    goSays(){
+      this.router.push({ name: "says" })
+      const mainStore = useMainStore()
+      mainStore.getSaysData().catch((err) => {
+        this.notification.notify({
+          title: `即刻短文数据载入失败`,
           desc: (err as Error).message,
           type: "error",
           duration: 5000,

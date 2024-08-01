@@ -1,9 +1,10 @@
 import { defineStore } from "pinia"
 import { list2Tree, TreeNode } from "~/lib/list2tree"
-import { api, BriefPage, BriefPost, Category, ICreateOptions, Tag } from "~/api"
+import { api, BriefPage, BriefPost, Category, ICreateOptions, ICreateSayOptions, Say, Tag } from "~/api"
 import { list2object, object2list } from "~/utils"
 import { PostOrPage } from "~/interface"
 import { useDispatcher } from "./dispatcher"
+import { ref } from "vue"
 
 export interface IState {
   username: string
@@ -19,6 +20,8 @@ export interface IState {
   tags: {
     [key: string]: Tag
   }
+  // @ts-ignore
+  says: ref<Say[]>
 }
 
 export const useMainStore = defineStore("main", {
@@ -28,6 +31,7 @@ export const useMainStore = defineStore("main", {
     pages: {},
     categories: {},
     tags: {},
+    says: ref<Say[]>([]),
   }),
   actions: {
     setUsername(name: string) {
@@ -43,6 +47,9 @@ export const useMainStore = defineStore("main", {
       this.pages = list2object(pages, "source")
       this.tags = list2object(tags, "slug")
       this.categories = list2object(categories, "slug")
+    },
+    async getSaysData(){
+      this.says.value=await api.getSays()
     },
     async deleteArticle(type: PostOrPage, source: string) {
       const { posts, pages, tags, categories } = await api.deleteArticle(
@@ -68,6 +75,30 @@ export const useMainStore = defineStore("main", {
       await this.getBlogData()
       return article
     },
+    async createSay(date: string, options: ICreateSayOptions = {}) {
+      const data = await api.createSay(date, options)
+      await this.getSaysData()
+      if(data==="fail"){
+        throw new Error("记录过程出现错误")
+      }
+      return data
+    },
+    async editSay(date: string, options: ICreateSayOptions = {}) {
+      const data = await api.editSay(date, options)
+      await this.getSaysData()
+      if (data === "fail") {
+        throw new Error("修改过程出现错误")
+      }
+      return data
+    },
+    async deleteSay(date: string) {
+      const data = await api.deleteSay(date)
+      await this.getSaysData()
+      if (data === "fail") {
+        throw new Error("删除过程出现错误")
+      }
+      return data
+    }
   },
   getters: {
     articles(state): (BriefPost | BriefPage)[] {
@@ -106,5 +137,8 @@ export const useMainStore = defineStore("main", {
     catNamesList(): string[] {
       return this.categoriesList.map((cat) => cat.name)
     },
+    saysList(): Say[]{
+      return this.says.value
+    }
   },
 })

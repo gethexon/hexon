@@ -16,6 +16,15 @@ export interface ICreateOptions {
   slug?: string
   replace?: boolean
 }
+export interface ICreateSayOptions {
+  content?: string
+  images?: string
+  server?: string
+  id?: number
+  video?: string
+  videoLink?: string
+  link?: string
+}
 export interface IDeployOptions {
   generate?: boolean
 }

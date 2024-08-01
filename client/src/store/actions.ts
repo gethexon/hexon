@@ -39,6 +39,12 @@ export const useActionsStore = defineStore("actions", {
       await api.generate().then(success, fail)
       this.loading.stop()
     },
+    async generateAndDeploy(){
+      this.loading.start()
+      await api.generate({deploy:true}).then()
+      await api.deploy().then(success, fail)
+      this.loading.stop()
+    },
     async clean() {
       this.loading.start()
       await api.clean().then(success, fail)
@@ -61,6 +67,11 @@ export const useActionsStore = defineStore("actions", {
         dispatcher.loadBlogData()
       }, fail)
       this.loading.stop()
+    },
+    async says(){
+      const dispatcher = useDispatcher()
+      dispatcher.goSays()
+      return true
     },
   },
 })

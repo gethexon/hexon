@@ -68,6 +68,22 @@ export const ZCategory = ZTag.extend({
 })
 export type Category = z.infer<typeof ZCategory>
 
+export const ZSay=z.object({
+  content: z.string().optional(),
+  date: z.string(),
+  link: z.string().optional(),
+  video: z.object({
+    bilibili: z.string().optional(),
+    player:z.string().optional(),
+  }).optional(),
+  aplayer: z.object({
+    server: z.string(),
+    id: z.number()
+  }).optional(),
+  image: z.string().array().optional(),
+})
+export type Say = z.infer<typeof ZSay>
+
 export const ZIWithAllData = z.object({
   posts: ZBriefPost.array(),
   pages: ZBriefPage.array(),
