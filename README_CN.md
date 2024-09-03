@@ -77,9 +77,11 @@ pnpm prd
 
 ## 🖥️ 开发
 
-- 切换到 `main` 分支。
+- 切换到 `develop` 分支。
 - 运行  `pnpm dev-init` 安装依赖并配置 Hexon。
 - 运行  `pnpm dev` ，开始大展身手!
+
+###### 提交 PR 时，请记得将目标分支设置为 `develop。`
 
 ## 💩 遇到问题？
 
