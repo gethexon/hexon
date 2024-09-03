@@ -1,5 +1,6 @@
 {
   "include": [
+    "shared/src/**/*.ts",
     "server/src/**/*.ts",
     "server-shared/src/**/*.ts",
     "server-scripts/src/**/*.ts",
@@ -18,7 +19,8 @@
     "emitDecoratorMetadata": true,
     "paths": {
       "@server-shared/*": ["server-shared/src/*"],
-      "@server/*": ["server/src/*"]
+      "@server/*": ["server/src/*"],
+      "@shared/*": ["shared/src/*"],
     }
   }
 }
