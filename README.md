@@ -1,6 +1,6 @@
 # Hexon
 
-Let's hexo online! 
+Let's hexo online!
 
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/gethexon/hexon?style=flat-square)](https://github.com/gethexon/hexon/releases/)
 
@@ -73,14 +73,16 @@ You can replace hexon commands with your own bash script inside hexo blog folder
 e.g. modify `git sync` script
 1. write your script in `<hexo-blog-path>/git_sync.sh`
 2. run `pnpm script`
-3. select `git sync` 
+3. select `git sync`
 4. set script to `bash ./git_sync.sh`
 
 ## 🖥️ Develop
 
-- Check out `main` branch.
+- Check out `develop` branch.
 - Run `pnpm dev-init` install dependencies and config hexon.
 - Run `pnpm dev` and show your magic!
+
+###### When submitting a PR, remember to set the target branch to `develop`.
 
 ## 💩 Have trouble?
 
@@ -106,7 +108,7 @@ Or hexon failure. Just raise an issue.
 
 <details>
   <summary>If you are using Apache's reverse proxy...</summary>
-Please make sure to add `AllowEncodedSlashes NoDecode` in your `VirtualHost` configuration, and add `nocanon` at the end of the `ProxyPass` setting. 
+Please make sure to add `AllowEncodedSlashes NoDecode` in your `VirtualHost` configuration, and add `nocanon` at the end of the `ProxyPass` setting.
 
 See https://stackoverflow.com/questions/52034899/express-nodejs-server-through-apache-proxy-error-404-for-route-with-express-par
 and https://stackoverflow.com/questions/4390436/need-to-allow-encoded-slashes-on-apache
