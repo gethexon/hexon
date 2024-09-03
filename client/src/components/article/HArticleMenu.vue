@@ -12,7 +12,7 @@ import FadeTransition from "../transitions/FadeTransition.vue"
 import { HButton } from "@/ui/button"
 import { useDispatcher } from "~/store/dispatcher"
 import { Dayjs } from "dayjs"
-import { DATE_FORMAT } from "~/constants"
+import { DATE_FORMAT } from "@shared/constants"
 
 const dispatcher = useDispatcher()
 const props = defineProps<{

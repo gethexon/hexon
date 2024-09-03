@@ -1,4 +1,4 @@
-import { ISettings } from "@server/server/types/api"
+import { ISettings } from "@shared/types/api"
 import { request } from "./instance"
 
 export async function getSettings(): Promise<ISettings> {
