@@ -19,7 +19,7 @@ const onCancel = () => {
   <div class="h-create-article-form w-96 select-none">
     <h2 class="mt-2 mb-8 text-xl font-bold text-center">确认删除</h2>
     <form @submit.prevent="onConfirm">
-      <div class="text-center">此操作无法撤销！</div>
+      <div class="text-center">确定要删除此条想法吗？<br>此操作无法撤销！</div>
       <div class="flex justify-end mt-6">
         <HButton
           attr-type="button"

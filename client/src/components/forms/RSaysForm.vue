@@ -10,6 +10,8 @@ import { DATE_FORMAT } from "~/constants"
 import { useThemeVars } from "@/ui/theme"
 import { HTextarea } from "@/ui/textarea"
 import { IRSaysListData } from "@/says/interface"
+import RSaysLongEditModal from "@/modals/RSayLongEditModal.vue"
+import { HIcon, HIconName } from "@/ui/icon"
 
 const props = defineProps<{
   type: string
@@ -105,15 +107,37 @@ onMounted(() => {
   init()
   contentInputRef.value?.focus()
 })
+
+const modalVisible = ref(false)
+const onClose = () => {
+  modalVisible.value = false
+}
+const longEditType=ref('')
+const onLongEdit = (type: string) => {
+  longEditType.value = type
+  modalVisible.value = true
+}
+const onConfirmLongEdit=(value: {
+  content?: string
+  images?: string
+})=>{
+  console.log(value)
+  if(value.content){
+    content.value=value.content
+  }
+  if(value.images) {
+    images.value = value.images
+  }
+}
 </script>
 
 <template>
-  <div class="h-create-article-form w-96 select-none">
+  <div class="h-create-article-form w-120 select-none">
     <h2 class="mt-2 mb-8 text-xl font-bold text-center">{{ typeText }}此刻想法</h2>
     <form @submit.prevent="onCreate">
       <div
         class="grid gap-4 grid-rows-1"
-        style="grid-template-columns: [labels] auto [controls] 1fr"
+        style="grid-template-columns: [labels] auto [controls] 1fr [button] 0.1fr"
       >
         <div
           :style="{ width }"
@@ -128,6 +152,12 @@ onMounted(() => {
             :error="''"
           />
         </div>
+        <div style="grid-column: button">
+          <HButton attr-type="button" round @click="onLongEdit('content')">
+            <HIcon :name="HIconName.Add" />
+          </HButton>
+        </div>
+
       </div>
 
       <div
@@ -150,7 +180,7 @@ onMounted(() => {
 
       <div
         class="grid gap-4 grid-rows-1 mt-4"
-        style="grid-template-columns: [labels] auto [controls] 1fr"
+        style="grid-template-columns: [labels] auto [controls] 1fr [button] 0.1fr"
       >
         <div
           :style="{ width }"
@@ -165,6 +195,11 @@ onMounted(() => {
             :error="''"
             placeholder="图像地址（换行隔开）"
           />
+        </div>
+        <div style="grid-column: button">
+          <HButton attr-type="button" round @click="onLongEdit('images')">
+            <HIcon :name="HIconName.Add" />
+          </HButton>
         </div>
       </div>
 
@@ -286,6 +321,9 @@ onMounted(() => {
       </div>
     </form>
   </div>
+  <RSaysLongEditModal v-if="modalVisible" :close="onClose" @on-long-edit="onConfirmLongEdit"
+                      :say="props.say" :type="longEditType" :visible="modalVisible"
+                      class="overflow-auto"/>
 </template>
 
 <style lang="less" scoped>

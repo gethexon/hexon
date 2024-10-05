@@ -51,9 +51,9 @@ const handleDelete = (say: IRSaysListData) => {
   <div
     class="h-article-item rounded-lg shadow-md overflow-auto transition-all duration-300 ease-linear hover:shadow-lg group">
     <div class="px-4 pt-2 pb-4 border-t border-t-gray-800">
-      <h2 class="pb-4 pt-2 text-gray-50 group-hover:text-yellow-300 ml-1">
+      <div style="white-space: pre-wrap;" class="pb-4 pt-2 text-gray-50 group-hover:text-yellow-300 ml-1">
         {{ say.content }}
-      </h2>
+      </div>
       <div v-if="say.aplayer||say.image||say.video" class="pb-2">
         <LazyImg v-for="url in say.image" v-if="say.image" :key="url" :url="url"
                  class="cursor-pointer transition-all duration-300 ease-linear group-hover:scale-105 mb-2" />
