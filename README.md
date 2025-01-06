@@ -85,7 +85,7 @@ e.g. modify `git sync` script
 ## 💩 Have trouble?
 
 - Read FAQs below.
-- Search in [Issue list](https://github.com/gethexon/hexon/Issues).
+- Search in [Issue list](https://github.com/gethexon/hexon/issues).
 - [Add new Issue](https://github.com/gethexon/hexon/issueI/new).
 
 ## ❓ Want to know more?
