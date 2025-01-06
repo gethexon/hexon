@@ -22,14 +22,14 @@ export class EnvService {
   }
 
   private syncAccount() {
-    const username = process.env.USERNAME
-    const password = process.env.PASSWORD
+    const username = process.env.HEXON_USERNAME
+    const password = process.env.HEXON_PASSWORD
     if (username) {
-      this._logService.log(`sync account from process.env.USERNAME`)
+      this._logService.log(`sync account from process.env.HEXON_USERNAME`)
       this.account.setUsername(username)
     }
     if (password) {
-      this._logService.log(`sync account from process.env.PASSWORD`)
+      this._logService.log(`sync account from process.env.HEXON_PASSWORD`)
       this.account.setPassword(password)
     }
   }
