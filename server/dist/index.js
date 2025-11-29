@@ -270,9 +270,9 @@ var require_path_key = __commonJS({
   }
 });
 
-// ../node_modules/.pnpm/cross-spawn@7.0.3/node_modules/cross-spawn/lib/util/resolveCommand.js
+// ../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/lib/util/resolveCommand.js
 var require_resolveCommand = __commonJS({
-  "../node_modules/.pnpm/cross-spawn@7.0.3/node_modules/cross-spawn/lib/util/resolveCommand.js"(exports, module2) {
+  "../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/lib/util/resolveCommand.js"(exports, module2) {
     "use strict";
     var path9 = require("path");
     var which = require_which();
@@ -312,9 +312,9 @@ var require_resolveCommand = __commonJS({
   }
 });
 
-// ../node_modules/.pnpm/cross-spawn@7.0.3/node_modules/cross-spawn/lib/util/escape.js
+// ../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/lib/util/escape.js
 var require_escape = __commonJS({
-  "../node_modules/.pnpm/cross-spawn@7.0.3/node_modules/cross-spawn/lib/util/escape.js"(exports, module2) {
+  "../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/lib/util/escape.js"(exports, module2) {
     "use strict";
     var metaCharsRegExp = /([()\][%!^"`<>&|;, *?])/g;
     function escapeCommand(arg) {
@@ -323,8 +323,8 @@ var require_escape = __commonJS({
     }
     function escapeArgument(arg, doubleEscapeMetaChars) {
       arg = `${arg}`;
-      arg = arg.replace(/(\\*)"/g, '$1$1\\"');
-      arg = arg.replace(/(\\*)$/, "$1$1");
+      arg = arg.replace(/(?=(\\+?)?)\1"/g, '$1$1\\"');
+      arg = arg.replace(/(?=(\\+?)?)\1$/, "$1$1");
       arg = `"${arg}"`;
       arg = arg.replace(metaCharsRegExp, "^$1");
       if (doubleEscapeMetaChars) {
@@ -365,9 +365,9 @@ var require_shebang_command = __commonJS({
   }
 });
 
-// ../node_modules/.pnpm/cross-spawn@7.0.3/node_modules/cross-spawn/lib/util/readShebang.js
+// ../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/lib/util/readShebang.js
 var require_readShebang = __commonJS({
-  "../node_modules/.pnpm/cross-spawn@7.0.3/node_modules/cross-spawn/lib/util/readShebang.js"(exports, module2) {
+  "../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/lib/util/readShebang.js"(exports, module2) {
     "use strict";
     var fs3 = require("fs");
     var shebangCommand = require_shebang_command();
@@ -387,9 +387,9 @@ var require_readShebang = __commonJS({
   }
 });
 
-// ../node_modules/.pnpm/cross-spawn@7.0.3/node_modules/cross-spawn/lib/parse.js
+// ../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/lib/parse.js
 var require_parse = __commonJS({
-  "../node_modules/.pnpm/cross-spawn@7.0.3/node_modules/cross-spawn/lib/parse.js"(exports, module2) {
+  "../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/lib/parse.js"(exports, module2) {
     "use strict";
     var path9 = require("path");
     var resolveCommand = require_resolveCommand();
@@ -449,9 +449,9 @@ var require_parse = __commonJS({
   }
 });
 
-// ../node_modules/.pnpm/cross-spawn@7.0.3/node_modules/cross-spawn/lib/enoent.js
+// ../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/lib/enoent.js
 var require_enoent = __commonJS({
-  "../node_modules/.pnpm/cross-spawn@7.0.3/node_modules/cross-spawn/lib/enoent.js"(exports, module2) {
+  "../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/lib/enoent.js"(exports, module2) {
     "use strict";
     var isWin = process.platform === "win32";
     function notFoundError(original, syscall) {
@@ -470,7 +470,7 @@ var require_enoent = __commonJS({
       const originalEmit = cp.emit;
       cp.emit = function(name, arg1) {
         if (name === "exit") {
-          const err = verifyENOENT(arg1, parsed, "spawn");
+          const err = verifyENOENT(arg1, parsed);
           if (err) {
             return originalEmit.call(cp, "error", err);
           }
@@ -499,9 +499,9 @@ var require_enoent = __commonJS({
   }
 });
 
-// ../node_modules/.pnpm/cross-spawn@7.0.3/node_modules/cross-spawn/index.js
+// ../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/index.js
 var require_cross_spawn = __commonJS({
-  "../node_modules/.pnpm/cross-spawn@7.0.3/node_modules/cross-spawn/index.js"(exports, module2) {
+  "../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/index.js"(exports, module2) {
     "use strict";
     var cp = require("child_process");
     var parse = require_parse();
@@ -858,14 +858,16 @@ var require_merge_stream = __commonJS({
   }
 });
 
-// ../node_modules/.pnpm/@vue+shared@3.4.25/node_modules/@vue/shared/dist/shared.cjs.prod.js
+// ../node_modules/.pnpm/@vue+shared@3.5.25/node_modules/@vue/shared/dist/shared.cjs.prod.js
 var require_shared_cjs_prod = __commonJS({
-  "../node_modules/.pnpm/@vue+shared@3.4.25/node_modules/@vue/shared/dist/shared.cjs.prod.js"(exports) {
+  "../node_modules/.pnpm/@vue+shared@3.5.25/node_modules/@vue/shared/dist/shared.cjs.prod.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    function makeMap(str, expectsLowerCase) {
-      const set = new Set(str.split(","));
-      return expectsLowerCase ? (val) => set.has(val.toLowerCase()) : (val) => set.has(val);
+    function makeMap(str) {
+      const map = /* @__PURE__ */ Object.create(null);
+      for (const key of str.split(","))
+        map[key] = 1;
+      return (val) => val in map;
     }
     var EMPTY_OBJ = {};
     var EMPTY_ARR = [];
@@ -915,10 +917,12 @@ var require_shared_cjs_prod = __commonJS({
         return hit || (cache[str] = fn(str));
       };
     };
-    var camelizeRE = /-(\w)/g;
-    var camelize = cacheStringFunction((str) => {
-      return str.replace(camelizeRE, (_, c) => c ? c.toUpperCase() : "");
-    });
+    var camelizeRE = /-\w/g;
+    var camelize = cacheStringFunction(
+      (str) => {
+        return str.replace(camelizeRE, (c) => c.slice(1).toUpperCase());
+      }
+    );
     var hyphenateRE = /\B([A-Z])/g;
     var hyphenate = cacheStringFunction(
       (str) => str.replace(hyphenateRE, "-$1").toLowerCase()
@@ -926,20 +930,23 @@ var require_shared_cjs_prod = __commonJS({
     var capitalize = cacheStringFunction((str) => {
       return str.charAt(0).toUpperCase() + str.slice(1);
     });
-    var toHandlerKey = cacheStringFunction((str) => {
-      const s = str ? `on${capitalize(str)}` : ``;
-      return s;
-    });
+    var toHandlerKey = cacheStringFunction(
+      (str) => {
+        const s = str ? `on${capitalize(str)}` : ``;
+        return s;
+      }
+    );
     var hasChanged = (value, oldValue) => !Object.is(value, oldValue);
-    var invokeArrayFns = (fns, arg) => {
+    var invokeArrayFns = (fns, ...arg) => {
       for (let i = 0; i < fns.length; i++) {
-        fns[i](arg);
+        fns[i](...arg);
       }
     };
-    var def = (obj, key, value) => {
+    var def = (obj, key, value, writable = false) => {
       Object.defineProperty(obj, key, {
         configurable: true,
         enumerable: false,
+        writable,
         value
       });
     };
@@ -958,6 +965,12 @@ var require_shared_cjs_prod = __commonJS({
     var identRE = /^[_$a-zA-Z\xA0-\uFFFF][_$a-zA-Z0-9\xA0-\uFFFF]*$/;
     function genPropsAccessExp(name) {
       return identRE.test(name) ? `__props.${name}` : `__props[${JSON.stringify(name)}]`;
+    }
+    function genCacheKey(source, options) {
+      return source + JSON.stringify(
+        options,
+        (_, val) => typeof val === "function" ? val.toString() : val
+      );
     }
     var PatchFlags = {
       "TEXT": 1,
@@ -984,8 +997,8 @@ var require_shared_cjs_prod = __commonJS({
       "1024": "DYNAMIC_SLOTS",
       "DEV_ROOT_FRAGMENT": 2048,
       "2048": "DEV_ROOT_FRAGMENT",
-      "HOISTED": -1,
-      "-1": "HOISTED",
+      "CACHED": -1,
+      "-1": "CACHED",
       "BAIL": -2,
       "-2": "BAIL"
     };
@@ -1002,7 +1015,7 @@ var require_shared_cjs_prod = __commonJS({
       [512]: `NEED_PATCH`,
       [1024]: `DYNAMIC_SLOTS`,
       [2048]: `DEV_ROOT_FRAGMENT`,
-      [-1]: `HOISTED`,
+      [-1]: `CACHED`,
       [-2]: `BAIL`
     };
     var ShapeFlags = {
@@ -1042,11 +1055,15 @@ var require_shared_cjs_prod = __commonJS({
       [2]: "DYNAMIC",
       [3]: "FORWARDED"
     };
-    var GLOBALS_ALLOWED = "Infinity,undefined,NaN,isFinite,isNaN,parseFloat,parseInt,decodeURI,decodeURIComponent,encodeURI,encodeURIComponent,Math,Number,Date,Array,Object,Boolean,String,RegExp,Map,Set,JSON,Intl,BigInt,console,Error";
+    var GLOBALS_ALLOWED = "Infinity,undefined,NaN,isFinite,isNaN,parseFloat,parseInt,decodeURI,decodeURIComponent,encodeURI,encodeURIComponent,Math,Number,Date,Array,Object,Boolean,String,RegExp,Map,Set,JSON,Intl,BigInt,console,Error,Symbol";
     var isGloballyAllowed = /* @__PURE__ */ makeMap(GLOBALS_ALLOWED);
     var isGloballyWhitelisted = isGloballyAllowed;
     var range = 2;
     function generateCodeFrame(source, start = 0, end = source.length) {
+      start = Math.max(0, Math.min(start, source.length));
+      end = Math.max(0, Math.min(end, source.length));
+      if (start > end)
+        return "";
       let lines = source.split(/(\r?\n)/);
       const newlineSequences = lines.filter((_, idx) => idx % 2 === 1);
       lines = lines.filter((_, idx) => idx % 2 === 0);
@@ -1115,14 +1132,15 @@ var require_shared_cjs_prod = __commonJS({
       return ret;
     }
     function stringifyStyle(styles3) {
+      if (!styles3)
+        return "";
+      if (isString(styles3))
+        return styles3;
       let ret = "";
-      if (!styles3 || isString(styles3)) {
-        return ret;
-      }
       for (const key in styles3) {
         const value = styles3[key];
-        const normalizedKey = key.startsWith(`--`) ? key : hyphenate(key);
         if (isString(value) || typeof value === "number") {
+          const normalizedKey = key.startsWith(`--`) ? key : hyphenate(key);
           ret += `${normalizedKey}:${value};`;
         }
       }
@@ -1200,6 +1218,9 @@ var require_shared_cjs_prod = __commonJS({
     var isKnownSvgAttr = /* @__PURE__ */ makeMap(
       `xmlns,accent-height,accumulate,additive,alignment-baseline,alphabetic,amplitude,arabic-form,ascent,attributeName,attributeType,azimuth,baseFrequency,baseline-shift,baseProfile,bbox,begin,bias,by,calcMode,cap-height,class,clip,clipPathUnits,clip-path,clip-rule,color,color-interpolation,color-interpolation-filters,color-profile,color-rendering,contentScriptType,contentStyleType,crossorigin,cursor,cx,cy,d,decelerate,descent,diffuseConstant,direction,display,divisor,dominant-baseline,dur,dx,dy,edgeMode,elevation,enable-background,end,exponent,fill,fill-opacity,fill-rule,filter,filterRes,filterUnits,flood-color,flood-opacity,font-family,font-size,font-size-adjust,font-stretch,font-style,font-variant,font-weight,format,from,fr,fx,fy,g1,g2,glyph-name,glyph-orientation-horizontal,glyph-orientation-vertical,glyphRef,gradientTransform,gradientUnits,hanging,height,href,hreflang,horiz-adv-x,horiz-origin-x,id,ideographic,image-rendering,in,in2,intercept,k,k1,k2,k3,k4,kernelMatrix,kernelUnitLength,kerning,keyPoints,keySplines,keyTimes,lang,lengthAdjust,letter-spacing,lighting-color,limitingConeAngle,local,marker-end,marker-mid,marker-start,markerHeight,markerUnits,markerWidth,mask,maskContentUnits,maskUnits,mathematical,max,media,method,min,mode,name,numOctaves,offset,opacity,operator,order,orient,orientation,origin,overflow,overline-position,overline-thickness,panose-1,paint-order,path,pathLength,patternContentUnits,patternTransform,patternUnits,ping,pointer-events,points,pointsAtX,pointsAtY,pointsAtZ,preserveAlpha,preserveAspectRatio,primitiveUnits,r,radius,referrerPolicy,refX,refY,rel,rendering-intent,repeatCount,repeatDur,requiredExtensions,requiredFeatures,restart,result,rotate,rx,ry,scale,seed,shape-rendering,slope,spacing,specularConstant,specularExponent,speed,spreadMethod,startOffset,stdDeviation,stemh,stemv,stitchTiles,stop-color,stop-opacity,strikethrough-position,strikethrough-thickness,string,stroke,stroke-dasharray,stroke-dashoffset,stroke-linecap,stroke-linejoin,stroke-miterlimit,stroke-opacity,stroke-width,style,surfaceScale,systemLanguage,tabindex,tableValues,target,targetX,targetY,text-anchor,text-decoration,text-rendering,textLength,to,transform,transform-origin,type,u1,u2,underline-position,underline-thickness,unicode,unicode-bidi,unicode-range,units-per-em,v-alphabetic,v-hanging,v-ideographic,v-mathematical,values,vector-effect,version,vert-adv-y,vert-origin-x,vert-origin-y,viewBox,viewTarget,visibility,width,widths,word-spacing,writing-mode,x,x-height,x1,x2,xChannelSelector,xlink:actuate,xlink:arcrole,xlink:href,xlink:role,xlink:show,xlink:title,xlink:type,xmlns:xlink,xml:base,xml:lang,xml:space,y,y1,y2,yChannelSelector,z,zoomAndPan`
     );
+    var isKnownMathMLAttr = /* @__PURE__ */ makeMap(
+      `accent,accentunder,actiontype,align,alignmentscope,altimg,altimg-height,altimg-valign,altimg-width,alttext,bevelled,close,columnsalign,columnlines,columnspan,denomalign,depth,dir,display,displaystyle,encoding,equalcolumns,equalrows,fence,fontstyle,fontweight,form,frame,framespacing,groupalign,height,href,id,indentalign,indentalignfirst,indentalignlast,indentshift,indentshiftfirst,indentshiftlast,indextype,justify,largetop,largeop,lquote,lspace,mathbackground,mathcolor,mathsize,mathvariant,maxsize,minlabelspacing,mode,other,overflow,position,rowalign,rowlines,rowspan,rquote,rspace,scriptlevel,scriptminsize,scriptsizemultiplier,selection,separator,separators,shift,side,src,stackalign,stretchy,subscriptshift,superscriptshift,symmetric,voffset,width,widths,xlink:href,xlink:show,xlink:type,xmlns`
+    );
     function isRenderableAttrValue(value) {
       if (value == null) {
         return false;
@@ -1249,6 +1270,13 @@ var require_shared_cjs_prod = __commonJS({
     var commentStripRE = /^-?>|<!--|-->|--!>|<!-$/g;
     function escapeHtmlComment(src) {
       return src.replace(commentStripRE, "");
+    }
+    var cssVarNameEscapeSymbolsRE = /[ !"#$%&'()*+,./:;<=>?@[\\\]^`{|}~]/g;
+    function getEscapedCssVarName(key, doubleEscape) {
+      return key.replace(
+        cssVarNameEscapeSymbolsRE,
+        (s) => doubleEscape ? s === '"' ? '\\\\\\"' : `\\\\${s}` : `\\${s}`
+      );
     }
     function looseCompareArrays(a, b) {
       if (a.length !== b.length)
@@ -1301,11 +1329,14 @@ var require_shared_cjs_prod = __commonJS({
     function looseIndexOf(arr, val) {
       return arr.findIndex((item) => looseEqual(item, val));
     }
+    var isRef = (val) => {
+      return !!(val && val["__v_isRef"] === true);
+    };
     var toDisplayString = (val) => {
-      return isString(val) ? val : val == null ? "" : isArray(val) || isObject(val) && (val.toString === objectToString || !isFunction(val.toString)) ? JSON.stringify(val, replacer, 2) : String(val);
+      return isString(val) ? val : val == null ? "" : isArray(val) || isObject(val) && (val.toString === objectToString || !isFunction(val.toString)) ? isRef(val) ? toDisplayString(val.value) : JSON.stringify(val, replacer, 2) : String(val);
     };
     var replacer = (_key, val) => {
-      if (val && val.__v_isRef) {
+      if (isRef(val)) {
         return replacer(_key, val.value);
       } else if (isMap(val)) {
         return {
@@ -1332,6 +1363,15 @@ var require_shared_cjs_prod = __commonJS({
       var _a;
       return isSymbol(v) ? `Symbol(${(_a = v.description) != null ? _a : i})` : v;
     };
+    function normalizeCssVarValue(value) {
+      if (value == null) {
+        return "initial";
+      }
+      if (typeof value === "string") {
+        return value === "" ? " " : value;
+      }
+      return String(value);
+    }
     exports.EMPTY_ARR = EMPTY_ARR;
     exports.EMPTY_OBJ = EMPTY_OBJ;
     exports.NO = NO;
@@ -1342,12 +1382,15 @@ var require_shared_cjs_prod = __commonJS({
     exports.SlotFlags = SlotFlags;
     exports.camelize = camelize;
     exports.capitalize = capitalize;
+    exports.cssVarNameEscapeSymbolsRE = cssVarNameEscapeSymbolsRE;
     exports.def = def;
     exports.escapeHtml = escapeHtml;
     exports.escapeHtmlComment = escapeHtmlComment;
     exports.extend = extend;
+    exports.genCacheKey = genCacheKey;
     exports.genPropsAccessExp = genPropsAccessExp;
     exports.generateCodeFrame = generateCodeFrame;
+    exports.getEscapedCssVarName = getEscapedCssVarName;
     exports.getGlobalThis = getGlobalThis;
     exports.hasChanged = hasChanged;
     exports.hasOwn = hasOwn;
@@ -1364,6 +1407,7 @@ var require_shared_cjs_prod = __commonJS({
     exports.isHTMLTag = isHTMLTag;
     exports.isIntegerKey = isIntegerKey;
     exports.isKnownHtmlAttr = isKnownHtmlAttr;
+    exports.isKnownMathMLAttr = isKnownMathMLAttr;
     exports.isKnownSvgAttr = isKnownSvgAttr;
     exports.isMap = isMap;
     exports.isMathMLTag = isMathMLTag;
@@ -1387,6 +1431,7 @@ var require_shared_cjs_prod = __commonJS({
     exports.looseToNumber = looseToNumber;
     exports.makeMap = makeMap;
     exports.normalizeClass = normalizeClass;
+    exports.normalizeCssVarValue = normalizeCssVarValue;
     exports.normalizeProps = normalizeProps;
     exports.normalizeStyle = normalizeStyle;
     exports.objectToString = objectToString;
@@ -1403,14 +1448,16 @@ var require_shared_cjs_prod = __commonJS({
   }
 });
 
-// ../node_modules/.pnpm/@vue+shared@3.4.25/node_modules/@vue/shared/dist/shared.cjs.js
+// ../node_modules/.pnpm/@vue+shared@3.5.25/node_modules/@vue/shared/dist/shared.cjs.js
 var require_shared_cjs = __commonJS({
-  "../node_modules/.pnpm/@vue+shared@3.4.25/node_modules/@vue/shared/dist/shared.cjs.js"(exports) {
+  "../node_modules/.pnpm/@vue+shared@3.5.25/node_modules/@vue/shared/dist/shared.cjs.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    function makeMap(str, expectsLowerCase) {
-      const set = new Set(str.split(","));
-      return expectsLowerCase ? (val) => set.has(val.toLowerCase()) : (val) => set.has(val);
+    function makeMap(str) {
+      const map = /* @__PURE__ */ Object.create(null);
+      for (const key of str.split(","))
+        map[key] = 1;
+      return (val) => val in map;
     }
     var EMPTY_OBJ = Object.freeze({});
     var EMPTY_ARR = Object.freeze([]);
@@ -1460,10 +1507,12 @@ var require_shared_cjs = __commonJS({
         return hit || (cache[str] = fn(str));
       };
     };
-    var camelizeRE = /-(\w)/g;
-    var camelize = cacheStringFunction((str) => {
-      return str.replace(camelizeRE, (_, c) => c ? c.toUpperCase() : "");
-    });
+    var camelizeRE = /-\w/g;
+    var camelize = cacheStringFunction(
+      (str) => {
+        return str.replace(camelizeRE, (c) => c.slice(1).toUpperCase());
+      }
+    );
     var hyphenateRE = /\B([A-Z])/g;
     var hyphenate = cacheStringFunction(
       (str) => str.replace(hyphenateRE, "-$1").toLowerCase()
@@ -1471,20 +1520,23 @@ var require_shared_cjs = __commonJS({
     var capitalize = cacheStringFunction((str) => {
       return str.charAt(0).toUpperCase() + str.slice(1);
     });
-    var toHandlerKey = cacheStringFunction((str) => {
-      const s = str ? `on${capitalize(str)}` : ``;
-      return s;
-    });
+    var toHandlerKey = cacheStringFunction(
+      (str) => {
+        const s = str ? `on${capitalize(str)}` : ``;
+        return s;
+      }
+    );
     var hasChanged = (value, oldValue) => !Object.is(value, oldValue);
-    var invokeArrayFns = (fns, arg) => {
+    var invokeArrayFns = (fns, ...arg) => {
       for (let i = 0; i < fns.length; i++) {
-        fns[i](arg);
+        fns[i](...arg);
       }
     };
-    var def = (obj, key, value) => {
+    var def = (obj, key, value, writable = false) => {
       Object.defineProperty(obj, key, {
         configurable: true,
         enumerable: false,
+        writable,
         value
       });
     };
@@ -1503,6 +1555,12 @@ var require_shared_cjs = __commonJS({
     var identRE = /^[_$a-zA-Z\xA0-\uFFFF][_$a-zA-Z0-9\xA0-\uFFFF]*$/;
     function genPropsAccessExp(name) {
       return identRE.test(name) ? `__props.${name}` : `__props[${JSON.stringify(name)}]`;
+    }
+    function genCacheKey(source, options) {
+      return source + JSON.stringify(
+        options,
+        (_, val) => typeof val === "function" ? val.toString() : val
+      );
     }
     var PatchFlags = {
       "TEXT": 1,
@@ -1529,8 +1587,8 @@ var require_shared_cjs = __commonJS({
       "1024": "DYNAMIC_SLOTS",
       "DEV_ROOT_FRAGMENT": 2048,
       "2048": "DEV_ROOT_FRAGMENT",
-      "HOISTED": -1,
-      "-1": "HOISTED",
+      "CACHED": -1,
+      "-1": "CACHED",
       "BAIL": -2,
       "-2": "BAIL"
     };
@@ -1547,7 +1605,7 @@ var require_shared_cjs = __commonJS({
       [512]: `NEED_PATCH`,
       [1024]: `DYNAMIC_SLOTS`,
       [2048]: `DEV_ROOT_FRAGMENT`,
-      [-1]: `HOISTED`,
+      [-1]: `CACHED`,
       [-2]: `BAIL`
     };
     var ShapeFlags = {
@@ -1587,11 +1645,15 @@ var require_shared_cjs = __commonJS({
       [2]: "DYNAMIC",
       [3]: "FORWARDED"
     };
-    var GLOBALS_ALLOWED = "Infinity,undefined,NaN,isFinite,isNaN,parseFloat,parseInt,decodeURI,decodeURIComponent,encodeURI,encodeURIComponent,Math,Number,Date,Array,Object,Boolean,String,RegExp,Map,Set,JSON,Intl,BigInt,console,Error";
+    var GLOBALS_ALLOWED = "Infinity,undefined,NaN,isFinite,isNaN,parseFloat,parseInt,decodeURI,decodeURIComponent,encodeURI,encodeURIComponent,Math,Number,Date,Array,Object,Boolean,String,RegExp,Map,Set,JSON,Intl,BigInt,console,Error,Symbol";
     var isGloballyAllowed = /* @__PURE__ */ makeMap(GLOBALS_ALLOWED);
     var isGloballyWhitelisted = isGloballyAllowed;
     var range = 2;
     function generateCodeFrame(source, start = 0, end = source.length) {
+      start = Math.max(0, Math.min(start, source.length));
+      end = Math.max(0, Math.min(end, source.length));
+      if (start > end)
+        return "";
       let lines = source.split(/(\r?\n)/);
       const newlineSequences = lines.filter((_, idx) => idx % 2 === 1);
       lines = lines.filter((_, idx) => idx % 2 === 0);
@@ -1660,14 +1722,15 @@ var require_shared_cjs = __commonJS({
       return ret;
     }
     function stringifyStyle(styles3) {
+      if (!styles3)
+        return "";
+      if (isString(styles3))
+        return styles3;
       let ret = "";
-      if (!styles3 || isString(styles3)) {
-        return ret;
-      }
       for (const key in styles3) {
         const value = styles3[key];
-        const normalizedKey = key.startsWith(`--`) ? key : hyphenate(key);
         if (isString(value) || typeof value === "number") {
+          const normalizedKey = key.startsWith(`--`) ? key : hyphenate(key);
           ret += `${normalizedKey}:${value};`;
         }
       }
@@ -1745,6 +1808,9 @@ var require_shared_cjs = __commonJS({
     var isKnownSvgAttr = /* @__PURE__ */ makeMap(
       `xmlns,accent-height,accumulate,additive,alignment-baseline,alphabetic,amplitude,arabic-form,ascent,attributeName,attributeType,azimuth,baseFrequency,baseline-shift,baseProfile,bbox,begin,bias,by,calcMode,cap-height,class,clip,clipPathUnits,clip-path,clip-rule,color,color-interpolation,color-interpolation-filters,color-profile,color-rendering,contentScriptType,contentStyleType,crossorigin,cursor,cx,cy,d,decelerate,descent,diffuseConstant,direction,display,divisor,dominant-baseline,dur,dx,dy,edgeMode,elevation,enable-background,end,exponent,fill,fill-opacity,fill-rule,filter,filterRes,filterUnits,flood-color,flood-opacity,font-family,font-size,font-size-adjust,font-stretch,font-style,font-variant,font-weight,format,from,fr,fx,fy,g1,g2,glyph-name,glyph-orientation-horizontal,glyph-orientation-vertical,glyphRef,gradientTransform,gradientUnits,hanging,height,href,hreflang,horiz-adv-x,horiz-origin-x,id,ideographic,image-rendering,in,in2,intercept,k,k1,k2,k3,k4,kernelMatrix,kernelUnitLength,kerning,keyPoints,keySplines,keyTimes,lang,lengthAdjust,letter-spacing,lighting-color,limitingConeAngle,local,marker-end,marker-mid,marker-start,markerHeight,markerUnits,markerWidth,mask,maskContentUnits,maskUnits,mathematical,max,media,method,min,mode,name,numOctaves,offset,opacity,operator,order,orient,orientation,origin,overflow,overline-position,overline-thickness,panose-1,paint-order,path,pathLength,patternContentUnits,patternTransform,patternUnits,ping,pointer-events,points,pointsAtX,pointsAtY,pointsAtZ,preserveAlpha,preserveAspectRatio,primitiveUnits,r,radius,referrerPolicy,refX,refY,rel,rendering-intent,repeatCount,repeatDur,requiredExtensions,requiredFeatures,restart,result,rotate,rx,ry,scale,seed,shape-rendering,slope,spacing,specularConstant,specularExponent,speed,spreadMethod,startOffset,stdDeviation,stemh,stemv,stitchTiles,stop-color,stop-opacity,strikethrough-position,strikethrough-thickness,string,stroke,stroke-dasharray,stroke-dashoffset,stroke-linecap,stroke-linejoin,stroke-miterlimit,stroke-opacity,stroke-width,style,surfaceScale,systemLanguage,tabindex,tableValues,target,targetX,targetY,text-anchor,text-decoration,text-rendering,textLength,to,transform,transform-origin,type,u1,u2,underline-position,underline-thickness,unicode,unicode-bidi,unicode-range,units-per-em,v-alphabetic,v-hanging,v-ideographic,v-mathematical,values,vector-effect,version,vert-adv-y,vert-origin-x,vert-origin-y,viewBox,viewTarget,visibility,width,widths,word-spacing,writing-mode,x,x-height,x1,x2,xChannelSelector,xlink:actuate,xlink:arcrole,xlink:href,xlink:role,xlink:show,xlink:title,xlink:type,xmlns:xlink,xml:base,xml:lang,xml:space,y,y1,y2,yChannelSelector,z,zoomAndPan`
     );
+    var isKnownMathMLAttr = /* @__PURE__ */ makeMap(
+      `accent,accentunder,actiontype,align,alignmentscope,altimg,altimg-height,altimg-valign,altimg-width,alttext,bevelled,close,columnsalign,columnlines,columnspan,denomalign,depth,dir,display,displaystyle,encoding,equalcolumns,equalrows,fence,fontstyle,fontweight,form,frame,framespacing,groupalign,height,href,id,indentalign,indentalignfirst,indentalignlast,indentshift,indentshiftfirst,indentshiftlast,indextype,justify,largetop,largeop,lquote,lspace,mathbackground,mathcolor,mathsize,mathvariant,maxsize,minlabelspacing,mode,other,overflow,position,rowalign,rowlines,rowspan,rquote,rspace,scriptlevel,scriptminsize,scriptsizemultiplier,selection,separator,separators,shift,side,src,stackalign,stretchy,subscriptshift,superscriptshift,symmetric,voffset,width,widths,xlink:href,xlink:show,xlink:type,xmlns`
+    );
     function isRenderableAttrValue(value) {
       if (value == null) {
         return false;
@@ -1794,6 +1860,13 @@ var require_shared_cjs = __commonJS({
     var commentStripRE = /^-?>|<!--|-->|--!>|<!-$/g;
     function escapeHtmlComment(src) {
       return src.replace(commentStripRE, "");
+    }
+    var cssVarNameEscapeSymbolsRE = /[ !"#$%&'()*+,./:;<=>?@[\\\]^`{|}~]/g;
+    function getEscapedCssVarName(key, doubleEscape) {
+      return key.replace(
+        cssVarNameEscapeSymbolsRE,
+        (s) => doubleEscape ? s === '"' ? '\\\\\\"' : `\\\\${s}` : `\\${s}`
+      );
     }
     function looseCompareArrays(a, b) {
       if (a.length !== b.length)
@@ -1846,11 +1919,14 @@ var require_shared_cjs = __commonJS({
     function looseIndexOf(arr, val) {
       return arr.findIndex((item) => looseEqual(item, val));
     }
+    var isRef = (val) => {
+      return !!(val && val["__v_isRef"] === true);
+    };
     var toDisplayString = (val) => {
-      return isString(val) ? val : val == null ? "" : isArray(val) || isObject(val) && (val.toString === objectToString || !isFunction(val.toString)) ? JSON.stringify(val, replacer, 2) : String(val);
+      return isString(val) ? val : val == null ? "" : isArray(val) || isObject(val) && (val.toString === objectToString || !isFunction(val.toString)) ? isRef(val) ? toDisplayString(val.value) : JSON.stringify(val, replacer, 2) : String(val);
     };
     var replacer = (_key, val) => {
-      if (val && val.__v_isRef) {
+      if (isRef(val)) {
         return replacer(_key, val.value);
       } else if (isMap(val)) {
         return {
@@ -1877,6 +1953,23 @@ var require_shared_cjs = __commonJS({
       var _a;
       return isSymbol(v) ? `Symbol(${(_a = v.description) != null ? _a : i})` : v;
     };
+    function normalizeCssVarValue(value) {
+      if (value == null) {
+        return "initial";
+      }
+      if (typeof value === "string") {
+        return value === "" ? " " : value;
+      }
+      if (typeof value !== "number" || !Number.isFinite(value)) {
+        {
+          console.warn(
+            "[Vue warn] Invalid value used for CSS binding. Expected a string or a finite number but received:",
+            value
+          );
+        }
+      }
+      return String(value);
+    }
     exports.EMPTY_ARR = EMPTY_ARR;
     exports.EMPTY_OBJ = EMPTY_OBJ;
     exports.NO = NO;
@@ -1887,12 +1980,15 @@ var require_shared_cjs = __commonJS({
     exports.SlotFlags = SlotFlags;
     exports.camelize = camelize;
     exports.capitalize = capitalize;
+    exports.cssVarNameEscapeSymbolsRE = cssVarNameEscapeSymbolsRE;
     exports.def = def;
     exports.escapeHtml = escapeHtml;
     exports.escapeHtmlComment = escapeHtmlComment;
     exports.extend = extend;
+    exports.genCacheKey = genCacheKey;
     exports.genPropsAccessExp = genPropsAccessExp;
     exports.generateCodeFrame = generateCodeFrame;
+    exports.getEscapedCssVarName = getEscapedCssVarName;
     exports.getGlobalThis = getGlobalThis;
     exports.hasChanged = hasChanged;
     exports.hasOwn = hasOwn;
@@ -1909,6 +2005,7 @@ var require_shared_cjs = __commonJS({
     exports.isHTMLTag = isHTMLTag;
     exports.isIntegerKey = isIntegerKey;
     exports.isKnownHtmlAttr = isKnownHtmlAttr;
+    exports.isKnownMathMLAttr = isKnownMathMLAttr;
     exports.isKnownSvgAttr = isKnownSvgAttr;
     exports.isMap = isMap;
     exports.isMathMLTag = isMathMLTag;
@@ -1932,6 +2029,7 @@ var require_shared_cjs = __commonJS({
     exports.looseToNumber = looseToNumber;
     exports.makeMap = makeMap;
     exports.normalizeClass = normalizeClass;
+    exports.normalizeCssVarValue = normalizeCssVarValue;
     exports.normalizeProps = normalizeProps;
     exports.normalizeStyle = normalizeStyle;
     exports.objectToString = objectToString;
@@ -1948,9 +2046,9 @@ var require_shared_cjs = __commonJS({
   }
 });
 
-// ../node_modules/.pnpm/@vue+shared@3.4.25/node_modules/@vue/shared/index.js
+// ../node_modules/.pnpm/@vue+shared@3.5.25/node_modules/@vue/shared/index.js
 var require_shared = __commonJS({
-  "../node_modules/.pnpm/@vue+shared@3.4.25/node_modules/@vue/shared/index.js"(exports, module2) {
+  "../node_modules/.pnpm/@vue+shared@3.5.25/node_modules/@vue/shared/index.js"(exports, module2) {
     "use strict";
     if (process.env.NODE_ENV === "production") {
       module2.exports = require_shared_cjs_prod();
@@ -1960,9 +2058,9 @@ var require_shared = __commonJS({
   }
 });
 
-// ../node_modules/.pnpm/@vue-reactivity+watch@0.2.0_@vue+reactivity@3.4.27_@vue+shared@3.4.25/node_modules/@vue-reactivity/watch/dist/index.js
+// ../node_modules/.pnpm/@vue-reactivity+watch@0.2.0_@vue+reactivity@3.5.25_@vue+shared@3.5.25/node_modules/@vue-reactivity/watch/dist/index.js
 var require_dist = __commonJS({
-  "../node_modules/.pnpm/@vue-reactivity+watch@0.2.0_@vue+reactivity@3.4.27_@vue+shared@3.4.25/node_modules/@vue-reactivity/watch/dist/index.js"(exports, module2) {
+  "../node_modules/.pnpm/@vue-reactivity+watch@0.2.0_@vue+reactivity@3.5.25_@vue+shared@3.5.25/node_modules/@vue-reactivity/watch/dist/index.js"(exports, module2) {
     var __defProp2 = Object.defineProperty;
     var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
     var __getOwnPropNames2 = Object.getOwnPropertyNames;
@@ -2167,7 +2265,7 @@ var import_simple_json_db = __toESM(require("simple-json-db"));
 // ../server-shared/src/log-service.ts
 var import_tsyringe = require("tsyringe");
 
-// ../node_modules/.pnpm/chalk@5.3.0/node_modules/chalk/source/vendor/ansi-styles/index.js
+// ../node_modules/.pnpm/chalk@5.6.2/node_modules/chalk/source/vendor/ansi-styles/index.js
 var ANSI_BACKGROUND_OFFSET = 10;
 var wrapAnsi16 = (offset = 0) => (code) => `\x1B[${code + offset}m`;
 var wrapAnsi256 = (offset = 0) => (code) => `\x1B[${38 + offset};5;${code}m`;
@@ -2344,7 +2442,7 @@ function assembleStyles() {
 var ansiStyles = assembleStyles();
 var ansi_styles_default = ansiStyles;
 
-// ../node_modules/.pnpm/chalk@5.3.0/node_modules/chalk/source/vendor/supports-color/index.js
+// ../node_modules/.pnpm/chalk@5.6.2/node_modules/chalk/source/vendor/supports-color/index.js
 var import_node_process = __toESM(require("process"), 1);
 var import_node_os = __toESM(require("os"), 1);
 var import_node_tty = __toESM(require("tty"), 1);
@@ -2418,10 +2516,10 @@ function _supportsColor(haveStream, { streamIsTTY, sniffFlags = true } = {}) {
     return 1;
   }
   if ("CI" in env) {
-    if ("GITHUB_ACTIONS" in env || "GITEA_ACTIONS" in env) {
+    if (["GITHUB_ACTIONS", "GITEA_ACTIONS", "CIRCLECI"].some((key) => key in env)) {
       return 3;
     }
-    if (["TRAVIS", "CIRCLECI", "APPVEYOR", "GITLAB_CI", "BUILDKITE", "DRONE"].some((sign) => sign in env) || env.CI_NAME === "codeship") {
+    if (["TRAVIS", "APPVEYOR", "GITLAB_CI", "BUILDKITE", "DRONE"].some((sign) => sign in env) || env.CI_NAME === "codeship") {
       return 1;
     }
     return min;
@@ -2433,6 +2531,12 @@ function _supportsColor(haveStream, { streamIsTTY, sniffFlags = true } = {}) {
     return 3;
   }
   if (env.TERM === "xterm-kitty") {
+    return 3;
+  }
+  if (env.TERM === "xterm-ghostty") {
+    return 3;
+  }
+  if (env.TERM === "wezterm") {
     return 3;
   }
   if ("TERM_PROGRAM" in env) {
@@ -2470,7 +2574,7 @@ var supportsColor = {
 };
 var supports_color_default = supportsColor;
 
-// ../node_modules/.pnpm/chalk@5.3.0/node_modules/chalk/source/utilities.js
+// ../node_modules/.pnpm/chalk@5.6.2/node_modules/chalk/source/utilities.js
 function stringReplaceAll(string, substring, replacer) {
   let index = string.indexOf(substring);
   if (index === -1) {
@@ -2500,7 +2604,7 @@ function stringEncaseCRLFWithFirstIndex(string, prefix, postfix, index) {
   return returnValue;
 }
 
-// ../node_modules/.pnpm/chalk@5.3.0/node_modules/chalk/source/index.js
+// ../node_modules/.pnpm/chalk@5.6.2/node_modules/chalk/source/index.js
 var { stdout: stdoutColor, stderr: stderrColor } = supports_color_default;
 var GENERATOR = Symbol("GENERATOR");
 var STYLER = Symbol("STYLER");
@@ -4134,16 +4238,16 @@ function execaCommand(command, options) {
   return execa(file, args, options);
 }
 
-// ../node_modules/.pnpm/ansi-regex@6.0.1/node_modules/ansi-regex/index.js
+// ../node_modules/.pnpm/ansi-regex@6.2.2/node_modules/ansi-regex/index.js
 function ansiRegex({ onlyFirst = false } = {}) {
-  const pattern = [
-    "[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]+)*|[a-zA-Z\\d]+(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]*)*)?\\u0007)",
-    "(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-ntqry=><~]))"
-  ].join("|");
+  const ST = "(?:\\u0007|\\u001B\\u005C|\\u009C)";
+  const osc = `(?:\\u001B\\][\\s\\S]*?${ST})`;
+  const csi = "[\\u001B\\u009B][[\\]()#;?]*(?:\\d{1,4}(?:[;:]\\d{0,4})*)?[\\dA-PR-TZcf-nq-uy=><~]";
+  const pattern = `${osc}|${csi}`;
   return new RegExp(pattern, onlyFirst ? void 0 : "g");
 }
 
-// ../node_modules/.pnpm/strip-ansi@7.1.0/node_modules/strip-ansi/index.js
+// ../node_modules/.pnpm/strip-ansi@7.1.2/node_modules/strip-ansi/index.js
 var regex = ansiRegex();
 function stripAnsi(string) {
   if (typeof string !== "string") {
@@ -5001,14 +5105,14 @@ var EnvService = class {
     this.syncHexo();
   }
   syncAccount() {
-    const username = process.env.USERNAME;
-    const password = process.env.PASSWORD;
+    const username = process.env.HEXON_USERNAME;
+    const password = process.env.HEXON_PASSWORD;
     if (username) {
-      this._logService.log(`sync account from process.env.USERNAME`);
+      this._logService.log(`sync account from process.env.HEXON_USERNAME`);
       this.account.setUsername(username);
     }
     if (password) {
-      this._logService.log(`sync account from process.env.PASSWORD`);
+      this._logService.log(`sync account from process.env.HEXON_PASSWORD`);
       this.account.setPassword(password);
     }
   }
@@ -5053,9 +5157,8 @@ EnvService = __decorateClass([
   await env2.sync();
   server.listen(storage.get(HEXON_PORT_KEY) || HEXON_DEFAULT_PORT);
 })();
-/*! #__NO_SIDE_EFFECTS__ */
 /**
-* @vue/shared v3.4.25
+* @vue/shared v3.5.25
 * (c) 2018-present Yuxi (Evan) You and Vue contributors
 * @license MIT
 **/

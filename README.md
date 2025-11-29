@@ -78,9 +78,11 @@ e.g. modify `git sync` script
 
 ## 🖥️ Develop
 
-- Check out `main` branch.
+- Check out `develop` branch.
 - Run `pnpm dev-init` install dependencies and config hexon.
 - Run `pnpm dev` and show your magic!
+
+###### When submitting a PR, remember to set the target branch to `develop`.
 
 ## 💩 Have trouble?
 
