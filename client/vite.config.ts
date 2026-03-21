@@ -50,6 +50,10 @@ export default defineConfig({
         find: "@",
         replacement: path.resolve(projectRootDir, "src/components"),
       },
+      {
+        find: "@shared",
+        replacement: path.resolve(projectRootDir, "../shared/src"),
+      },
     ],
   },
   build: {

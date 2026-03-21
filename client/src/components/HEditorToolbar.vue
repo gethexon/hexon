@@ -62,17 +62,5 @@ const detailStore = useDetailStore()
     >
       <HIcon :name="HIconName.Upload" />
     </HButton>
-    <HButton
-      class="mr-2"
-      type="common"
-      round
-      inverted
-      @click="emits('on-action', { type: 'code' })"
-    >
-      <HIcon :name="HIconName.Code" />
-    </HButton>
-    <HButton class="mr-2" type="common" round inverted>
-      <HIcon :name="HIconName.GlobalNavButton" />
-    </HButton>
   </HToolbar>
 </template>
