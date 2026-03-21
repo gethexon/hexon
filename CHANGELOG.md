@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0](https://github.com/gethexon/hexon/compare/v0.12.8...v1.0.0) (2026-03-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* conflict with system wild env
+
+### Bug Fixes
+
+* conflict with system wild env ([5c81e1b](https://github.com/gethexon/hexon/commit/5c81e1bbe977d6d84562a0e6f3a04e53d8f5b02c))
+* date format ([2f80a76](https://github.com/gethexon/hexon/commit/2f80a766646af30710a747c45dc474ace7254b1d))
+
 ### [0.12.8](https://github.com/gethexon/hexon/compare/v0.12.7...v0.12.8) (2024-07-11)
 
 ### [0.12.7](https://github.com/gethexon/hexon/compare/v0.12.6...v0.12.7) (2024-06-07)
