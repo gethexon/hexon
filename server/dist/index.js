@@ -2649,11 +2649,15 @@ var source_default = chalk;
 
 // ../server-shared/src/log-service.ts
 var import_dayjs = __toESM(require("dayjs"));
-var DEFAULT_DATE_FORMAT = "YYYY-MM-DD hh:mm:ss.SSS";
+
+// ../shared/src/constants.ts
+var DATE_FORMAT = "YYYY-MM-DD HH:mm:ss";
+
+// ../server-shared/src/log-service.ts
 var LogService = class {
   constructor() {
     this.scope = "";
-    this.dateFormat = DEFAULT_DATE_FORMAT;
+    this.dateFormat = DATE_FORMAT;
   }
   _prefix(type) {
     let prefix = "";
@@ -2978,6 +2982,7 @@ var AccountService = class {
       username,
       password: this._encrypt(password)
     });
+    this._logService.log("set user info: ", username);
   }
   getUsername() {
     return this._fromStorage().username;
@@ -2986,16 +2991,19 @@ var AccountService = class {
     const info = this._fromStorage();
     info.username = username;
     this._toStorage(info);
+    this._logService.log("set username: ", username);
   }
   setPassword(password) {
     const info = this._fromStorage();
     info.password = this._encrypt(password);
     this._toStorage(info);
+    this._logService.log("set password");
   }
-  setEncrptedPassword(password) {
+  setEncryptedPassword(password) {
     const info = this._fromStorage();
     info.password = password;
     this._toStorage(info);
+    this._logService.log("set encrypted password");
   }
   verify(username, password) {
     const info = this._fromStorage();
@@ -3061,10 +3069,11 @@ AuthStorageService = __decorateClass([
 // src/middlewares/auth.ts
 var auth = (0, import_koa_authentication.createAuth)({
   verify(username, password) {
-    console.log("username", username);
-    console.log("password", password);
+    const logger2 = import_tsyringe6.container.resolve(LogService);
     const account = import_tsyringe6.container.resolve(AccountService);
-    return account.verify(username, password);
+    const res = account.verify(username, password);
+    logger2.log(`verify ${res ? "success" : "failed"} for ${username}`);
+    return res;
   },
   secret() {
     return import_tsyringe6.container.resolve(AuthStorageService).getSecret();
@@ -5001,14 +5010,14 @@ var EnvService = class {
     this.syncHexo();
   }
   syncAccount() {
-    const username = process.env.USERNAME;
-    const password = process.env.PASSWORD;
+    const username = process.env.HEXON_USERNAME;
+    const password = process.env.HEXON_PASSWORD;
     if (username) {
-      this._logService.log(`sync account from process.env.USERNAME`);
+      this._logService.log(`sync account from process.env.HEXON_USERNAME`);
       this.account.setUsername(username);
     }
     if (password) {
-      this._logService.log(`sync account from process.env.PASSWORD`);
+      this._logService.log(`sync account from process.env.HEXON_PASSWORD`);
       this.account.setPassword(password);
     }
   }

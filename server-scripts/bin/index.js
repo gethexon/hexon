@@ -1817,11 +1817,15 @@ var import_simple_json_db = __toESM(require("simple-json-db"));
 // ../server-shared/src/log-service.ts
 var import_tsyringe = require("tsyringe");
 var import_dayjs = __toESM(require("dayjs"));
-var DEFAULT_DATE_FORMAT = "YYYY-MM-DD hh:mm:ss.SSS";
+
+// ../shared/src/constants.ts
+var DATE_FORMAT = "YYYY-MM-DD HH:mm:ss";
+
+// ../server-shared/src/log-service.ts
 var LogService = class {
   constructor() {
     this.scope = "";
-    this.dateFormat = DEFAULT_DATE_FORMAT;
+    this.dateFormat = DATE_FORMAT;
   }
   _prefix(type) {
     let prefix = "";
@@ -1977,6 +1981,7 @@ var AccountService = class {
       username,
       password: this._encrypt(password)
     });
+    this._logService.log("set user info: ", username);
   }
   getUsername() {
     return this._fromStorage().username;
@@ -1985,16 +1990,19 @@ var AccountService = class {
     const info2 = this._fromStorage();
     info2.username = username;
     this._toStorage(info2);
+    this._logService.log("set username: ", username);
   }
   setPassword(password) {
     const info2 = this._fromStorage();
     info2.password = this._encrypt(password);
     this._toStorage(info2);
+    this._logService.log("set password");
   }
-  setEncrptedPassword(password) {
+  setEncryptedPassword(password) {
     const info2 = this._fromStorage();
     info2.password = password;
     this._toStorage(info2);
+    this._logService.log("set encrypted password");
   }
   verify(username, password) {
     const info2 = this._fromStorage();
