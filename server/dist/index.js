@@ -36,8 +36,8 @@ var require_windows = __commonJS({
   "../node_modules/.pnpm/isexe@2.0.0/node_modules/isexe/windows.js"(exports, module2) {
     module2.exports = isexe;
     isexe.sync = sync;
-    var fs3 = require("fs");
-    function checkPathExt(path9, options) {
+    var fs4 = require("fs");
+    function checkPathExt(path10, options) {
       var pathext = options.pathExt !== void 0 ? options.pathExt : process.env.PATHEXT;
       if (!pathext) {
         return true;
@@ -48,25 +48,25 @@ var require_windows = __commonJS({
       }
       for (var i = 0; i < pathext.length; i++) {
         var p = pathext[i].toLowerCase();
-        if (p && path9.substr(-p.length).toLowerCase() === p) {
+        if (p && path10.substr(-p.length).toLowerCase() === p) {
           return true;
         }
       }
       return false;
     }
-    function checkStat(stat, path9, options) {
+    function checkStat(stat, path10, options) {
       if (!stat.isSymbolicLink() && !stat.isFile()) {
         return false;
       }
-      return checkPathExt(path9, options);
+      return checkPathExt(path10, options);
     }
-    function isexe(path9, options, cb) {
-      fs3.stat(path9, function(er, stat) {
-        cb(er, er ? false : checkStat(stat, path9, options));
+    function isexe(path10, options, cb) {
+      fs4.stat(path10, function(er, stat) {
+        cb(er, er ? false : checkStat(stat, path10, options));
       });
     }
-    function sync(path9, options) {
-      return checkStat(fs3.statSync(path9), path9, options);
+    function sync(path10, options) {
+      return checkStat(fs4.statSync(path10), path10, options);
     }
   }
 });
@@ -76,14 +76,14 @@ var require_mode = __commonJS({
   "../node_modules/.pnpm/isexe@2.0.0/node_modules/isexe/mode.js"(exports, module2) {
     module2.exports = isexe;
     isexe.sync = sync;
-    var fs3 = require("fs");
-    function isexe(path9, options, cb) {
-      fs3.stat(path9, function(er, stat) {
+    var fs4 = require("fs");
+    function isexe(path10, options, cb) {
+      fs4.stat(path10, function(er, stat) {
         cb(er, er ? false : checkStat(stat, options));
       });
     }
-    function sync(path9, options) {
-      return checkStat(fs3.statSync(path9), options);
+    function sync(path10, options) {
+      return checkStat(fs4.statSync(path10), options);
     }
     function checkStat(stat, options) {
       return stat.isFile() && checkMode(stat, options);
@@ -107,7 +107,7 @@ var require_mode = __commonJS({
 // ../node_modules/.pnpm/isexe@2.0.0/node_modules/isexe/index.js
 var require_isexe = __commonJS({
   "../node_modules/.pnpm/isexe@2.0.0/node_modules/isexe/index.js"(exports, module2) {
-    var fs3 = require("fs");
+    var fs4 = require("fs");
     var core;
     if (process.platform === "win32" || global.TESTING_WINDOWS) {
       core = require_windows();
@@ -116,7 +116,7 @@ var require_isexe = __commonJS({
     }
     module2.exports = isexe;
     isexe.sync = sync;
-    function isexe(path9, options, cb) {
+    function isexe(path10, options, cb) {
       if (typeof options === "function") {
         cb = options;
         options = {};
@@ -126,7 +126,7 @@ var require_isexe = __commonJS({
           throw new TypeError("callback not provided");
         }
         return new Promise(function(resolve4, reject) {
-          isexe(path9, options || {}, function(er, is) {
+          isexe(path10, options || {}, function(er, is) {
             if (er) {
               reject(er);
             } else {
@@ -135,7 +135,7 @@ var require_isexe = __commonJS({
           });
         });
       }
-      core(path9, options || {}, function(er, is) {
+      core(path10, options || {}, function(er, is) {
         if (er) {
           if (er.code === "EACCES" || options && options.ignoreErrors) {
             er = null;
@@ -145,9 +145,9 @@ var require_isexe = __commonJS({
         cb(er, is);
       });
     }
-    function sync(path9, options) {
+    function sync(path10, options) {
       try {
-        return core.sync(path9, options || {});
+        return core.sync(path10, options || {});
       } catch (er) {
         if (options && options.ignoreErrors || er.code === "EACCES") {
           return false;
@@ -163,7 +163,7 @@ var require_isexe = __commonJS({
 var require_which = __commonJS({
   "../node_modules/.pnpm/which@2.0.2/node_modules/which/which.js"(exports, module2) {
     var isWindows = process.platform === "win32" || process.env.OSTYPE === "cygwin" || process.env.OSTYPE === "msys";
-    var path9 = require("path");
+    var path10 = require("path");
     var COLON = isWindows ? ";" : ":";
     var isexe = require_isexe();
     var getNotFoundError = (cmd) => Object.assign(new Error(`not found: ${cmd}`), { code: "ENOENT" });
@@ -199,7 +199,7 @@ var require_which = __commonJS({
           return opt.all && found.length ? resolve4(found) : reject(getNotFoundError(cmd));
         const ppRaw = pathEnv[i];
         const pathPart = /^".*"$/.test(ppRaw) ? ppRaw.slice(1, -1) : ppRaw;
-        const pCmd = path9.join(pathPart, cmd);
+        const pCmd = path10.join(pathPart, cmd);
         const p = !pathPart && /^\.[\\\/]/.test(cmd) ? cmd.slice(0, 2) + pCmd : pCmd;
         resolve4(subStep(p, i, 0));
       });
@@ -226,7 +226,7 @@ var require_which = __commonJS({
       for (let i = 0; i < pathEnv.length; i++) {
         const ppRaw = pathEnv[i];
         const pathPart = /^".*"$/.test(ppRaw) ? ppRaw.slice(1, -1) : ppRaw;
-        const pCmd = path9.join(pathPart, cmd);
+        const pCmd = path10.join(pathPart, cmd);
         const p = !pathPart && /^\.[\\\/]/.test(cmd) ? cmd.slice(0, 2) + pCmd : pCmd;
         for (let j = 0; j < pathExt.length; j++) {
           const cur = p + pathExt[j];
@@ -274,7 +274,7 @@ var require_path_key = __commonJS({
 var require_resolveCommand = __commonJS({
   "../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/lib/util/resolveCommand.js"(exports, module2) {
     "use strict";
-    var path9 = require("path");
+    var path10 = require("path");
     var which = require_which();
     var getPathKey = require_path_key();
     function resolveCommandAttempt(parsed, withoutPathExt) {
@@ -292,7 +292,7 @@ var require_resolveCommand = __commonJS({
       try {
         resolved = which.sync(parsed.command, {
           path: env2[getPathKey({ env: env2 })],
-          pathExt: withoutPathExt ? path9.delimiter : void 0
+          pathExt: withoutPathExt ? path10.delimiter : void 0
         });
       } catch (e) {
       } finally {
@@ -301,7 +301,7 @@ var require_resolveCommand = __commonJS({
         }
       }
       if (resolved) {
-        resolved = path9.resolve(hasCustomCwd ? parsed.options.cwd : "", resolved);
+        resolved = path10.resolve(hasCustomCwd ? parsed.options.cwd : "", resolved);
       }
       return resolved;
     }
@@ -355,8 +355,8 @@ var require_shebang_command = __commonJS({
       if (!match) {
         return null;
       }
-      const [path9, argument] = match[0].replace(/#! ?/, "").split(" ");
-      const binary = path9.split("/").pop();
+      const [path10, argument] = match[0].replace(/#! ?/, "").split(" ");
+      const binary = path10.split("/").pop();
       if (binary === "env") {
         return argument;
       }
@@ -369,16 +369,16 @@ var require_shebang_command = __commonJS({
 var require_readShebang = __commonJS({
   "../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/lib/util/readShebang.js"(exports, module2) {
     "use strict";
-    var fs3 = require("fs");
+    var fs4 = require("fs");
     var shebangCommand = require_shebang_command();
     function readShebang(command) {
       const size = 150;
       const buffer = Buffer.alloc(size);
       let fd;
       try {
-        fd = fs3.openSync(command, "r");
-        fs3.readSync(fd, buffer, 0, size, 0);
-        fs3.closeSync(fd);
+        fd = fs4.openSync(command, "r");
+        fs4.readSync(fd, buffer, 0, size, 0);
+        fs4.closeSync(fd);
       } catch (e) {
       }
       return shebangCommand(buffer.toString());
@@ -391,7 +391,7 @@ var require_readShebang = __commonJS({
 var require_parse = __commonJS({
   "../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/lib/parse.js"(exports, module2) {
     "use strict";
-    var path9 = require("path");
+    var path10 = require("path");
     var resolveCommand = require_resolveCommand();
     var escape = require_escape();
     var readShebang = require_readShebang();
@@ -416,7 +416,7 @@ var require_parse = __commonJS({
       const needsShell = !isExecutableRegExp.test(commandFile);
       if (parsed.options.forceShell || needsShell) {
         const needsDoubleEscapeMetaChars = isCmdShimRegExp.test(commandFile);
-        parsed.command = path9.normalize(parsed.command);
+        parsed.command = path10.normalize(parsed.command);
         parsed.command = escape.command(parsed.command);
         parsed.args = parsed.args.map((arg) => escape.argument(arg, needsDoubleEscapeMetaChars));
         const shellCommand = [parsed.command].concat(parsed.args).join(" ");
@@ -4489,15 +4489,19 @@ var HexoService = class {
   }
   async getPostByFullSource(fullSource) {
     const hexo = await this._hexoInstanceService.getInstance();
-    const post = hexo.locals.get("posts").toArray().find((item) => item.full_source === fullSource);
+    const post = hexo.locals.get("posts").toArray().find((item) => import_path8.default.resolve(item.full_source) === import_path8.default.resolve(fullSource));
+    if (!post)
+      return;
     return this.getPostBySource(post.source);
   }
   async getPostOrPageByFullSource(fullSource) {
     const hexo = await this._hexoInstanceService.getInstance();
-    const post = hexo.locals.get("posts").toArray().find((item) => item.full_source === fullSource);
+    const post = hexo.locals.get("posts").toArray().find((item) => import_path8.default.resolve(item.full_source) === import_path8.default.resolve(fullSource));
     if (post)
       return this.getPostBySource(post.source);
-    const page = hexo.locals.get("pages").toArray().find((item) => item.full_source === fullSource);
+    const page = hexo.locals.get("pages").toArray().find((item) => import_path8.default.resolve(item.full_source) === import_path8.default.resolve(fullSource));
+    if (!page)
+      return;
     return this.getPageBySource(page.source);
   }
   writeFile(fullPath, content) {
@@ -4523,6 +4527,21 @@ var HexoService = class {
       return (_a = hexo.locals.get("posts").toArray().find((item) => item.source === source)) == null ? void 0 : _a.full_source;
     else
       return (_b = hexo.locals.get("pages").toArray().find((item) => item.source === source)) == null ? void 0 : _b.full_source;
+  }
+  async getAssetPath(relativePath) {
+    const base = await this._hexoInstanceService.getBaseDir();
+    const sourceDir = import_path8.default.resolve(base, "source");
+    const fullPath = import_path8.default.resolve(sourceDir, relativePath);
+    const relative = import_path8.default.relative(sourceDir, fullPath);
+    if (!relative || relative.startsWith("..") || import_path8.default.isAbsolute(relative))
+      return;
+    try {
+      if (!import_fs4.default.statSync(fullPath).isFile())
+        return;
+    } catch {
+      return;
+    }
+    return fullPath;
   }
   async WithCategoriesTagsBriefArticleList(article) {
     const categories = await this.listCategory();
@@ -4685,6 +4704,8 @@ var HexoService = class {
     );
     const fullSource = expandHomeDir(info.split("Published: ")[1].trim());
     const article = await this.getPostByFullSource(fullSource);
+    if (!article)
+      throw new PostOrPageNotFoundError("post");
     const res = await this.WithCategoriesTagsBriefArticleList(article);
     this._logService.log(`publish ${filename} with layout: ${layout}`);
     return res;
@@ -4694,13 +4715,22 @@ var HexoService = class {
     if (!fullSource)
       throw new PostOrPageNotFoundError("post");
     const base = await this._hexoInstanceService.getBaseDir();
-    const relativeSource = import_path8.default.relative(import_path8.default.join(base, "source"), fullSource);
+    const postsDir = import_path8.default.join(base, "source", "_posts");
+    const relativeSource = import_path8.default.relative(postsDir, fullSource);
+    if (!relativeSource || relativeSource.startsWith("..") || import_path8.default.isAbsolute(relativeSource)) {
+      throw new InvalidOptionsError(
+        `${source} is not a published post`,
+        "InvalidRestoreSourceError"
+      );
+    }
     const draftSource = import_path8.default.join(base, "source", "_drafts", relativeSource);
     await this._hexoInstanceService.runBetweenReload(() => {
       import_fs4.default.mkdirSync(import_path8.default.dirname(draftSource), { recursive: true });
       import_fs4.default.renameSync(fullSource, draftSource);
     });
     const article = await this.getPostByFullSource(draftSource);
+    if (!article)
+      throw new PostOrPageNotFoundError("post");
     const res = await this.WithCategoriesTagsBriefArticleList(article);
     this._logService.log(`restore ${source} as draft`);
     return res;
@@ -4739,6 +4769,8 @@ var HexoService = class {
     });
     const fullSource = expandHomeDir(info.split("Created: ")[1].trim());
     const article = await this.getPostOrPageByFullSource(fullSource);
+    if (!article)
+      throw new PostOrPageNotFoundError("post");
     const res = this.WithCategoriesTagsBriefArticleList(article);
     this._logService.log("create succeed", fullSource);
     return res;
@@ -4776,6 +4808,8 @@ HexoService = __decorateClass([
 ], HexoService);
 
 // src/routes/hexo.ts
+var import_path9 = __toESM(require("path"));
+var import_fs5 = __toESM(require("fs"));
 var router2 = new import_router2.default();
 router2.prefix("/hexo");
 router2.get("/posts", async (ctx) => {
@@ -4815,6 +4849,17 @@ router2.get("/categories", async (ctx) => {
   const hexo = import_tsyringe10.container.resolve(HexoService);
   ctx.body = await hexo.listCategory();
 });
+router2.get("/assets", async (ctx) => {
+  const hexo = import_tsyringe10.container.resolve(HexoService);
+  const relativePath = typeof ctx.query.path === "string" ? ctx.query.path : "";
+  const fullPath = await hexo.getAssetPath(relativePath);
+  if (!fullPath) {
+    ctx.status = 404;
+    return;
+  }
+  ctx.type = import_path9.default.extname(fullPath);
+  ctx.body = import_fs5.default.createReadStream(fullPath);
+});
 router2.post("/deploy", async (ctx) => {
   const hexo = import_tsyringe10.container.resolve(HexoService);
   await hexo.deploy(ctx.request.body);
@@ -4852,13 +4897,13 @@ router2.post("/restore", async (ctx) => {
 });
 router2.post("/create", async (ctx) => {
   const hexo = import_tsyringe10.container.resolve(HexoService);
-  const { title, layout, path: path9, slug, replace } = ctx.request.body;
+  const { title, layout, path: path10, slug, replace } = ctx.request.body;
   if (!title) {
     ctx.status = 400;
     ctx.body = "need `title`";
     return;
   }
-  ctx.body = await hexo.create(title, { layout, path: path9, slug, replace });
+  ctx.body = await hexo.create(title, { layout, path: path10, slug, replace });
 });
 router2.put("/post/:source", async (ctx) => {
   const hexo = import_tsyringe10.container.resolve(HexoService);
@@ -5169,7 +5214,7 @@ app.use(routes_default.routes());
 var app_default = app;
 
 // src/index.ts
-var import_path9 = __toESM(require("path"));
+var import_path10 = __toESM(require("path"));
 
 // ../server-shared/src/env-service.ts
 var import_tsyringe18 = require("tsyringe");
@@ -5223,7 +5268,7 @@ EnvService = __decorateClass([
 // src/index.ts
 (async () => {
   dotenv.config({
-    path: process.env.NODE_ENV === "production" ? process.cwd() + "/.env" : import_path9.default.resolve(process.cwd(), "../.env")
+    path: process.env.NODE_ENV === "production" ? process.cwd() + "/.env" : import_path10.default.resolve(process.cwd(), "../.env")
   });
   const storage = import_tsyringe19.container.resolve(StorageService);
   const server = import_http.default.createServer(app_default.callback());

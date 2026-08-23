@@ -234,6 +234,21 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
         .find((item) => item.source === source)?.full_source
   }
 
+  async getAssetPath(relativePath: string) {
+    const base = await this._hexoInstanceService.getBaseDir()
+    const sourceDir = path.resolve(base, "source")
+    const fullPath = path.resolve(sourceDir, relativePath)
+    const relative = path.relative(sourceDir, fullPath)
+    if (!relative || relative.startsWith("..") || path.isAbsolute(relative))
+      return
+    try {
+      if (!fs.statSync(fullPath).isFile()) return
+    } catch {
+      return
+    }
+    return fullPath
+  }
+
   private async WithCategoriesTagsBriefArticleList<T>(
     article: T
   ): Promise<WithCategoriesTagsBriefArticleList<T>> {

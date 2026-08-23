@@ -13,7 +13,19 @@ const styleVars = computed(() => ({
   base2BgColor: vars.value.backgroundColorSecondary,
 }))
 const content = computed(() => {
-  return (props.content ?? "").replaceAll(/(href=".*?")/g, '$1 target="_blank"')
+  return (props.content ?? "")
+    .replace(
+      /(<img\b[^>]*\bsrc=["'])([^"']+)(["'])/gi,
+      (_, prefix: string, source: string, suffix: string) => {
+        const normalizedSource = source.replaceAll("\\", "/")
+        if (/^(?:[a-z][a-z\d+.-]*:|\/\/|#)/i.test(normalizedSource))
+          return `${prefix}${normalizedSource}${suffix}`
+        return `${prefix}/hexo/assets?path=${encodeURIComponent(
+          normalizedSource.replace(/^\/+/, "")
+        )}${suffix}`
+      }
+    )
+    .replace(/(href=".*?")/g, '$1 target="_blank"')
 })
 </script>
 <template>
