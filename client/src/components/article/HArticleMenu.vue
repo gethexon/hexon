@@ -59,6 +59,9 @@ const onAction = (type: IHArticleMenuActionType) => {
     case "publish":
       dispatcher.publishArticle(props.article!.source)
       break
+    case "restore":
+      dispatcher.restoreArticle(props.article!.source)
+      break
     default:
       break
   }
@@ -105,10 +108,13 @@ const dateToString = (date: Dayjs | null) => {
             inverted
             size="small"
             round
-            v-if="article!.isDraft"
-            @click="onAction('publish')"
+            v-if="article!.type === 'post'"
+            @click="onAction(article!.isDraft ? 'publish' : 'restore')"
           >
-            <HIcon :name="HIconName.Upload" />
+            <HIcon
+              :name="HIconName.Upload"
+              :style="{ transform: article!.isDraft ? '' : 'rotate(180deg)' }"
+            />
           </HButton>
         </div>
         <HDivider class="mt-1 mb-2" />

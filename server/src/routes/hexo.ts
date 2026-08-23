@@ -67,6 +67,16 @@ router.post("/publish", async (ctx: Context) => {
   }
   ctx.body = await hexo.publish(filename, layout)
 })
+router.post("/restore", async (ctx: Context) => {
+  const hexo = container.resolve(HexoService)
+  const { source } = ctx.request.body
+  if (!source) {
+    ctx.status = 400
+    ctx.body = "need `source`"
+    return
+  }
+  ctx.body = await hexo.restore(source)
+})
 router.post("/create", async (ctx: Context) => {
   const hexo = container.resolve(HexoService)
   const { title, layout, path, slug, replace } = ctx.request.body

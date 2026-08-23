@@ -68,6 +68,11 @@ export const useMainStore = defineStore("main", {
       await this.getBlogData()
       return article
     },
+    async restoreArticle(source: string) {
+      const article = await api.restoreArticle(source)
+      await this.getBlogData()
+      return article
+    },
   },
   getters: {
     articles(state): (BriefPost | BriefPage)[] {

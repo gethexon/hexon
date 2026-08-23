@@ -184,6 +184,11 @@ export class HttpApiProvider implements IApiProvider {
     const { article } = res.data
     return ZPost.parse(dashIdToId(article))
   }
+  async restoreArticle(source: string): Promise<Post> {
+    const res = await request.post("/hexo/restore", { source })
+    const { article } = res.data
+    return ZPost.parse(dashIdToId(article))
+  }
   async deploy(options: IDeployOptions = {}): Promise<void> {
     return request.post("/hexo/deploy", options)
   }

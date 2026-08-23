@@ -65,6 +65,9 @@ const onAction = (payload: HViewerToolbarActionPayload) => {
     case "publish":
       dispatcher.publishArticle(source)
       break
+    case "restore":
+      dispatcher.restoreArticle(source)
+      break
     default:
       break
   }

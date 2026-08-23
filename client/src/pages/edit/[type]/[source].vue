@@ -83,6 +83,9 @@ const onAction = (payload: HEditorToolbarActionPayload) => {
     case "publish":
       dispatcher.publishArticle(source)
       break
+    case "restore":
+      dispatcher.restoreArticle(source)
+      break
     default:
       break
   }
