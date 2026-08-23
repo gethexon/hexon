@@ -164,8 +164,20 @@ export class HexoInstanceService {
     }
     HexoInstanceService.INITING = true
     await unload().catch(markHexoInitError)
-    const res = await Promise.resolve(fn())
-    await load().catch(markHexoInitError)
-    return res
+    let executionError = false
+    try {
+      return await Promise.resolve(fn())
+    } catch (err) {
+      executionError = true
+      throw err
+    } finally {
+      try {
+        await load()
+      } catch (err) {
+        markHexoInitError(err)
+        this._logService.error(err)
+        if (!executionError) throw new HexoInitError(String(err))
+      }
+    }
   }
 }
