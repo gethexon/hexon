@@ -31,9 +31,9 @@ var __decorateClass = (decorators, target, key, kind) => {
 };
 var __decorateParam = (index, decorator) => (target, key) => decorator(target, key, index);
 
-// ../node_modules/.pnpm/@vue+shared@3.5.41/node_modules/@vue/shared/dist/shared.cjs.prod.js
+// ../.pnpm-update-store/@vue+shared@3.5.41/node_modules/@vue/shared/dist/shared.cjs.prod.js
 var require_shared_cjs_prod = __commonJS({
-  "../node_modules/.pnpm/@vue+shared@3.5.41/node_modules/@vue/shared/dist/shared.cjs.prod.js"(exports) {
+  "../.pnpm-update-store/@vue+shared@3.5.41/node_modules/@vue/shared/dist/shared.cjs.prod.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     function makeMap(str) {
@@ -626,9 +626,9 @@ var require_shared_cjs_prod = __commonJS({
   }
 });
 
-// ../node_modules/.pnpm/@vue+shared@3.5.41/node_modules/@vue/shared/dist/shared.cjs.js
+// ../.pnpm-update-store/@vue+shared@3.5.41/node_modules/@vue/shared/dist/shared.cjs.js
 var require_shared_cjs = __commonJS({
-  "../node_modules/.pnpm/@vue+shared@3.5.41/node_modules/@vue/shared/dist/shared.cjs.js"(exports) {
+  "../.pnpm-update-store/@vue+shared@3.5.41/node_modules/@vue/shared/dist/shared.cjs.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     function makeMap(str) {
@@ -1229,9 +1229,9 @@ var require_shared_cjs = __commonJS({
   }
 });
 
-// ../node_modules/.pnpm/@vue+shared@3.5.41/node_modules/@vue/shared/index.js
+// ../.pnpm-update-store/@vue+shared@3.5.41/node_modules/@vue/shared/index.js
 var require_shared = __commonJS({
-  "../node_modules/.pnpm/@vue+shared@3.5.41/node_modules/@vue/shared/index.js"(exports, module2) {
+  "../.pnpm-update-store/@vue+shared@3.5.41/node_modules/@vue/shared/index.js"(exports, module2) {
     "use strict";
     if (process.env.NODE_ENV === "production") {
       module2.exports = require_shared_cjs_prod();
@@ -1241,9 +1241,9 @@ var require_shared = __commonJS({
   }
 });
 
-// ../node_modules/.pnpm/@vue-reactivity+watch@0.2.0_169931a5349ceb56918f730f45a31744/node_modules/@vue-reactivity/watch/dist/index.js
+// ../.pnpm-update-store/@vue-reactivity+watch@0.2.0_169931a5349ceb56918f730f45a31744/node_modules/@vue-reactivity/watch/dist/index.js
 var require_dist = __commonJS({
-  "../node_modules/.pnpm/@vue-reactivity+watch@0.2.0_169931a5349ceb56918f730f45a31744/node_modules/@vue-reactivity/watch/dist/index.js"(exports, module2) {
+  "../.pnpm-update-store/@vue-reactivity+watch@0.2.0_169931a5349ceb56918f730f45a31744/node_modules/@vue-reactivity/watch/dist/index.js"(exports, module2) {
     var __defProp2 = Object.defineProperty;
     var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
     var __getOwnPropNames2 = Object.getOwnPropertyNames;
@@ -1433,7 +1433,7 @@ var import_commander = require("commander");
 // src/install.ts
 var import_path4 = __toESM(require("path"));
 
-// ../node_modules/.pnpm/chalk@5.6.2/node_modules/chalk/source/vendor/ansi-styles/index.js
+// ../.pnpm-update-store/chalk@5.6.2/node_modules/chalk/source/vendor/ansi-styles/index.js
 var ANSI_BACKGROUND_OFFSET = 10;
 var wrapAnsi16 = (offset = 0) => (code) => `\x1B[${code + offset}m`;
 var wrapAnsi256 = (offset = 0) => (code) => `\x1B[${38 + offset};5;${code}m`;
@@ -1610,7 +1610,7 @@ function assembleStyles() {
 var ansiStyles = assembleStyles();
 var ansi_styles_default = ansiStyles;
 
-// ../node_modules/.pnpm/chalk@5.6.2/node_modules/chalk/source/vendor/supports-color/index.js
+// ../.pnpm-update-store/chalk@5.6.2/node_modules/chalk/source/vendor/supports-color/index.js
 var import_node_process = __toESM(require("process"), 1);
 var import_node_os = __toESM(require("os"), 1);
 var import_node_tty = __toESM(require("tty"), 1);
@@ -1742,7 +1742,7 @@ var supportsColor = {
 };
 var supports_color_default = supportsColor;
 
-// ../node_modules/.pnpm/chalk@5.6.2/node_modules/chalk/source/utilities.js
+// ../.pnpm-update-store/chalk@5.6.2/node_modules/chalk/source/utilities.js
 function stringReplaceAll(string, substring, replacer) {
   let index = string.indexOf(substring);
   if (index === -1) {
@@ -1772,7 +1772,7 @@ function stringEncaseCRLFWithFirstIndex(string, prefix, postfix, index) {
   return returnValue;
 }
 
-// ../node_modules/.pnpm/chalk@5.6.2/node_modules/chalk/source/index.js
+// ../.pnpm-update-store/chalk@5.6.2/node_modules/chalk/source/index.js
 var { stdout: stdoutColor, stderr: stderrColor } = supports_color_default;
 var GENERATOR = Symbol("GENERATOR");
 var STYLER = Symbol("STYLER");
@@ -2272,7 +2272,7 @@ var import_inquirer2 = __toESM(require("inquirer"));
 var import_path6 = require("path");
 var import_reactivity2 = require("@vue/reactivity");
 
-// ../node_modules/.pnpm/@winwin+server-reactive-store@0.2.2/node_modules/@winwin/server-reactive-store/dist/index.mjs
+// ../.pnpm-update-store/@winwin+server-reactive-store@0.2.2/node_modules/@winwin/server-reactive-store/dist/index.mjs
 var import_reactivity = require("@vue/reactivity");
 var import_watch = __toESM(require_dist(), 1);
 var import_fs5 = require("fs");

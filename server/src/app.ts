@@ -1,5 +1,4 @@
 import { container } from "tsyringe"
-import cors from "@koa/cors"
 import Koa from "koa"
 import bodyParser from "koa-bodyparser"
 import compress from "koa-compress"
