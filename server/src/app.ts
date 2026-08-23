@@ -30,7 +30,7 @@ app.use(async (ctx, next) => {
   }
 })
 
-app.use(bodyParser())
+app.use(bodyParser({ jsonLimit: "16mb" }))
 app.use(compress())
 app.use(httpSecure())
 app.use(logger())

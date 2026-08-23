@@ -59,6 +59,28 @@ router.get("/assets", async (ctx: Context) => {
   ctx.type = path.extname(fullPath)
   ctx.body = fs.createReadStream(fullPath)
 })
+router.post("/assets/upload", async (ctx: Context) => {
+  const hexo = container.resolve(HexoService)
+  const { type, source, name, mime, data } = (ctx.request.body ?? {}) as {
+    type?: unknown
+    source?: unknown
+    name?: unknown
+    mime?: unknown
+    data?: unknown
+  }
+  if (
+    (type !== "post" && type !== "page") ||
+    typeof source !== "string" ||
+    typeof name !== "string" ||
+    typeof mime !== "string" ||
+    typeof data !== "string"
+  ) {
+    ctx.status = 400
+    ctx.body = "need `type`, `source`, `name`, `mime` and `data`"
+    return
+  }
+  ctx.body = await hexo.uploadImage(type, source, name, mime, data)
+})
 router.post("/deploy", async (ctx: Context) => {
   const hexo = container.resolve(HexoService)
   await hexo.deploy(ctx.request.body)
@@ -107,25 +129,35 @@ router.post("/create", async (ctx: Context) => {
 router.put("/post/:source", async (ctx: Context) => {
   const hexo = container.resolve(HexoService)
   const { source } = ctx.params
-  const { raw } = ctx.request.body
+  const { raw, assets } = ctx.request.body
 
   if (!source || !raw) {
     ctx.status = 400
     ctx.body = "need `source` and `raw`"
     return
   }
-  ctx.body = await hexo.update(source, raw, "post")
+  ctx.body = await hexo.update(
+    source,
+    raw,
+    "post",
+    Array.isArray(assets) ? assets : []
+  )
 })
 router.put("/page/:source", async (ctx: Context) => {
   const hexo = container.resolve(HexoService)
   const { source } = ctx.params
-  const { raw } = ctx.request.body
+  const { raw, assets } = ctx.request.body
   if (!source || !raw) {
     ctx.status = 400
     ctx.body = "need `source` and `raw`"
     return
   }
-  ctx.body = await hexo.update(source, raw, "page")
+  ctx.body = await hexo.update(
+    source,
+    raw,
+    "page",
+    Array.isArray(assets) ? assets : []
+  )
 })
 router.delete("/post/:source", async (ctx: Context) => {
   const hexo = container.resolve(HexoService)

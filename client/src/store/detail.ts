@@ -1,5 +1,5 @@
 import { defineStore } from "pinia"
-import { Page, Post, api } from "~/api"
+import { IImageAsset, Page, Post, api } from "~/api"
 import { PostOrPage } from "~/interface"
 import { isDraft, isPage, isPost } from "~/utils/article"
 
@@ -49,14 +49,15 @@ export const useDetailStore = defineStore("detail", {
         this._loading = false
       }
     },
-    async saveArticle(raw: string) {
+    async saveArticle(raw: string, assets: IImageAsset[] = []) {
       if (!this.article) return
       this.saving = true
       try {
         await api.saveArticle(
           isPost(this.article) ? "post" : "page",
           this.article.source,
-          raw
+          raw,
+          assets
         )
       } catch (err) {
         console.error(err)

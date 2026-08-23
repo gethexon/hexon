@@ -1,6 +1,6 @@
 import { defineStore } from "pinia"
 import { defineAsyncComponent } from "vue"
-import { ICreateOptions } from "~/api"
+import { ICreateOptions, IImageAsset } from "~/api"
 import { changePassword, getInfo, login, changeUsername } from "~/api/auth"
 import { IChangePasswordFormPayload } from "~/components/forms/interface"
 import { getErrorId, getErrorMessage } from "~/errors"
@@ -146,12 +146,14 @@ export const useDispatcher = defineStore("dispatcher", {
         ],
       })
     },
-    async saveArticle(raw: string) {
+    async saveArticle(raw: string, assets: IImageAsset[] = []) {
       this.loading.start()
+      let saved = false
       try {
         const detailStore = useDetailStore()
-        await detailStore.saveArticle(raw).then(
+        await detailStore.saveArticle(raw, assets).then(
           () => {
+            saved = true
             this.notification.notify({
               title: "保存成功",
               type: "success",
@@ -172,6 +174,7 @@ export const useDispatcher = defineStore("dispatcher", {
       } finally {
         this.loading.stop()
       }
+      return saved
     },
     editArticle(id: IArticleIdentifier) {
       this.router.push({ name: "edit", params: { ...id } })

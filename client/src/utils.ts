@@ -1,4 +1,10 @@
-import { computed, ComputedRef, defineAsyncComponent, ref } from "vue"
+import {
+  computed,
+  ComputedRef,
+  defineAsyncComponent,
+  ref,
+  shallowRef,
+} from "vue"
 import { INotificationType } from "./lib/notification"
 
 export const forceReloadWindow = () => {
@@ -68,16 +74,28 @@ export function randomString(length: number = 8) {
 
 export function useAsyncComponentWithLoading(
   loader: Parameters<typeof defineAsyncComponent>[0]
-): [ReturnType<typeof defineAsyncComponent>, ComputedRef<boolean>] {
+): [
+  ReturnType<typeof defineAsyncComponent>,
+  ComputedRef<boolean>,
+  ComputedRef<unknown>
+] {
   const loading = ref(true)
+  const error = shallowRef<unknown>()
   const _loader = "loader" in loader ? loader.loader : loader
   return [
     defineAsyncComponent(() =>
-      _loader().then((res) => {
-        loading.value = false
-        return res
-      })
+      _loader()
+        .then((res) => {
+          loading.value = false
+          return res
+        })
+        .catch((err) => {
+          loading.value = false
+          error.value = err
+          throw err
+        })
     ),
     computed(() => loading.value),
+    computed(() => error.value),
   ]
 }

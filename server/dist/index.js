@@ -3338,6 +3338,7 @@ var import_path8 = __toESM(require("path"));
 var import_tsyringe9 = require("tsyringe");
 var import_fs4 = __toESM(require("fs"));
 var import_http = __toESM(require("http"));
+var import_crypto2 = require("crypto");
 
 // ../.pnpm-update-store/execa@6.1.0/node_modules/execa/index.js
 var import_node_buffer = require("buffer");
@@ -4416,6 +4417,13 @@ ExecService = __decorateClass([
 ], ExecService);
 
 // src/services/hexo-service.ts
+var MAX_IMAGE_SIZE = 8 * 1024 * 1024;
+var IMAGE_EXTENSIONS = {
+  "image/gif": ".gif",
+  "image/jpeg": ".jpg",
+  "image/png": ".png",
+  "image/webp": ".webp"
+};
 function isAsset(pageOrAsset) {
   return pageOrAsset.layout === "false";
 }
@@ -4557,6 +4565,147 @@ var HexoService = class {
       return;
     }
     return fullPath;
+  }
+  async getImageAssetKey(source, type) {
+    const article = type === "post" ? await this.getPostBySource(source) : await this.getPageBySource(source);
+    const withoutExtension = ((article == null ? void 0 : article.slug) || source).replaceAll("\\", "/").replace(/\.[^/.]+$/, "");
+    return withoutExtension.replace(/[^a-zA-Z0-9_-]+/g, "-").replace(/^-+|-+$/g, "") || "article";
+  }
+  async getImageAssetTempDir(base, source, type) {
+    return import_path8.default.resolve(
+      base,
+      "source",
+      ".hexon-upload-tmp",
+      await this.getImageAssetKey(source, type)
+    );
+  }
+  cleanupImageAssetTempDir(tempRoot) {
+    if (!import_fs4.default.existsSync(tempRoot))
+      return;
+    const expireAt = Date.now() - 24 * 60 * 60 * 1e3;
+    for (const entry of import_fs4.default.readdirSync(tempRoot, { withFileTypes: true })) {
+      const fullPath = import_path8.default.join(tempRoot, entry.name);
+      try {
+        if (import_fs4.default.statSync(fullPath).mtimeMs < expireAt)
+          import_fs4.default.rmSync(fullPath, { recursive: true, force: true });
+      } catch (err) {
+        this._logService.error(err);
+      }
+    }
+  }
+  imageDataMatchesType(type, data) {
+    if (type === "image/png")
+      return data.subarray(0, 8).equals(Buffer.from("89504e470d0a1a0a", "hex"));
+    if (type === "image/jpeg")
+      return data.subarray(0, 3).equals(Buffer.from("ffd8ff", "hex"));
+    if (type === "image/gif")
+      return data.subarray(0, 4).toString() === "GIF8";
+    if (type === "image/webp")
+      return data.subarray(0, 4).toString() === "RIFF" && data.subarray(8, 12).toString() === "WEBP";
+    return false;
+  }
+  getSafeImageName(name, extension) {
+    const originalName = import_path8.default.basename(name || "pasted-image");
+    const originalExtension = import_path8.default.extname(originalName);
+    const stem = import_path8.default.basename(originalName, originalExtension).replace(/[^a-zA-Z0-9\u4e00-\u9fff_-]+/g, "-").replace(/^-+|-+$/g, "") || "image";
+    return `${stem}${extension}`;
+  }
+  async uploadImage(type, source, name, mime, encodedData) {
+    const fullSource = await this.getFullPathBySource(source, type);
+    if (!fullSource)
+      throw new PostOrPageNotFoundError(type);
+    const normalizedMime = mime.toLowerCase().split(";")[0];
+    const extension = IMAGE_EXTENSIONS[normalizedMime];
+    if (!extension)
+      throw new InvalidOptionsError(
+        "\u4EC5\u652F\u6301 PNG\u3001JPG\u3001GIF \u548C WebP \u56FE\u7247",
+        "UnsupportedImageTypeError"
+      );
+    if (!encodedData || encodedData.length % 4 !== 0 || !/^[A-Za-z0-9+/]*={0,2}$/.test(encodedData))
+      throw new InvalidOptionsError("\u56FE\u7247\u6570\u636E\u65E0\u6548", "InvalidImageDataError");
+    const data = Buffer.from(encodedData, "base64");
+    if (!data.length || data.length > MAX_IMAGE_SIZE || !this.imageDataMatchesType(normalizedMime, data))
+      throw new InvalidOptionsError(
+        "\u56FE\u7247\u5927\u5C0F\u6216\u683C\u5F0F\u4E0D\u7B26\u5408\u8981\u6C42",
+        "InvalidImageDataError"
+      );
+    const base = await this._hexoInstanceService.getBaseDir();
+    const sourceDir = import_path8.default.resolve(base, "source");
+    const assetKey = await this.getImageAssetKey(source, type);
+    const targetDir = import_path8.default.resolve(sourceDir, "images", assetKey);
+    import_fs4.default.mkdirSync(targetDir, { recursive: true });
+    const id = (0, import_crypto2.randomUUID)().replaceAll("-", "");
+    const safeName = this.getSafeImageName(name, extension);
+    const initialTarget = import_path8.default.resolve(targetDir, safeName);
+    const targetName = import_fs4.default.existsSync(initialTarget) ? `${import_path8.default.basename(safeName, extension)}-${id.slice(0, 8)}${extension}` : safeName;
+    const relativePath = import_path8.default.posix.join("images", assetKey, targetName);
+    const tempDir = await this.getImageAssetTempDir(base, source, type);
+    import_fs4.default.mkdirSync(tempDir, { recursive: true });
+    this.cleanupImageAssetTempDir(
+      import_path8.default.resolve(base, "source", ".hexon-upload-tmp")
+    );
+    import_fs4.default.writeFileSync(import_path8.default.join(tempDir, `${id}.data`), data, { flag: "wx" });
+    import_fs4.default.writeFileSync(
+      import_path8.default.join(tempDir, `${id}.json`),
+      JSON.stringify({
+        type,
+        source,
+        path: relativePath,
+        name: import_path8.default.basename(targetName, extension)
+      }),
+      { flag: "wx" }
+    );
+    return {
+      id,
+      path: relativePath,
+      name: import_path8.default.basename(targetName, extension)
+    };
+  }
+  async finalizeImageAssets(type, source, assets) {
+    if (!assets.length)
+      return [];
+    const base = await this._hexoInstanceService.getBaseDir();
+    const tempDir = await this.getImageAssetTempDir(base, source, type);
+    const sourceDir = import_path8.default.resolve(base, "source");
+    const moved = [];
+    try {
+      for (const asset of assets) {
+        if (!/^[a-f0-9]{32}$/.test(asset.id))
+          throw new InvalidOptionsError(
+            "\u56FE\u7247\u8D44\u4EA7\u65E0\u6548",
+            "InvalidImageAssetError"
+          );
+        const metadataPath = import_path8.default.join(tempDir, `${asset.id}.json`);
+        const tempPath = import_path8.default.join(tempDir, `${asset.id}.data`);
+        if (!import_fs4.default.existsSync(metadataPath) || !import_fs4.default.existsSync(tempPath))
+          throw new InvalidOptionsError(
+            "\u56FE\u7247\u4E0A\u4F20\u5DF2\u8FC7\u671F\uFF0C\u8BF7\u91CD\u65B0\u4E0A\u4F20",
+            "ExpiredImageAssetError"
+          );
+        const metadata = JSON.parse(import_fs4.default.readFileSync(metadataPath, "utf8"));
+        if (metadata.type !== type || metadata.source !== source || metadata.path !== asset.path)
+          throw new InvalidOptionsError(
+            "\u56FE\u7247\u8D44\u4EA7\u4E0E\u6587\u7AE0\u4E0D\u5339\u914D",
+            "InvalidImageAssetError"
+          );
+        const target = import_path8.default.resolve(sourceDir, ...metadata.path.split("/"));
+        const relative = import_path8.default.relative(sourceDir, target);
+        if (!relative || relative.startsWith("..") || import_path8.default.isAbsolute(relative) || import_fs4.default.existsSync(target))
+          throw new InvalidOptionsError(
+            "\u56FE\u7247\u76EE\u6807\u8DEF\u5F84\u65E0\u6548",
+            "InvalidImageAssetError"
+          );
+        import_fs4.default.mkdirSync(import_path8.default.dirname(target), { recursive: true });
+        import_fs4.default.renameSync(tempPath, target);
+        import_fs4.default.rmSync(metadataPath, { force: true });
+        moved.push(target);
+      }
+      return moved;
+    } catch (err) {
+      for (const target of moved)
+        import_fs4.default.rmSync(target, { force: true });
+      throw err;
+    }
   }
   async WithCategoriesTagsBriefArticleList(article) {
     const categories = await this.listCategory();
@@ -4873,12 +5022,19 @@ var HexoService = class {
     this._logService.log("create succeed", fullSource);
     return res;
   }
-  async update(source, raw, type) {
+  async update(source, raw, type, assets = []) {
     const fullPath = await this.getFullPathBySource(source, type);
     if (!fullPath)
       throw new PostOrPageNotFoundError(type);
-    await this._hexoInstanceService.runBetweenReload(() => {
-      this.writeFile(fullPath, raw);
+    await this._hexoInstanceService.runBetweenReload(async () => {
+      const movedAssets = await this.finalizeImageAssets(type, source, assets);
+      try {
+        this.writeFile(fullPath, raw);
+      } catch (err) {
+        for (const assetPath of movedAssets)
+          import_fs4.default.rmSync(assetPath, { force: true });
+        throw err;
+      }
     });
     this._logService.log(`${type} update succeed`, fullPath);
     if (type === "post") {
@@ -4966,6 +5122,17 @@ router2.get("/assets", async (ctx) => {
   ctx.type = import_path9.default.extname(fullPath);
   ctx.body = import_fs5.default.createReadStream(fullPath);
 });
+router2.post("/assets/upload", async (ctx) => {
+  var _a;
+  const hexo = import_tsyringe10.container.resolve(HexoService);
+  const { type, source, name, mime, data } = (_a = ctx.request.body) != null ? _a : {};
+  if (type !== "post" && type !== "page" || typeof source !== "string" || typeof name !== "string" || typeof mime !== "string" || typeof data !== "string") {
+    ctx.status = 400;
+    ctx.body = "need `type`, `source`, `name`, `mime` and `data`";
+    return;
+  }
+  ctx.body = await hexo.uploadImage(type, source, name, mime, data);
+});
 router2.post("/deploy", async (ctx) => {
   const hexo = import_tsyringe10.container.resolve(HexoService);
   await hexo.deploy(ctx.request.body);
@@ -5014,24 +5181,34 @@ router2.post("/create", async (ctx) => {
 router2.put("/post/:source", async (ctx) => {
   const hexo = import_tsyringe10.container.resolve(HexoService);
   const { source } = ctx.params;
-  const { raw } = ctx.request.body;
+  const { raw, assets } = ctx.request.body;
   if (!source || !raw) {
     ctx.status = 400;
     ctx.body = "need `source` and `raw`";
     return;
   }
-  ctx.body = await hexo.update(source, raw, "post");
+  ctx.body = await hexo.update(
+    source,
+    raw,
+    "post",
+    Array.isArray(assets) ? assets : []
+  );
 });
 router2.put("/page/:source", async (ctx) => {
   const hexo = import_tsyringe10.container.resolve(HexoService);
   const { source } = ctx.params;
-  const { raw } = ctx.request.body;
+  const { raw, assets } = ctx.request.body;
   if (!source || !raw) {
     ctx.status = 400;
     ctx.body = "need `source` and `raw`";
     return;
   }
-  ctx.body = await hexo.update(source, raw, "page");
+  ctx.body = await hexo.update(
+    source,
+    raw,
+    "page",
+    Array.isArray(assets) ? assets : []
+  );
 });
 router2.delete("/post/:source", async (ctx) => {
   const hexo = import_tsyringe10.container.resolve(HexoService);
@@ -5310,7 +5487,7 @@ app.use(async (ctx, next) => {
       logService.error(err);
   }
 });
-app.use((0, import_koa_bodyparser.default)());
+app.use((0, import_koa_bodyparser.default)({ jsonLimit: "16mb" }));
 app.use((0, import_koa_compress.default)());
 app.use(http_secure_default());
 app.use((0, import_koa_logger.default)());

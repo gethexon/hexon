@@ -3,6 +3,7 @@ import {
   BriefPost,
   Category,
   IPageWithAllData,
+  IImageAsset,
   IPostWithAllData,
   IWithAllData,
   Page,
@@ -38,18 +39,26 @@ export interface IApiProvider {
   saveArticle(
     type: "post",
     source: string,
-    raw: string
+    raw: string,
+    assets?: IImageAsset[]
   ): Promise<IPostWithAllData>
   saveArticle(
     type: "page",
     source: string,
-    raw: string
+    raw: string,
+    assets?: IImageAsset[]
   ): Promise<IPageWithAllData>
   saveArticle(
     type: "post" | "page",
     source: string,
-    raw: string
+    raw: string,
+    assets?: IImageAsset[]
   ): Promise<IPostWithAllData | IPageWithAllData>
+  uploadImage(
+    type: "post" | "page",
+    source: string,
+    file: File
+  ): Promise<IImageAsset>
   deleteArticle(type: "post", source: string): Promise<IWithAllData>
   deleteArticle(type: "page", source: string): Promise<IWithAllData>
   deleteArticle(type: "post" | "page", source: string): Promise<IWithAllData>

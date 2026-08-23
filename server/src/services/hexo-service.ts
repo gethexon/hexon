@@ -2,6 +2,7 @@ import path from "path"
 import { inject, injectable, singleton } from "tsyringe"
 import fs from "fs"
 import http from "http"
+import { randomUUID } from "crypto"
 import HexoCore from "hexo"
 import { BRIEF_LENGTH } from "@server-shared/constants"
 import {
@@ -64,6 +65,25 @@ interface IGenerateOptions {
   bail?: boolean
   force?: boolean
   concurrency?: boolean
+}
+
+export interface IImageAssetRef {
+  id: string
+  path: string
+}
+
+export interface IUploadedImageAsset {
+  id: string
+  path: string
+  name: string
+}
+
+const MAX_IMAGE_SIZE = 8 * 1024 * 1024
+const IMAGE_EXTENSIONS: Record<string, string> = {
+  "image/gif": ".gif",
+  "image/jpeg": ".jpg",
+  "image/png": ".png",
+  "image/webp": ".webp",
 }
 
 interface WithCategoriesTagsBriefArticleList<T> {
@@ -268,6 +288,209 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
       return
     }
     return fullPath
+  }
+
+  private async getImageAssetKey(
+    source: string,
+    type: "post" | "page"
+  ): Promise<string> {
+    const article =
+      type === "post"
+        ? await this.getPostBySource(source)
+        : await this.getPageBySource(source)
+    const withoutExtension = (article?.slug || source)
+      .replaceAll("\\", "/")
+      .replace(/\.[^/.]+$/, "")
+    return (
+      withoutExtension
+        .replace(/[^a-zA-Z0-9_-]+/g, "-")
+        .replace(/^-+|-+$/g, "") || "article"
+    )
+  }
+
+  private async getImageAssetTempDir(
+    base: string,
+    source: string,
+    type: "post" | "page"
+  ) {
+    return path.resolve(
+      base,
+      "source",
+      ".hexon-upload-tmp",
+      await this.getImageAssetKey(source, type)
+    )
+  }
+
+  private cleanupImageAssetTempDir(tempRoot: string) {
+    if (!fs.existsSync(tempRoot)) return
+    const expireAt = Date.now() - 24 * 60 * 60 * 1000
+    for (const entry of fs.readdirSync(tempRoot, { withFileTypes: true })) {
+      const fullPath = path.join(tempRoot, entry.name)
+      try {
+        if (fs.statSync(fullPath).mtimeMs < expireAt)
+          fs.rmSync(fullPath, { recursive: true, force: true })
+      } catch (err) {
+        this._logService.error(err)
+      }
+    }
+  }
+
+  private imageDataMatchesType(type: string, data: Buffer) {
+    if (type === "image/png")
+      return data.subarray(0, 8).equals(Buffer.from("89504e470d0a1a0a", "hex"))
+    if (type === "image/jpeg")
+      return data.subarray(0, 3).equals(Buffer.from("ffd8ff", "hex"))
+    if (type === "image/gif") return data.subarray(0, 4).toString() === "GIF8"
+    if (type === "image/webp")
+      return (
+        data.subarray(0, 4).toString() === "RIFF" &&
+        data.subarray(8, 12).toString() === "WEBP"
+      )
+    return false
+  }
+
+  private getSafeImageName(name: string, extension: string) {
+    const originalName = path.basename(name || "pasted-image")
+    const originalExtension = path.extname(originalName)
+    const stem =
+      path
+        .basename(originalName, originalExtension)
+        .replace(/[^a-zA-Z0-9\u4e00-\u9fff_-]+/g, "-")
+        .replace(/^-+|-+$/g, "") || "image"
+    return `${stem}${extension}`
+  }
+
+  async uploadImage(
+    type: "post" | "page",
+    source: string,
+    name: string,
+    mime: string,
+    encodedData: string
+  ): Promise<IUploadedImageAsset> {
+    const fullSource = await this.getFullPathBySource(source, type)
+    if (!fullSource) throw new PostOrPageNotFoundError(type)
+
+    const normalizedMime = mime.toLowerCase().split(";")[0]
+    const extension = IMAGE_EXTENSIONS[normalizedMime]
+    if (!extension)
+      throw new InvalidOptionsError(
+        "仅支持 PNG、JPG、GIF 和 WebP 图片",
+        "UnsupportedImageTypeError"
+      )
+    if (
+      !encodedData ||
+      encodedData.length % 4 !== 0 ||
+      !/^[A-Za-z0-9+/]*={0,2}$/.test(encodedData)
+    )
+      throw new InvalidOptionsError("图片数据无效", "InvalidImageDataError")
+
+    const data = Buffer.from(encodedData, "base64")
+    if (
+      !data.length ||
+      data.length > MAX_IMAGE_SIZE ||
+      !this.imageDataMatchesType(normalizedMime, data)
+    )
+      throw new InvalidOptionsError(
+        "图片大小或格式不符合要求",
+        "InvalidImageDataError"
+      )
+
+    const base = await this._hexoInstanceService.getBaseDir()
+    const sourceDir = path.resolve(base, "source")
+    const assetKey = await this.getImageAssetKey(source, type)
+    const targetDir = path.resolve(sourceDir, "images", assetKey)
+    fs.mkdirSync(targetDir, { recursive: true })
+
+    const id = randomUUID().replaceAll("-", "")
+    const safeName = this.getSafeImageName(name, extension)
+    const initialTarget = path.resolve(targetDir, safeName)
+    const targetName = fs.existsSync(initialTarget)
+      ? `${path.basename(safeName, extension)}-${id.slice(0, 8)}${extension}`
+      : safeName
+    const relativePath = path.posix.join("images", assetKey, targetName)
+    const tempDir = await this.getImageAssetTempDir(base, source, type)
+    fs.mkdirSync(tempDir, { recursive: true })
+    this.cleanupImageAssetTempDir(
+      path.resolve(base, "source", ".hexon-upload-tmp")
+    )
+    fs.writeFileSync(path.join(tempDir, `${id}.data`), data, { flag: "wx" })
+    fs.writeFileSync(
+      path.join(tempDir, `${id}.json`),
+      JSON.stringify({
+        type,
+        source,
+        path: relativePath,
+        name: path.basename(targetName, extension),
+      }),
+      { flag: "wx" }
+    )
+    return {
+      id,
+      path: relativePath,
+      name: path.basename(targetName, extension),
+    }
+  }
+
+  private async finalizeImageAssets(
+    type: "post" | "page",
+    source: string,
+    assets: IImageAssetRef[]
+  ) {
+    if (!assets.length) return []
+    const base = await this._hexoInstanceService.getBaseDir()
+    const tempDir = await this.getImageAssetTempDir(base, source, type)
+    const sourceDir = path.resolve(base, "source")
+    const moved: string[] = []
+    try {
+      for (const asset of assets) {
+        if (!/^[a-f0-9]{32}$/.test(asset.id))
+          throw new InvalidOptionsError(
+            "图片资产无效",
+            "InvalidImageAssetError"
+          )
+        const metadataPath = path.join(tempDir, `${asset.id}.json`)
+        const tempPath = path.join(tempDir, `${asset.id}.data`)
+        if (!fs.existsSync(metadataPath) || !fs.existsSync(tempPath))
+          throw new InvalidOptionsError(
+            "图片上传已过期，请重新上传",
+            "ExpiredImageAssetError"
+          )
+        const metadata = JSON.parse(fs.readFileSync(metadataPath, "utf8")) as {
+          type: "post" | "page"
+          source: string
+          path: string
+        }
+        if (
+          metadata.type !== type ||
+          metadata.source !== source ||
+          metadata.path !== asset.path
+        )
+          throw new InvalidOptionsError(
+            "图片资产与文章不匹配",
+            "InvalidImageAssetError"
+          )
+        const target = path.resolve(sourceDir, ...metadata.path.split("/"))
+        const relative = path.relative(sourceDir, target)
+        if (
+          !relative ||
+          relative.startsWith("..") ||
+          path.isAbsolute(relative) ||
+          fs.existsSync(target)
+        )
+          throw new InvalidOptionsError(
+            "图片目标路径无效",
+            "InvalidImageAssetError"
+          )
+        fs.mkdirSync(path.dirname(target), { recursive: true })
+        fs.renameSync(tempPath, target)
+        fs.rmSync(metadataPath, { force: true })
+        moved.push(target)
+      }
+      return moved
+    } catch (err) {
+      for (const target of moved) fs.rmSync(target, { force: true })
+      throw err
+    }
   }
 
   private async WithCategoriesTagsBriefArticleList<T>(
@@ -612,18 +835,32 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
   async update(
     source: string,
     raw: string,
-    type: "post"
+    type: "post",
+    assets?: IImageAssetRef[]
   ): Promise<WithCategoriesTagsBriefArticleList<Post>>
   async update(
     source: string,
     raw: string,
-    type: "page"
+    type: "page",
+    assets?: IImageAssetRef[]
   ): Promise<WithCategoriesTagsBriefArticleList<Page>>
-  async update(source: string, raw: string, type: "post" | "page") {
+  async update(
+    source: string,
+    raw: string,
+    type: "post" | "page",
+    assets: IImageAssetRef[] = []
+  ) {
     const fullPath = await this.getFullPathBySource(source, type)
     if (!fullPath) throw new PostOrPageNotFoundError(type)
-    await this._hexoInstanceService.runBetweenReload(() => {
-      this.writeFile(fullPath, raw)
+    await this._hexoInstanceService.runBetweenReload(async () => {
+      const movedAssets = await this.finalizeImageAssets(type, source, assets)
+      try {
+        this.writeFile(fullPath, raw)
+      } catch (err) {
+        for (const assetPath of movedAssets)
+          fs.rmSync(assetPath, { force: true })
+        throw err
+      }
     })
     this._logService.log(`${type} update succeed`, fullPath)
     if (type === "post") {
