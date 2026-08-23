@@ -1,4 +1,4 @@
-import { ISettings } from "@server/server/types/api"
+import { ISettings } from "@shared/types/api"
 import { merge } from "lodash-es"
 import { defineStore } from "pinia"
 import { getSettings, setSettings } from "~/api/settings"
