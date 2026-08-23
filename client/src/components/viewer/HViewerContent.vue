@@ -6,6 +6,7 @@ const props = defineProps<{
   content?: string
 }>()
 const vars = useThemeVars()
+const hexoAssetPrefix = import.meta.env.DEV ? "/proxy" : ""
 const styleVars = computed(() => ({
   primary: vars.value.colorPrimary,
   mainColor: vars.value.textColorPrimary,
@@ -20,7 +21,7 @@ const content = computed(() => {
         const normalizedSource = source.replaceAll("\\", "/")
         if (/^(?:[a-z][a-z\d+.-]*:|\/\/|#)/i.test(normalizedSource))
           return `${prefix}${normalizedSource}${suffix}`
-        return `${prefix}/hexo/assets?path=${encodeURIComponent(
+        return `${prefix}${hexoAssetPrefix}/hexo/assets?path=${encodeURIComponent(
           normalizedSource.replace(/^\/+/, "")
         )}${suffix}`
       }
