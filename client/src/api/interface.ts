@@ -61,6 +61,7 @@ export interface IApiProvider {
   restoreArticle(source: string): Promise<Post>
   deploy(options?: IDeployOptions): Promise<void>
   generate(options?: IGenerateOptions): Promise<void>
+  preview(): Promise<string>
   clean(): Promise<void>
   gitSync(): Promise<void>
   gitSave(): Promise<void>

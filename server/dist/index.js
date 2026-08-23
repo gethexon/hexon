@@ -2257,7 +2257,7 @@ var require_dist = __commonJS({
 var import_reflect_metadata = require("reflect-metadata");
 var dotenv = __toESM(require("dotenv"));
 var import_tsyringe19 = require("tsyringe");
-var import_http = __toESM(require("http"));
+var import_http2 = __toESM(require("http"));
 
 // ../server-shared/src/constants.ts
 var HEXO_BASE_DIR_KEY = "hexo-basedir";
@@ -3337,6 +3337,7 @@ var import_router2 = __toESM(require("@koa/router"));
 var import_path8 = __toESM(require("path"));
 var import_tsyringe9 = require("tsyringe");
 var import_fs4 = __toESM(require("fs"));
+var import_http = __toESM(require("http"));
 
 // ../.pnpm-update-store/execa@6.1.0/node_modules/execa/index.js
 var import_node_buffer = require("buffer");
@@ -4467,6 +4468,9 @@ var HexoService = class {
     this._logService = _logService;
     this._hexoInstanceService = _hexoInstanceService;
     this._execService = _execService;
+    this._previewServer = null;
+    this._previewPort = null;
+    this._previewPromise = null;
     this._logService.setScope("hexo-service");
   }
   async runWithoutModifiedOption(fn) {
@@ -4489,17 +4493,23 @@ var HexoService = class {
   }
   async getPostByFullSource(fullSource) {
     const hexo = await this._hexoInstanceService.getInstance();
-    const post = hexo.locals.get("posts").toArray().find((item) => import_path8.default.resolve(item.full_source) === import_path8.default.resolve(fullSource));
+    const post = hexo.locals.get("posts").toArray().find(
+      (item) => import_path8.default.resolve(item.full_source) === import_path8.default.resolve(fullSource)
+    );
     if (!post)
       return;
     return this.getPostBySource(post.source);
   }
   async getPostOrPageByFullSource(fullSource) {
     const hexo = await this._hexoInstanceService.getInstance();
-    const post = hexo.locals.get("posts").toArray().find((item) => import_path8.default.resolve(item.full_source) === import_path8.default.resolve(fullSource));
+    const post = hexo.locals.get("posts").toArray().find(
+      (item) => import_path8.default.resolve(item.full_source) === import_path8.default.resolve(fullSource)
+    );
     if (post)
       return this.getPostBySource(post.source);
-    const page = hexo.locals.get("pages").toArray().find((item) => import_path8.default.resolve(item.full_source) === import_path8.default.resolve(fullSource));
+    const page = hexo.locals.get("pages").toArray().find(
+      (item) => import_path8.default.resolve(item.full_source) === import_path8.default.resolve(fullSource)
+    );
     if (!page)
       return;
     return this.getPageBySource(page.source);
@@ -4622,6 +4632,89 @@ var HexoService = class {
     }));
     this._logService.log("list tag", res.length);
     return res;
+  }
+  async preview() {
+    if (this._previewPort) {
+      return `http://127.0.0.1:${this._previewPort}/`;
+    }
+    if (this._previewPromise)
+      return this._previewPromise;
+    this._previewPromise = this.startPreviewServer();
+    try {
+      return await this._previewPromise;
+    } finally {
+      this._previewPromise = null;
+    }
+  }
+  async startPreviewServer() {
+    const hexo = await this._hexoInstanceService.getInstance();
+    const server = import_http.default.createServer((request, response) => {
+      let pathname = "/";
+      try {
+        pathname = decodeURIComponent(
+          new URL(request.url || "/", "http://127.0.0.1").pathname
+        );
+      } catch {
+        response.statusCode = 400;
+        response.end("Bad request");
+        return;
+      }
+      const route = hexo.route.get(pathname);
+      if (!route) {
+        response.statusCode = 404;
+        response.end("Not found");
+        return;
+      }
+      const extension = import_path8.default.extname(pathname).toLowerCase();
+      const contentTypes = {
+        ".css": "text/css; charset=utf-8",
+        ".gif": "image/gif",
+        ".html": "text/html; charset=utf-8",
+        ".ico": "image/x-icon",
+        ".jpeg": "image/jpeg",
+        ".jpg": "image/jpeg",
+        ".js": "text/javascript; charset=utf-8",
+        ".json": "application/json; charset=utf-8",
+        ".png": "image/png",
+        ".svg": "image/svg+xml",
+        ".webp": "image/webp",
+        ".xml": "application/xml; charset=utf-8"
+      };
+      response.setHeader(
+        "Content-Type",
+        contentTypes[extension] || (!extension ? "text/html; charset=utf-8" : "application/octet-stream")
+      );
+      response.setHeader("Cache-Control", "no-store");
+      route.on("error", (error) => {
+        this._logService.error(error);
+        if (!response.headersSent)
+          response.statusCode = 500;
+        response.end();
+      });
+      route.pipe(response);
+    });
+    await new Promise((resolve4, reject) => {
+      const onError = (error) => {
+        server.removeListener("listening", onListening);
+        reject(error);
+      };
+      const onListening = () => {
+        server.removeListener("error", onError);
+        resolve4();
+      };
+      server.once("error", onError);
+      server.once("listening", onListening);
+      server.listen(0, "127.0.0.1");
+    });
+    const address = server.address();
+    if (!address || typeof address === "string") {
+      server.close();
+      throw new Error("failed to start Hexo preview server");
+    }
+    this._previewServer = server;
+    this._previewPort = address.port;
+    this._logService.log(`Hexo preview server listening on ${address.port}`);
+    return `http://127.0.0.1:${address.port}/`;
   }
   async deploy(options = {}) {
     if (scriptStore.hasScript("hexo-deploy")) {
@@ -4789,9 +4882,13 @@ var HexoService = class {
     });
     this._logService.log(`${type} update succeed`, fullPath);
     if (type === "post") {
-      return this.WithCategoriesTagsBriefArticleList(await this.getPostBySource(source));
+      return this.WithCategoriesTagsBriefArticleList(
+        await this.getPostBySource(source)
+      );
     } else {
-      return this.WithCategoriesTagsBriefArticleList(await this.getPageBySource(source));
+      return this.WithCategoriesTagsBriefArticleList(
+        await this.getPageBySource(source)
+      );
     }
   }
   async delete(source, type) {
@@ -4853,6 +4950,10 @@ router2.get("/tags", async (ctx) => {
 router2.get("/categories", async (ctx) => {
   const hexo = import_tsyringe10.container.resolve(HexoService);
   ctx.body = await hexo.listCategory();
+});
+router2.get("/preview", async (ctx) => {
+  const hexo = import_tsyringe10.container.resolve(HexoService);
+  ctx.body = { url: await hexo.preview() };
 });
 router2.get("/assets", async (ctx) => {
   const hexo = import_tsyringe10.container.resolve(HexoService);
@@ -5276,7 +5377,7 @@ EnvService = __decorateClass([
     path: process.env.NODE_ENV === "production" ? process.cwd() + "/.env" : import_path10.default.resolve(process.cwd(), "../.env")
   });
   const storage = import_tsyringe19.container.resolve(StorageService);
-  const server = import_http.default.createServer(app_default.callback());
+  const server = import_http2.default.createServer(app_default.callback());
   server.on("listening", () => {
     const addr = server.address();
     const bind = typeof addr === "string" ? "pipe " + addr : "http://localhost:" + addr.port;

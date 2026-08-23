@@ -39,6 +39,28 @@ export const useActionsStore = defineStore("actions", {
       await api.generate().then(success, fail)
       this.loading.stop()
     },
+    async preview() {
+      const previewWindow = window.open("about:blank", "_blank")
+      if (!previewWindow) {
+        notification.notify({
+          title: "预览失败",
+          desc: "浏览器阻止了新窗口，请允许弹窗后重试",
+          type: "error",
+        })
+        return
+      }
+      this.loading.start()
+      await api.preview().then(
+        (url) => {
+          previewWindow.location.href = url
+        },
+        (error) => {
+          previewWindow.close()
+          fail(error)
+        }
+      )
+      this.loading.stop()
+    },
     async clean() {
       this.loading.start()
       await api.clean().then(success, fail)

@@ -195,6 +195,10 @@ export class HttpApiProvider implements IApiProvider {
   async generate(options: IGenerateOptions = {}): Promise<void> {
     return request.post("/hexo/generate", options)
   }
+  async preview(): Promise<string> {
+    const res = await request.get<{ url: string }>("/hexo/preview")
+    return res.data.url
+  }
   async clean(): Promise<void> {
     return request.post("/hexo/clean")
   }
