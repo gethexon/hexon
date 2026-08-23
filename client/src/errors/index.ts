@@ -11,6 +11,8 @@ export function getErrorMessage(err: any) {
       return "hexo 初始化中，请稍后再试"
     case "InvalidCreatePathError":
       return "非法的新文章路径"
+    case "InvalidRestoreSourceError":
+      return "只能恢复已发布的文章"
     case "GitSyncScriptError":
       return "git sync 脚本运行失败。请前往服务器后台使用 `pnpm run script` 修改脚本"
     case "GitSaveScriptError":

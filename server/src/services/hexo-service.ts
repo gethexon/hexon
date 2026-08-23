@@ -182,7 +182,8 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
     const post = hexo.locals
       .get("posts")
       .toArray()
-      .find((item) => item.full_source === fullSource)!
+      .find((item) => path.resolve(item.full_source) === path.resolve(fullSource))
+    if (!post) return
     return this.getPostBySource(post.source)
   }
 
@@ -191,12 +192,13 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
     const post = hexo.locals
       .get("posts")
       .toArray()
-      .find((item) => item.full_source === fullSource)!
+      .find((item) => path.resolve(item.full_source) === path.resolve(fullSource))
     if (post) return this.getPostBySource(post.source)
     const page = hexo.locals
       .get("pages")
       .toArray()
-      .find((item) => item.full_source === fullSource)!
+      .find((item) => path.resolve(item.full_source) === path.resolve(fullSource))
+    if (!page) return
     return this.getPageBySource(page.source)
   }
 
@@ -407,7 +409,8 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
         })
     )
     const fullSource = expandHomeDir(info.split("Published: ")[1].trim())
-    const article = (await this.getPostByFullSource(fullSource))!
+    const article = await this.getPostByFullSource(fullSource)
+    if (!article) throw new PostOrPageNotFoundError("post")
     const res = await this.WithCategoriesTagsBriefArticleList(article)
     this._logService.log(`publish ${filename} with layout: ${layout}`)
     return res
@@ -418,7 +421,14 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
     if (!fullSource) throw new PostOrPageNotFoundError("post")
 
     const base = await this._hexoInstanceService.getBaseDir()
-    const relativeSource = path.relative(path.join(base, "source"), fullSource)
+    const postsDir = path.join(base, "source", "_posts")
+    const relativeSource = path.relative(postsDir, fullSource)
+    if (!relativeSource || relativeSource.startsWith("..") || path.isAbsolute(relativeSource)) {
+      throw new InvalidOptionsError(
+        `${source} is not a published post`,
+        "InvalidRestoreSourceError"
+      )
+    }
     const draftSource = path.join(base, "source", "_drafts", relativeSource)
 
     await this._hexoInstanceService.runBetweenReload(() => {
@@ -426,7 +436,8 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
       fs.renameSync(fullSource, draftSource)
     })
 
-    const article = (await this.getPostByFullSource(draftSource))!
+    const article = await this.getPostByFullSource(draftSource)
+    if (!article) throw new PostOrPageNotFoundError("post")
     const res = await this.WithCategoriesTagsBriefArticleList(article)
     this._logService.log(`restore ${source} as draft`)
     return res
@@ -462,7 +473,8 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
       })
     })
     const fullSource = expandHomeDir(info.split("Created: ")[1].trim())
-    const article = (await this.getPostOrPageByFullSource(fullSource))!
+    const article = await this.getPostOrPageByFullSource(fullSource)
+    if (!article) throw new PostOrPageNotFoundError("post")
     const res = this.WithCategoriesTagsBriefArticleList(article)
     this._logService.log("create succeed", fullSource)
     return res
