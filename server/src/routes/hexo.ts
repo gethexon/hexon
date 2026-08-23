@@ -3,6 +3,8 @@ import { container } from "tsyringe"
 import Router from "@koa/router"
 import { HexoService } from "@server/services/hexo-service"
 import { PostOrPageNotFoundError } from "../errors"
+import path from "path"
+import fs from "fs"
 
 const router = new Router()
 router.prefix("/hexo")
@@ -41,6 +43,17 @@ router.get("/tags", async (ctx: Context) => {
 router.get("/categories", async (ctx: Context) => {
   const hexo = container.resolve(HexoService)
   ctx.body = await hexo.listCategory()
+})
+router.get("/assets", async (ctx: Context) => {
+  const hexo = container.resolve(HexoService)
+  const relativePath = typeof ctx.query.path === "string" ? ctx.query.path : ""
+  const fullPath = await hexo.getAssetPath(relativePath)
+  if (!fullPath) {
+    ctx.status = 404
+    return
+  }
+  ctx.type = path.extname(fullPath)
+  ctx.body = fs.createReadStream(fullPath)
 })
 router.post("/deploy", async (ctx: Context) => {
   const hexo = container.resolve(HexoService)
