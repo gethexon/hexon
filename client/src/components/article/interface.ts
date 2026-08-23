@@ -31,5 +31,9 @@ export type IHarticleMenuActionPayload =
       type: "publish"
       source: string
     }
+  | {
+      type: "restore"
+      source: string
+    }
 
 export type IHArticleMenuActionType = IHarticleMenuActionPayload["type"]

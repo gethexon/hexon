@@ -70,6 +70,9 @@ interface IHexoCli {
     source: string,
     layout?: string
   ): Promise<WithCategoriesTagsBriefArticleList<Post>>
+  restore(
+    source: string
+  ): Promise<WithCategoriesTagsBriefArticleList<Post>>
   create(
     title: string,
     options?: ICreateOptions
@@ -395,6 +398,25 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
     const article = (await this.getPostByFullSource(fullSource))!
     const res = await this.WithCategoriesTagsBriefArticleList(article)
     this._logService.log(`publish ${filename} with layout: ${layout}`)
+    return res
+  }
+
+  async restore(source: string) {
+    const fullSource = await this.getFullPathBySource(source, "post")
+    if (!fullSource) throw new PostOrPageNotFoundError("post")
+
+    const base = await this._hexoInstanceService.getBaseDir()
+    const relativeSource = path.relative(path.join(base, "source"), fullSource)
+    const draftSource = path.join(base, "source", "_drafts", relativeSource)
+
+    await this._hexoInstanceService.runBetweenReload(() => {
+      fs.mkdirSync(path.dirname(draftSource), { recursive: true })
+      fs.renameSync(fullSource, draftSource)
+    })
+
+    const article = (await this.getPostByFullSource(draftSource))!
+    const res = await this.WithCategoriesTagsBriefArticleList(article)
+    this._logService.log(`restore ${source} as draft`)
     return res
   }
 

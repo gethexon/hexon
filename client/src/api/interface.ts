@@ -58,6 +58,7 @@ export interface IApiProvider {
     options?: ICreateOptions
   ): Promise<IPostWithAllData | IPageWithAllData>
   publishArticle(source: string): Promise<Post>
+  restoreArticle(source: string): Promise<Post>
   deploy(options?: IDeployOptions): Promise<void>
   generate(options?: IGenerateOptions): Promise<void>
   clean(): Promise<void>
