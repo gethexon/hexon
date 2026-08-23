@@ -12,7 +12,7 @@ import { useDispatcher } from "~/store/dispatcher"
 import { useMainStore } from "~/store/main"
 import { useSettingsStore } from "~/store/settings"
 import { noop, useAsyncComponentWithLoading } from "~/utils"
-import { parseHfm, updateStringByObj } from "~/utils/hfm"
+import { ensureTitle, parseHfm, updateStringByObj } from "~/utils/hfm"
 import ErroredView from "~/views/ErroredView.vue"
 import { HEditorToolbarActionPayload } from "@/types"
 import { HButton } from "@/ui/button"
@@ -166,8 +166,12 @@ watch(
   }
 )
 const raw = computed(() => detailStore.article?.raw ?? "")
-const internal_raw = ref(raw.value)
-watch(raw, (v) => (internal_raw.value = v))
+const internal_raw = ref(
+  ensureTitle(raw.value, detailStore.article?.title ?? "")
+)
+watch([raw, () => detailStore.article?.title], ([v, articleTitle]) => {
+  internal_raw.value = ensureTitle(v, articleTitle ?? "")
+})
 const data = computed(() => parseHfm(internal_raw.value))
 const content = computed(() => data.value._content)
 const title = computed(() => data.value.title)
