@@ -44,6 +44,10 @@ router.get("/categories", async (ctx: Context) => {
   const hexo = container.resolve(HexoService)
   ctx.body = await hexo.listCategory()
 })
+router.get("/preview", async (ctx: Context) => {
+  const hexo = container.resolve(HexoService)
+  ctx.body = { url: await hexo.preview() }
+})
 router.get("/assets", async (ctx: Context) => {
   const hexo = container.resolve(HexoService)
   const relativePath = typeof ctx.query.path === "string" ? ctx.query.path : ""

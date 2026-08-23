@@ -1,6 +1,7 @@
 export type HNavListActionPayload =
   | { type: "deploy" }
   | { type: "generate" }
+  | { type: "preview" }
   | { type: "clean" }
   | { type: "gitsave" }
   | { type: "gitsync" }

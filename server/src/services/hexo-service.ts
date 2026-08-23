@@ -1,6 +1,7 @@
 import path from "path"
 import { inject, injectable, singleton } from "tsyringe"
 import fs from "fs"
+import http from "http"
 import HexoCore from "hexo"
 import { BRIEF_LENGTH } from "@server-shared/constants"
 import {
@@ -10,7 +11,14 @@ import {
 } from "@server/errors"
 import { HexoInstanceService } from "@server/services/hexo-instance-service"
 import { LogService } from "@server-shared/log-service"
-import { BriefPage, BriefPost, Category, Page, Post, Tag } from "@shared/types/hexo"
+import {
+  BriefPage,
+  BriefPost,
+  Category,
+  Page,
+  Post,
+  Tag,
+} from "@shared/types/hexo"
 import { expandHomeDir } from "@server/utils"
 import { getExecErrorMessage, run } from "@server/utils/exec"
 import {
@@ -44,6 +52,7 @@ interface IHexoCommand {
   deploy(options?: IDeployOptions): Promise<void>
   generate(): Promise<void>
   clean(): Promise<void>
+  preview(): Promise<string>
 }
 interface IDeployOptions {
   generate?: boolean
@@ -70,9 +79,7 @@ interface IHexoCli {
     source: string,
     layout?: string
   ): Promise<WithCategoriesTagsBriefArticleList<Post>>
-  restore(
-    source: string
-  ): Promise<WithCategoriesTagsBriefArticleList<Post>>
+  restore(source: string): Promise<WithCategoriesTagsBriefArticleList<Post>>
   create(
     title: string,
     options?: ICreateOptions
@@ -146,6 +153,10 @@ function transformPageToBrief({
 @injectable()
 @singleton()
 export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
+  private _previewServer: http.Server | null = null
+  private _previewPort: number | null = null
+  private _previewPromise: Promise<string> | null = null
+
   constructor(
     @inject(LogService) private _logService: LogService,
     @inject(HexoInstanceService)
@@ -182,7 +193,9 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
     const post = hexo.locals
       .get("posts")
       .toArray()
-      .find((item) => path.resolve(item.full_source) === path.resolve(fullSource))
+      .find(
+        (item) => path.resolve(item.full_source) === path.resolve(fullSource)
+      )
     if (!post) return
     return this.getPostBySource(post.source)
   }
@@ -192,12 +205,16 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
     const post = hexo.locals
       .get("posts")
       .toArray()
-      .find((item) => path.resolve(item.full_source) === path.resolve(fullSource))
+      .find(
+        (item) => path.resolve(item.full_source) === path.resolve(fullSource)
+      )
     if (post) return this.getPostBySource(post.source)
     const page = hexo.locals
       .get("pages")
       .toArray()
-      .find((item) => path.resolve(item.full_source) === path.resolve(fullSource))
+      .find(
+        (item) => path.resolve(item.full_source) === path.resolve(fullSource)
+      )
     if (!page) return
     return this.getPageBySource(page.source)
   }
@@ -338,6 +355,95 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
   //#endregion
 
   //#region IHexoCommand
+  async preview() {
+    if (this._previewPort) {
+      return `http://127.0.0.1:${this._previewPort}/`
+    }
+    if (this._previewPromise) return this._previewPromise
+
+    this._previewPromise = this.startPreviewServer()
+    try {
+      return await this._previewPromise
+    } finally {
+      this._previewPromise = null
+    }
+  }
+
+  private async startPreviewServer() {
+    const hexo = await this._hexoInstanceService.getInstance()
+    const server = http.createServer((request, response) => {
+      let pathname = "/"
+      try {
+        pathname = decodeURIComponent(
+          new URL(request.url || "/", "http://127.0.0.1").pathname
+        )
+      } catch {
+        response.statusCode = 400
+        response.end("Bad request")
+        return
+      }
+
+      const route = hexo.route.get(pathname)
+      if (!route) {
+        response.statusCode = 404
+        response.end("Not found")
+        return
+      }
+
+      const extension = path.extname(pathname).toLowerCase()
+      const contentTypes: Record<string, string> = {
+        ".css": "text/css; charset=utf-8",
+        ".gif": "image/gif",
+        ".html": "text/html; charset=utf-8",
+        ".ico": "image/x-icon",
+        ".jpeg": "image/jpeg",
+        ".jpg": "image/jpeg",
+        ".js": "text/javascript; charset=utf-8",
+        ".json": "application/json; charset=utf-8",
+        ".png": "image/png",
+        ".svg": "image/svg+xml",
+        ".webp": "image/webp",
+        ".xml": "application/xml; charset=utf-8",
+      }
+      response.setHeader(
+        "Content-Type",
+        contentTypes[extension] ||
+          (!extension ? "text/html; charset=utf-8" : "application/octet-stream")
+      )
+      response.setHeader("Cache-Control", "no-store")
+      route.on("error", (error) => {
+        this._logService.error(error)
+        if (!response.headersSent) response.statusCode = 500
+        response.end()
+      })
+      route.pipe(response)
+    })
+
+    await new Promise<void>((resolve, reject) => {
+      const onError = (error: Error) => {
+        server.removeListener("listening", onListening)
+        reject(error)
+      }
+      const onListening = () => {
+        server.removeListener("error", onError)
+        resolve()
+      }
+      server.once("error", onError)
+      server.once("listening", onListening)
+      server.listen(0, "127.0.0.1")
+    })
+
+    const address = server.address()
+    if (!address || typeof address === "string") {
+      server.close()
+      throw new Error("failed to start Hexo preview server")
+    }
+    this._previewServer = server
+    this._previewPort = address.port
+    this._logService.log(`Hexo preview server listening on ${address.port}`)
+    return `http://127.0.0.1:${address.port}/`
+  }
+
   async deploy(options: IDeployOptions = {}) {
     if (scriptStore.hasScript("hexo-deploy")) {
       await this._execService
@@ -442,7 +548,11 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
     const base = await this._hexoInstanceService.getBaseDir()
     const postsDir = path.join(base, "source", "_posts")
     const relativeSource = path.relative(postsDir, fullSource)
-    if (!relativeSource || relativeSource.startsWith("..") || path.isAbsolute(relativeSource)) {
+    if (
+      !relativeSource ||
+      relativeSource.startsWith("..") ||
+      path.isAbsolute(relativeSource)
+    ) {
       throw new InvalidOptionsError(
         `${source} is not a published post`,
         "InvalidRestoreSourceError"
@@ -517,10 +627,13 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
     })
     this._logService.log(`${type} update succeed`, fullPath)
     if (type === "post") {
-      return this.WithCategoriesTagsBriefArticleList(await this.getPostBySource(source)!)
-    }
-    else {
-      return this.WithCategoriesTagsBriefArticleList(await this.getPageBySource(source))!
+      return this.WithCategoriesTagsBriefArticleList(
+        await this.getPostBySource(source)!
+      )
+    } else {
+      return this.WithCategoriesTagsBriefArticleList(
+        await this.getPageBySource(source)
+      )!
     }
   }
 
