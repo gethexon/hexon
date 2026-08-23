@@ -6,6 +6,20 @@ import { LogService } from "@server-shared/log-service"
 const execLogService = container.resolve(LogService)
 execLogService.setScope("exec-service")
 
+export function getExecErrorMessage(error: unknown) {
+  if (!(error instanceof Error)) return String(error)
+  const commandError = error as Error & {
+    stderr?: string
+    stdout?: string
+    shortMessage?: string
+  }
+  const output = [commandError.stderr, commandError.stdout]
+    .filter(Boolean)
+    .join("\n")
+    .trim()
+  return output || commandError.shortMessage || commandError.message
+}
+
 export async function run(
   command: string,
   args: string[] = [],

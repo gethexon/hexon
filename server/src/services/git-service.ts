@@ -3,7 +3,7 @@ import { StorageService } from "@server-shared/storage-service"
 import { scriptStore } from "@server-shared/store"
 import { toRealPath } from "@server-shared/utils"
 import { LogService } from "@server-shared/log-service"
-import { run } from "@server/utils/exec"
+import { getExecErrorMessage, run } from "@server/utils/exec"
 import { ScriptError } from "../errors"
 import { ExecService } from "./exec-service"
 import { HexoInstanceService } from "./hexo-instance-service"
@@ -43,7 +43,7 @@ export class GitService {
         .catch((err) => {
           this._logService.error(err)
           throw new ScriptError(
-            "fail to run git sync script",
+            `fail to run git sync script: ${getExecErrorMessage(err)}`,
             "GitSyncScriptError"
           )
         })
@@ -78,7 +78,7 @@ export class GitService {
         .catch((err) => {
           this._logService.error(err)
           throw new ScriptError(
-            "fail to run git save script",
+            `fail to run git save script: ${getExecErrorMessage(err)}`,
             "GitSaveScriptError"
           )
         })

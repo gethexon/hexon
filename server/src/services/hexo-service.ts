@@ -12,7 +12,7 @@ import { HexoInstanceService } from "@server/services/hexo-instance-service"
 import { LogService } from "@server-shared/log-service"
 import { BriefPage, BriefPost, Category, Page, Post, Tag } from "@shared/types/hexo"
 import { expandHomeDir } from "@server/utils"
-import { run } from "@server/utils/exec"
+import { getExecErrorMessage, run } from "@server/utils/exec"
 import {
   HexoPage,
   HexoPost,
@@ -161,8 +161,20 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
   ) {
     const { hexo, cleanup } =
       await this._hexoInstanceService.getInstanceWithOriginOptions()
-    await fn(hexo)
-    await cleanup()
+    let executionError = false
+    try {
+      await fn(hexo)
+    } catch (err) {
+      executionError = true
+      throw err
+    } finally {
+      try {
+        await cleanup()
+      } catch (err) {
+        this._logService.error(err)
+        if (!executionError) throw err
+      }
+    }
   }
 
   private async getPostByFullSource(fullSource: string) {
@@ -312,7 +324,7 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
         .catch((err) => {
           this._logService.error(err)
           throw new ScriptError(
-            "fail to run hexo deploy script",
+            `fail to run hexo deploy script: ${getExecErrorMessage(err)}`,
             "HexoDeployScriptError"
           )
         })
@@ -321,7 +333,7 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
     const { generate = false } = options
     const args: string[] = []
     if (generate) args.push("--generate")
-    this.runWithoutModifiedOption(async (hexo) => {
+    await this.runWithoutModifiedOption(async (hexo) => {
       await hexo.call("deploy", { _: args })
       await hexo.exit()
     })
@@ -335,7 +347,7 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
         .catch((err) => {
           this._logService.error(err)
           throw new ScriptError(
-            "fail to run hexo generate script",
+            `fail to run hexo generate script: ${getExecErrorMessage(err)}`,
             "HexoGenerateScriptError"
           )
         })
@@ -353,7 +365,7 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
     if (watch) args.push("--watch")
     if (bail) args.push("--bail")
     if (force) args.push("--force")
-    this.runWithoutModifiedOption(async (hexo) => {
+    await this.runWithoutModifiedOption(async (hexo) => {
       if (concurrency) args.push("--concurrency")
       await hexo.call("generate", { _: args })
       await hexo.exit()
@@ -368,13 +380,13 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
         .catch((err) => {
           this._logService.error(err)
           throw new ScriptError(
-            "fail to run hexo clean script",
+            `fail to run hexo clean script: ${getExecErrorMessage(err)}`,
             "HexoCleanScriptError"
           )
         })
       return
     }
-    this.runWithoutModifiedOption(async (hexo) => {
+    await this.runWithoutModifiedOption(async (hexo) => {
       await hexo.call("clean")
       await hexo.exit()
     })

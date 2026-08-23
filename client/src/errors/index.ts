@@ -22,6 +22,6 @@ export function getErrorMessage(err: any) {
     case "HexoGenerateScriptError":
       return "hexo generate 脚本运行失败。请前往服务器后台使用 `pnpm run script` 修改脚本"
     default:
-      return data.message || err.message
+      return data?.message || err?.message || "操作失败"
   }
 }
