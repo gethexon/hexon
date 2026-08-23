@@ -5,6 +5,7 @@ import {
   ZBriefPost,
   ZCategory,
   ZIPageWithAllData,
+  ZImageAsset,
   ZIPostWithAllData,
   ZIWithAllData,
   ZPage,
@@ -16,6 +17,7 @@ import {
   BriefPost,
   Category,
   IPageWithAllData,
+  IImageAsset,
   IPostWithAllData,
   IWithAllData,
   Page,
@@ -26,6 +28,16 @@ import { IApiProvider, IDeployOptions, IGenerateOptions } from "./interface"
 import { request } from "./instance"
 
 const dashIdToId = ({ _id: id, ...rest }: any) => ({ id, ...rest })
+
+async function fileToBase64(file: File) {
+  const bytes = new Uint8Array(await file.arrayBuffer())
+  let binary = ""
+  const chunkSize = 0x8000
+  for (let index = 0; index < bytes.length; index += chunkSize) {
+    binary += String.fromCharCode(...bytes.subarray(index, index + chunkSize))
+  }
+  return window.btoa(binary)
+}
 
 export class HttpApiProvider implements IApiProvider {
   async getAllData(): Promise<IWithAllData> {
@@ -82,26 +94,30 @@ export class HttpApiProvider implements IApiProvider {
   async saveArticle(
     type: "post",
     source: string,
-    raw: string
+    raw: string,
+    assets?: IImageAsset[]
   ): Promise<IPostWithAllData>
   async saveArticle(
     type: "page",
     source: string,
-    raw: string
+    raw: string,
+    assets?: IImageAsset[]
   ): Promise<IPageWithAllData>
   async saveArticle(
     type: "post" | "page",
     source: string,
-    raw: string
+    raw: string,
+    assets?: IImageAsset[]
   ): Promise<IPostWithAllData | IPageWithAllData>
   async saveArticle(
     type: "post" | "page",
     source: string,
-    raw: string
+    raw: string,
+    assets: IImageAsset[] = []
   ): Promise<IPostWithAllData | IPageWithAllData> {
     const res = await request.put(
       `/hexo/${type}/${encodeURIComponent(source)}`,
-      { raw }
+      { raw, assets }
     )
     if (type === "post") {
       const { article: post, posts, pages, tags, categories } = res.data
@@ -124,6 +140,21 @@ export class HttpApiProvider implements IApiProvider {
       })
       return data
     }
+  }
+
+  async uploadImage(
+    type: "post" | "page",
+    source: string,
+    file: File
+  ): Promise<IImageAsset> {
+    const res = await request.post("/hexo/assets/upload", {
+      type,
+      source,
+      name: file.name,
+      mime: file.type,
+      data: await fileToBase64(file),
+    })
+    return ZImageAsset.parse(res.data)
   }
   async deleteArticle(type: "post", source: string): Promise<IWithAllData>
   async deleteArticle(type: "page", source: string): Promise<IWithAllData>
