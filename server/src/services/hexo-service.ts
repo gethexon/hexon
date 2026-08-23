@@ -237,7 +237,11 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
   async getAssetPath(relativePath: string) {
     const base = await this._hexoInstanceService.getBaseDir()
     const sourceDir = path.resolve(base, "source")
-    const fullPath = path.resolve(sourceDir, relativePath)
+    let decodedPath = relativePath
+    try {
+      decodedPath = decodeURIComponent(relativePath)
+    } catch {}
+    const fullPath = path.resolve(sourceDir, decodedPath.replaceAll("\\", "/"))
     const relative = path.relative(sourceDir, fullPath)
     if (!relative || relative.startsWith("..") || path.isAbsolute(relative))
       return

@@ -18,7 +18,11 @@ const content = computed(() => {
     .replace(
       /(<img\b[^>]*\bsrc=["'])([^"']+)(["'])/gi,
       (_, prefix: string, source: string, suffix: string) => {
-        const normalizedSource = source.replaceAll("\\", "/")
+        let decodedSource = source
+        try {
+          decodedSource = decodeURIComponent(source)
+        } catch {}
+        const normalizedSource = decodedSource.replaceAll("\\", "/")
         if (/^(?:[a-z][a-z\d+.-]*:|\/\/|#)/i.test(normalizedSource))
           return `${prefix}${normalizedSource}${suffix}`
         return `${prefix}${hexoAssetPrefix}/hexo/assets?path=${encodeURIComponent(

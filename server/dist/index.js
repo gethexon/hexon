@@ -4531,7 +4531,12 @@ var HexoService = class {
   async getAssetPath(relativePath) {
     const base = await this._hexoInstanceService.getBaseDir();
     const sourceDir = import_path8.default.resolve(base, "source");
-    const fullPath = import_path8.default.resolve(sourceDir, relativePath);
+    let decodedPath = relativePath;
+    try {
+      decodedPath = decodeURIComponent(relativePath);
+    } catch {
+    }
+    const fullPath = import_path8.default.resolve(sourceDir, decodedPath.replaceAll("\\", "/"));
     const relative = import_path8.default.relative(sourceDir, fullPath);
     if (!relative || relative.startsWith("..") || import_path8.default.isAbsolute(relative))
       return;
