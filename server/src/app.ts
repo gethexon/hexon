@@ -1,5 +1,4 @@
 import { container } from "tsyringe"
-import cors from "@koa/cors"
 import Koa from "koa"
 import bodyParser from "koa-bodyparser"
 import compress from "koa-compress"
@@ -31,7 +30,7 @@ app.use(async (ctx, next) => {
   }
 })
 
-app.use(bodyParser())
+app.use(bodyParser({ jsonLimit: "16mb" }))
 app.use(compress())
 app.use(httpSecure())
 app.use(logger())

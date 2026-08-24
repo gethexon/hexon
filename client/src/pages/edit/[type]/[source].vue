@@ -4,13 +4,15 @@ import { computed, onBeforeUnmount, ref, watch } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import dayjs, { Dayjs } from "dayjs"
 import { PostOrPage } from "~/interface"
+import { api, IImageAsset } from "~/api"
+import { useNotification } from "~/lib/notification"
 import { useDialog } from "~/lib/dialog"
 import { useDetailStore } from "~/store/detail"
 import { useDispatcher } from "~/store/dispatcher"
 import { useMainStore } from "~/store/main"
 import { useSettingsStore } from "~/store/settings"
 import { noop, useAsyncComponentWithLoading } from "~/utils"
-import { parseHfm, updateStringByObj } from "~/utils/hfm"
+import { ensureTitle, parseHfm, updateStringByObj } from "~/utils/hfm"
 import ErroredView from "~/views/ErroredView.vue"
 import { HEditorToolbarActionPayload } from "@/types"
 import { HButton } from "@/ui/button"
@@ -27,11 +29,10 @@ import HHeaderEditor from "@/editors/HHeaderEditor.vue"
 import HLayoutEditor from "@/editors/HLayoutEditor.vue"
 import HTagEditor from "@/editors/HTagEditor.vue"
 import HNavTitle from "@/ui/nav-list/src/HNavTitle.vue"
-import { DATE_FORMAT } from "@shared/constants";
+import { DATE_FORMAT } from "@shared/constants"
 
-const [HMonacoEditor, monacoLoading] = useAsyncComponentWithLoading(
-  () => import("@/editors/HMonacoEditor.vue")
-)
+const [HMonacoEditor, monacoLoading, monacoError] =
+  useAsyncComponentWithLoading(() => import("@/editors/HMonacoEditor.vue"))
 
 //#region hooks
 const route = useRoute()
@@ -41,6 +42,7 @@ const detailStore = useDetailStore()
 const mainStore = useMainStore()
 const dialog = useDialog()
 const settingsStore = useSettingsStore()
+const notification = useNotification()
 const vars = useThemeVars()
 const props = defineProps<{
   type: PostOrPage
@@ -75,13 +77,22 @@ const onAction = (payload: HEditorToolbarActionPayload) => {
         : dispatcher.viewArticle({ type, source })
       break
     case "save":
-      dispatcher.saveArticle(internal_raw.value).then(setUnchanged, noop)
+      dispatcher
+        .saveArticle(internal_raw.value, pendingImageAssets.value)
+        .then((saved) => {
+          if (!saved) return
+          pendingImageAssets.value = []
+          setUnchanged()
+        }, noop)
       break
     case "delete":
       dispatcher.deleteArticle({ type, source })
       break
     case "publish":
       dispatcher.publishArticle(source)
+      break
+    case "restore":
+      dispatcher.restoreArticle(source)
       break
     default:
       break
@@ -92,6 +103,35 @@ const onSave = () => {
   onAction({
     type: "save",
   })
+}
+
+const pendingImageAssets = ref<IImageAsset[]>([])
+const onImageImport = async (files: File[]) => {
+  const uploaded: IImageAsset[] = []
+  const failed: string[] = []
+  for (const file of files) {
+    try {
+      uploaded.push(await api.uploadImage(props.type, props.source, file))
+    } catch (err) {
+      failed.push(err instanceof Error ? err.message : `${file.name} 上传失败`)
+    }
+  }
+  pendingImageAssets.value.push(...uploaded)
+  if (uploaded.length) {
+    notification.notify({
+      title: `已上传 ${uploaded.length} 张图片，请保存文章`,
+      type: "success",
+    })
+  }
+  if (failed.length) {
+    notification.notify({
+      title: `${failed.length} 张图片上传失败`,
+      desc: failed.join("；"),
+      type: "error",
+      duration: 5000,
+    })
+  }
+  return uploaded.map((asset) => `![${asset.name}](${asset.path})`).join("\n")
 }
 useEventListener("beforeunload", (e) => {
   if (!changed.value) return
@@ -126,8 +166,12 @@ watch(
   }
 )
 const raw = computed(() => detailStore.article?.raw ?? "")
-const internal_raw = ref(raw.value)
-watch(raw, (v) => (internal_raw.value = v))
+const internal_raw = ref(
+  ensureTitle(raw.value, detailStore.article?.title ?? "")
+)
+watch([raw, () => detailStore.article?.title], ([v, articleTitle]) => {
+  internal_raw.value = ensureTitle(v, articleTitle ?? "")
+})
 const data = computed(() => parseHfm(internal_raw.value))
 const content = computed(() => data.value._content)
 const title = computed(() => data.value.title)
@@ -205,11 +249,16 @@ const updateFm = (fm: { [key: string]: unknown }) => {
           <HHeaderEditor :value="title" @update:value="updateTitle" />
           <div class="flex-1 w-full relative">
             <HLoading :loading="monacoLoading" overlay>
+              <ErroredView v-if="monacoError">
+                <span>编辑器加载失败，请刷新页面后重试。</span>
+              </ErroredView>
               <HMonacoEditor
+                v-else
                 class="h-full w-full"
                 id="default"
                 :font-family="settingsStore.settings.ui.editor.fontFamily"
                 :value="content"
+                :on-image-import="onImageImport"
                 @update:value="updateContent"
                 @on-save="onSave"
               />

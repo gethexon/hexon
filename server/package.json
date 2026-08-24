@@ -11,7 +11,6 @@
     "test": "jest"
   },
   "dependencies": {
-    "@koa/cors": "^3.4.3",
     "@koa/router": "^10.1.1",
     "@vue/reactivity": "^3.4.34",
     "@winwin/koa-authentication": "^0.2.3",
@@ -28,8 +27,9 @@
     "hexo": "^7.3.0",
     "http-errors": "^2.0.0",
     "inquirer": "^8.2.6",
+    "js-yaml": "^4.1.0",
     "jsencrypt": "^3.3.2",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.3",
     "koa": "^2.15.3",
     "koa-bodyparser": "^4.4.1",
     "koa-compose": "^4.1.0",

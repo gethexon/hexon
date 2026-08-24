@@ -51,6 +51,20 @@ const actionItems: NavListItem[] = [
   },
   {
     type: "item",
+    text: "预览",
+    icon: HIconName.Preview,
+    color: colors.value.generate,
+    key: "preview",
+  },
+  {
+    type: "item",
+    text: "主题 / Hexo",
+    icon: HIconName.Color,
+    color: colors.value.generate,
+    key: "themeHexo",
+  },
+  {
+    type: "item",
     text: "清理",
     icon: HIconName.EraseTool,
     color: colors.value.clean,
@@ -162,6 +176,8 @@ const onSelect = (key: string) => {
     articleListStore.setFilter({ type: "category", slug: key.slice(2) })
   key === "deploy" && actionsStore.deploy()
   key === "generate" && actionsStore.generate()
+  key === "preview" && actionsStore.preview()
+  key === "themeHexo" && dispatcher.showThemeConfigModal()
   key === "clean" && actionsStore.clean()
   key === "gitsync" && actionsStore.gitSync()
   key === "gitsave" && actionsStore.gitSave()

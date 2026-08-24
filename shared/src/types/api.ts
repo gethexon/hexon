@@ -5,6 +5,12 @@ export interface ISettings {
     }
   }
 }
+
+export interface IYamlConfigResponse {
+  theme?: string | false
+  raw: string
+}
+
 export interface IFrontmatterTemplateItem {
   data: string
 }

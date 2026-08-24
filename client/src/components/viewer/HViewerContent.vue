@@ -6,6 +6,7 @@ const props = defineProps<{
   content?: string
 }>()
 const vars = useThemeVars()
+const hexoAssetPrefix = import.meta.env.DEV ? "/proxy" : ""
 const styleVars = computed(() => ({
   primary: vars.value.colorPrimary,
   mainColor: vars.value.textColorPrimary,
@@ -13,7 +14,23 @@ const styleVars = computed(() => ({
   base2BgColor: vars.value.backgroundColorSecondary,
 }))
 const content = computed(() => {
-  return (props.content ?? "").replaceAll(/(href=".*?")/g, '$1 target="_blank"')
+  return (props.content ?? "")
+    .replace(
+      /(<img\b[^>]*\bsrc=["'])([^"']+)(["'])/gi,
+      (_, prefix: string, source: string, suffix: string) => {
+        let decodedSource = source
+        try {
+          decodedSource = decodeURIComponent(source)
+        } catch {}
+        const normalizedSource = decodedSource.replaceAll("\\", "/")
+        if (/^(?:[a-z][a-z\d+.-]*:|\/\/|#)/i.test(normalizedSource))
+          return `${prefix}${normalizedSource}${suffix}`
+        return `${prefix}${hexoAssetPrefix}/hexo/assets?path=${encodeURIComponent(
+          normalizedSource.replace(/^\/+/, "")
+        )}${suffix}`
+      }
+    )
+    .replace(/(href=".*?")/g, '$1 target="_blank"')
 })
 </script>
 <template>

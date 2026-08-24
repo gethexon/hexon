@@ -1,4 +1,4 @@
-import { IFrontmatterTemplate, IFrontmatterTemplateItem } from "@server/server/types/api"
+import { IFrontmatterTemplate, IFrontmatterTemplateItem } from "@shared/types/api"
 import { request } from "./instance"
 
 export async function listFrontmatterTemplate(): Promise<IFrontmatterTemplate> {

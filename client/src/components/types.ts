@@ -1,6 +1,7 @@
 export type HNavListActionPayload =
   | { type: "deploy" }
   | { type: "generate" }
+  | { type: "preview" }
   | { type: "clean" }
   | { type: "gitsave" }
   | { type: "gitsync" }
@@ -15,6 +16,7 @@ export type HViewerToolbarActionPayload =
   | { type: "edit" }
   | { type: "delete" }
   | { type: "publish" }
+  | { type: "restore" }
   | { type: "code" }
 
 export type HEditorToolbarActionPayload =
@@ -22,6 +24,7 @@ export type HEditorToolbarActionPayload =
   | { type: "save" }
   | { type: "delete" }
   | { type: "publish" }
+  | { type: "restore" }
   | { type: "code" }
 
 export interface IFormData {

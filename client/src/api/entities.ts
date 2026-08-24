@@ -35,6 +35,13 @@ export const ZIDetail = z.object({
 })
 export type IDetail = z.infer<typeof ZIDetail>
 
+export const ZImageAsset = z.object({
+  id: z.string(),
+  path: z.string(),
+  name: z.string(),
+})
+export type IImageAsset = z.infer<typeof ZImageAsset>
+
 export const ZBriefPage = z
   .object({})
   .merge(ZIArticle)

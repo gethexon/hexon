@@ -1,7 +1,10 @@
 import path from "path"
 import { inject, injectable, singleton } from "tsyringe"
 import fs from "fs"
+import http from "http"
+import { randomUUID } from "crypto"
 import HexoCore from "hexo"
+import { load } from "js-yaml"
 import { BRIEF_LENGTH } from "@server-shared/constants"
 import {
   InvalidOptionsError,
@@ -10,9 +13,16 @@ import {
 } from "@server/errors"
 import { HexoInstanceService } from "@server/services/hexo-instance-service"
 import { LogService } from "@server-shared/log-service"
-import { BriefPage, BriefPost, Category, Page, Post, Tag } from "@shared/types/hexo"
+import {
+  BriefPage,
+  BriefPost,
+  Category,
+  Page,
+  Post,
+  Tag,
+} from "@shared/types/hexo"
 import { expandHomeDir } from "@server/utils"
-import { run } from "@server/utils/exec"
+import { getExecErrorMessage, run } from "@server/utils/exec"
 import {
   HexoPage,
   HexoPost,
@@ -21,6 +31,7 @@ import {
   toPost,
   toTag,
 } from "@server/utils/hexo"
+import { IYamlConfigResponse } from "@shared/types/api"
 import { scriptStore } from "@server-shared/store"
 import { ExecService } from "./exec-service"
 
@@ -44,6 +55,7 @@ interface IHexoCommand {
   deploy(options?: IDeployOptions): Promise<void>
   generate(): Promise<void>
   clean(): Promise<void>
+  preview(): Promise<string>
 }
 interface IDeployOptions {
   generate?: boolean
@@ -55,6 +67,25 @@ interface IGenerateOptions {
   bail?: boolean
   force?: boolean
   concurrency?: boolean
+}
+
+export interface IImageAssetRef {
+  id: string
+  path: string
+}
+
+export interface IUploadedImageAsset {
+  id: string
+  path: string
+  name: string
+}
+
+const MAX_IMAGE_SIZE = 8 * 1024 * 1024
+const IMAGE_EXTENSIONS: Record<string, string> = {
+  "image/gif": ".gif",
+  "image/jpeg": ".jpg",
+  "image/png": ".png",
+  "image/webp": ".webp",
 }
 
 interface WithCategoriesTagsBriefArticleList<T> {
@@ -70,6 +101,7 @@ interface IHexoCli {
     source: string,
     layout?: string
   ): Promise<WithCategoriesTagsBriefArticleList<Post>>
+  restore(source: string): Promise<WithCategoriesTagsBriefArticleList<Post>>
   create(
     title: string,
     options?: ICreateOptions
@@ -143,6 +175,10 @@ function transformPageToBrief({
 @injectable()
 @singleton()
 export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
+  private _previewServer: http.Server | null = null
+  private _previewPort: number | null = null
+  private _previewPromise: Promise<string> | null = null
+
   constructor(
     @inject(LogService) private _logService: LogService,
     @inject(HexoInstanceService)
@@ -158,8 +194,20 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
   ) {
     const { hexo, cleanup } =
       await this._hexoInstanceService.getInstanceWithOriginOptions()
-    await fn(hexo)
-    await cleanup()
+    let executionError = false
+    try {
+      await fn(hexo)
+    } catch (err) {
+      executionError = true
+      throw err
+    } finally {
+      try {
+        await cleanup()
+      } catch (err) {
+        this._logService.error(err)
+        if (!executionError) throw err
+      }
+    }
   }
 
   private async getPostByFullSource(fullSource: string) {
@@ -167,7 +215,10 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
     const post = hexo.locals
       .get("posts")
       .toArray()
-      .find((item) => item.full_source === fullSource)!
+      .find(
+        (item) => path.resolve(item.full_source) === path.resolve(fullSource)
+      )
+    if (!post) return
     return this.getPostBySource(post.source)
   }
 
@@ -176,12 +227,17 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
     const post = hexo.locals
       .get("posts")
       .toArray()
-      .find((item) => item.full_source === fullSource)!
+      .find(
+        (item) => path.resolve(item.full_source) === path.resolve(fullSource)
+      )
     if (post) return this.getPostBySource(post.source)
     const page = hexo.locals
       .get("pages")
       .toArray()
-      .find((item) => item.full_source === fullSource)!
+      .find(
+        (item) => path.resolve(item.full_source) === path.resolve(fullSource)
+      )
+    if (!page) return
     return this.getPageBySource(page.source)
   }
 
@@ -215,6 +271,270 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
         .get("pages")
         .toArray()
         .find((item) => item.source === source)?.full_source
+  }
+
+  async getAssetPath(relativePath: string) {
+    const base = await this._hexoInstanceService.getBaseDir()
+    const sourceDir = path.resolve(base, "source")
+    let decodedPath = relativePath
+    try {
+      decodedPath = decodeURIComponent(relativePath)
+    } catch {}
+    const fullPath = path.resolve(sourceDir, decodedPath.replaceAll("\\", "/"))
+    const relative = path.relative(sourceDir, fullPath)
+    if (!relative || relative.startsWith("..") || path.isAbsolute(relative))
+      return
+    try {
+      if (!fs.statSync(fullPath).isFile()) return
+    } catch {
+      return
+    }
+    return fullPath
+  }
+
+  private async getYamlConfig(
+    configPath: string,
+    theme?: string | false
+  ): Promise<IYamlConfigResponse> {
+    const raw = fs.readFileSync(configPath, "utf8")
+    load(raw)
+    return { theme, raw }
+  }
+
+  private async setYamlConfig(configPath: string, raw: string) {
+    load(raw)
+    this.writeFile(configPath, raw)
+  }
+
+  async getThemeConfig(): Promise<IYamlConfigResponse> {
+    const hexo = await this._hexoInstanceService.getInstance()
+    const configPath = path.join(hexo.theme_dir, "_config.yml")
+    return this.getYamlConfig(configPath, hexo.config.theme)
+  }
+
+  async setThemeConfig(raw: string) {
+    await this._hexoInstanceService.runBetweenReload(async () => {
+      const hexo = await this._hexoInstanceService.getInstance()
+      const configPath = path.join(hexo.theme_dir, "_config.yml")
+      await this.setYamlConfig(configPath, raw)
+    })
+    return this.getThemeConfig()
+  }
+
+  async getHexoConfig(): Promise<IYamlConfigResponse> {
+    const hexo = await this._hexoInstanceService.getInstance()
+    return this.getYamlConfig(hexo.config_path)
+  }
+
+  async setHexoConfig(raw: string) {
+    await this._hexoInstanceService.runBetweenReload(async () => {
+      const hexo = await this._hexoInstanceService.getInstance()
+      await this.setYamlConfig(hexo.config_path, raw)
+    })
+    return this.getHexoConfig()
+  }
+
+  private async getImageAssetKey(
+    source: string,
+    type: "post" | "page"
+  ): Promise<string> {
+    const article =
+      type === "post"
+        ? await this.getPostBySource(source)
+        : await this.getPageBySource(source)
+    const withoutExtension = (article?.slug || source)
+      .replaceAll("\\", "/")
+      .replace(/\.[^/.]+$/, "")
+    return (
+      withoutExtension
+        .replace(/[^a-zA-Z0-9_-]+/g, "-")
+        .replace(/^-+|-+$/g, "") || "article"
+    )
+  }
+
+  private async getImageAssetTempDir(
+    base: string,
+    source: string,
+    type: "post" | "page"
+  ) {
+    return path.resolve(
+      base,
+      "source",
+      ".hexon-upload-tmp",
+      await this.getImageAssetKey(source, type)
+    )
+  }
+
+  private cleanupImageAssetTempDir(tempRoot: string) {
+    if (!fs.existsSync(tempRoot)) return
+    const expireAt = Date.now() - 24 * 60 * 60 * 1000
+    for (const entry of fs.readdirSync(tempRoot, { withFileTypes: true })) {
+      const fullPath = path.join(tempRoot, entry.name)
+      try {
+        if (fs.statSync(fullPath).mtimeMs < expireAt)
+          fs.rmSync(fullPath, { recursive: true, force: true })
+      } catch (err) {
+        this._logService.error(err)
+      }
+    }
+  }
+
+  private imageDataMatchesType(type: string, data: Buffer) {
+    if (type === "image/png")
+      return data.subarray(0, 8).equals(Buffer.from("89504e470d0a1a0a", "hex"))
+    if (type === "image/jpeg")
+      return data.subarray(0, 3).equals(Buffer.from("ffd8ff", "hex"))
+    if (type === "image/gif") return data.subarray(0, 4).toString() === "GIF8"
+    if (type === "image/webp")
+      return (
+        data.subarray(0, 4).toString() === "RIFF" &&
+        data.subarray(8, 12).toString() === "WEBP"
+      )
+    return false
+  }
+
+  private getSafeImageName(name: string, extension: string) {
+    const originalName = path.basename(name || "pasted-image")
+    const originalExtension = path.extname(originalName)
+    const stem =
+      path
+        .basename(originalName, originalExtension)
+        .replace(/[^a-zA-Z0-9\u4e00-\u9fff_-]+/g, "-")
+        .replace(/^-+|-+$/g, "") || "image"
+    return `${stem}${extension}`
+  }
+
+  async uploadImage(
+    type: "post" | "page",
+    source: string,
+    name: string,
+    mime: string,
+    encodedData: string
+  ): Promise<IUploadedImageAsset> {
+    const fullSource = await this.getFullPathBySource(source, type)
+    if (!fullSource) throw new PostOrPageNotFoundError(type)
+
+    const normalizedMime = mime.toLowerCase().split(";")[0]
+    const extension = IMAGE_EXTENSIONS[normalizedMime]
+    if (!extension)
+      throw new InvalidOptionsError(
+        "仅支持 PNG、JPG、GIF 和 WebP 图片",
+        "UnsupportedImageTypeError"
+      )
+    if (
+      !encodedData ||
+      encodedData.length % 4 !== 0 ||
+      !/^[A-Za-z0-9+/]*={0,2}$/.test(encodedData)
+    )
+      throw new InvalidOptionsError("图片数据无效", "InvalidImageDataError")
+
+    const data = Buffer.from(encodedData, "base64")
+    if (
+      !data.length ||
+      data.length > MAX_IMAGE_SIZE ||
+      !this.imageDataMatchesType(normalizedMime, data)
+    )
+      throw new InvalidOptionsError(
+        "图片大小或格式不符合要求",
+        "InvalidImageDataError"
+      )
+
+    const base = await this._hexoInstanceService.getBaseDir()
+    const sourceDir = path.resolve(base, "source")
+    const assetKey = await this.getImageAssetKey(source, type)
+    const targetDir = path.resolve(sourceDir, "images", assetKey)
+    fs.mkdirSync(targetDir, { recursive: true })
+
+    const id = randomUUID().replaceAll("-", "")
+    const safeName = this.getSafeImageName(name, extension)
+    const initialTarget = path.resolve(targetDir, safeName)
+    const targetName = fs.existsSync(initialTarget)
+      ? `${path.basename(safeName, extension)}-${id.slice(0, 8)}${extension}`
+      : safeName
+    const relativePath = path.posix.join("images", assetKey, targetName)
+    const tempDir = await this.getImageAssetTempDir(base, source, type)
+    fs.mkdirSync(tempDir, { recursive: true })
+    this.cleanupImageAssetTempDir(
+      path.resolve(base, "source", ".hexon-upload-tmp")
+    )
+    fs.writeFileSync(path.join(tempDir, `${id}.data`), data, { flag: "wx" })
+    fs.writeFileSync(
+      path.join(tempDir, `${id}.json`),
+      JSON.stringify({
+        type,
+        source,
+        path: relativePath,
+        name: path.basename(targetName, extension),
+      }),
+      { flag: "wx" }
+    )
+    return {
+      id,
+      path: relativePath,
+      name: path.basename(targetName, extension),
+    }
+  }
+
+  private async finalizeImageAssets(
+    type: "post" | "page",
+    source: string,
+    assets: IImageAssetRef[]
+  ) {
+    if (!assets.length) return []
+    const base = await this._hexoInstanceService.getBaseDir()
+    const tempDir = await this.getImageAssetTempDir(base, source, type)
+    const sourceDir = path.resolve(base, "source")
+    const moved: string[] = []
+    try {
+      for (const asset of assets) {
+        if (!/^[a-f0-9]{32}$/.test(asset.id))
+          throw new InvalidOptionsError(
+            "图片资产无效",
+            "InvalidImageAssetError"
+          )
+        const metadataPath = path.join(tempDir, `${asset.id}.json`)
+        const tempPath = path.join(tempDir, `${asset.id}.data`)
+        if (!fs.existsSync(metadataPath) || !fs.existsSync(tempPath))
+          throw new InvalidOptionsError(
+            "图片上传已过期，请重新上传",
+            "ExpiredImageAssetError"
+          )
+        const metadata = JSON.parse(fs.readFileSync(metadataPath, "utf8")) as {
+          type: "post" | "page"
+          source: string
+          path: string
+        }
+        if (
+          metadata.type !== type ||
+          metadata.source !== source ||
+          metadata.path !== asset.path
+        )
+          throw new InvalidOptionsError(
+            "图片资产与文章不匹配",
+            "InvalidImageAssetError"
+          )
+        const target = path.resolve(sourceDir, ...metadata.path.split("/"))
+        const relative = path.relative(sourceDir, target)
+        if (
+          !relative ||
+          relative.startsWith("..") ||
+          path.isAbsolute(relative) ||
+          fs.existsSync(target)
+        )
+          throw new InvalidOptionsError(
+            "图片目标路径无效",
+            "InvalidImageAssetError"
+          )
+        fs.mkdirSync(path.dirname(target), { recursive: true })
+        fs.renameSync(tempPath, target)
+        fs.rmSync(metadataPath, { force: true })
+        moved.push(target)
+      }
+      return moved
+    } catch (err) {
+      for (const target of moved) fs.rmSync(target, { force: true })
+      throw err
+    }
   }
 
   private async WithCategoriesTagsBriefArticleList<T>(
@@ -302,6 +622,95 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
   //#endregion
 
   //#region IHexoCommand
+  async preview() {
+    if (this._previewPort) {
+      return `http://127.0.0.1:${this._previewPort}/`
+    }
+    if (this._previewPromise) return this._previewPromise
+
+    this._previewPromise = this.startPreviewServer()
+    try {
+      return await this._previewPromise
+    } finally {
+      this._previewPromise = null
+    }
+  }
+
+  private async startPreviewServer() {
+    const hexo = await this._hexoInstanceService.getInstance()
+    const server = http.createServer((request, response) => {
+      let pathname = "/"
+      try {
+        pathname = decodeURIComponent(
+          new URL(request.url || "/", "http://127.0.0.1").pathname
+        )
+      } catch {
+        response.statusCode = 400
+        response.end("Bad request")
+        return
+      }
+
+      const route = hexo.route.get(pathname)
+      if (!route) {
+        response.statusCode = 404
+        response.end("Not found")
+        return
+      }
+
+      const extension = path.extname(pathname).toLowerCase()
+      const contentTypes: Record<string, string> = {
+        ".css": "text/css; charset=utf-8",
+        ".gif": "image/gif",
+        ".html": "text/html; charset=utf-8",
+        ".ico": "image/x-icon",
+        ".jpeg": "image/jpeg",
+        ".jpg": "image/jpeg",
+        ".js": "text/javascript; charset=utf-8",
+        ".json": "application/json; charset=utf-8",
+        ".png": "image/png",
+        ".svg": "image/svg+xml",
+        ".webp": "image/webp",
+        ".xml": "application/xml; charset=utf-8",
+      }
+      response.setHeader(
+        "Content-Type",
+        contentTypes[extension] ||
+          (!extension ? "text/html; charset=utf-8" : "application/octet-stream")
+      )
+      response.setHeader("Cache-Control", "no-store")
+      route.on("error", (error) => {
+        this._logService.error(error)
+        if (!response.headersSent) response.statusCode = 500
+        response.end()
+      })
+      route.pipe(response)
+    })
+
+    await new Promise<void>((resolve, reject) => {
+      const onError = (error: Error) => {
+        server.removeListener("listening", onListening)
+        reject(error)
+      }
+      const onListening = () => {
+        server.removeListener("error", onError)
+        resolve()
+      }
+      server.once("error", onError)
+      server.once("listening", onListening)
+      server.listen(0, "127.0.0.1")
+    })
+
+    const address = server.address()
+    if (!address || typeof address === "string") {
+      server.close()
+      throw new Error("failed to start Hexo preview server")
+    }
+    this._previewServer = server
+    this._previewPort = address.port
+    this._logService.log(`Hexo preview server listening on ${address.port}`)
+    return `http://127.0.0.1:${address.port}/`
+  }
+
   async deploy(options: IDeployOptions = {}) {
     if (scriptStore.hasScript("hexo-deploy")) {
       await this._execService
@@ -309,7 +718,7 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
         .catch((err) => {
           this._logService.error(err)
           throw new ScriptError(
-            "fail to run hexo deploy script",
+            `fail to run hexo deploy script: ${getExecErrorMessage(err)}`,
             "HexoDeployScriptError"
           )
         })
@@ -318,7 +727,7 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
     const { generate = false } = options
     const args: string[] = []
     if (generate) args.push("--generate")
-    this.runWithoutModifiedOption(async (hexo) => {
+    await this.runWithoutModifiedOption(async (hexo) => {
       await hexo.call("deploy", { _: args })
       await hexo.exit()
     })
@@ -332,7 +741,7 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
         .catch((err) => {
           this._logService.error(err)
           throw new ScriptError(
-            "fail to run hexo generate script",
+            `fail to run hexo generate script: ${getExecErrorMessage(err)}`,
             "HexoGenerateScriptError"
           )
         })
@@ -350,7 +759,7 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
     if (watch) args.push("--watch")
     if (bail) args.push("--bail")
     if (force) args.push("--force")
-    this.runWithoutModifiedOption(async (hexo) => {
+    await this.runWithoutModifiedOption(async (hexo) => {
       if (concurrency) args.push("--concurrency")
       await hexo.call("generate", { _: args })
       await hexo.exit()
@@ -365,13 +774,13 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
         .catch((err) => {
           this._logService.error(err)
           throw new ScriptError(
-            "fail to run hexo clean script",
+            `fail to run hexo clean script: ${getExecErrorMessage(err)}`,
             "HexoCleanScriptError"
           )
         })
       return
     }
-    this.runWithoutModifiedOption(async (hexo) => {
+    await this.runWithoutModifiedOption(async (hexo) => {
       await hexo.call("clean")
       await hexo.exit()
     })
@@ -392,9 +801,41 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
         })
     )
     const fullSource = expandHomeDir(info.split("Published: ")[1].trim())
-    const article = (await this.getPostByFullSource(fullSource))!
+    const article = await this.getPostByFullSource(fullSource)
+    if (!article) throw new PostOrPageNotFoundError("post")
     const res = await this.WithCategoriesTagsBriefArticleList(article)
     this._logService.log(`publish ${filename} with layout: ${layout}`)
+    return res
+  }
+
+  async restore(source: string) {
+    const fullSource = await this.getFullPathBySource(source, "post")
+    if (!fullSource) throw new PostOrPageNotFoundError("post")
+
+    const base = await this._hexoInstanceService.getBaseDir()
+    const postsDir = path.join(base, "source", "_posts")
+    const relativeSource = path.relative(postsDir, fullSource)
+    if (
+      !relativeSource ||
+      relativeSource.startsWith("..") ||
+      path.isAbsolute(relativeSource)
+    ) {
+      throw new InvalidOptionsError(
+        `${source} is not a published post`,
+        "InvalidRestoreSourceError"
+      )
+    }
+    const draftSource = path.join(base, "source", "_drafts", relativeSource)
+
+    await this._hexoInstanceService.runBetweenReload(() => {
+      fs.mkdirSync(path.dirname(draftSource), { recursive: true })
+      fs.renameSync(fullSource, draftSource)
+    })
+
+    const article = await this.getPostByFullSource(draftSource)
+    if (!article) throw new PostOrPageNotFoundError("post")
+    const res = await this.WithCategoriesTagsBriefArticleList(article)
+    this._logService.log(`restore ${source} as draft`)
     return res
   }
 
@@ -428,7 +869,8 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
       })
     })
     const fullSource = expandHomeDir(info.split("Created: ")[1].trim())
-    const article = (await this.getPostOrPageByFullSource(fullSource))!
+    const article = await this.getPostOrPageByFullSource(fullSource)
+    if (!article) throw new PostOrPageNotFoundError("post")
     const res = this.WithCategoriesTagsBriefArticleList(article)
     this._logService.log("create succeed", fullSource)
     return res
@@ -437,25 +879,42 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
   async update(
     source: string,
     raw: string,
-    type: "post"
+    type: "post",
+    assets?: IImageAssetRef[]
   ): Promise<WithCategoriesTagsBriefArticleList<Post>>
   async update(
     source: string,
     raw: string,
-    type: "page"
+    type: "page",
+    assets?: IImageAssetRef[]
   ): Promise<WithCategoriesTagsBriefArticleList<Page>>
-  async update(source: string, raw: string, type: "post" | "page") {
+  async update(
+    source: string,
+    raw: string,
+    type: "post" | "page",
+    assets: IImageAssetRef[] = []
+  ) {
     const fullPath = await this.getFullPathBySource(source, type)
     if (!fullPath) throw new PostOrPageNotFoundError(type)
-    await this._hexoInstanceService.runBetweenReload(() => {
-      this.writeFile(fullPath, raw)
+    await this._hexoInstanceService.runBetweenReload(async () => {
+      const movedAssets = await this.finalizeImageAssets(type, source, assets)
+      try {
+        this.writeFile(fullPath, raw)
+      } catch (err) {
+        for (const assetPath of movedAssets)
+          fs.rmSync(assetPath, { force: true })
+        throw err
+      }
     })
     this._logService.log(`${type} update succeed`, fullPath)
     if (type === "post") {
-      return this.WithCategoriesTagsBriefArticleList(await this.getPostBySource(source)!)
-    }
-    else {
-      return this.WithCategoriesTagsBriefArticleList(await this.getPageBySource(source))!
+      return this.WithCategoriesTagsBriefArticleList(
+        await this.getPostBySource(source)!
+      )
+    } else {
+      return this.WithCategoriesTagsBriefArticleList(
+        await this.getPageBySource(source)
+      )!
     }
   }
 

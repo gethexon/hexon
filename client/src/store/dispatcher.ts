@@ -1,6 +1,6 @@
 import { defineStore } from "pinia"
 import { defineAsyncComponent } from "vue"
-import { ICreateOptions } from "~/api"
+import { ICreateOptions, IImageAsset } from "~/api"
 import { changePassword, getInfo, login, changeUsername } from "~/api/auth"
 import { IChangePasswordFormPayload } from "~/components/forms/interface"
 import { getErrorId, getErrorMessage } from "~/errors"
@@ -15,6 +15,9 @@ const HCreateArticleModal = defineAsyncComponent(
 )
 const HSettingsModal = defineAsyncComponent(
   () => import("@/modals/HSettingsModal.vue")
+)
+const HThemeConfigModal = defineAsyncComponent(
+  () => import("@/modals/HThemeConfigModal.vue")
 )
 
 export const useDispatcher = defineStore("dispatcher", {
@@ -95,6 +98,9 @@ export const useDispatcher = defineStore("dispatcher", {
     showSettingsModal() {
       this.modal.create(HSettingsModal)
     },
+    showThemeConfigModal() {
+      this.modal.create(HThemeConfigModal)
+    },
     //#endregion
     async createArticle(title: string, options: ICreateOptions) {
       const mainStore = useMainStore()
@@ -146,12 +152,14 @@ export const useDispatcher = defineStore("dispatcher", {
         ],
       })
     },
-    async saveArticle(raw: string) {
+    async saveArticle(raw: string, assets: IImageAsset[] = []) {
       this.loading.start()
+      let saved = false
       try {
         const detailStore = useDetailStore()
-        await detailStore.saveArticle(raw).then(
+        await detailStore.saveArticle(raw, assets).then(
           () => {
+            saved = true
             this.notification.notify({
               title: "保存成功",
               type: "success",
@@ -172,6 +180,7 @@ export const useDispatcher = defineStore("dispatcher", {
       } finally {
         this.loading.stop()
       }
+      return saved
     },
     editArticle(id: IArticleIdentifier) {
       this.router.push({ name: "edit", params: { ...id } })
@@ -202,7 +211,7 @@ export const useDispatcher = defineStore("dispatcher", {
       this.dialog.create({
         type: "warning",
         title: "发布确认",
-        content: "发布后需手动恢复",
+        content: "真的要发布这篇文章吗，发布后，文章将被公开可见",
         actions: [
           { type: "common", label: "取消" },
           {
@@ -210,6 +219,22 @@ export const useDispatcher = defineStore("dispatcher", {
             label: "发布",
             run: () => {
               this.doPublishArticle(source)
+            },
+          },
+        ],
+      })
+    },
+    async restoreArticle(source: string) {
+      this.dialog.create({
+        type: "warning",
+        title: "恢复草稿确认",
+        actions: [
+          { type: "common", label: "取消" },
+          {
+            type: "info",
+            label: "恢复",
+            run: () => {
+              this.doRestoreArticle(source)
             },
           },
         ],
@@ -245,6 +270,42 @@ export const useDispatcher = defineStore("dispatcher", {
           (err) => {
             this.notification.notify({
               title: "文章发布失败",
+              desc: (err as Error).message,
+              type: "error",
+              duration: 5000,
+            })
+          }
+        )
+      } catch (err) {
+      } finally {
+        this.loading.stop()
+      }
+    },
+    async doRestoreArticle(source: string) {
+      this.loading.start()
+      try {
+        const mainStore = useMainStore()
+        await mainStore.restoreArticle(source).then(
+          (article) => {
+            this.notification.notify({
+              title: "恢复草稿成功",
+              type: "success",
+            })
+            const detailStore = useDetailStore()
+            if (
+              detailStore.article &&
+              isPost(detailStore.article) &&
+              detailStore.article.source === source
+            ) {
+              this.router.push({
+                name: "view",
+                params: { type: "post", source: article.source },
+              })
+            }
+          },
+          (err) => {
+            this.notification.notify({
+              title: "恢复草稿失败",
               desc: (err as Error).message,
               type: "error",
               duration: 5000,

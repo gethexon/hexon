@@ -3,12 +3,14 @@ import {
   BriefPost,
   Category,
   IPageWithAllData,
+  IImageAsset,
   IPostWithAllData,
   IWithAllData,
   Page,
   Post,
   Tag,
 } from "./entities"
+import { IYamlConfigResponse } from "@shared/types/api"
 
 export interface ICreateOptions {
   layout?: string
@@ -27,6 +29,10 @@ export interface IGenerateOptions {
   concurrency?: boolean
 }
 export interface IApiProvider {
+  getThemeConfig(): Promise<IYamlConfigResponse>
+  setThemeConfig(raw: string): Promise<IYamlConfigResponse>
+  getHexoConfig(): Promise<IYamlConfigResponse>
+  setHexoConfig(raw: string): Promise<IYamlConfigResponse>
   getAllData(): Promise<IWithAllData>
   getPosts(): Promise<BriefPost[]>
   getPages(): Promise<BriefPage[]>
@@ -38,18 +44,26 @@ export interface IApiProvider {
   saveArticle(
     type: "post",
     source: string,
-    raw: string
+    raw: string,
+    assets?: IImageAsset[]
   ): Promise<IPostWithAllData>
   saveArticle(
     type: "page",
     source: string,
-    raw: string
+    raw: string,
+    assets?: IImageAsset[]
   ): Promise<IPageWithAllData>
   saveArticle(
     type: "post" | "page",
     source: string,
-    raw: string
+    raw: string,
+    assets?: IImageAsset[]
   ): Promise<IPostWithAllData | IPageWithAllData>
+  uploadImage(
+    type: "post" | "page",
+    source: string,
+    file: File
+  ): Promise<IImageAsset>
   deleteArticle(type: "post", source: string): Promise<IWithAllData>
   deleteArticle(type: "page", source: string): Promise<IWithAllData>
   deleteArticle(type: "post" | "page", source: string): Promise<IWithAllData>
@@ -58,8 +72,10 @@ export interface IApiProvider {
     options?: ICreateOptions
   ): Promise<IPostWithAllData | IPageWithAllData>
   publishArticle(source: string): Promise<Post>
+  restoreArticle(source: string): Promise<Post>
   deploy(options?: IDeployOptions): Promise<void>
   generate(options?: IGenerateOptions): Promise<void>
+  preview(): Promise<string>
   clean(): Promise<void>
   gitSync(): Promise<void>
   gitSave(): Promise<void>

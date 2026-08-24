@@ -3,6 +3,8 @@ import { container } from "tsyringe"
 import Router from "@koa/router"
 import { HexoService } from "@server/services/hexo-service"
 import { PostOrPageNotFoundError } from "../errors"
+import path from "path"
+import fs from "fs"
 
 const router = new Router()
 router.prefix("/hexo")
@@ -42,6 +44,71 @@ router.get("/categories", async (ctx: Context) => {
   const hexo = container.resolve(HexoService)
   ctx.body = await hexo.listCategory()
 })
+router.get("/preview", async (ctx: Context) => {
+  const hexo = container.resolve(HexoService)
+  ctx.body = { url: await hexo.preview() }
+})
+router.get("/theme/config", async (ctx: Context) => {
+  const hexo = container.resolve(HexoService)
+  ctx.body = await hexo.getThemeConfig()
+})
+router.put("/theme/config", async (ctx: Context) => {
+  const body = ctx.request.body as { raw?: unknown } | undefined
+  if (typeof body?.raw !== "string") {
+    ctx.status = 400
+    ctx.body = "need `raw`"
+    return
+  }
+  const hexo = container.resolve(HexoService)
+  ctx.body = await hexo.setThemeConfig(body.raw)
+})
+router.get("/config", async (ctx: Context) => {
+  const hexo = container.resolve(HexoService)
+  ctx.body = await hexo.getHexoConfig()
+})
+router.put("/config", async (ctx: Context) => {
+  const body = ctx.request.body as { raw?: unknown } | undefined
+  if (typeof body?.raw !== "string") {
+    ctx.status = 400
+    ctx.body = "need `raw`"
+    return
+  }
+  const hexo = container.resolve(HexoService)
+  ctx.body = await hexo.setHexoConfig(body.raw)
+})
+router.get("/assets", async (ctx: Context) => {
+  const hexo = container.resolve(HexoService)
+  const relativePath = typeof ctx.query.path === "string" ? ctx.query.path : ""
+  const fullPath = await hexo.getAssetPath(relativePath)
+  if (!fullPath) {
+    ctx.status = 404
+    return
+  }
+  ctx.type = path.extname(fullPath)
+  ctx.body = fs.createReadStream(fullPath)
+})
+router.post("/assets/upload", async (ctx: Context) => {
+  const hexo = container.resolve(HexoService)
+  const { type, source, name, mime, data } = (ctx.request.body ?? {}) as {
+    type?: unknown
+    source?: unknown
+    name?: unknown
+    mime?: unknown
+    data?: unknown
+  }
+  if (
+    (type !== "post" && type !== "page") ||
+    typeof source !== "string" ||
+    typeof name !== "string" ||
+    typeof mime !== "string" ||
+    typeof data !== "string"
+  ) {
+    ctx.status = 400
+    ctx.body = "need `type`, `source`, `name`, `mime` and `data`"
+    return
+  }
+  ctx.body = await hexo.uploadImage(type, source, name, mime, data)
+})
 router.post("/deploy", async (ctx: Context) => {
   const hexo = container.resolve(HexoService)
   await hexo.deploy(ctx.request.body)
@@ -67,6 +134,16 @@ router.post("/publish", async (ctx: Context) => {
   }
   ctx.body = await hexo.publish(filename, layout)
 })
+router.post("/restore", async (ctx: Context) => {
+  const hexo = container.resolve(HexoService)
+  const { source } = ctx.request.body
+  if (!source) {
+    ctx.status = 400
+    ctx.body = "need `source`"
+    return
+  }
+  ctx.body = await hexo.restore(source)
+})
 router.post("/create", async (ctx: Context) => {
   const hexo = container.resolve(HexoService)
   const { title, layout, path, slug, replace } = ctx.request.body
@@ -80,25 +157,35 @@ router.post("/create", async (ctx: Context) => {
 router.put("/post/:source", async (ctx: Context) => {
   const hexo = container.resolve(HexoService)
   const { source } = ctx.params
-  const { raw } = ctx.request.body
+  const { raw, assets } = ctx.request.body
 
   if (!source || !raw) {
     ctx.status = 400
     ctx.body = "need `source` and `raw`"
     return
   }
-  ctx.body = await hexo.update(source, raw, "post")
+  ctx.body = await hexo.update(
+    source,
+    raw,
+    "post",
+    Array.isArray(assets) ? assets : []
+  )
 })
 router.put("/page/:source", async (ctx: Context) => {
   const hexo = container.resolve(HexoService)
   const { source } = ctx.params
-  const { raw } = ctx.request.body
+  const { raw, assets } = ctx.request.body
   if (!source || !raw) {
     ctx.status = 400
     ctx.body = "need `source` and `raw`"
     return
   }
-  ctx.body = await hexo.update(source, raw, "page")
+  ctx.body = await hexo.update(
+    source,
+    raw,
+    "page",
+    Array.isArray(assets) ? assets : []
+  )
 })
 router.delete("/post/:source", async (ctx: Context) => {
   const hexo = container.resolve(HexoService)

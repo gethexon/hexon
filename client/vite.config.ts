@@ -29,6 +29,9 @@ export default defineConfig({
       },
     },
   },
+  optimizeDeps: {
+    force: true,
+  },
   plugins: [
     vue(),
     Unocss({
@@ -42,6 +45,13 @@ export default defineConfig({
   ],
   resolve: {
     alias: [
+      {
+        find: /^monaco-editor$/,
+        replacement: path.resolve(
+          projectRootDir,
+          "node_modules/monaco-editor/esm/vs/editor/editor.api"
+        ),
+      },
       {
         find: "~",
         replacement: path.resolve(projectRootDir, "src"),

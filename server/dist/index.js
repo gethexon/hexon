@@ -36,8 +36,8 @@ var require_windows = __commonJS({
   "../node_modules/.pnpm/isexe@2.0.0/node_modules/isexe/windows.js"(exports, module2) {
     module2.exports = isexe;
     isexe.sync = sync;
-    var fs3 = require("fs");
-    function checkPathExt(path9, options) {
+    var fs4 = require("fs");
+    function checkPathExt(path10, options) {
       var pathext = options.pathExt !== void 0 ? options.pathExt : process.env.PATHEXT;
       if (!pathext) {
         return true;
@@ -48,25 +48,25 @@ var require_windows = __commonJS({
       }
       for (var i = 0; i < pathext.length; i++) {
         var p = pathext[i].toLowerCase();
-        if (p && path9.substr(-p.length).toLowerCase() === p) {
+        if (p && path10.substr(-p.length).toLowerCase() === p) {
           return true;
         }
       }
       return false;
     }
-    function checkStat(stat, path9, options) {
+    function checkStat(stat, path10, options) {
       if (!stat.isSymbolicLink() && !stat.isFile()) {
         return false;
       }
-      return checkPathExt(path9, options);
+      return checkPathExt(path10, options);
     }
-    function isexe(path9, options, cb) {
-      fs3.stat(path9, function(er, stat) {
-        cb(er, er ? false : checkStat(stat, path9, options));
+    function isexe(path10, options, cb) {
+      fs4.stat(path10, function(er, stat) {
+        cb(er, er ? false : checkStat(stat, path10, options));
       });
     }
-    function sync(path9, options) {
-      return checkStat(fs3.statSync(path9), path9, options);
+    function sync(path10, options) {
+      return checkStat(fs4.statSync(path10), path10, options);
     }
   }
 });
@@ -76,14 +76,14 @@ var require_mode = __commonJS({
   "../node_modules/.pnpm/isexe@2.0.0/node_modules/isexe/mode.js"(exports, module2) {
     module2.exports = isexe;
     isexe.sync = sync;
-    var fs3 = require("fs");
-    function isexe(path9, options, cb) {
-      fs3.stat(path9, function(er, stat) {
+    var fs4 = require("fs");
+    function isexe(path10, options, cb) {
+      fs4.stat(path10, function(er, stat) {
         cb(er, er ? false : checkStat(stat, options));
       });
     }
-    function sync(path9, options) {
-      return checkStat(fs3.statSync(path9), options);
+    function sync(path10, options) {
+      return checkStat(fs4.statSync(path10), options);
     }
     function checkStat(stat, options) {
       return stat.isFile() && checkMode(stat, options);
@@ -107,7 +107,7 @@ var require_mode = __commonJS({
 // ../node_modules/.pnpm/isexe@2.0.0/node_modules/isexe/index.js
 var require_isexe = __commonJS({
   "../node_modules/.pnpm/isexe@2.0.0/node_modules/isexe/index.js"(exports, module2) {
-    var fs3 = require("fs");
+    var fs4 = require("fs");
     var core;
     if (process.platform === "win32" || global.TESTING_WINDOWS) {
       core = require_windows();
@@ -116,7 +116,7 @@ var require_isexe = __commonJS({
     }
     module2.exports = isexe;
     isexe.sync = sync;
-    function isexe(path9, options, cb) {
+    function isexe(path10, options, cb) {
       if (typeof options === "function") {
         cb = options;
         options = {};
@@ -126,7 +126,7 @@ var require_isexe = __commonJS({
           throw new TypeError("callback not provided");
         }
         return new Promise(function(resolve4, reject) {
-          isexe(path9, options || {}, function(er, is) {
+          isexe(path10, options || {}, function(er, is) {
             if (er) {
               reject(er);
             } else {
@@ -135,7 +135,7 @@ var require_isexe = __commonJS({
           });
         });
       }
-      core(path9, options || {}, function(er, is) {
+      core(path10, options || {}, function(er, is) {
         if (er) {
           if (er.code === "EACCES" || options && options.ignoreErrors) {
             er = null;
@@ -145,9 +145,9 @@ var require_isexe = __commonJS({
         cb(er, is);
       });
     }
-    function sync(path9, options) {
+    function sync(path10, options) {
       try {
-        return core.sync(path9, options || {});
+        return core.sync(path10, options || {});
       } catch (er) {
         if (options && options.ignoreErrors || er.code === "EACCES") {
           return false;
@@ -163,7 +163,7 @@ var require_isexe = __commonJS({
 var require_which = __commonJS({
   "../node_modules/.pnpm/which@2.0.2/node_modules/which/which.js"(exports, module2) {
     var isWindows = process.platform === "win32" || process.env.OSTYPE === "cygwin" || process.env.OSTYPE === "msys";
-    var path9 = require("path");
+    var path10 = require("path");
     var COLON = isWindows ? ";" : ":";
     var isexe = require_isexe();
     var getNotFoundError = (cmd) => Object.assign(new Error(`not found: ${cmd}`), { code: "ENOENT" });
@@ -199,7 +199,7 @@ var require_which = __commonJS({
           return opt.all && found.length ? resolve4(found) : reject(getNotFoundError(cmd));
         const ppRaw = pathEnv[i];
         const pathPart = /^".*"$/.test(ppRaw) ? ppRaw.slice(1, -1) : ppRaw;
-        const pCmd = path9.join(pathPart, cmd);
+        const pCmd = path10.join(pathPart, cmd);
         const p = !pathPart && /^\.[\\\/]/.test(cmd) ? cmd.slice(0, 2) + pCmd : pCmd;
         resolve4(subStep(p, i, 0));
       });
@@ -226,7 +226,7 @@ var require_which = __commonJS({
       for (let i = 0; i < pathEnv.length; i++) {
         const ppRaw = pathEnv[i];
         const pathPart = /^".*"$/.test(ppRaw) ? ppRaw.slice(1, -1) : ppRaw;
-        const pCmd = path9.join(pathPart, cmd);
+        const pCmd = path10.join(pathPart, cmd);
         const p = !pathPart && /^\.[\\\/]/.test(cmd) ? cmd.slice(0, 2) + pCmd : pCmd;
         for (let j = 0; j < pathExt.length; j++) {
           const cur = p + pathExt[j];
@@ -270,11 +270,11 @@ var require_path_key = __commonJS({
   }
 });
 
-// ../node_modules/.pnpm/cross-spawn@7.0.3/node_modules/cross-spawn/lib/util/resolveCommand.js
+// ../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/lib/util/resolveCommand.js
 var require_resolveCommand = __commonJS({
-  "../node_modules/.pnpm/cross-spawn@7.0.3/node_modules/cross-spawn/lib/util/resolveCommand.js"(exports, module2) {
+  "../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/lib/util/resolveCommand.js"(exports, module2) {
     "use strict";
-    var path9 = require("path");
+    var path10 = require("path");
     var which = require_which();
     var getPathKey = require_path_key();
     function resolveCommandAttempt(parsed, withoutPathExt) {
@@ -292,7 +292,7 @@ var require_resolveCommand = __commonJS({
       try {
         resolved = which.sync(parsed.command, {
           path: env2[getPathKey({ env: env2 })],
-          pathExt: withoutPathExt ? path9.delimiter : void 0
+          pathExt: withoutPathExt ? path10.delimiter : void 0
         });
       } catch (e) {
       } finally {
@@ -301,7 +301,7 @@ var require_resolveCommand = __commonJS({
         }
       }
       if (resolved) {
-        resolved = path9.resolve(hasCustomCwd ? parsed.options.cwd : "", resolved);
+        resolved = path10.resolve(hasCustomCwd ? parsed.options.cwd : "", resolved);
       }
       return resolved;
     }
@@ -312,9 +312,9 @@ var require_resolveCommand = __commonJS({
   }
 });
 
-// ../node_modules/.pnpm/cross-spawn@7.0.3/node_modules/cross-spawn/lib/util/escape.js
+// ../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/lib/util/escape.js
 var require_escape = __commonJS({
-  "../node_modules/.pnpm/cross-spawn@7.0.3/node_modules/cross-spawn/lib/util/escape.js"(exports, module2) {
+  "../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/lib/util/escape.js"(exports, module2) {
     "use strict";
     var metaCharsRegExp = /([()\][%!^"`<>&|;, *?])/g;
     function escapeCommand(arg) {
@@ -323,8 +323,8 @@ var require_escape = __commonJS({
     }
     function escapeArgument(arg, doubleEscapeMetaChars) {
       arg = `${arg}`;
-      arg = arg.replace(/(\\*)"/g, '$1$1\\"');
-      arg = arg.replace(/(\\*)$/, "$1$1");
+      arg = arg.replace(/(?=(\\+?)?)\1"/g, '$1$1\\"');
+      arg = arg.replace(/(?=(\\+?)?)\1$/, "$1$1");
       arg = `"${arg}"`;
       arg = arg.replace(metaCharsRegExp, "^$1");
       if (doubleEscapeMetaChars) {
@@ -355,8 +355,8 @@ var require_shebang_command = __commonJS({
       if (!match) {
         return null;
       }
-      const [path9, argument] = match[0].replace(/#! ?/, "").split(" ");
-      const binary = path9.split("/").pop();
+      const [path10, argument] = match[0].replace(/#! ?/, "").split(" ");
+      const binary = path10.split("/").pop();
       if (binary === "env") {
         return argument;
       }
@@ -365,20 +365,20 @@ var require_shebang_command = __commonJS({
   }
 });
 
-// ../node_modules/.pnpm/cross-spawn@7.0.3/node_modules/cross-spawn/lib/util/readShebang.js
+// ../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/lib/util/readShebang.js
 var require_readShebang = __commonJS({
-  "../node_modules/.pnpm/cross-spawn@7.0.3/node_modules/cross-spawn/lib/util/readShebang.js"(exports, module2) {
+  "../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/lib/util/readShebang.js"(exports, module2) {
     "use strict";
-    var fs3 = require("fs");
+    var fs4 = require("fs");
     var shebangCommand = require_shebang_command();
     function readShebang(command) {
       const size = 150;
       const buffer = Buffer.alloc(size);
       let fd;
       try {
-        fd = fs3.openSync(command, "r");
-        fs3.readSync(fd, buffer, 0, size, 0);
-        fs3.closeSync(fd);
+        fd = fs4.openSync(command, "r");
+        fs4.readSync(fd, buffer, 0, size, 0);
+        fs4.closeSync(fd);
       } catch (e) {
       }
       return shebangCommand(buffer.toString());
@@ -387,11 +387,11 @@ var require_readShebang = __commonJS({
   }
 });
 
-// ../node_modules/.pnpm/cross-spawn@7.0.3/node_modules/cross-spawn/lib/parse.js
+// ../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/lib/parse.js
 var require_parse = __commonJS({
-  "../node_modules/.pnpm/cross-spawn@7.0.3/node_modules/cross-spawn/lib/parse.js"(exports, module2) {
+  "../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/lib/parse.js"(exports, module2) {
     "use strict";
-    var path9 = require("path");
+    var path10 = require("path");
     var resolveCommand = require_resolveCommand();
     var escape = require_escape();
     var readShebang = require_readShebang();
@@ -416,7 +416,7 @@ var require_parse = __commonJS({
       const needsShell = !isExecutableRegExp.test(commandFile);
       if (parsed.options.forceShell || needsShell) {
         const needsDoubleEscapeMetaChars = isCmdShimRegExp.test(commandFile);
-        parsed.command = path9.normalize(parsed.command);
+        parsed.command = path10.normalize(parsed.command);
         parsed.command = escape.command(parsed.command);
         parsed.args = parsed.args.map((arg) => escape.argument(arg, needsDoubleEscapeMetaChars));
         const shellCommand = [parsed.command].concat(parsed.args).join(" ");
@@ -449,9 +449,9 @@ var require_parse = __commonJS({
   }
 });
 
-// ../node_modules/.pnpm/cross-spawn@7.0.3/node_modules/cross-spawn/lib/enoent.js
+// ../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/lib/enoent.js
 var require_enoent = __commonJS({
-  "../node_modules/.pnpm/cross-spawn@7.0.3/node_modules/cross-spawn/lib/enoent.js"(exports, module2) {
+  "../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/lib/enoent.js"(exports, module2) {
     "use strict";
     var isWin = process.platform === "win32";
     function notFoundError(original, syscall) {
@@ -470,7 +470,7 @@ var require_enoent = __commonJS({
       const originalEmit = cp.emit;
       cp.emit = function(name, arg1) {
         if (name === "exit") {
-          const err = verifyENOENT(arg1, parsed, "spawn");
+          const err = verifyENOENT(arg1, parsed);
           if (err) {
             return originalEmit.call(cp, "error", err);
           }
@@ -499,9 +499,9 @@ var require_enoent = __commonJS({
   }
 });
 
-// ../node_modules/.pnpm/cross-spawn@7.0.3/node_modules/cross-spawn/index.js
+// ../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/index.js
 var require_cross_spawn = __commonJS({
-  "../node_modules/.pnpm/cross-spawn@7.0.3/node_modules/cross-spawn/index.js"(exports, module2) {
+  "../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/index.js"(exports, module2) {
     "use strict";
     var cp = require("child_process");
     var parse = require_parse();
@@ -598,7 +598,7 @@ var require_signal_exit = __commonJS({
         }
         assert.equal(typeof cb, "function", "a callback must be provided for exit handler");
         if (loaded === false) {
-          load();
+          load2();
         }
         var ev = "exit";
         if (opts && opts.alwaysLast) {
@@ -658,7 +658,7 @@ var require_signal_exit = __commonJS({
         return signals;
       };
       loaded = false;
-      load = function load2() {
+      load2 = function load3() {
         if (loaded || !processOk(global.process)) {
           return;
         }
@@ -675,7 +675,7 @@ var require_signal_exit = __commonJS({
         process5.emit = processEmit;
         process5.reallyExit = processReallyExit;
       };
-      module2.exports.load = load;
+      module2.exports.load = load2;
       originalProcessReallyExit = process5.reallyExit;
       processReallyExit = function processReallyExit2(code) {
         if (!processOk(global.process)) {
@@ -710,7 +710,7 @@ var require_signal_exit = __commonJS({
     var emit;
     var sigListeners;
     var loaded;
-    var load;
+    var load2;
     var originalProcessReallyExit;
     var processReallyExit;
     var originalProcessEmit;
@@ -858,14 +858,16 @@ var require_merge_stream = __commonJS({
   }
 });
 
-// ../node_modules/.pnpm/@vue+shared@3.4.25/node_modules/@vue/shared/dist/shared.cjs.prod.js
+// ../node_modules/.pnpm/@vue+shared@3.5.41/node_modules/@vue/shared/dist/shared.cjs.prod.js
 var require_shared_cjs_prod = __commonJS({
-  "../node_modules/.pnpm/@vue+shared@3.4.25/node_modules/@vue/shared/dist/shared.cjs.prod.js"(exports) {
+  "../node_modules/.pnpm/@vue+shared@3.5.41/node_modules/@vue/shared/dist/shared.cjs.prod.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    function makeMap(str, expectsLowerCase) {
-      const set = new Set(str.split(","));
-      return expectsLowerCase ? (val) => set.has(val.toLowerCase()) : (val) => set.has(val);
+    function makeMap(str) {
+      const map = /* @__PURE__ */ Object.create(null);
+      for (const key of str.split(","))
+        map[key] = 1;
+      return (val) => val in map;
     }
     var EMPTY_OBJ = {};
     var EMPTY_ARR = [];
@@ -915,10 +917,12 @@ var require_shared_cjs_prod = __commonJS({
         return hit || (cache[str] = fn(str));
       };
     };
-    var camelizeRE = /-(\w)/g;
-    var camelize = cacheStringFunction((str) => {
-      return str.replace(camelizeRE, (_, c) => c ? c.toUpperCase() : "");
-    });
+    var camelizeRE = /-\w/g;
+    var camelize = cacheStringFunction(
+      (str) => {
+        return str.replace(camelizeRE, (c) => c.slice(1).toUpperCase());
+      }
+    );
     var hyphenateRE = /\B([A-Z])/g;
     var hyphenate = cacheStringFunction(
       (str) => str.replace(hyphenateRE, "-$1").toLowerCase()
@@ -926,20 +930,23 @@ var require_shared_cjs_prod = __commonJS({
     var capitalize = cacheStringFunction((str) => {
       return str.charAt(0).toUpperCase() + str.slice(1);
     });
-    var toHandlerKey = cacheStringFunction((str) => {
-      const s = str ? `on${capitalize(str)}` : ``;
-      return s;
-    });
+    var toHandlerKey = cacheStringFunction(
+      (str) => {
+        const s = str ? `on${capitalize(str)}` : ``;
+        return s;
+      }
+    );
     var hasChanged = (value, oldValue) => !Object.is(value, oldValue);
-    var invokeArrayFns = (fns, arg) => {
+    var invokeArrayFns = (fns, ...arg) => {
       for (let i = 0; i < fns.length; i++) {
-        fns[i](arg);
+        fns[i](...arg);
       }
     };
-    var def = (obj, key, value) => {
+    var def = (obj, key, value, writable = false) => {
       Object.defineProperty(obj, key, {
         configurable: true,
         enumerable: false,
+        writable,
         value
       });
     };
@@ -958,6 +965,12 @@ var require_shared_cjs_prod = __commonJS({
     var identRE = /^[_$a-zA-Z\xA0-\uFFFF][_$a-zA-Z0-9\xA0-\uFFFF]*$/;
     function genPropsAccessExp(name) {
       return identRE.test(name) ? `__props.${name}` : `__props[${JSON.stringify(name)}]`;
+    }
+    function genCacheKey(source, options) {
+      return source + JSON.stringify(
+        options,
+        (_, val) => typeof val === "function" ? val.toString() : val
+      );
     }
     var PatchFlags = {
       "TEXT": 1,
@@ -984,8 +997,8 @@ var require_shared_cjs_prod = __commonJS({
       "1024": "DYNAMIC_SLOTS",
       "DEV_ROOT_FRAGMENT": 2048,
       "2048": "DEV_ROOT_FRAGMENT",
-      "HOISTED": -1,
-      "-1": "HOISTED",
+      "CACHED": -1,
+      "-1": "CACHED",
       "BAIL": -2,
       "-2": "BAIL"
     };
@@ -1002,7 +1015,7 @@ var require_shared_cjs_prod = __commonJS({
       [512]: `NEED_PATCH`,
       [1024]: `DYNAMIC_SLOTS`,
       [2048]: `DEV_ROOT_FRAGMENT`,
-      [-1]: `HOISTED`,
+      [-1]: `CACHED`,
       [-2]: `BAIL`
     };
     var ShapeFlags = {
@@ -1042,11 +1055,15 @@ var require_shared_cjs_prod = __commonJS({
       [2]: "DYNAMIC",
       [3]: "FORWARDED"
     };
-    var GLOBALS_ALLOWED = "Infinity,undefined,NaN,isFinite,isNaN,parseFloat,parseInt,decodeURI,decodeURIComponent,encodeURI,encodeURIComponent,Math,Number,Date,Array,Object,Boolean,String,RegExp,Map,Set,JSON,Intl,BigInt,console,Error";
+    var GLOBALS_ALLOWED = "Infinity,undefined,NaN,isFinite,isNaN,parseFloat,parseInt,decodeURI,decodeURIComponent,encodeURI,encodeURIComponent,Math,Number,Date,Array,Object,Boolean,String,RegExp,Map,Set,JSON,Intl,BigInt,console,Error,Symbol";
     var isGloballyAllowed = /* @__PURE__ */ makeMap(GLOBALS_ALLOWED);
     var isGloballyWhitelisted = isGloballyAllowed;
     var range = 2;
     function generateCodeFrame(source, start = 0, end = source.length) {
+      start = Math.max(0, Math.min(start, source.length));
+      end = Math.max(0, Math.min(end, source.length));
+      if (start > end)
+        return "";
       let lines = source.split(/(\r?\n)/);
       const newlineSequences = lines.filter((_, idx) => idx % 2 === 1);
       lines = lines.filter((_, idx) => idx % 2 === 0);
@@ -1115,14 +1132,15 @@ var require_shared_cjs_prod = __commonJS({
       return ret;
     }
     function stringifyStyle(styles3) {
+      if (!styles3)
+        return "";
+      if (isString(styles3))
+        return styles3;
       let ret = "";
-      if (!styles3 || isString(styles3)) {
-        return ret;
-      }
       for (const key in styles3) {
         const value = styles3[key];
-        const normalizedKey = key.startsWith(`--`) ? key : hyphenate(key);
         if (isString(value) || typeof value === "number") {
+          const normalizedKey = key.startsWith(`--`) ? key : hyphenate(key);
           ret += `${normalizedKey}:${value};`;
         }
       }
@@ -1171,7 +1189,7 @@ var require_shared_cjs_prod = __commonJS({
     var specialBooleanAttrs = `itemscope,allowfullscreen,formnovalidate,ismap,nomodule,novalidate,readonly`;
     var isSpecialBooleanAttr = /* @__PURE__ */ makeMap(specialBooleanAttrs);
     var isBooleanAttr = /* @__PURE__ */ makeMap(
-      specialBooleanAttrs + `,async,autofocus,autoplay,controls,default,defer,disabled,hidden,inert,loop,open,required,reversed,scoped,seamless,checked,muted,multiple,selected`
+      specialBooleanAttrs + `,async,autofocus,autoplay,controls,default,defer,disabled,inert,loop,open,required,reversed,scoped,seamless,checked,muted,multiple,selected`
     );
     function includeBooleanAttr(value) {
       return !!value || value === "";
@@ -1199,6 +1217,9 @@ var require_shared_cjs_prod = __commonJS({
     );
     var isKnownSvgAttr = /* @__PURE__ */ makeMap(
       `xmlns,accent-height,accumulate,additive,alignment-baseline,alphabetic,amplitude,arabic-form,ascent,attributeName,attributeType,azimuth,baseFrequency,baseline-shift,baseProfile,bbox,begin,bias,by,calcMode,cap-height,class,clip,clipPathUnits,clip-path,clip-rule,color,color-interpolation,color-interpolation-filters,color-profile,color-rendering,contentScriptType,contentStyleType,crossorigin,cursor,cx,cy,d,decelerate,descent,diffuseConstant,direction,display,divisor,dominant-baseline,dur,dx,dy,edgeMode,elevation,enable-background,end,exponent,fill,fill-opacity,fill-rule,filter,filterRes,filterUnits,flood-color,flood-opacity,font-family,font-size,font-size-adjust,font-stretch,font-style,font-variant,font-weight,format,from,fr,fx,fy,g1,g2,glyph-name,glyph-orientation-horizontal,glyph-orientation-vertical,glyphRef,gradientTransform,gradientUnits,hanging,height,href,hreflang,horiz-adv-x,horiz-origin-x,id,ideographic,image-rendering,in,in2,intercept,k,k1,k2,k3,k4,kernelMatrix,kernelUnitLength,kerning,keyPoints,keySplines,keyTimes,lang,lengthAdjust,letter-spacing,lighting-color,limitingConeAngle,local,marker-end,marker-mid,marker-start,markerHeight,markerUnits,markerWidth,mask,maskContentUnits,maskUnits,mathematical,max,media,method,min,mode,name,numOctaves,offset,opacity,operator,order,orient,orientation,origin,overflow,overline-position,overline-thickness,panose-1,paint-order,path,pathLength,patternContentUnits,patternTransform,patternUnits,ping,pointer-events,points,pointsAtX,pointsAtY,pointsAtZ,preserveAlpha,preserveAspectRatio,primitiveUnits,r,radius,referrerPolicy,refX,refY,rel,rendering-intent,repeatCount,repeatDur,requiredExtensions,requiredFeatures,restart,result,rotate,rx,ry,scale,seed,shape-rendering,slope,spacing,specularConstant,specularExponent,speed,spreadMethod,startOffset,stdDeviation,stemh,stemv,stitchTiles,stop-color,stop-opacity,strikethrough-position,strikethrough-thickness,string,stroke,stroke-dasharray,stroke-dashoffset,stroke-linecap,stroke-linejoin,stroke-miterlimit,stroke-opacity,stroke-width,style,surfaceScale,systemLanguage,tabindex,tableValues,target,targetX,targetY,text-anchor,text-decoration,text-rendering,textLength,to,transform,transform-origin,type,u1,u2,underline-position,underline-thickness,unicode,unicode-bidi,unicode-range,units-per-em,v-alphabetic,v-hanging,v-ideographic,v-mathematical,values,vector-effect,version,vert-adv-y,vert-origin-x,vert-origin-y,viewBox,viewTarget,visibility,width,widths,word-spacing,writing-mode,x,x-height,x1,x2,xChannelSelector,xlink:actuate,xlink:arcrole,xlink:href,xlink:role,xlink:show,xlink:title,xlink:type,xmlns:xlink,xml:base,xml:lang,xml:space,y,y1,y2,yChannelSelector,z,zoomAndPan`
+    );
+    var isKnownMathMLAttr = /* @__PURE__ */ makeMap(
+      `accent,accentunder,actiontype,align,alignmentscope,altimg,altimg-height,altimg-valign,altimg-width,alttext,bevelled,close,columnsalign,columnlines,columnspan,denomalign,depth,dir,display,displaystyle,encoding,equalcolumns,equalrows,fence,fontstyle,fontweight,form,frame,framespacing,groupalign,height,href,id,indentalign,indentalignfirst,indentalignlast,indentshift,indentshiftfirst,indentshiftlast,indextype,justify,largetop,largeop,lquote,lspace,mathbackground,mathcolor,mathsize,mathvariant,maxsize,minlabelspacing,mode,other,overflow,position,rowalign,rowlines,rowspan,rquote,rspace,scriptlevel,scriptminsize,scriptsizemultiplier,selection,separator,separators,shift,side,src,stackalign,stretchy,subscriptshift,superscriptshift,symmetric,voffset,width,widths,xlink:href,xlink:show,xlink:type,xmlns`
     );
     function isRenderableAttrValue(value) {
       if (value == null) {
@@ -1246,9 +1267,21 @@ var require_shared_cjs_prod = __commonJS({
       }
       return lastIndex !== index ? html + str.slice(lastIndex, index) : html;
     }
-    var commentStripRE = /^-?>|<!--|-->|--!>|<!-$/g;
+    var commentStripRE = /^(?:-?>)+|<!--|-->|--!>|<!-$/g;
     function escapeHtmlComment(src) {
-      return src.replace(commentStripRE, "");
+      let prev;
+      do {
+        prev = src;
+        src = src.replace(commentStripRE, "");
+      } while (src !== prev);
+      return src;
+    }
+    var cssVarNameEscapeSymbolsRE = /[ !"#$%&'()*+,./:;<=>?@[\\\]^`{|}~]/g;
+    function getEscapedCssVarName(key, doubleEscape) {
+      return key.replace(
+        cssVarNameEscapeSymbolsRE,
+        (s) => doubleEscape ? s === '"' ? '\\\\\\"' : `\\\\${s}` : `\\${s}`
+      );
     }
     function looseCompareArrays(a, b) {
       if (a.length !== b.length)
@@ -1301,11 +1334,14 @@ var require_shared_cjs_prod = __commonJS({
     function looseIndexOf(arr, val) {
       return arr.findIndex((item) => looseEqual(item, val));
     }
+    var isRef = (val) => {
+      return !!(val && val["__v_isRef"] === true);
+    };
     var toDisplayString = (val) => {
-      return isString(val) ? val : val == null ? "" : isArray(val) || isObject(val) && (val.toString === objectToString || !isFunction(val.toString)) ? JSON.stringify(val, replacer, 2) : String(val);
+      return isString(val) ? val : val == null ? "" : isArray(val) || isObject(val) && (val.toString === objectToString || !isFunction(val.toString)) ? isRef(val) ? toDisplayString(val.value) : JSON.stringify(val, replacer, 2) : String(val);
     };
     var replacer = (_key, val) => {
-      if (val && val.__v_isRef) {
+      if (isRef(val)) {
         return replacer(_key, val.value);
       } else if (isMap(val)) {
         return {
@@ -1332,6 +1368,15 @@ var require_shared_cjs_prod = __commonJS({
       var _a;
       return isSymbol(v) ? `Symbol(${(_a = v.description) != null ? _a : i})` : v;
     };
+    function normalizeCssVarValue(value) {
+      if (value == null) {
+        return "initial";
+      }
+      if (typeof value === "string") {
+        return value === "" ? " " : value;
+      }
+      return String(value);
+    }
     exports.EMPTY_ARR = EMPTY_ARR;
     exports.EMPTY_OBJ = EMPTY_OBJ;
     exports.NO = NO;
@@ -1342,12 +1387,15 @@ var require_shared_cjs_prod = __commonJS({
     exports.SlotFlags = SlotFlags;
     exports.camelize = camelize;
     exports.capitalize = capitalize;
+    exports.cssVarNameEscapeSymbolsRE = cssVarNameEscapeSymbolsRE;
     exports.def = def;
     exports.escapeHtml = escapeHtml;
     exports.escapeHtmlComment = escapeHtmlComment;
     exports.extend = extend;
+    exports.genCacheKey = genCacheKey;
     exports.genPropsAccessExp = genPropsAccessExp;
     exports.generateCodeFrame = generateCodeFrame;
+    exports.getEscapedCssVarName = getEscapedCssVarName;
     exports.getGlobalThis = getGlobalThis;
     exports.hasChanged = hasChanged;
     exports.hasOwn = hasOwn;
@@ -1364,6 +1412,7 @@ var require_shared_cjs_prod = __commonJS({
     exports.isHTMLTag = isHTMLTag;
     exports.isIntegerKey = isIntegerKey;
     exports.isKnownHtmlAttr = isKnownHtmlAttr;
+    exports.isKnownMathMLAttr = isKnownMathMLAttr;
     exports.isKnownSvgAttr = isKnownSvgAttr;
     exports.isMap = isMap;
     exports.isMathMLTag = isMathMLTag;
@@ -1387,6 +1436,7 @@ var require_shared_cjs_prod = __commonJS({
     exports.looseToNumber = looseToNumber;
     exports.makeMap = makeMap;
     exports.normalizeClass = normalizeClass;
+    exports.normalizeCssVarValue = normalizeCssVarValue;
     exports.normalizeProps = normalizeProps;
     exports.normalizeStyle = normalizeStyle;
     exports.objectToString = objectToString;
@@ -1403,14 +1453,16 @@ var require_shared_cjs_prod = __commonJS({
   }
 });
 
-// ../node_modules/.pnpm/@vue+shared@3.4.25/node_modules/@vue/shared/dist/shared.cjs.js
+// ../node_modules/.pnpm/@vue+shared@3.5.41/node_modules/@vue/shared/dist/shared.cjs.js
 var require_shared_cjs = __commonJS({
-  "../node_modules/.pnpm/@vue+shared@3.4.25/node_modules/@vue/shared/dist/shared.cjs.js"(exports) {
+  "../node_modules/.pnpm/@vue+shared@3.5.41/node_modules/@vue/shared/dist/shared.cjs.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    function makeMap(str, expectsLowerCase) {
-      const set = new Set(str.split(","));
-      return expectsLowerCase ? (val) => set.has(val.toLowerCase()) : (val) => set.has(val);
+    function makeMap(str) {
+      const map = /* @__PURE__ */ Object.create(null);
+      for (const key of str.split(","))
+        map[key] = 1;
+      return (val) => val in map;
     }
     var EMPTY_OBJ = Object.freeze({});
     var EMPTY_ARR = Object.freeze([]);
@@ -1460,10 +1512,12 @@ var require_shared_cjs = __commonJS({
         return hit || (cache[str] = fn(str));
       };
     };
-    var camelizeRE = /-(\w)/g;
-    var camelize = cacheStringFunction((str) => {
-      return str.replace(camelizeRE, (_, c) => c ? c.toUpperCase() : "");
-    });
+    var camelizeRE = /-\w/g;
+    var camelize = cacheStringFunction(
+      (str) => {
+        return str.replace(camelizeRE, (c) => c.slice(1).toUpperCase());
+      }
+    );
     var hyphenateRE = /\B([A-Z])/g;
     var hyphenate = cacheStringFunction(
       (str) => str.replace(hyphenateRE, "-$1").toLowerCase()
@@ -1471,20 +1525,23 @@ var require_shared_cjs = __commonJS({
     var capitalize = cacheStringFunction((str) => {
       return str.charAt(0).toUpperCase() + str.slice(1);
     });
-    var toHandlerKey = cacheStringFunction((str) => {
-      const s = str ? `on${capitalize(str)}` : ``;
-      return s;
-    });
+    var toHandlerKey = cacheStringFunction(
+      (str) => {
+        const s = str ? `on${capitalize(str)}` : ``;
+        return s;
+      }
+    );
     var hasChanged = (value, oldValue) => !Object.is(value, oldValue);
-    var invokeArrayFns = (fns, arg) => {
+    var invokeArrayFns = (fns, ...arg) => {
       for (let i = 0; i < fns.length; i++) {
-        fns[i](arg);
+        fns[i](...arg);
       }
     };
-    var def = (obj, key, value) => {
+    var def = (obj, key, value, writable = false) => {
       Object.defineProperty(obj, key, {
         configurable: true,
         enumerable: false,
+        writable,
         value
       });
     };
@@ -1503,6 +1560,12 @@ var require_shared_cjs = __commonJS({
     var identRE = /^[_$a-zA-Z\xA0-\uFFFF][_$a-zA-Z0-9\xA0-\uFFFF]*$/;
     function genPropsAccessExp(name) {
       return identRE.test(name) ? `__props.${name}` : `__props[${JSON.stringify(name)}]`;
+    }
+    function genCacheKey(source, options) {
+      return source + JSON.stringify(
+        options,
+        (_, val) => typeof val === "function" ? val.toString() : val
+      );
     }
     var PatchFlags = {
       "TEXT": 1,
@@ -1529,8 +1592,8 @@ var require_shared_cjs = __commonJS({
       "1024": "DYNAMIC_SLOTS",
       "DEV_ROOT_FRAGMENT": 2048,
       "2048": "DEV_ROOT_FRAGMENT",
-      "HOISTED": -1,
-      "-1": "HOISTED",
+      "CACHED": -1,
+      "-1": "CACHED",
       "BAIL": -2,
       "-2": "BAIL"
     };
@@ -1547,7 +1610,7 @@ var require_shared_cjs = __commonJS({
       [512]: `NEED_PATCH`,
       [1024]: `DYNAMIC_SLOTS`,
       [2048]: `DEV_ROOT_FRAGMENT`,
-      [-1]: `HOISTED`,
+      [-1]: `CACHED`,
       [-2]: `BAIL`
     };
     var ShapeFlags = {
@@ -1587,11 +1650,15 @@ var require_shared_cjs = __commonJS({
       [2]: "DYNAMIC",
       [3]: "FORWARDED"
     };
-    var GLOBALS_ALLOWED = "Infinity,undefined,NaN,isFinite,isNaN,parseFloat,parseInt,decodeURI,decodeURIComponent,encodeURI,encodeURIComponent,Math,Number,Date,Array,Object,Boolean,String,RegExp,Map,Set,JSON,Intl,BigInt,console,Error";
+    var GLOBALS_ALLOWED = "Infinity,undefined,NaN,isFinite,isNaN,parseFloat,parseInt,decodeURI,decodeURIComponent,encodeURI,encodeURIComponent,Math,Number,Date,Array,Object,Boolean,String,RegExp,Map,Set,JSON,Intl,BigInt,console,Error,Symbol";
     var isGloballyAllowed = /* @__PURE__ */ makeMap(GLOBALS_ALLOWED);
     var isGloballyWhitelisted = isGloballyAllowed;
     var range = 2;
     function generateCodeFrame(source, start = 0, end = source.length) {
+      start = Math.max(0, Math.min(start, source.length));
+      end = Math.max(0, Math.min(end, source.length));
+      if (start > end)
+        return "";
       let lines = source.split(/(\r?\n)/);
       const newlineSequences = lines.filter((_, idx) => idx % 2 === 1);
       lines = lines.filter((_, idx) => idx % 2 === 0);
@@ -1660,14 +1727,15 @@ var require_shared_cjs = __commonJS({
       return ret;
     }
     function stringifyStyle(styles3) {
+      if (!styles3)
+        return "";
+      if (isString(styles3))
+        return styles3;
       let ret = "";
-      if (!styles3 || isString(styles3)) {
-        return ret;
-      }
       for (const key in styles3) {
         const value = styles3[key];
-        const normalizedKey = key.startsWith(`--`) ? key : hyphenate(key);
         if (isString(value) || typeof value === "number") {
+          const normalizedKey = key.startsWith(`--`) ? key : hyphenate(key);
           ret += `${normalizedKey}:${value};`;
         }
       }
@@ -1716,7 +1784,7 @@ var require_shared_cjs = __commonJS({
     var specialBooleanAttrs = `itemscope,allowfullscreen,formnovalidate,ismap,nomodule,novalidate,readonly`;
     var isSpecialBooleanAttr = /* @__PURE__ */ makeMap(specialBooleanAttrs);
     var isBooleanAttr = /* @__PURE__ */ makeMap(
-      specialBooleanAttrs + `,async,autofocus,autoplay,controls,default,defer,disabled,hidden,inert,loop,open,required,reversed,scoped,seamless,checked,muted,multiple,selected`
+      specialBooleanAttrs + `,async,autofocus,autoplay,controls,default,defer,disabled,inert,loop,open,required,reversed,scoped,seamless,checked,muted,multiple,selected`
     );
     function includeBooleanAttr(value) {
       return !!value || value === "";
@@ -1744,6 +1812,9 @@ var require_shared_cjs = __commonJS({
     );
     var isKnownSvgAttr = /* @__PURE__ */ makeMap(
       `xmlns,accent-height,accumulate,additive,alignment-baseline,alphabetic,amplitude,arabic-form,ascent,attributeName,attributeType,azimuth,baseFrequency,baseline-shift,baseProfile,bbox,begin,bias,by,calcMode,cap-height,class,clip,clipPathUnits,clip-path,clip-rule,color,color-interpolation,color-interpolation-filters,color-profile,color-rendering,contentScriptType,contentStyleType,crossorigin,cursor,cx,cy,d,decelerate,descent,diffuseConstant,direction,display,divisor,dominant-baseline,dur,dx,dy,edgeMode,elevation,enable-background,end,exponent,fill,fill-opacity,fill-rule,filter,filterRes,filterUnits,flood-color,flood-opacity,font-family,font-size,font-size-adjust,font-stretch,font-style,font-variant,font-weight,format,from,fr,fx,fy,g1,g2,glyph-name,glyph-orientation-horizontal,glyph-orientation-vertical,glyphRef,gradientTransform,gradientUnits,hanging,height,href,hreflang,horiz-adv-x,horiz-origin-x,id,ideographic,image-rendering,in,in2,intercept,k,k1,k2,k3,k4,kernelMatrix,kernelUnitLength,kerning,keyPoints,keySplines,keyTimes,lang,lengthAdjust,letter-spacing,lighting-color,limitingConeAngle,local,marker-end,marker-mid,marker-start,markerHeight,markerUnits,markerWidth,mask,maskContentUnits,maskUnits,mathematical,max,media,method,min,mode,name,numOctaves,offset,opacity,operator,order,orient,orientation,origin,overflow,overline-position,overline-thickness,panose-1,paint-order,path,pathLength,patternContentUnits,patternTransform,patternUnits,ping,pointer-events,points,pointsAtX,pointsAtY,pointsAtZ,preserveAlpha,preserveAspectRatio,primitiveUnits,r,radius,referrerPolicy,refX,refY,rel,rendering-intent,repeatCount,repeatDur,requiredExtensions,requiredFeatures,restart,result,rotate,rx,ry,scale,seed,shape-rendering,slope,spacing,specularConstant,specularExponent,speed,spreadMethod,startOffset,stdDeviation,stemh,stemv,stitchTiles,stop-color,stop-opacity,strikethrough-position,strikethrough-thickness,string,stroke,stroke-dasharray,stroke-dashoffset,stroke-linecap,stroke-linejoin,stroke-miterlimit,stroke-opacity,stroke-width,style,surfaceScale,systemLanguage,tabindex,tableValues,target,targetX,targetY,text-anchor,text-decoration,text-rendering,textLength,to,transform,transform-origin,type,u1,u2,underline-position,underline-thickness,unicode,unicode-bidi,unicode-range,units-per-em,v-alphabetic,v-hanging,v-ideographic,v-mathematical,values,vector-effect,version,vert-adv-y,vert-origin-x,vert-origin-y,viewBox,viewTarget,visibility,width,widths,word-spacing,writing-mode,x,x-height,x1,x2,xChannelSelector,xlink:actuate,xlink:arcrole,xlink:href,xlink:role,xlink:show,xlink:title,xlink:type,xmlns:xlink,xml:base,xml:lang,xml:space,y,y1,y2,yChannelSelector,z,zoomAndPan`
+    );
+    var isKnownMathMLAttr = /* @__PURE__ */ makeMap(
+      `accent,accentunder,actiontype,align,alignmentscope,altimg,altimg-height,altimg-valign,altimg-width,alttext,bevelled,close,columnsalign,columnlines,columnspan,denomalign,depth,dir,display,displaystyle,encoding,equalcolumns,equalrows,fence,fontstyle,fontweight,form,frame,framespacing,groupalign,height,href,id,indentalign,indentalignfirst,indentalignlast,indentshift,indentshiftfirst,indentshiftlast,indextype,justify,largetop,largeop,lquote,lspace,mathbackground,mathcolor,mathsize,mathvariant,maxsize,minlabelspacing,mode,other,overflow,position,rowalign,rowlines,rowspan,rquote,rspace,scriptlevel,scriptminsize,scriptsizemultiplier,selection,separator,separators,shift,side,src,stackalign,stretchy,subscriptshift,superscriptshift,symmetric,voffset,width,widths,xlink:href,xlink:show,xlink:type,xmlns`
     );
     function isRenderableAttrValue(value) {
       if (value == null) {
@@ -1791,9 +1862,21 @@ var require_shared_cjs = __commonJS({
       }
       return lastIndex !== index ? html + str.slice(lastIndex, index) : html;
     }
-    var commentStripRE = /^-?>|<!--|-->|--!>|<!-$/g;
+    var commentStripRE = /^(?:-?>)+|<!--|-->|--!>|<!-$/g;
     function escapeHtmlComment(src) {
-      return src.replace(commentStripRE, "");
+      let prev;
+      do {
+        prev = src;
+        src = src.replace(commentStripRE, "");
+      } while (src !== prev);
+      return src;
+    }
+    var cssVarNameEscapeSymbolsRE = /[ !"#$%&'()*+,./:;<=>?@[\\\]^`{|}~]/g;
+    function getEscapedCssVarName(key, doubleEscape) {
+      return key.replace(
+        cssVarNameEscapeSymbolsRE,
+        (s) => doubleEscape ? s === '"' ? '\\\\\\"' : `\\\\${s}` : `\\${s}`
+      );
     }
     function looseCompareArrays(a, b) {
       if (a.length !== b.length)
@@ -1846,11 +1929,14 @@ var require_shared_cjs = __commonJS({
     function looseIndexOf(arr, val) {
       return arr.findIndex((item) => looseEqual(item, val));
     }
+    var isRef = (val) => {
+      return !!(val && val["__v_isRef"] === true);
+    };
     var toDisplayString = (val) => {
-      return isString(val) ? val : val == null ? "" : isArray(val) || isObject(val) && (val.toString === objectToString || !isFunction(val.toString)) ? JSON.stringify(val, replacer, 2) : String(val);
+      return isString(val) ? val : val == null ? "" : isArray(val) || isObject(val) && (val.toString === objectToString || !isFunction(val.toString)) ? isRef(val) ? toDisplayString(val.value) : JSON.stringify(val, replacer, 2) : String(val);
     };
     var replacer = (_key, val) => {
-      if (val && val.__v_isRef) {
+      if (isRef(val)) {
         return replacer(_key, val.value);
       } else if (isMap(val)) {
         return {
@@ -1877,6 +1963,23 @@ var require_shared_cjs = __commonJS({
       var _a;
       return isSymbol(v) ? `Symbol(${(_a = v.description) != null ? _a : i})` : v;
     };
+    function normalizeCssVarValue(value) {
+      if (value == null) {
+        return "initial";
+      }
+      if (typeof value === "string") {
+        return value === "" ? " " : value;
+      }
+      if (typeof value !== "number" || !Number.isFinite(value)) {
+        {
+          console.warn(
+            "[Vue warn] Invalid value used for CSS binding. Expected a string or a finite number but received:",
+            value
+          );
+        }
+      }
+      return String(value);
+    }
     exports.EMPTY_ARR = EMPTY_ARR;
     exports.EMPTY_OBJ = EMPTY_OBJ;
     exports.NO = NO;
@@ -1887,12 +1990,15 @@ var require_shared_cjs = __commonJS({
     exports.SlotFlags = SlotFlags;
     exports.camelize = camelize;
     exports.capitalize = capitalize;
+    exports.cssVarNameEscapeSymbolsRE = cssVarNameEscapeSymbolsRE;
     exports.def = def;
     exports.escapeHtml = escapeHtml;
     exports.escapeHtmlComment = escapeHtmlComment;
     exports.extend = extend;
+    exports.genCacheKey = genCacheKey;
     exports.genPropsAccessExp = genPropsAccessExp;
     exports.generateCodeFrame = generateCodeFrame;
+    exports.getEscapedCssVarName = getEscapedCssVarName;
     exports.getGlobalThis = getGlobalThis;
     exports.hasChanged = hasChanged;
     exports.hasOwn = hasOwn;
@@ -1909,6 +2015,7 @@ var require_shared_cjs = __commonJS({
     exports.isHTMLTag = isHTMLTag;
     exports.isIntegerKey = isIntegerKey;
     exports.isKnownHtmlAttr = isKnownHtmlAttr;
+    exports.isKnownMathMLAttr = isKnownMathMLAttr;
     exports.isKnownSvgAttr = isKnownSvgAttr;
     exports.isMap = isMap;
     exports.isMathMLTag = isMathMLTag;
@@ -1932,6 +2039,7 @@ var require_shared_cjs = __commonJS({
     exports.looseToNumber = looseToNumber;
     exports.makeMap = makeMap;
     exports.normalizeClass = normalizeClass;
+    exports.normalizeCssVarValue = normalizeCssVarValue;
     exports.normalizeProps = normalizeProps;
     exports.normalizeStyle = normalizeStyle;
     exports.objectToString = objectToString;
@@ -1948,9 +2056,9 @@ var require_shared_cjs = __commonJS({
   }
 });
 
-// ../node_modules/.pnpm/@vue+shared@3.4.25/node_modules/@vue/shared/index.js
+// ../node_modules/.pnpm/@vue+shared@3.5.41/node_modules/@vue/shared/index.js
 var require_shared = __commonJS({
-  "../node_modules/.pnpm/@vue+shared@3.4.25/node_modules/@vue/shared/index.js"(exports, module2) {
+  "../node_modules/.pnpm/@vue+shared@3.5.41/node_modules/@vue/shared/index.js"(exports, module2) {
     "use strict";
     if (process.env.NODE_ENV === "production") {
       module2.exports = require_shared_cjs_prod();
@@ -1960,9 +2068,9 @@ var require_shared = __commonJS({
   }
 });
 
-// ../node_modules/.pnpm/@vue-reactivity+watch@0.2.0_@vue+reactivity@3.4.27_@vue+shared@3.4.25/node_modules/@vue-reactivity/watch/dist/index.js
+// ../node_modules/.pnpm/@vue-reactivity+watch@0.2.0_169931a5349ceb56918f730f45a31744/node_modules/@vue-reactivity/watch/dist/index.js
 var require_dist = __commonJS({
-  "../node_modules/.pnpm/@vue-reactivity+watch@0.2.0_@vue+reactivity@3.4.27_@vue+shared@3.4.25/node_modules/@vue-reactivity/watch/dist/index.js"(exports, module2) {
+  "../node_modules/.pnpm/@vue-reactivity+watch@0.2.0_169931a5349ceb56918f730f45a31744/node_modules/@vue-reactivity/watch/dist/index.js"(exports, module2) {
     var __defProp2 = Object.defineProperty;
     var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
     var __getOwnPropNames2 = Object.getOwnPropertyNames;
@@ -2149,7 +2257,7 @@ var require_dist = __commonJS({
 var import_reflect_metadata = require("reflect-metadata");
 var dotenv = __toESM(require("dotenv"));
 var import_tsyringe19 = require("tsyringe");
-var import_http = __toESM(require("http"));
+var import_http2 = __toESM(require("http"));
 
 // ../server-shared/src/constants.ts
 var HEXO_BASE_DIR_KEY = "hexo-basedir";
@@ -2167,7 +2275,7 @@ var import_simple_json_db = __toESM(require("simple-json-db"));
 // ../server-shared/src/log-service.ts
 var import_tsyringe = require("tsyringe");
 
-// ../node_modules/.pnpm/chalk@5.3.0/node_modules/chalk/source/vendor/ansi-styles/index.js
+// ../node_modules/.pnpm/chalk@5.6.2/node_modules/chalk/source/vendor/ansi-styles/index.js
 var ANSI_BACKGROUND_OFFSET = 10;
 var wrapAnsi16 = (offset = 0) => (code) => `\x1B[${code + offset}m`;
 var wrapAnsi256 = (offset = 0) => (code) => `\x1B[${38 + offset};5;${code}m`;
@@ -2344,7 +2452,7 @@ function assembleStyles() {
 var ansiStyles = assembleStyles();
 var ansi_styles_default = ansiStyles;
 
-// ../node_modules/.pnpm/chalk@5.3.0/node_modules/chalk/source/vendor/supports-color/index.js
+// ../node_modules/.pnpm/chalk@5.6.2/node_modules/chalk/source/vendor/supports-color/index.js
 var import_node_process = __toESM(require("process"), 1);
 var import_node_os = __toESM(require("os"), 1);
 var import_node_tty = __toESM(require("tty"), 1);
@@ -2418,10 +2526,10 @@ function _supportsColor(haveStream, { streamIsTTY, sniffFlags = true } = {}) {
     return 1;
   }
   if ("CI" in env) {
-    if ("GITHUB_ACTIONS" in env || "GITEA_ACTIONS" in env) {
+    if (["GITHUB_ACTIONS", "GITEA_ACTIONS", "CIRCLECI"].some((key) => key in env)) {
       return 3;
     }
-    if (["TRAVIS", "CIRCLECI", "APPVEYOR", "GITLAB_CI", "BUILDKITE", "DRONE"].some((sign) => sign in env) || env.CI_NAME === "codeship") {
+    if (["TRAVIS", "APPVEYOR", "GITLAB_CI", "BUILDKITE", "DRONE"].some((sign) => sign in env) || env.CI_NAME === "codeship") {
       return 1;
     }
     return min;
@@ -2433,6 +2541,12 @@ function _supportsColor(haveStream, { streamIsTTY, sniffFlags = true } = {}) {
     return 3;
   }
   if (env.TERM === "xterm-kitty") {
+    return 3;
+  }
+  if (env.TERM === "xterm-ghostty") {
+    return 3;
+  }
+  if (env.TERM === "wezterm") {
     return 3;
   }
   if ("TERM_PROGRAM" in env) {
@@ -2470,7 +2584,7 @@ var supportsColor = {
 };
 var supports_color_default = supportsColor;
 
-// ../node_modules/.pnpm/chalk@5.3.0/node_modules/chalk/source/utilities.js
+// ../node_modules/.pnpm/chalk@5.6.2/node_modules/chalk/source/utilities.js
 function stringReplaceAll(string, substring, replacer) {
   let index = string.indexOf(substring);
   if (index === -1) {
@@ -2500,7 +2614,7 @@ function stringEncaseCRLFWithFirstIndex(string, prefix, postfix, index) {
   return returnValue;
 }
 
-// ../node_modules/.pnpm/chalk@5.3.0/node_modules/chalk/source/index.js
+// ../node_modules/.pnpm/chalk@5.6.2/node_modules/chalk/source/index.js
 var { stdout: stdoutColor, stderr: stderrColor } = supports_color_default;
 var GENERATOR = Symbol("GENERATOR");
 var STYLER = Symbol("STYLER");
@@ -2918,7 +3032,7 @@ var HexoInstanceService = class {
     const unload = async () => {
       await this._hexo.unwatch();
     };
-    const load = async () => {
+    const load2 = async () => {
       await this._hexo.watch();
       HexoInstanceService.INITING = false;
     };
@@ -2928,9 +3042,22 @@ var HexoInstanceService = class {
     };
     HexoInstanceService.INITING = true;
     await unload().catch(markHexoInitError);
-    const res = await Promise.resolve(fn());
-    await load().catch(markHexoInitError);
-    return res;
+    let executionError = false;
+    try {
+      return await Promise.resolve(fn());
+    } catch (err) {
+      executionError = true;
+      throw err;
+    } finally {
+      try {
+        await load2();
+      } catch (err) {
+        markHexoInitError(err);
+        this._logService.error(err);
+        if (!executionError)
+          throw new HexoInitError(String(err));
+      }
+    }
   }
 };
 HexoInstanceService.INITING = false;
@@ -3210,6 +3337,9 @@ var import_router2 = __toESM(require("@koa/router"));
 var import_path8 = __toESM(require("path"));
 var import_tsyringe9 = require("tsyringe");
 var import_fs4 = __toESM(require("fs"));
+var import_http = __toESM(require("http"));
+var import_crypto2 = require("crypto");
+var import_js_yaml = require("js-yaml");
 
 // ../node_modules/.pnpm/execa@6.1.0/node_modules/execa/index.js
 var import_node_buffer = require("buffer");
@@ -4143,20 +4273,23 @@ function execaCommand(command, options) {
   return execa(file, args, options);
 }
 
-// ../node_modules/.pnpm/ansi-regex@6.0.1/node_modules/ansi-regex/index.js
+// ../node_modules/.pnpm/ansi-regex@6.3.0/node_modules/ansi-regex/index.js
 function ansiRegex({ onlyFirst = false } = {}) {
-  const pattern = [
-    "[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]+)*|[a-zA-Z\\d]+(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]*)*)?\\u0007)",
-    "(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-ntqry=><~]))"
-  ].join("|");
+  const ST = "(?:\\u0007|\\u001B\\u005C|\\u009C)";
+  const osc = `(?:\\u001B\\][^\\u0007\\u001B\\u009C]*${ST})`;
+  const csi = "[\\u001B\\u009B][[\\]()#;?]*(?:\\d{1,4}(?:[;:]\\d{0,4})*)?[\\dA-PR-TZcf-nq-uy=><~]";
+  const pattern = `${osc}|${csi}`;
   return new RegExp(pattern, onlyFirst ? void 0 : "g");
 }
 
-// ../node_modules/.pnpm/strip-ansi@7.1.0/node_modules/strip-ansi/index.js
+// ../node_modules/.pnpm/strip-ansi@7.2.0/node_modules/strip-ansi/index.js
 var regex = ansiRegex();
 function stripAnsi(string) {
   if (typeof string !== "string") {
     throw new TypeError(`Expected a \`string\`, got \`${typeof string}\``);
+  }
+  if (!string.includes("\x1B") && !string.includes("\x9B")) {
+    return string;
   }
   return string.replace(regex, "");
 }
@@ -4165,6 +4298,13 @@ function stripAnsi(string) {
 var import_tsyringe7 = require("tsyringe");
 var execLogService = import_tsyringe7.container.resolve(LogService);
 execLogService.setScope("exec-service");
+function getExecErrorMessage(error) {
+  if (!(error instanceof Error))
+    return String(error);
+  const commandError = error;
+  const output = [commandError.stderr, commandError.stdout].filter(Boolean).join("\n").trim();
+  return output || commandError.shortMessage || commandError.message;
+}
 async function run(command, args = [], opt = { stripAnsi: false }) {
   const { stripAnsi: stripAnsi2, ...execOpt } = opt;
   execLogService.log(`run ${command} ${args.join(" ")}`);
@@ -4213,15 +4353,15 @@ function createStore(key, adapter, setup, {
   if (!all.state)
     throw new Error("must return object with state property");
   const state = (0, import_reactivity.reactive)(all.state);
-  const load = () => {
+  const load2 = () => {
     const loaded = adapter.getItem(key);
     if (loaded)
       Object.assign(state, loaded);
   };
-  load();
+  load2();
   const save = () => adapter.setItem(key, state);
   (0, import_watch.watch)(state, save, { deep: true, immediate: saveAfterCreate });
-  return { ...all, load, save, state };
+  return { ...all, load: load2, save, state };
 }
 function createStoreCreator(adapter) {
   return function(key, setup) {
@@ -4278,6 +4418,13 @@ ExecService = __decorateClass([
 ], ExecService);
 
 // src/services/hexo-service.ts
+var MAX_IMAGE_SIZE = 8 * 1024 * 1024;
+var IMAGE_EXTENSIONS = {
+  "image/gif": ".gif",
+  "image/jpeg": ".jpg",
+  "image/png": ".png",
+  "image/webp": ".webp"
+};
 function isAsset(pageOrAsset) {
   return pageOrAsset.layout === "false";
 }
@@ -4330,24 +4477,50 @@ var HexoService = class {
     this._logService = _logService;
     this._hexoInstanceService = _hexoInstanceService;
     this._execService = _execService;
+    this._previewServer = null;
+    this._previewPort = null;
+    this._previewPromise = null;
     this._logService.setScope("hexo-service");
   }
   async runWithoutModifiedOption(fn) {
     const { hexo, cleanup } = await this._hexoInstanceService.getInstanceWithOriginOptions();
-    await fn(hexo);
-    await cleanup();
+    let executionError = false;
+    try {
+      await fn(hexo);
+    } catch (err) {
+      executionError = true;
+      throw err;
+    } finally {
+      try {
+        await cleanup();
+      } catch (err) {
+        this._logService.error(err);
+        if (!executionError)
+          throw err;
+      }
+    }
   }
   async getPostByFullSource(fullSource) {
     const hexo = await this._hexoInstanceService.getInstance();
-    const post = hexo.locals.get("posts").toArray().find((item) => item.full_source === fullSource);
+    const post = hexo.locals.get("posts").toArray().find(
+      (item) => import_path8.default.resolve(item.full_source) === import_path8.default.resolve(fullSource)
+    );
+    if (!post)
+      return;
     return this.getPostBySource(post.source);
   }
   async getPostOrPageByFullSource(fullSource) {
     const hexo = await this._hexoInstanceService.getInstance();
-    const post = hexo.locals.get("posts").toArray().find((item) => item.full_source === fullSource);
+    const post = hexo.locals.get("posts").toArray().find(
+      (item) => import_path8.default.resolve(item.full_source) === import_path8.default.resolve(fullSource)
+    );
     if (post)
       return this.getPostBySource(post.source);
-    const page = hexo.locals.get("pages").toArray().find((item) => item.full_source === fullSource);
+    const page = hexo.locals.get("pages").toArray().find(
+      (item) => import_path8.default.resolve(item.full_source) === import_path8.default.resolve(fullSource)
+    );
+    if (!page)
+      return;
     return this.getPageBySource(page.source);
   }
   writeFile(fullPath, content) {
@@ -4373,6 +4546,200 @@ var HexoService = class {
       return (_a = hexo.locals.get("posts").toArray().find((item) => item.source === source)) == null ? void 0 : _a.full_source;
     else
       return (_b = hexo.locals.get("pages").toArray().find((item) => item.source === source)) == null ? void 0 : _b.full_source;
+  }
+  async getAssetPath(relativePath) {
+    const base = await this._hexoInstanceService.getBaseDir();
+    const sourceDir = import_path8.default.resolve(base, "source");
+    let decodedPath = relativePath;
+    try {
+      decodedPath = decodeURIComponent(relativePath);
+    } catch {
+    }
+    const fullPath = import_path8.default.resolve(sourceDir, decodedPath.replaceAll("\\", "/"));
+    const relative = import_path8.default.relative(sourceDir, fullPath);
+    if (!relative || relative.startsWith("..") || import_path8.default.isAbsolute(relative))
+      return;
+    try {
+      if (!import_fs4.default.statSync(fullPath).isFile())
+        return;
+    } catch {
+      return;
+    }
+    return fullPath;
+  }
+  async getYamlConfig(configPath, theme) {
+    const raw = import_fs4.default.readFileSync(configPath, "utf8");
+    (0, import_js_yaml.load)(raw);
+    return { theme, raw };
+  }
+  async setYamlConfig(configPath, raw) {
+    (0, import_js_yaml.load)(raw);
+    this.writeFile(configPath, raw);
+  }
+  async getThemeConfig() {
+    const hexo = await this._hexoInstanceService.getInstance();
+    const configPath = import_path8.default.join(hexo.theme_dir, "_config.yml");
+    return this.getYamlConfig(configPath, hexo.config.theme);
+  }
+  async setThemeConfig(raw) {
+    await this._hexoInstanceService.runBetweenReload(async () => {
+      const hexo = await this._hexoInstanceService.getInstance();
+      const configPath = import_path8.default.join(hexo.theme_dir, "_config.yml");
+      await this.setYamlConfig(configPath, raw);
+    });
+    return this.getThemeConfig();
+  }
+  async getHexoConfig() {
+    const hexo = await this._hexoInstanceService.getInstance();
+    return this.getYamlConfig(hexo.config_path);
+  }
+  async setHexoConfig(raw) {
+    await this._hexoInstanceService.runBetweenReload(async () => {
+      const hexo = await this._hexoInstanceService.getInstance();
+      await this.setYamlConfig(hexo.config_path, raw);
+    });
+    return this.getHexoConfig();
+  }
+  async getImageAssetKey(source, type) {
+    const article = type === "post" ? await this.getPostBySource(source) : await this.getPageBySource(source);
+    const withoutExtension = ((article == null ? void 0 : article.slug) || source).replaceAll("\\", "/").replace(/\.[^/.]+$/, "");
+    return withoutExtension.replace(/[^a-zA-Z0-9_-]+/g, "-").replace(/^-+|-+$/g, "") || "article";
+  }
+  async getImageAssetTempDir(base, source, type) {
+    return import_path8.default.resolve(
+      base,
+      "source",
+      ".hexon-upload-tmp",
+      await this.getImageAssetKey(source, type)
+    );
+  }
+  cleanupImageAssetTempDir(tempRoot) {
+    if (!import_fs4.default.existsSync(tempRoot))
+      return;
+    const expireAt = Date.now() - 24 * 60 * 60 * 1e3;
+    for (const entry of import_fs4.default.readdirSync(tempRoot, { withFileTypes: true })) {
+      const fullPath = import_path8.default.join(tempRoot, entry.name);
+      try {
+        if (import_fs4.default.statSync(fullPath).mtimeMs < expireAt)
+          import_fs4.default.rmSync(fullPath, { recursive: true, force: true });
+      } catch (err) {
+        this._logService.error(err);
+      }
+    }
+  }
+  imageDataMatchesType(type, data) {
+    if (type === "image/png")
+      return data.subarray(0, 8).equals(Buffer.from("89504e470d0a1a0a", "hex"));
+    if (type === "image/jpeg")
+      return data.subarray(0, 3).equals(Buffer.from("ffd8ff", "hex"));
+    if (type === "image/gif")
+      return data.subarray(0, 4).toString() === "GIF8";
+    if (type === "image/webp")
+      return data.subarray(0, 4).toString() === "RIFF" && data.subarray(8, 12).toString() === "WEBP";
+    return false;
+  }
+  getSafeImageName(name, extension) {
+    const originalName = import_path8.default.basename(name || "pasted-image");
+    const originalExtension = import_path8.default.extname(originalName);
+    const stem = import_path8.default.basename(originalName, originalExtension).replace(/[^a-zA-Z0-9\u4e00-\u9fff_-]+/g, "-").replace(/^-+|-+$/g, "") || "image";
+    return `${stem}${extension}`;
+  }
+  async uploadImage(type, source, name, mime, encodedData) {
+    const fullSource = await this.getFullPathBySource(source, type);
+    if (!fullSource)
+      throw new PostOrPageNotFoundError(type);
+    const normalizedMime = mime.toLowerCase().split(";")[0];
+    const extension = IMAGE_EXTENSIONS[normalizedMime];
+    if (!extension)
+      throw new InvalidOptionsError(
+        "\u4EC5\u652F\u6301 PNG\u3001JPG\u3001GIF \u548C WebP \u56FE\u7247",
+        "UnsupportedImageTypeError"
+      );
+    if (!encodedData || encodedData.length % 4 !== 0 || !/^[A-Za-z0-9+/]*={0,2}$/.test(encodedData))
+      throw new InvalidOptionsError("\u56FE\u7247\u6570\u636E\u65E0\u6548", "InvalidImageDataError");
+    const data = Buffer.from(encodedData, "base64");
+    if (!data.length || data.length > MAX_IMAGE_SIZE || !this.imageDataMatchesType(normalizedMime, data))
+      throw new InvalidOptionsError(
+        "\u56FE\u7247\u5927\u5C0F\u6216\u683C\u5F0F\u4E0D\u7B26\u5408\u8981\u6C42",
+        "InvalidImageDataError"
+      );
+    const base = await this._hexoInstanceService.getBaseDir();
+    const sourceDir = import_path8.default.resolve(base, "source");
+    const assetKey = await this.getImageAssetKey(source, type);
+    const targetDir = import_path8.default.resolve(sourceDir, "images", assetKey);
+    import_fs4.default.mkdirSync(targetDir, { recursive: true });
+    const id = (0, import_crypto2.randomUUID)().replaceAll("-", "");
+    const safeName = this.getSafeImageName(name, extension);
+    const initialTarget = import_path8.default.resolve(targetDir, safeName);
+    const targetName = import_fs4.default.existsSync(initialTarget) ? `${import_path8.default.basename(safeName, extension)}-${id.slice(0, 8)}${extension}` : safeName;
+    const relativePath = import_path8.default.posix.join("images", assetKey, targetName);
+    const tempDir = await this.getImageAssetTempDir(base, source, type);
+    import_fs4.default.mkdirSync(tempDir, { recursive: true });
+    this.cleanupImageAssetTempDir(
+      import_path8.default.resolve(base, "source", ".hexon-upload-tmp")
+    );
+    import_fs4.default.writeFileSync(import_path8.default.join(tempDir, `${id}.data`), data, { flag: "wx" });
+    import_fs4.default.writeFileSync(
+      import_path8.default.join(tempDir, `${id}.json`),
+      JSON.stringify({
+        type,
+        source,
+        path: relativePath,
+        name: import_path8.default.basename(targetName, extension)
+      }),
+      { flag: "wx" }
+    );
+    return {
+      id,
+      path: relativePath,
+      name: import_path8.default.basename(targetName, extension)
+    };
+  }
+  async finalizeImageAssets(type, source, assets) {
+    if (!assets.length)
+      return [];
+    const base = await this._hexoInstanceService.getBaseDir();
+    const tempDir = await this.getImageAssetTempDir(base, source, type);
+    const sourceDir = import_path8.default.resolve(base, "source");
+    const moved = [];
+    try {
+      for (const asset of assets) {
+        if (!/^[a-f0-9]{32}$/.test(asset.id))
+          throw new InvalidOptionsError(
+            "\u56FE\u7247\u8D44\u4EA7\u65E0\u6548",
+            "InvalidImageAssetError"
+          );
+        const metadataPath = import_path8.default.join(tempDir, `${asset.id}.json`);
+        const tempPath = import_path8.default.join(tempDir, `${asset.id}.data`);
+        if (!import_fs4.default.existsSync(metadataPath) || !import_fs4.default.existsSync(tempPath))
+          throw new InvalidOptionsError(
+            "\u56FE\u7247\u4E0A\u4F20\u5DF2\u8FC7\u671F\uFF0C\u8BF7\u91CD\u65B0\u4E0A\u4F20",
+            "ExpiredImageAssetError"
+          );
+        const metadata = JSON.parse(import_fs4.default.readFileSync(metadataPath, "utf8"));
+        if (metadata.type !== type || metadata.source !== source || metadata.path !== asset.path)
+          throw new InvalidOptionsError(
+            "\u56FE\u7247\u8D44\u4EA7\u4E0E\u6587\u7AE0\u4E0D\u5339\u914D",
+            "InvalidImageAssetError"
+          );
+        const target = import_path8.default.resolve(sourceDir, ...metadata.path.split("/"));
+        const relative = import_path8.default.relative(sourceDir, target);
+        if (!relative || relative.startsWith("..") || import_path8.default.isAbsolute(relative) || import_fs4.default.existsSync(target))
+          throw new InvalidOptionsError(
+            "\u56FE\u7247\u76EE\u6807\u8DEF\u5F84\u65E0\u6548",
+            "InvalidImageAssetError"
+          );
+        import_fs4.default.mkdirSync(import_path8.default.dirname(target), { recursive: true });
+        import_fs4.default.renameSync(tempPath, target);
+        import_fs4.default.rmSync(metadataPath, { force: true });
+        moved.push(target);
+      }
+      return moved;
+    } catch (err) {
+      for (const target of moved)
+        import_fs4.default.rmSync(target, { force: true });
+      throw err;
+    }
   }
   async WithCategoriesTagsBriefArticleList(article) {
     const categories = await this.listCategory();
@@ -4449,12 +4816,95 @@ var HexoService = class {
     this._logService.log("list tag", res.length);
     return res;
   }
+  async preview() {
+    if (this._previewPort) {
+      return `http://127.0.0.1:${this._previewPort}/`;
+    }
+    if (this._previewPromise)
+      return this._previewPromise;
+    this._previewPromise = this.startPreviewServer();
+    try {
+      return await this._previewPromise;
+    } finally {
+      this._previewPromise = null;
+    }
+  }
+  async startPreviewServer() {
+    const hexo = await this._hexoInstanceService.getInstance();
+    const server = import_http.default.createServer((request, response) => {
+      let pathname = "/";
+      try {
+        pathname = decodeURIComponent(
+          new URL(request.url || "/", "http://127.0.0.1").pathname
+        );
+      } catch {
+        response.statusCode = 400;
+        response.end("Bad request");
+        return;
+      }
+      const route = hexo.route.get(pathname);
+      if (!route) {
+        response.statusCode = 404;
+        response.end("Not found");
+        return;
+      }
+      const extension = import_path8.default.extname(pathname).toLowerCase();
+      const contentTypes = {
+        ".css": "text/css; charset=utf-8",
+        ".gif": "image/gif",
+        ".html": "text/html; charset=utf-8",
+        ".ico": "image/x-icon",
+        ".jpeg": "image/jpeg",
+        ".jpg": "image/jpeg",
+        ".js": "text/javascript; charset=utf-8",
+        ".json": "application/json; charset=utf-8",
+        ".png": "image/png",
+        ".svg": "image/svg+xml",
+        ".webp": "image/webp",
+        ".xml": "application/xml; charset=utf-8"
+      };
+      response.setHeader(
+        "Content-Type",
+        contentTypes[extension] || (!extension ? "text/html; charset=utf-8" : "application/octet-stream")
+      );
+      response.setHeader("Cache-Control", "no-store");
+      route.on("error", (error) => {
+        this._logService.error(error);
+        if (!response.headersSent)
+          response.statusCode = 500;
+        response.end();
+      });
+      route.pipe(response);
+    });
+    await new Promise((resolve4, reject) => {
+      const onError = (error) => {
+        server.removeListener("listening", onListening);
+        reject(error);
+      };
+      const onListening = () => {
+        server.removeListener("error", onError);
+        resolve4();
+      };
+      server.once("error", onError);
+      server.once("listening", onListening);
+      server.listen(0, "127.0.0.1");
+    });
+    const address = server.address();
+    if (!address || typeof address === "string") {
+      server.close();
+      throw new Error("failed to start Hexo preview server");
+    }
+    this._previewServer = server;
+    this._previewPort = address.port;
+    this._logService.log(`Hexo preview server listening on ${address.port}`);
+    return `http://127.0.0.1:${address.port}/`;
+  }
   async deploy(options = {}) {
     if (scriptStore.hasScript("hexo-deploy")) {
       await this._execService.run(scriptStore.getScript("hexo-deploy")).catch((err) => {
         this._logService.error(err);
         throw new ScriptError(
-          "fail to run hexo deploy script",
+          `fail to run hexo deploy script: ${getExecErrorMessage(err)}`,
           "HexoDeployScriptError"
         );
       });
@@ -4464,7 +4914,7 @@ var HexoService = class {
     const args = [];
     if (generate)
       args.push("--generate");
-    this.runWithoutModifiedOption(async (hexo) => {
+    await this.runWithoutModifiedOption(async (hexo) => {
       await hexo.call("deploy", { _: args });
       await hexo.exit();
     });
@@ -4475,7 +4925,7 @@ var HexoService = class {
       await this._execService.run(scriptStore.getScript("hexo-generate")).catch((err) => {
         this._logService.error(err);
         throw new ScriptError(
-          "fail to run hexo generate script",
+          `fail to run hexo generate script: ${getExecErrorMessage(err)}`,
           "HexoGenerateScriptError"
         );
       });
@@ -4497,7 +4947,7 @@ var HexoService = class {
       args.push("--bail");
     if (force)
       args.push("--force");
-    this.runWithoutModifiedOption(async (hexo) => {
+    await this.runWithoutModifiedOption(async (hexo) => {
       if (concurrency)
         args.push("--concurrency");
       await hexo.call("generate", { _: args });
@@ -4510,13 +4960,13 @@ var HexoService = class {
       await this._execService.run(scriptStore.getScript("hexo-clean")).catch((err) => {
         this._logService.error(err);
         throw new ScriptError(
-          "fail to run hexo clean script",
+          `fail to run hexo clean script: ${getExecErrorMessage(err)}`,
           "HexoCleanScriptError"
         );
       });
       return;
     }
-    this.runWithoutModifiedOption(async (hexo) => {
+    await this.runWithoutModifiedOption(async (hexo) => {
       await hexo.call("clean");
       await hexo.exit();
     });
@@ -4535,8 +4985,35 @@ var HexoService = class {
     );
     const fullSource = expandHomeDir(info.split("Published: ")[1].trim());
     const article = await this.getPostByFullSource(fullSource);
+    if (!article)
+      throw new PostOrPageNotFoundError("post");
     const res = await this.WithCategoriesTagsBriefArticleList(article);
     this._logService.log(`publish ${filename} with layout: ${layout}`);
+    return res;
+  }
+  async restore(source) {
+    const fullSource = await this.getFullPathBySource(source, "post");
+    if (!fullSource)
+      throw new PostOrPageNotFoundError("post");
+    const base = await this._hexoInstanceService.getBaseDir();
+    const postsDir = import_path8.default.join(base, "source", "_posts");
+    const relativeSource = import_path8.default.relative(postsDir, fullSource);
+    if (!relativeSource || relativeSource.startsWith("..") || import_path8.default.isAbsolute(relativeSource)) {
+      throw new InvalidOptionsError(
+        `${source} is not a published post`,
+        "InvalidRestoreSourceError"
+      );
+    }
+    const draftSource = import_path8.default.join(base, "source", "_drafts", relativeSource);
+    await this._hexoInstanceService.runBetweenReload(() => {
+      import_fs4.default.mkdirSync(import_path8.default.dirname(draftSource), { recursive: true });
+      import_fs4.default.renameSync(fullSource, draftSource);
+    });
+    const article = await this.getPostByFullSource(draftSource);
+    if (!article)
+      throw new PostOrPageNotFoundError("post");
+    const res = await this.WithCategoriesTagsBriefArticleList(article);
+    this._logService.log(`restore ${source} as draft`);
     return res;
   }
   async create(title, options = {}) {
@@ -4573,22 +5050,35 @@ var HexoService = class {
     });
     const fullSource = expandHomeDir(info.split("Created: ")[1].trim());
     const article = await this.getPostOrPageByFullSource(fullSource);
+    if (!article)
+      throw new PostOrPageNotFoundError("post");
     const res = this.WithCategoriesTagsBriefArticleList(article);
     this._logService.log("create succeed", fullSource);
     return res;
   }
-  async update(source, raw, type) {
+  async update(source, raw, type, assets = []) {
     const fullPath = await this.getFullPathBySource(source, type);
     if (!fullPath)
       throw new PostOrPageNotFoundError(type);
-    await this._hexoInstanceService.runBetweenReload(() => {
-      this.writeFile(fullPath, raw);
+    await this._hexoInstanceService.runBetweenReload(async () => {
+      const movedAssets = await this.finalizeImageAssets(type, source, assets);
+      try {
+        this.writeFile(fullPath, raw);
+      } catch (err) {
+        for (const assetPath of movedAssets)
+          import_fs4.default.rmSync(assetPath, { force: true });
+        throw err;
+      }
     });
     this._logService.log(`${type} update succeed`, fullPath);
     if (type === "post") {
-      return this.WithCategoriesTagsBriefArticleList(await this.getPostBySource(source));
+      return this.WithCategoriesTagsBriefArticleList(
+        await this.getPostBySource(source)
+      );
     } else {
-      return this.WithCategoriesTagsBriefArticleList(await this.getPageBySource(source));
+      return this.WithCategoriesTagsBriefArticleList(
+        await this.getPageBySource(source)
+      );
     }
   }
   async delete(source, type) {
@@ -4610,6 +5100,8 @@ HexoService = __decorateClass([
 ], HexoService);
 
 // src/routes/hexo.ts
+var import_path9 = __toESM(require("path"));
+var import_fs5 = __toESM(require("fs"));
 var router2 = new import_router2.default();
 router2.prefix("/hexo");
 router2.get("/posts", async (ctx) => {
@@ -4649,6 +5141,60 @@ router2.get("/categories", async (ctx) => {
   const hexo = import_tsyringe10.container.resolve(HexoService);
   ctx.body = await hexo.listCategory();
 });
+router2.get("/preview", async (ctx) => {
+  const hexo = import_tsyringe10.container.resolve(HexoService);
+  ctx.body = { url: await hexo.preview() };
+});
+router2.get("/theme/config", async (ctx) => {
+  const hexo = import_tsyringe10.container.resolve(HexoService);
+  ctx.body = await hexo.getThemeConfig();
+});
+router2.put("/theme/config", async (ctx) => {
+  const body = ctx.request.body;
+  if (typeof (body == null ? void 0 : body.raw) !== "string") {
+    ctx.status = 400;
+    ctx.body = "need `raw`";
+    return;
+  }
+  const hexo = import_tsyringe10.container.resolve(HexoService);
+  ctx.body = await hexo.setThemeConfig(body.raw);
+});
+router2.get("/config", async (ctx) => {
+  const hexo = import_tsyringe10.container.resolve(HexoService);
+  ctx.body = await hexo.getHexoConfig();
+});
+router2.put("/config", async (ctx) => {
+  const body = ctx.request.body;
+  if (typeof (body == null ? void 0 : body.raw) !== "string") {
+    ctx.status = 400;
+    ctx.body = "need `raw`";
+    return;
+  }
+  const hexo = import_tsyringe10.container.resolve(HexoService);
+  ctx.body = await hexo.setHexoConfig(body.raw);
+});
+router2.get("/assets", async (ctx) => {
+  const hexo = import_tsyringe10.container.resolve(HexoService);
+  const relativePath = typeof ctx.query.path === "string" ? ctx.query.path : "";
+  const fullPath = await hexo.getAssetPath(relativePath);
+  if (!fullPath) {
+    ctx.status = 404;
+    return;
+  }
+  ctx.type = import_path9.default.extname(fullPath);
+  ctx.body = import_fs5.default.createReadStream(fullPath);
+});
+router2.post("/assets/upload", async (ctx) => {
+  var _a;
+  const hexo = import_tsyringe10.container.resolve(HexoService);
+  const { type, source, name, mime, data } = (_a = ctx.request.body) != null ? _a : {};
+  if (type !== "post" && type !== "page" || typeof source !== "string" || typeof name !== "string" || typeof mime !== "string" || typeof data !== "string") {
+    ctx.status = 400;
+    ctx.body = "need `type`, `source`, `name`, `mime` and `data`";
+    return;
+  }
+  ctx.body = await hexo.uploadImage(type, source, name, mime, data);
+});
 router2.post("/deploy", async (ctx) => {
   const hexo = import_tsyringe10.container.resolve(HexoService);
   await hexo.deploy(ctx.request.body);
@@ -4674,37 +5220,57 @@ router2.post("/publish", async (ctx) => {
   }
   ctx.body = await hexo.publish(filename, layout);
 });
+router2.post("/restore", async (ctx) => {
+  const hexo = import_tsyringe10.container.resolve(HexoService);
+  const { source } = ctx.request.body;
+  if (!source) {
+    ctx.status = 400;
+    ctx.body = "need `source`";
+    return;
+  }
+  ctx.body = await hexo.restore(source);
+});
 router2.post("/create", async (ctx) => {
   const hexo = import_tsyringe10.container.resolve(HexoService);
-  const { title, layout, path: path9, slug, replace } = ctx.request.body;
+  const { title, layout, path: path10, slug, replace } = ctx.request.body;
   if (!title) {
     ctx.status = 400;
     ctx.body = "need `title`";
     return;
   }
-  ctx.body = await hexo.create(title, { layout, path: path9, slug, replace });
+  ctx.body = await hexo.create(title, { layout, path: path10, slug, replace });
 });
 router2.put("/post/:source", async (ctx) => {
   const hexo = import_tsyringe10.container.resolve(HexoService);
   const { source } = ctx.params;
-  const { raw } = ctx.request.body;
+  const { raw, assets } = ctx.request.body;
   if (!source || !raw) {
     ctx.status = 400;
     ctx.body = "need `source` and `raw`";
     return;
   }
-  ctx.body = await hexo.update(source, raw, "post");
+  ctx.body = await hexo.update(
+    source,
+    raw,
+    "post",
+    Array.isArray(assets) ? assets : []
+  );
 });
 router2.put("/page/:source", async (ctx) => {
   const hexo = import_tsyringe10.container.resolve(HexoService);
   const { source } = ctx.params;
-  const { raw } = ctx.request.body;
+  const { raw, assets } = ctx.request.body;
   if (!source || !raw) {
     ctx.status = 400;
     ctx.body = "need `source` and `raw`";
     return;
   }
-  ctx.body = await hexo.update(source, raw, "page");
+  ctx.body = await hexo.update(
+    source,
+    raw,
+    "page",
+    Array.isArray(assets) ? assets : []
+  );
 });
 router2.delete("/post/:source", async (ctx) => {
   const hexo = import_tsyringe10.container.resolve(HexoService);
@@ -4760,7 +5326,7 @@ var GitService = class {
       return this._execService.run(scriptStore.getScript("git-sync")).catch((err) => {
         this._logService.error(err);
         throw new ScriptError(
-          "fail to run git sync script",
+          `fail to run git sync script: ${getExecErrorMessage(err)}`,
           "GitSyncScriptError"
         );
       });
@@ -4792,7 +5358,7 @@ var GitService = class {
       return this._execService.run(scriptStore.getScript("git-save")).catch((err) => {
         this._logService.error(err);
         throw new ScriptError(
-          "fail to run git save script",
+          `fail to run git save script: ${getExecErrorMessage(err)}`,
           "GitSaveScriptError"
         );
       });
@@ -4983,7 +5549,7 @@ app.use(async (ctx, next) => {
       logService.error(err);
   }
 });
-app.use((0, import_koa_bodyparser.default)());
+app.use((0, import_koa_bodyparser.default)({ jsonLimit: "16mb" }));
 app.use((0, import_koa_compress.default)());
 app.use(http_secure_default());
 app.use((0, import_koa_logger.default)());
@@ -4993,7 +5559,7 @@ app.use(routes_default.routes());
 var app_default = app;
 
 // src/index.ts
-var import_path9 = __toESM(require("path"));
+var import_path10 = __toESM(require("path"));
 
 // ../server-shared/src/env-service.ts
 var import_tsyringe18 = require("tsyringe");
@@ -5047,10 +5613,10 @@ EnvService = __decorateClass([
 // src/index.ts
 (async () => {
   dotenv.config({
-    path: process.env.NODE_ENV === "production" ? process.cwd() + "/.env" : import_path9.default.resolve(process.cwd(), "../.env")
+    path: process.env.NODE_ENV === "production" ? process.cwd() + "/.env" : import_path10.default.resolve(process.cwd(), "../.env")
   });
   const storage = import_tsyringe19.container.resolve(StorageService);
-  const server = import_http.default.createServer(app_default.callback());
+  const server = import_http2.default.createServer(app_default.callback());
   server.on("listening", () => {
     const addr = server.address();
     const bind = typeof addr === "string" ? "pipe " + addr : "http://localhost:" + addr.port;
@@ -5062,9 +5628,8 @@ EnvService = __decorateClass([
   await env2.sync();
   server.listen(storage.get(HEXON_PORT_KEY) || HEXON_DEFAULT_PORT);
 })();
-/*! #__NO_SIDE_EFFECTS__ */
 /**
-* @vue/shared v3.4.25
+* @vue/shared v3.5.41
 * (c) 2018-present Yuxi (Evan) You and Vue contributors
 * @license MIT
 **/

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IFrontmatterTemplateItem } from "@server/server/types/api"
+import { IFrontmatterTemplateItem } from "@shared/types/api"
 import { computed, onMounted, ref } from "vue"
 import { listFrontmatterTemplate, setFrontmatterTemplate } from "~/api/template"
 import { HButton } from "@/ui/button"

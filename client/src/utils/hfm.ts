@@ -109,3 +109,8 @@ export const updateStringByObj = (
 ): string => {
   return stringifyHfm({ ...parseHfm(str), ...obj })
 }
+
+export const ensureTitle = (str: string, title: string = ""): string => {
+  if (!title || parseHfm(str).title) return str
+  return updateStringByObj(str, { ...parseHfm(str), title })
+}

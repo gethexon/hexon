@@ -57,10 +57,17 @@ const detailStore = useDetailStore()
       type="success"
       round
       inverted
-      @click="emits('on-action', { type: 'publish' })"
-      v-if="detailStore.isDraft"
+      @click="
+        emits('on-action', {
+          type: detailStore.isDraft ? 'publish' : 'restore',
+        })
+      "
+      v-if="detailStore.isPost"
     >
-      <HIcon :name="HIconName.Upload" />
+      <HIcon
+        :name="HIconName.Upload"
+        :style="{ transform: detailStore.isDraft ? '' : 'rotate(180deg)' }"
+      />
     </HButton>
   </HToolbar>
 </template>

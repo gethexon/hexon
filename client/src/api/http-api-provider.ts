@@ -5,6 +5,7 @@ import {
   ZBriefPost,
   ZCategory,
   ZIPageWithAllData,
+  ZImageAsset,
   ZIPostWithAllData,
   ZIWithAllData,
   ZPage,
@@ -16,6 +17,7 @@ import {
   BriefPost,
   Category,
   IPageWithAllData,
+  IImageAsset,
   IPostWithAllData,
   IWithAllData,
   Page,
@@ -24,10 +26,45 @@ import {
 } from "./entities"
 import { IApiProvider, IDeployOptions, IGenerateOptions } from "./interface"
 import { request } from "./instance"
+import { IYamlConfigResponse } from "@shared/types/api"
 
 const dashIdToId = ({ _id: id, ...rest }: any) => ({ id, ...rest })
 
+async function fileToBase64(file: File) {
+  const bytes = new Uint8Array(await file.arrayBuffer())
+  let binary = ""
+  const chunkSize = 0x8000
+  for (let index = 0; index < bytes.length; index += chunkSize) {
+    binary += String.fromCharCode(...bytes.subarray(index, index + chunkSize))
+  }
+  return window.btoa(binary)
+}
+
 export class HttpApiProvider implements IApiProvider {
+  async getThemeConfig(): Promise<IYamlConfigResponse> {
+    const res = await request.get<IYamlConfigResponse>("/hexo/theme/config")
+    return res.data
+  }
+
+  async setThemeConfig(raw: string): Promise<IYamlConfigResponse> {
+    const res = await request.put<IYamlConfigResponse>("/hexo/theme/config", {
+      raw,
+    })
+    return res.data
+  }
+
+  async getHexoConfig(): Promise<IYamlConfigResponse> {
+    const res = await request.get<IYamlConfigResponse>("/hexo/config")
+    return res.data
+  }
+
+  async setHexoConfig(raw: string): Promise<IYamlConfigResponse> {
+    const res = await request.put<IYamlConfigResponse>("/hexo/config", {
+      raw,
+    })
+    return res.data
+  }
+
   async getAllData(): Promise<IWithAllData> {
     const [posts, pages, tags, categories] = await Promise.all([
       this.getPosts(),
@@ -82,26 +119,30 @@ export class HttpApiProvider implements IApiProvider {
   async saveArticle(
     type: "post",
     source: string,
-    raw: string
+    raw: string,
+    assets?: IImageAsset[]
   ): Promise<IPostWithAllData>
   async saveArticle(
     type: "page",
     source: string,
-    raw: string
+    raw: string,
+    assets?: IImageAsset[]
   ): Promise<IPageWithAllData>
   async saveArticle(
     type: "post" | "page",
     source: string,
-    raw: string
+    raw: string,
+    assets?: IImageAsset[]
   ): Promise<IPostWithAllData | IPageWithAllData>
   async saveArticle(
     type: "post" | "page",
     source: string,
-    raw: string
+    raw: string,
+    assets: IImageAsset[] = []
   ): Promise<IPostWithAllData | IPageWithAllData> {
     const res = await request.put(
       `/hexo/${type}/${encodeURIComponent(source)}`,
-      { raw }
+      { raw, assets }
     )
     if (type === "post") {
       const { article: post, posts, pages, tags, categories } = res.data
@@ -124,6 +165,21 @@ export class HttpApiProvider implements IApiProvider {
       })
       return data
     }
+  }
+
+  async uploadImage(
+    type: "post" | "page",
+    source: string,
+    file: File
+  ): Promise<IImageAsset> {
+    const res = await request.post("/hexo/assets/upload", {
+      type,
+      source,
+      name: file.name,
+      mime: file.type,
+      data: await fileToBase64(file),
+    })
+    return ZImageAsset.parse(res.data)
   }
   async deleteArticle(type: "post", source: string): Promise<IWithAllData>
   async deleteArticle(type: "page", source: string): Promise<IWithAllData>
@@ -184,11 +240,20 @@ export class HttpApiProvider implements IApiProvider {
     const { article } = res.data
     return ZPost.parse(dashIdToId(article))
   }
+  async restoreArticle(source: string): Promise<Post> {
+    const res = await request.post("/hexo/restore", { source })
+    const { article } = res.data
+    return ZPost.parse(dashIdToId(article))
+  }
   async deploy(options: IDeployOptions = {}): Promise<void> {
     return request.post("/hexo/deploy", options)
   }
   async generate(options: IGenerateOptions = {}): Promise<void> {
     return request.post("/hexo/generate", options)
+  }
+  async preview(): Promise<string> {
+    const res = await request.get<{ url: string }>("/hexo/preview")
+    return res.data.url
   }
   async clean(): Promise<void> {
     return request.post("/hexo/clean")
