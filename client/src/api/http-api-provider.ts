@@ -26,6 +26,7 @@ import {
 } from "./entities"
 import { IApiProvider, IDeployOptions, IGenerateOptions } from "./interface"
 import { request } from "./instance"
+import { IYamlConfigResponse } from "@shared/types/api"
 
 const dashIdToId = ({ _id: id, ...rest }: any) => ({ id, ...rest })
 
@@ -40,6 +41,30 @@ async function fileToBase64(file: File) {
 }
 
 export class HttpApiProvider implements IApiProvider {
+  async getThemeConfig(): Promise<IYamlConfigResponse> {
+    const res = await request.get<IYamlConfigResponse>("/hexo/theme/config")
+    return res.data
+  }
+
+  async setThemeConfig(raw: string): Promise<IYamlConfigResponse> {
+    const res = await request.put<IYamlConfigResponse>("/hexo/theme/config", {
+      raw,
+    })
+    return res.data
+  }
+
+  async getHexoConfig(): Promise<IYamlConfigResponse> {
+    const res = await request.get<IYamlConfigResponse>("/hexo/config")
+    return res.data
+  }
+
+  async setHexoConfig(raw: string): Promise<IYamlConfigResponse> {
+    const res = await request.put<IYamlConfigResponse>("/hexo/config", {
+      raw,
+    })
+    return res.data
+  }
+
   async getAllData(): Promise<IWithAllData> {
     const [posts, pages, tags, categories] = await Promise.all([
       this.getPosts(),

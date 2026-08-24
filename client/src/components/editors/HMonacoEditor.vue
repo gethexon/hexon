@@ -12,6 +12,7 @@ import { useMonacoTheme } from "./theme"
 const props = defineProps<{
   value: string
   id: string
+  language?: string
   fontFamily?: string
   onImageImport?: (files: File[]) => Promise<string | undefined>
 }>()
@@ -88,9 +89,7 @@ function isFileDrag(data: DataTransfer | null): boolean {
     return false
   }
 
-  return Array.from(data.items).some(
-    (item) => item.kind === "file"
-  )
+  return Array.from(data.items).some((item) => item.kind === "file")
 }
 
 /**
@@ -134,10 +133,7 @@ function isPotentialImageDrag(data: DataTransfer | null): boolean {
 /**
  * 上传图片并向 Monaco 插入 Markdown。
  */
-async function importImages(
-  files: File[],
-  dropPosition?: monaco.Position
-) {
+async function importImages(files: File[], dropPosition?: monaco.Position) {
   if (!files.length) {
     return
   }
@@ -332,13 +328,12 @@ function onDrop(event: DragEvent) {
   /**
    * 获取鼠标在 Monaco 中对应的位置。
    */
-  const position =
-    instance?.getTargetAtClientPoint(
-      event.clientX,
-      event.clientY
-    )?.position
+  const position = instance?.getTargetAtClientPoint(
+    event.clientX,
+    event.clientY
+  )?.position
 
-  void importImages(files, position)
+  void importImages(files, position ?? undefined)
 }
 
 /**
@@ -370,7 +365,7 @@ function resetModel() {
 
   const newModel = monaco.editor.createModel(
     props.value,
-    "markdown"
+    props.language ?? "markdown"
   )
 
   instance.setModel(newModel)
@@ -388,18 +383,20 @@ function createInstance() {
 
   instance = monaco.editor.create(dom.value, {
     ...editorOptions,
-    fontFamily:
-      props.fontFamily ?? editorOptions.fontFamily,
+    language: props.language ?? editorOptions.language,
+    fontFamily: props.fontFamily ?? editorOptions.fontFamily,
   })
 
-  const mdExtension = new MonacoMarkdownExtension()
-  mdExtension.activate(instance)
+  if ((props.language ?? "markdown") === "markdown") {
+    const mdExtension = new MonacoMarkdownExtension()
+    mdExtension.activate(instance)
 
-  const fmExtension = new PrettierFormatterExtension()
-  fmExtension.activate(instance)
+    const fmExtension = new PrettierFormatterExtension()
+    fmExtension.activate(instance)
 
-  const mdImgExtension = new MarkdownImageExtension()
-  mdImgExtension.activate()
+    const mdImgExtension = new MarkdownImageExtension()
+    mdImgExtension.activate()
+  }
 
   resetModel()
 
@@ -408,19 +405,13 @@ function createInstance() {
       return
     }
 
-    emits(
-      "update:value",
-      instance.getValue()
-    )
+    emits("update:value", instance.getValue())
   })
 
   instance.addAction({
     id: "hexon.save",
     label: "Save Changes",
-    keybindings: [
-      monaco.KeyMod.CtrlCmd |
-        monaco.KeyCode.KeyS,
-    ],
+    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS],
     run() {
       emits("on-save")
     },
@@ -459,34 +450,15 @@ onMounted(() => {
    * Monaco 内部有 textarea、view-lines、overlay 等大量元素，
    * capture 可以更可靠地捕获事件。
    */
-  el.addEventListener(
-    "dragenter",
-    onDragEnter,
-    true
-  )
+  el.addEventListener("dragenter", onDragEnter, true)
 
-  el.addEventListener(
-    "dragover",
-    onDragOver,
-    true
-  )
+  el.addEventListener("dragover", onDragOver, true)
 
-  el.addEventListener(
-    "dragleave",
-    onDragLeave,
-    true
-  )
+  el.addEventListener("dragleave", onDragLeave, true)
 
-  el.addEventListener(
-    "drop",
-    onDrop,
-    true
-  )
+  el.addEventListener("drop", onDrop, true)
 
-  el.addEventListener(
-    "paste",
-    onPaste
-  )
+  el.addEventListener("paste", onPaste)
 })
 
 watch(
@@ -521,34 +493,15 @@ onBeforeUnmount(() => {
   const el = container.value
 
   if (el) {
-    el.removeEventListener(
-      "dragenter",
-      onDragEnter,
-      true
-    )
+    el.removeEventListener("dragenter", onDragEnter, true)
 
-    el.removeEventListener(
-      "dragover",
-      onDragOver,
-      true
-    )
+    el.removeEventListener("dragover", onDragOver, true)
 
-    el.removeEventListener(
-      "dragleave",
-      onDragLeave,
-      true
-    )
+    el.removeEventListener("dragleave", onDragLeave, true)
 
-    el.removeEventListener(
-      "drop",
-      onDrop,
-      true
-    )
+    el.removeEventListener("drop", onDrop, true)
 
-    el.removeEventListener(
-      "paste",
-      onPaste
-    )
+    el.removeEventListener("paste", onPaste)
   }
 
   disposeInstance()
@@ -560,14 +513,8 @@ useMonacoTheme()
 </script>
 
 <template>
-  <div
-    ref="container"
-    class="h-monaco-editor relative"
-  >
-    <div
-      ref="dom"
-      class="instance w-full h-full overflow-hidden"
-    />
+  <div ref="container" class="h-monaco-editor relative">
+    <div ref="dom" class="instance w-full h-full overflow-hidden" />
 
     <div
       v-if="dragging"
@@ -580,10 +527,7 @@ useMonacoTheme()
     <div
       v-if="importing"
       class="absolute bottom-2 right-2 z-50 rounded-md px-3 py-1 text-sm pointer-events-none"
-      style="
-        background: rgba(0, 0, 0, 0.65);
-        color: white;
-      "
+      style="background: rgba(0, 0, 0, 0.65); color: white"
     >
       图片上传中...
     </div>

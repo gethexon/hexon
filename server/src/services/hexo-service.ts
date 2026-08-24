@@ -4,6 +4,7 @@ import fs from "fs"
 import http from "http"
 import { randomUUID } from "crypto"
 import HexoCore from "hexo"
+import { load } from "js-yaml"
 import { BRIEF_LENGTH } from "@server-shared/constants"
 import {
   InvalidOptionsError,
@@ -30,6 +31,7 @@ import {
   toPost,
   toTag,
 } from "@server/utils/hexo"
+import { IYamlConfigResponse } from "@shared/types/api"
 import { scriptStore } from "@server-shared/store"
 import { ExecService } from "./exec-service"
 
@@ -288,6 +290,48 @@ export class HexoService implements IHexoAPI, IHexoCommand, IHexoCli {
       return
     }
     return fullPath
+  }
+
+  private async getYamlConfig(
+    configPath: string,
+    theme?: string | false
+  ): Promise<IYamlConfigResponse> {
+    const raw = fs.readFileSync(configPath, "utf8")
+    load(raw)
+    return { theme, raw }
+  }
+
+  private async setYamlConfig(configPath: string, raw: string) {
+    load(raw)
+    this.writeFile(configPath, raw)
+  }
+
+  async getThemeConfig(): Promise<IYamlConfigResponse> {
+    const hexo = await this._hexoInstanceService.getInstance()
+    const configPath = path.join(hexo.theme_dir, "_config.yml")
+    return this.getYamlConfig(configPath, hexo.config.theme)
+  }
+
+  async setThemeConfig(raw: string) {
+    await this._hexoInstanceService.runBetweenReload(async () => {
+      const hexo = await this._hexoInstanceService.getInstance()
+      const configPath = path.join(hexo.theme_dir, "_config.yml")
+      await this.setYamlConfig(configPath, raw)
+    })
+    return this.getThemeConfig()
+  }
+
+  async getHexoConfig(): Promise<IYamlConfigResponse> {
+    const hexo = await this._hexoInstanceService.getInstance()
+    return this.getYamlConfig(hexo.config_path)
+  }
+
+  async setHexoConfig(raw: string) {
+    await this._hexoInstanceService.runBetweenReload(async () => {
+      const hexo = await this._hexoInstanceService.getInstance()
+      await this.setYamlConfig(hexo.config_path, raw)
+    })
+    return this.getHexoConfig()
   }
 
   private async getImageAssetKey(

@@ -16,6 +16,9 @@ const HCreateArticleModal = defineAsyncComponent(
 const HSettingsModal = defineAsyncComponent(
   () => import("@/modals/HSettingsModal.vue")
 )
+const HThemeConfigModal = defineAsyncComponent(
+  () => import("@/modals/HThemeConfigModal.vue")
+)
 
 export const useDispatcher = defineStore("dispatcher", {
   state: () => ({}),
@@ -94,6 +97,9 @@ export const useDispatcher = defineStore("dispatcher", {
     },
     showSettingsModal() {
       this.modal.create(HSettingsModal)
+    },
+    showThemeConfigModal() {
+      this.modal.create(HThemeConfigModal)
     },
     //#endregion
     async createArticle(title: string, options: ICreateOptions) {
