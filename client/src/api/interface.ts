@@ -10,6 +10,7 @@ import {
   Post,
   Tag,
 } from "./entities"
+import { IYamlConfigResponse } from "@shared/types/api"
 
 export interface ICreateOptions {
   layout?: string
@@ -28,6 +29,10 @@ export interface IGenerateOptions {
   concurrency?: boolean
 }
 export interface IApiProvider {
+  getThemeConfig(): Promise<IYamlConfigResponse>
+  setThemeConfig(raw: string): Promise<IYamlConfigResponse>
+  getHexoConfig(): Promise<IYamlConfigResponse>
+  setHexoConfig(raw: string): Promise<IYamlConfigResponse>
   getAllData(): Promise<IWithAllData>
   getPosts(): Promise<BriefPost[]>
   getPages(): Promise<BriefPage[]>

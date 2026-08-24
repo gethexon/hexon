@@ -342,6 +342,9 @@ importers:
       inquirer:
         specifier: ^8.2.6
         version: 8.2.7(@types/node@22.20.1)
+      js-yaml:
+        specifier: ^4.1.0
+        version: 4.3.1
       jsencrypt:
         specifier: ^3.3.2
         version: 3.5.4

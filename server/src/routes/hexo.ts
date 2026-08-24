@@ -48,6 +48,34 @@ router.get("/preview", async (ctx: Context) => {
   const hexo = container.resolve(HexoService)
   ctx.body = { url: await hexo.preview() }
 })
+router.get("/theme/config", async (ctx: Context) => {
+  const hexo = container.resolve(HexoService)
+  ctx.body = await hexo.getThemeConfig()
+})
+router.put("/theme/config", async (ctx: Context) => {
+  const body = ctx.request.body as { raw?: unknown } | undefined
+  if (typeof body?.raw !== "string") {
+    ctx.status = 400
+    ctx.body = "need `raw`"
+    return
+  }
+  const hexo = container.resolve(HexoService)
+  ctx.body = await hexo.setThemeConfig(body.raw)
+})
+router.get("/config", async (ctx: Context) => {
+  const hexo = container.resolve(HexoService)
+  ctx.body = await hexo.getHexoConfig()
+})
+router.put("/config", async (ctx: Context) => {
+  const body = ctx.request.body as { raw?: unknown } | undefined
+  if (typeof body?.raw !== "string") {
+    ctx.status = 400
+    ctx.body = "need `raw`"
+    return
+  }
+  const hexo = container.resolve(HexoService)
+  ctx.body = await hexo.setHexoConfig(body.raw)
+})
 router.get("/assets", async (ctx: Context) => {
   const hexo = container.resolve(HexoService)
   const relativePath = typeof ctx.query.path === "string" ? ctx.query.path : ""

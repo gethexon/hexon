@@ -27,6 +27,7 @@
     "hexo": "^7.3.0",
     "http-errors": "^2.0.0",
     "inquirer": "^8.2.6",
+    "js-yaml": "^4.1.0",
     "jsencrypt": "^3.3.2",
     "jsonwebtoken": "^9.0.3",
     "koa": "^2.15.3",

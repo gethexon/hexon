@@ -31,9 +31,9 @@ var __decorateClass = (decorators, target, key, kind) => {
 };
 var __decorateParam = (index, decorator) => (target, key) => decorator(target, key, index);
 
-// ../.pnpm-update-store/isexe@2.0.0/node_modules/isexe/windows.js
+// ../node_modules/.pnpm/isexe@2.0.0/node_modules/isexe/windows.js
 var require_windows = __commonJS({
-  "../.pnpm-update-store/isexe@2.0.0/node_modules/isexe/windows.js"(exports, module2) {
+  "../node_modules/.pnpm/isexe@2.0.0/node_modules/isexe/windows.js"(exports, module2) {
     module2.exports = isexe;
     isexe.sync = sync;
     var fs4 = require("fs");
@@ -71,9 +71,9 @@ var require_windows = __commonJS({
   }
 });
 
-// ../.pnpm-update-store/isexe@2.0.0/node_modules/isexe/mode.js
+// ../node_modules/.pnpm/isexe@2.0.0/node_modules/isexe/mode.js
 var require_mode = __commonJS({
-  "../.pnpm-update-store/isexe@2.0.0/node_modules/isexe/mode.js"(exports, module2) {
+  "../node_modules/.pnpm/isexe@2.0.0/node_modules/isexe/mode.js"(exports, module2) {
     module2.exports = isexe;
     isexe.sync = sync;
     var fs4 = require("fs");
@@ -104,9 +104,9 @@ var require_mode = __commonJS({
   }
 });
 
-// ../.pnpm-update-store/isexe@2.0.0/node_modules/isexe/index.js
+// ../node_modules/.pnpm/isexe@2.0.0/node_modules/isexe/index.js
 var require_isexe = __commonJS({
-  "../.pnpm-update-store/isexe@2.0.0/node_modules/isexe/index.js"(exports, module2) {
+  "../node_modules/.pnpm/isexe@2.0.0/node_modules/isexe/index.js"(exports, module2) {
     var fs4 = require("fs");
     var core;
     if (process.platform === "win32" || global.TESTING_WINDOWS) {
@@ -159,9 +159,9 @@ var require_isexe = __commonJS({
   }
 });
 
-// ../.pnpm-update-store/which@2.0.2/node_modules/which/which.js
+// ../node_modules/.pnpm/which@2.0.2/node_modules/which/which.js
 var require_which = __commonJS({
-  "../.pnpm-update-store/which@2.0.2/node_modules/which/which.js"(exports, module2) {
+  "../node_modules/.pnpm/which@2.0.2/node_modules/which/which.js"(exports, module2) {
     var isWindows = process.platform === "win32" || process.env.OSTYPE === "cygwin" || process.env.OSTYPE === "msys";
     var path10 = require("path");
     var COLON = isWindows ? ";" : ":";
@@ -253,9 +253,9 @@ var require_which = __commonJS({
   }
 });
 
-// ../.pnpm-update-store/path-key@3.1.1/node_modules/path-key/index.js
+// ../node_modules/.pnpm/path-key@3.1.1/node_modules/path-key/index.js
 var require_path_key = __commonJS({
-  "../.pnpm-update-store/path-key@3.1.1/node_modules/path-key/index.js"(exports, module2) {
+  "../node_modules/.pnpm/path-key@3.1.1/node_modules/path-key/index.js"(exports, module2) {
     "use strict";
     var pathKey2 = (options = {}) => {
       const environment = options.env || process.env;
@@ -270,9 +270,9 @@ var require_path_key = __commonJS({
   }
 });
 
-// ../.pnpm-update-store/cross-spawn@7.0.6/node_modules/cross-spawn/lib/util/resolveCommand.js
+// ../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/lib/util/resolveCommand.js
 var require_resolveCommand = __commonJS({
-  "../.pnpm-update-store/cross-spawn@7.0.6/node_modules/cross-spawn/lib/util/resolveCommand.js"(exports, module2) {
+  "../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/lib/util/resolveCommand.js"(exports, module2) {
     "use strict";
     var path10 = require("path");
     var which = require_which();
@@ -312,9 +312,9 @@ var require_resolveCommand = __commonJS({
   }
 });
 
-// ../.pnpm-update-store/cross-spawn@7.0.6/node_modules/cross-spawn/lib/util/escape.js
+// ../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/lib/util/escape.js
 var require_escape = __commonJS({
-  "../.pnpm-update-store/cross-spawn@7.0.6/node_modules/cross-spawn/lib/util/escape.js"(exports, module2) {
+  "../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/lib/util/escape.js"(exports, module2) {
     "use strict";
     var metaCharsRegExp = /([()\][%!^"`<>&|;, *?])/g;
     function escapeCommand(arg) {
@@ -337,17 +337,17 @@ var require_escape = __commonJS({
   }
 });
 
-// ../.pnpm-update-store/shebang-regex@3.0.0/node_modules/shebang-regex/index.js
+// ../node_modules/.pnpm/shebang-regex@3.0.0/node_modules/shebang-regex/index.js
 var require_shebang_regex = __commonJS({
-  "../.pnpm-update-store/shebang-regex@3.0.0/node_modules/shebang-regex/index.js"(exports, module2) {
+  "../node_modules/.pnpm/shebang-regex@3.0.0/node_modules/shebang-regex/index.js"(exports, module2) {
     "use strict";
     module2.exports = /^#!(.*)/;
   }
 });
 
-// ../.pnpm-update-store/shebang-command@2.0.0/node_modules/shebang-command/index.js
+// ../node_modules/.pnpm/shebang-command@2.0.0/node_modules/shebang-command/index.js
 var require_shebang_command = __commonJS({
-  "../.pnpm-update-store/shebang-command@2.0.0/node_modules/shebang-command/index.js"(exports, module2) {
+  "../node_modules/.pnpm/shebang-command@2.0.0/node_modules/shebang-command/index.js"(exports, module2) {
     "use strict";
     var shebangRegex = require_shebang_regex();
     module2.exports = (string = "") => {
@@ -365,9 +365,9 @@ var require_shebang_command = __commonJS({
   }
 });
 
-// ../.pnpm-update-store/cross-spawn@7.0.6/node_modules/cross-spawn/lib/util/readShebang.js
+// ../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/lib/util/readShebang.js
 var require_readShebang = __commonJS({
-  "../.pnpm-update-store/cross-spawn@7.0.6/node_modules/cross-spawn/lib/util/readShebang.js"(exports, module2) {
+  "../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/lib/util/readShebang.js"(exports, module2) {
     "use strict";
     var fs4 = require("fs");
     var shebangCommand = require_shebang_command();
@@ -387,9 +387,9 @@ var require_readShebang = __commonJS({
   }
 });
 
-// ../.pnpm-update-store/cross-spawn@7.0.6/node_modules/cross-spawn/lib/parse.js
+// ../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/lib/parse.js
 var require_parse = __commonJS({
-  "../.pnpm-update-store/cross-spawn@7.0.6/node_modules/cross-spawn/lib/parse.js"(exports, module2) {
+  "../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/lib/parse.js"(exports, module2) {
     "use strict";
     var path10 = require("path");
     var resolveCommand = require_resolveCommand();
@@ -449,9 +449,9 @@ var require_parse = __commonJS({
   }
 });
 
-// ../.pnpm-update-store/cross-spawn@7.0.6/node_modules/cross-spawn/lib/enoent.js
+// ../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/lib/enoent.js
 var require_enoent = __commonJS({
-  "../.pnpm-update-store/cross-spawn@7.0.6/node_modules/cross-spawn/lib/enoent.js"(exports, module2) {
+  "../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/lib/enoent.js"(exports, module2) {
     "use strict";
     var isWin = process.platform === "win32";
     function notFoundError(original, syscall) {
@@ -499,9 +499,9 @@ var require_enoent = __commonJS({
   }
 });
 
-// ../.pnpm-update-store/cross-spawn@7.0.6/node_modules/cross-spawn/index.js
+// ../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/index.js
 var require_cross_spawn = __commonJS({
-  "../.pnpm-update-store/cross-spawn@7.0.6/node_modules/cross-spawn/index.js"(exports, module2) {
+  "../node_modules/.pnpm/cross-spawn@7.0.6/node_modules/cross-spawn/index.js"(exports, module2) {
     "use strict";
     var cp = require("child_process");
     var parse = require_parse();
@@ -526,9 +526,9 @@ var require_cross_spawn = __commonJS({
   }
 });
 
-// ../.pnpm-update-store/signal-exit@3.0.7/node_modules/signal-exit/signals.js
+// ../node_modules/.pnpm/signal-exit@3.0.7/node_modules/signal-exit/signals.js
 var require_signals = __commonJS({
-  "../.pnpm-update-store/signal-exit@3.0.7/node_modules/signal-exit/signals.js"(exports, module2) {
+  "../node_modules/.pnpm/signal-exit@3.0.7/node_modules/signal-exit/signals.js"(exports, module2) {
     module2.exports = [
       "SIGABRT",
       "SIGALRM",
@@ -560,9 +560,9 @@ var require_signals = __commonJS({
   }
 });
 
-// ../.pnpm-update-store/signal-exit@3.0.7/node_modules/signal-exit/index.js
+// ../node_modules/.pnpm/signal-exit@3.0.7/node_modules/signal-exit/index.js
 var require_signal_exit = __commonJS({
-  "../.pnpm-update-store/signal-exit@3.0.7/node_modules/signal-exit/index.js"(exports, module2) {
+  "../node_modules/.pnpm/signal-exit@3.0.7/node_modules/signal-exit/index.js"(exports, module2) {
     var process5 = global.process;
     var processOk = function(process6) {
       return process6 && typeof process6 === "object" && typeof process6.removeListener === "function" && typeof process6.emit === "function" && typeof process6.reallyExit === "function" && typeof process6.listeners === "function" && typeof process6.kill === "function" && typeof process6.pid === "number" && typeof process6.on === "function";
@@ -598,7 +598,7 @@ var require_signal_exit = __commonJS({
         }
         assert.equal(typeof cb, "function", "a callback must be provided for exit handler");
         if (loaded === false) {
-          load();
+          load2();
         }
         var ev = "exit";
         if (opts && opts.alwaysLast) {
@@ -658,7 +658,7 @@ var require_signal_exit = __commonJS({
         return signals;
       };
       loaded = false;
-      load = function load2() {
+      load2 = function load3() {
         if (loaded || !processOk(global.process)) {
           return;
         }
@@ -675,7 +675,7 @@ var require_signal_exit = __commonJS({
         process5.emit = processEmit;
         process5.reallyExit = processReallyExit;
       };
-      module2.exports.load = load;
+      module2.exports.load = load2;
       originalProcessReallyExit = process5.reallyExit;
       processReallyExit = function processReallyExit2(code) {
         if (!processOk(global.process)) {
@@ -710,7 +710,7 @@ var require_signal_exit = __commonJS({
     var emit;
     var sigListeners;
     var loaded;
-    var load;
+    var load2;
     var originalProcessReallyExit;
     var processReallyExit;
     var originalProcessEmit;
@@ -718,9 +718,9 @@ var require_signal_exit = __commonJS({
   }
 });
 
-// ../.pnpm-update-store/get-stream@6.0.1/node_modules/get-stream/buffer-stream.js
+// ../node_modules/.pnpm/get-stream@6.0.1/node_modules/get-stream/buffer-stream.js
 var require_buffer_stream = __commonJS({
-  "../.pnpm-update-store/get-stream@6.0.1/node_modules/get-stream/buffer-stream.js"(exports, module2) {
+  "../node_modules/.pnpm/get-stream@6.0.1/node_modules/get-stream/buffer-stream.js"(exports, module2) {
     "use strict";
     var { PassThrough: PassThroughStream } = require("stream");
     module2.exports = (options) => {
@@ -763,9 +763,9 @@ var require_buffer_stream = __commonJS({
   }
 });
 
-// ../.pnpm-update-store/get-stream@6.0.1/node_modules/get-stream/index.js
+// ../node_modules/.pnpm/get-stream@6.0.1/node_modules/get-stream/index.js
 var require_get_stream = __commonJS({
-  "../.pnpm-update-store/get-stream@6.0.1/node_modules/get-stream/index.js"(exports, module2) {
+  "../node_modules/.pnpm/get-stream@6.0.1/node_modules/get-stream/index.js"(exports, module2) {
     "use strict";
     var { constants: BufferConstants } = require("buffer");
     var stream = require("stream");
@@ -818,9 +818,9 @@ var require_get_stream = __commonJS({
   }
 });
 
-// ../.pnpm-update-store/merge-stream@2.0.0/node_modules/merge-stream/index.js
+// ../node_modules/.pnpm/merge-stream@2.0.0/node_modules/merge-stream/index.js
 var require_merge_stream = __commonJS({
-  "../.pnpm-update-store/merge-stream@2.0.0/node_modules/merge-stream/index.js"(exports, module2) {
+  "../node_modules/.pnpm/merge-stream@2.0.0/node_modules/merge-stream/index.js"(exports, module2) {
     "use strict";
     var { PassThrough } = require("stream");
     module2.exports = function() {
@@ -858,9 +858,9 @@ var require_merge_stream = __commonJS({
   }
 });
 
-// ../.pnpm-update-store/@vue+shared@3.5.41/node_modules/@vue/shared/dist/shared.cjs.prod.js
+// ../node_modules/.pnpm/@vue+shared@3.5.41/node_modules/@vue/shared/dist/shared.cjs.prod.js
 var require_shared_cjs_prod = __commonJS({
-  "../.pnpm-update-store/@vue+shared@3.5.41/node_modules/@vue/shared/dist/shared.cjs.prod.js"(exports) {
+  "../node_modules/.pnpm/@vue+shared@3.5.41/node_modules/@vue/shared/dist/shared.cjs.prod.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     function makeMap(str) {
@@ -1453,9 +1453,9 @@ var require_shared_cjs_prod = __commonJS({
   }
 });
 
-// ../.pnpm-update-store/@vue+shared@3.5.41/node_modules/@vue/shared/dist/shared.cjs.js
+// ../node_modules/.pnpm/@vue+shared@3.5.41/node_modules/@vue/shared/dist/shared.cjs.js
 var require_shared_cjs = __commonJS({
-  "../.pnpm-update-store/@vue+shared@3.5.41/node_modules/@vue/shared/dist/shared.cjs.js"(exports) {
+  "../node_modules/.pnpm/@vue+shared@3.5.41/node_modules/@vue/shared/dist/shared.cjs.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     function makeMap(str) {
@@ -2056,9 +2056,9 @@ var require_shared_cjs = __commonJS({
   }
 });
 
-// ../.pnpm-update-store/@vue+shared@3.5.41/node_modules/@vue/shared/index.js
+// ../node_modules/.pnpm/@vue+shared@3.5.41/node_modules/@vue/shared/index.js
 var require_shared = __commonJS({
-  "../.pnpm-update-store/@vue+shared@3.5.41/node_modules/@vue/shared/index.js"(exports, module2) {
+  "../node_modules/.pnpm/@vue+shared@3.5.41/node_modules/@vue/shared/index.js"(exports, module2) {
     "use strict";
     if (process.env.NODE_ENV === "production") {
       module2.exports = require_shared_cjs_prod();
@@ -2068,9 +2068,9 @@ var require_shared = __commonJS({
   }
 });
 
-// ../.pnpm-update-store/@vue-reactivity+watch@0.2.0_169931a5349ceb56918f730f45a31744/node_modules/@vue-reactivity/watch/dist/index.js
+// ../node_modules/.pnpm/@vue-reactivity+watch@0.2.0_169931a5349ceb56918f730f45a31744/node_modules/@vue-reactivity/watch/dist/index.js
 var require_dist = __commonJS({
-  "../.pnpm-update-store/@vue-reactivity+watch@0.2.0_169931a5349ceb56918f730f45a31744/node_modules/@vue-reactivity/watch/dist/index.js"(exports, module2) {
+  "../node_modules/.pnpm/@vue-reactivity+watch@0.2.0_169931a5349ceb56918f730f45a31744/node_modules/@vue-reactivity/watch/dist/index.js"(exports, module2) {
     var __defProp2 = Object.defineProperty;
     var __getOwnPropDesc2 = Object.getOwnPropertyDescriptor;
     var __getOwnPropNames2 = Object.getOwnPropertyNames;
@@ -2275,7 +2275,7 @@ var import_simple_json_db = __toESM(require("simple-json-db"));
 // ../server-shared/src/log-service.ts
 var import_tsyringe = require("tsyringe");
 
-// ../.pnpm-update-store/chalk@5.6.2/node_modules/chalk/source/vendor/ansi-styles/index.js
+// ../node_modules/.pnpm/chalk@5.6.2/node_modules/chalk/source/vendor/ansi-styles/index.js
 var ANSI_BACKGROUND_OFFSET = 10;
 var wrapAnsi16 = (offset = 0) => (code) => `\x1B[${code + offset}m`;
 var wrapAnsi256 = (offset = 0) => (code) => `\x1B[${38 + offset};5;${code}m`;
@@ -2452,7 +2452,7 @@ function assembleStyles() {
 var ansiStyles = assembleStyles();
 var ansi_styles_default = ansiStyles;
 
-// ../.pnpm-update-store/chalk@5.6.2/node_modules/chalk/source/vendor/supports-color/index.js
+// ../node_modules/.pnpm/chalk@5.6.2/node_modules/chalk/source/vendor/supports-color/index.js
 var import_node_process = __toESM(require("process"), 1);
 var import_node_os = __toESM(require("os"), 1);
 var import_node_tty = __toESM(require("tty"), 1);
@@ -2584,7 +2584,7 @@ var supportsColor = {
 };
 var supports_color_default = supportsColor;
 
-// ../.pnpm-update-store/chalk@5.6.2/node_modules/chalk/source/utilities.js
+// ../node_modules/.pnpm/chalk@5.6.2/node_modules/chalk/source/utilities.js
 function stringReplaceAll(string, substring, replacer) {
   let index = string.indexOf(substring);
   if (index === -1) {
@@ -2614,7 +2614,7 @@ function stringEncaseCRLFWithFirstIndex(string, prefix, postfix, index) {
   return returnValue;
 }
 
-// ../.pnpm-update-store/chalk@5.6.2/node_modules/chalk/source/index.js
+// ../node_modules/.pnpm/chalk@5.6.2/node_modules/chalk/source/index.js
 var { stdout: stdoutColor, stderr: stderrColor } = supports_color_default;
 var GENERATOR = Symbol("GENERATOR");
 var STYLER = Symbol("STYLER");
@@ -3032,7 +3032,7 @@ var HexoInstanceService = class {
     const unload = async () => {
       await this._hexo.unwatch();
     };
-    const load = async () => {
+    const load2 = async () => {
       await this._hexo.watch();
       HexoInstanceService.INITING = false;
     };
@@ -3050,7 +3050,7 @@ var HexoInstanceService = class {
       throw err;
     } finally {
       try {
-        await load();
+        await load2();
       } catch (err) {
         markHexoInitError(err);
         this._logService.error(err);
@@ -3339,15 +3339,16 @@ var import_tsyringe9 = require("tsyringe");
 var import_fs4 = __toESM(require("fs"));
 var import_http = __toESM(require("http"));
 var import_crypto2 = require("crypto");
+var import_js_yaml = require("js-yaml");
 
-// ../.pnpm-update-store/execa@6.1.0/node_modules/execa/index.js
+// ../node_modules/.pnpm/execa@6.1.0/node_modules/execa/index.js
 var import_node_buffer = require("buffer");
 var import_node_path2 = __toESM(require("path"), 1);
 var import_node_child_process = __toESM(require("child_process"), 1);
 var import_node_process3 = __toESM(require("process"), 1);
 var import_cross_spawn = __toESM(require_cross_spawn(), 1);
 
-// ../.pnpm-update-store/strip-final-newline@3.0.0/node_modules/strip-final-newline/index.js
+// ../node_modules/.pnpm/strip-final-newline@3.0.0/node_modules/strip-final-newline/index.js
 function stripFinalNewline(input) {
   const LF = typeof input === "string" ? "\n" : "\n".charCodeAt();
   const CR = typeof input === "string" ? "\r" : "\r".charCodeAt();
@@ -3360,12 +3361,12 @@ function stripFinalNewline(input) {
   return input;
 }
 
-// ../.pnpm-update-store/npm-run-path@5.3.0/node_modules/npm-run-path/index.js
+// ../node_modules/.pnpm/npm-run-path@5.3.0/node_modules/npm-run-path/index.js
 var import_node_process2 = __toESM(require("process"), 1);
 var import_node_path = __toESM(require("path"), 1);
 var import_node_url = require("url");
 
-// ../.pnpm-update-store/path-key@4.0.0/node_modules/path-key/index.js
+// ../node_modules/.pnpm/path-key@4.0.0/node_modules/path-key/index.js
 function pathKey(options = {}) {
   const {
     env: env2 = process.env,
@@ -3377,7 +3378,7 @@ function pathKey(options = {}) {
   return Object.keys(env2).reverse().find((key) => key.toUpperCase() === "PATH") || "Path";
 }
 
-// ../.pnpm-update-store/npm-run-path@5.3.0/node_modules/npm-run-path/index.js
+// ../node_modules/.pnpm/npm-run-path@5.3.0/node_modules/npm-run-path/index.js
 var npmRunPath = ({
   cwd = import_node_process2.default.cwd(),
   path: pathOption = import_node_process2.default.env[pathKey()],
@@ -3416,7 +3417,7 @@ var npmRunPathEnv = ({ env: env2 = import_node_process2.default.env, ...options 
   return env2;
 };
 
-// ../.pnpm-update-store/mimic-fn@4.0.0/node_modules/mimic-fn/index.js
+// ../node_modules/.pnpm/mimic-fn@4.0.0/node_modules/mimic-fn/index.js
 var copyProperty = (to, from, property, ignoreNonConfigurable) => {
   if (property === "length" || property === "prototype") {
     return;
@@ -3461,7 +3462,7 @@ function mimicFunction(to, from, { ignoreNonConfigurable = false } = {}) {
   return to;
 }
 
-// ../.pnpm-update-store/onetime@6.0.0/node_modules/onetime/index.js
+// ../node_modules/.pnpm/onetime@6.0.0/node_modules/onetime/index.js
 var calledFunctions = /* @__PURE__ */ new WeakMap();
 var onetime = (function_, options = {}) => {
   if (typeof function_ !== "function") {
@@ -3492,10 +3493,10 @@ onetime.callCount = (function_) => {
 };
 var onetime_default = onetime;
 
-// ../.pnpm-update-store/human-signals@3.0.1/node_modules/human-signals/build/src/main.js
+// ../node_modules/.pnpm/human-signals@3.0.1/node_modules/human-signals/build/src/main.js
 var import_os2 = require("os");
 
-// ../.pnpm-update-store/human-signals@3.0.1/node_modules/human-signals/build/src/realtime.js
+// ../node_modules/.pnpm/human-signals@3.0.1/node_modules/human-signals/build/src/realtime.js
 var getRealtimeSignals = function() {
   const length = SIGRTMAX - SIGRTMIN + 1;
   return Array.from({ length }, getRealtimeSignal);
@@ -3512,10 +3513,10 @@ var getRealtimeSignal = function(value, index) {
 var SIGRTMIN = 34;
 var SIGRTMAX = 64;
 
-// ../.pnpm-update-store/human-signals@3.0.1/node_modules/human-signals/build/src/signals.js
+// ../node_modules/.pnpm/human-signals@3.0.1/node_modules/human-signals/build/src/signals.js
 var import_os = require("os");
 
-// ../.pnpm-update-store/human-signals@3.0.1/node_modules/human-signals/build/src/core.js
+// ../node_modules/.pnpm/human-signals@3.0.1/node_modules/human-signals/build/src/core.js
 var SIGNALS = [
   {
     name: "SIGHUP",
@@ -3788,7 +3789,7 @@ var SIGNALS = [
   }
 ];
 
-// ../.pnpm-update-store/human-signals@3.0.1/node_modules/human-signals/build/src/signals.js
+// ../node_modules/.pnpm/human-signals@3.0.1/node_modules/human-signals/build/src/signals.js
 var getSignals = function() {
   const realtimeSignals = getRealtimeSignals();
   const signals = [...SIGNALS, ...realtimeSignals].map(normalizeSignal);
@@ -3810,7 +3811,7 @@ var normalizeSignal = function({
   return { name, number, description, supported, action, forced, standard };
 };
 
-// ../.pnpm-update-store/human-signals@3.0.1/node_modules/human-signals/build/src/main.js
+// ../node_modules/.pnpm/human-signals@3.0.1/node_modules/human-signals/build/src/main.js
 var getSignalsByName = function() {
   const signals = getSignals();
   return signals.reduce(getSignalByName, {});
@@ -3855,7 +3856,7 @@ var findSignalByNumber = function(number, signals) {
 };
 var signalsByNumber = getSignalsByNumber();
 
-// ../.pnpm-update-store/execa@6.1.0/node_modules/execa/lib/error.js
+// ../node_modules/.pnpm/execa@6.1.0/node_modules/execa/lib/error.js
 var getErrorPrefix = ({ timedOut, timeout, errorCode, signal, signalDescription, exitCode, isCanceled }) => {
   if (timedOut) {
     return `timed out after ${timeout} milliseconds`;
@@ -3925,7 +3926,7 @@ ${error.message}` : execaMessage;
   return error;
 };
 
-// ../.pnpm-update-store/execa@6.1.0/node_modules/execa/lib/stdio.js
+// ../node_modules/.pnpm/execa@6.1.0/node_modules/execa/lib/stdio.js
 var aliases = ["stdin", "stdout", "stderr"];
 var hasAlias = (options) => aliases.some((alias) => options[alias] !== void 0);
 var normalizeStdio = (options) => {
@@ -3949,7 +3950,7 @@ var normalizeStdio = (options) => {
   return Array.from({ length }, (value, index) => stdio[index]);
 };
 
-// ../.pnpm-update-store/execa@6.1.0/node_modules/execa/lib/kill.js
+// ../node_modules/.pnpm/execa@6.1.0/node_modules/execa/lib/kill.js
 var import_node_os2 = __toESM(require("os"), 1);
 var import_signal_exit = __toESM(require_signal_exit(), 1);
 var DEFAULT_FORCE_KILL_TIMEOUT = 1e3 * 5;
@@ -4023,12 +4024,12 @@ var setExitHandler = async (spawned, { cleanup, detached }, timedPromise) => {
   });
 };
 
-// ../.pnpm-update-store/is-stream@3.0.0/node_modules/is-stream/index.js
+// ../node_modules/.pnpm/is-stream@3.0.0/node_modules/is-stream/index.js
 function isStream(stream) {
   return stream !== null && typeof stream === "object" && typeof stream.pipe === "function";
 }
 
-// ../.pnpm-update-store/execa@6.1.0/node_modules/execa/lib/stream.js
+// ../node_modules/.pnpm/execa@6.1.0/node_modules/execa/lib/stream.js
 var import_get_stream = __toESM(require_get_stream(), 1);
 var import_merge_stream = __toESM(require_merge_stream(), 1);
 var handleInput = (spawned, input) => {
@@ -4090,7 +4091,7 @@ var getSpawnedResult = async ({ stdout, stderr, all }, { encoding, buffer, maxBu
   }
 };
 
-// ../.pnpm-update-store/execa@6.1.0/node_modules/execa/lib/promise.js
+// ../node_modules/.pnpm/execa@6.1.0/node_modules/execa/lib/promise.js
 var nativePromisePrototype = (async () => {
 })().constructor.prototype;
 var descriptors = ["then", "catch", "finally"].map((property) => [
@@ -4118,7 +4119,7 @@ var getSpawnedPromise = (spawned) => new Promise((resolve4, reject) => {
   }
 });
 
-// ../.pnpm-update-store/execa@6.1.0/node_modules/execa/lib/command.js
+// ../node_modules/.pnpm/execa@6.1.0/node_modules/execa/lib/command.js
 var normalizeArgs = (file, args = []) => {
   if (!Array.isArray(args)) {
     return [file];
@@ -4149,7 +4150,7 @@ var parseCommand = (command) => {
   return tokens;
 };
 
-// ../.pnpm-update-store/execa@6.1.0/node_modules/execa/index.js
+// ../node_modules/.pnpm/execa@6.1.0/node_modules/execa/index.js
 var DEFAULT_MAX_BUFFER = 1e3 * 1e3 * 100;
 var getEnv = ({ env: envOption, extendEnv, preferLocal, localDir, execPath }) => {
   const env2 = extendEnv ? { ...import_node_process3.default.env, ...envOption } : envOption;
@@ -4272,7 +4273,7 @@ function execaCommand(command, options) {
   return execa(file, args, options);
 }
 
-// ../.pnpm-update-store/ansi-regex@6.3.0/node_modules/ansi-regex/index.js
+// ../node_modules/.pnpm/ansi-regex@6.3.0/node_modules/ansi-regex/index.js
 function ansiRegex({ onlyFirst = false } = {}) {
   const ST = "(?:\\u0007|\\u001B\\u005C|\\u009C)";
   const osc = `(?:\\u001B\\][^\\u0007\\u001B\\u009C]*${ST})`;
@@ -4281,7 +4282,7 @@ function ansiRegex({ onlyFirst = false } = {}) {
   return new RegExp(pattern, onlyFirst ? void 0 : "g");
 }
 
-// ../.pnpm-update-store/strip-ansi@7.2.0/node_modules/strip-ansi/index.js
+// ../node_modules/.pnpm/strip-ansi@7.2.0/node_modules/strip-ansi/index.js
 var regex = ansiRegex();
 function stripAnsi(string) {
   if (typeof string !== "string") {
@@ -4323,7 +4324,7 @@ var toTag = (post) => post;
 var import_path7 = require("path");
 var import_reactivity2 = require("@vue/reactivity");
 
-// ../.pnpm-update-store/@winwin+server-reactive-store@0.2.2/node_modules/@winwin/server-reactive-store/dist/index.mjs
+// ../node_modules/.pnpm/@winwin+server-reactive-store@0.2.2/node_modules/@winwin/server-reactive-store/dist/index.mjs
 var import_reactivity = require("@vue/reactivity");
 var import_watch = __toESM(require_dist(), 1);
 var import_fs3 = require("fs");
@@ -4352,15 +4353,15 @@ function createStore(key, adapter, setup, {
   if (!all.state)
     throw new Error("must return object with state property");
   const state = (0, import_reactivity.reactive)(all.state);
-  const load = () => {
+  const load2 = () => {
     const loaded = adapter.getItem(key);
     if (loaded)
       Object.assign(state, loaded);
   };
-  load();
+  load2();
   const save = () => adapter.setItem(key, state);
   (0, import_watch.watch)(state, save, { deep: true, immediate: saveAfterCreate });
-  return { ...all, load, save, state };
+  return { ...all, load: load2, save, state };
 }
 function createStoreCreator(adapter) {
   return function(key, setup) {
@@ -4565,6 +4566,39 @@ var HexoService = class {
       return;
     }
     return fullPath;
+  }
+  async getYamlConfig(configPath, theme) {
+    const raw = import_fs4.default.readFileSync(configPath, "utf8");
+    (0, import_js_yaml.load)(raw);
+    return { theme, raw };
+  }
+  async setYamlConfig(configPath, raw) {
+    (0, import_js_yaml.load)(raw);
+    this.writeFile(configPath, raw);
+  }
+  async getThemeConfig() {
+    const hexo = await this._hexoInstanceService.getInstance();
+    const configPath = import_path8.default.join(hexo.theme_dir, "_config.yml");
+    return this.getYamlConfig(configPath, hexo.config.theme);
+  }
+  async setThemeConfig(raw) {
+    await this._hexoInstanceService.runBetweenReload(async () => {
+      const hexo = await this._hexoInstanceService.getInstance();
+      const configPath = import_path8.default.join(hexo.theme_dir, "_config.yml");
+      await this.setYamlConfig(configPath, raw);
+    });
+    return this.getThemeConfig();
+  }
+  async getHexoConfig() {
+    const hexo = await this._hexoInstanceService.getInstance();
+    return this.getYamlConfig(hexo.config_path);
+  }
+  async setHexoConfig(raw) {
+    await this._hexoInstanceService.runBetweenReload(async () => {
+      const hexo = await this._hexoInstanceService.getInstance();
+      await this.setYamlConfig(hexo.config_path, raw);
+    });
+    return this.getHexoConfig();
   }
   async getImageAssetKey(source, type) {
     const article = type === "post" ? await this.getPostBySource(source) : await this.getPageBySource(source);
@@ -5110,6 +5144,34 @@ router2.get("/categories", async (ctx) => {
 router2.get("/preview", async (ctx) => {
   const hexo = import_tsyringe10.container.resolve(HexoService);
   ctx.body = { url: await hexo.preview() };
+});
+router2.get("/theme/config", async (ctx) => {
+  const hexo = import_tsyringe10.container.resolve(HexoService);
+  ctx.body = await hexo.getThemeConfig();
+});
+router2.put("/theme/config", async (ctx) => {
+  const body = ctx.request.body;
+  if (typeof (body == null ? void 0 : body.raw) !== "string") {
+    ctx.status = 400;
+    ctx.body = "need `raw`";
+    return;
+  }
+  const hexo = import_tsyringe10.container.resolve(HexoService);
+  ctx.body = await hexo.setThemeConfig(body.raw);
+});
+router2.get("/config", async (ctx) => {
+  const hexo = import_tsyringe10.container.resolve(HexoService);
+  ctx.body = await hexo.getHexoConfig();
+});
+router2.put("/config", async (ctx) => {
+  const body = ctx.request.body;
+  if (typeof (body == null ? void 0 : body.raw) !== "string") {
+    ctx.status = 400;
+    ctx.body = "need `raw`";
+    return;
+  }
+  const hexo = import_tsyringe10.container.resolve(HexoService);
+  ctx.body = await hexo.setHexoConfig(body.raw);
 });
 router2.get("/assets", async (ctx) => {
   const hexo = import_tsyringe10.container.resolve(HexoService);

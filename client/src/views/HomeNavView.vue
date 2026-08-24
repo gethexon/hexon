@@ -58,6 +58,13 @@ const actionItems: NavListItem[] = [
   },
   {
     type: "item",
+    text: "主题 / Hexo",
+    icon: HIconName.Color,
+    color: colors.value.generate,
+    key: "themeHexo",
+  },
+  {
+    type: "item",
     text: "清理",
     icon: HIconName.EraseTool,
     color: colors.value.clean,
@@ -170,6 +177,7 @@ const onSelect = (key: string) => {
   key === "deploy" && actionsStore.deploy()
   key === "generate" && actionsStore.generate()
   key === "preview" && actionsStore.preview()
+  key === "themeHexo" && dispatcher.showThemeConfigModal()
   key === "clean" && actionsStore.clean()
   key === "gitsync" && actionsStore.gitSync()
   key === "gitsave" && actionsStore.gitSave()
